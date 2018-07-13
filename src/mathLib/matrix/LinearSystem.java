@@ -1,4 +1,4 @@
-package matrix;
+package mathLib.matrix;
 
 //    LinearSystem.java  solves simultaneous equations AX=Y
 //    solve real linear equations for X where Y = A * X

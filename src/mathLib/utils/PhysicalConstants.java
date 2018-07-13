@@ -1,4 +1,4 @@
-package utils;
+package mathLib.utils;
 
 public class PhysicalConstants {
 
