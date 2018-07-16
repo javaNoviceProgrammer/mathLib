@@ -1,6 +1,6 @@
 package mathLib.matrix;
 
-import mathLib.utils.Complex;
+import mathLib.numbers.Complex;
 
 /******************************************************************************
  *  Compilation:  javac Matrix.java

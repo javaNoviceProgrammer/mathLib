@@ -1,9 +1,9 @@
 package tests;
 
-import static mathLib.utils.Complex.*;
-import static mathLib.utils.ComplexMath.*;
+import static mathLib.numbers.Complex.*;
+import static mathLib.numbers.ComplexMath.*;
 
-import mathLib.utils.Complex;
+import mathLib.numbers.Complex;
 
 public class TestComplex {
 	public static void main(String[] args) {

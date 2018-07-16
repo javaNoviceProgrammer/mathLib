@@ -1,4 +1,4 @@
-package mathLib.utils;
+package mathLib.numbers;
 
 public class ComplexMath {
 
