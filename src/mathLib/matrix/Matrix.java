@@ -1,14 +1,5 @@
 package mathLib.matrix;
 
-
-/******************************************************************************
- *  Compilation:  javac Matrix.java
- *  Execution:    java Matrix
- *
- *  A bare-bones immutable data type for M-by-N matrices.
- *
- ******************************************************************************/
-// Class for real matrix --> No complex elements
 final public class Matrix {
     private final int M;             // number of rows
     private final int N;             // number of columns
