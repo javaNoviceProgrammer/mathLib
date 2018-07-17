@@ -11,5 +11,6 @@ public class TestComplex {
 		Complex v = sin(u)*sin(u) + cos(u)*cos(u) ;
 		System.out.println(v);
 		System.out.println(sin(PI/2));
+		
 	}
 }
