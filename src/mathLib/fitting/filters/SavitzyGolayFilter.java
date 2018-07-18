@@ -1,4 +1,4 @@
-package mathLib.fitting.lmse;
+package mathLib.fitting.filters;
 import Jama.LUDecomposition;
 import Jama.Matrix;
 
