@@ -1,5 +1,5 @@
 package mathLib.utils;
 
-public class ArrayMath {
+public class ArrayUtils {
 
 }
