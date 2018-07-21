@@ -1,26 +1,5 @@
 package mathLib.polynom;
 
-
-/******************************************************************************
- *  Compilation:  javac Polynomial.java
- *  Execution:    java Polynomial
- *
- *  Polynomials with double coefficients.
- *
- *  % java Polynomial
- *  zero(x) =     0
- *  p(x) =        4x^3 + 3x^2 + 2x + 1
- *  q(x) =        3x^2 + 5
- *  p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
- *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
- *  p(q(x))     = 108x^6 + 567x^4 + 996x^2 + 586
- *  0 - p(x)    = -4x^3 - 3x^2 - 2x - 1
- *  p(3)        = 142
- *  p'(x)       = 12x^2 + 6x + 2
- *  p''(x)      = 24x + 6
- *
- ******************************************************************************/
-
 public class Polynomial {
     private double[] coef;  // coefficients
     private int deg;     // degree of polynomial (0 for the zero polynomial)
@@ -84,7 +63,7 @@ public class Polynomial {
 
 
     // do a and b represent the same polynomial?
-    public boolean eq(Polynomial b) {
+    public boolean equals(Polynomial b) {
         Polynomial a = this;
         if (a.deg != b.deg) return false;
         for (int i = a.deg; i >= 0; i--)
@@ -128,10 +107,10 @@ public class Polynomial {
 
     //*******************************************************************
     // test client
-/*    public static void main(String[] args) { 
-    	
+/*    public static void main(String[] args) {
+
     	DoublePolynomial zero = new DoublePolynomial(0, 0);
-    	
+
         DoublePolynomial p1   = new DoublePolynomial(2.3, 3);
         DoublePolynomial p2   = new DoublePolynomial(3, 2);
         DoublePolynomial p3   = new DoublePolynomial(1, 0);
@@ -157,14 +136,14 @@ public class Polynomial {
         System.out.println("p(3)        = " + p.evaluate(3));
         System.out.println("p'(x)       = " + p.differentiate());
         System.out.println("p''(x)      = " + p.differentiate().differentiate());
-        
+
         System.out.println("p(x) = " + p);
         System.out.println("p(1.2) = "+ p.evaluate(1.2));
-        System.out.println("p'''(x) = " + p.differentiate().differentiate().differentiate()); 
+        System.out.println("p'''(x) = " + p.differentiate().differentiate().differentiate());
         Complex Z = new Complex(0,0) ;
         Complex[] coeff = new Complex[]{Z, Z, Z, Z, Z, Z, Z} ;
         System.out.println(coeff.length);
-        
+
    }*/
   //*******************************************************************
 }
