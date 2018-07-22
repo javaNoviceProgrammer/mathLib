@@ -2,18 +2,11 @@ package mathLib.matrix;
 
 import mathLib.numbers.Complex;
 
-/******************************************************************************
- *  Compilation:  javac Matrix.java
- *  Execution:    java Matrix
- *
- *  A bare-bones immutable data type for M-by-N matrices.
- *
- ******************************************************************************/
 // Class modified for Complex matrix
-final public class ComplexMatrix {
-    private final int M;             // number of rows
-    private final int N;             // number of columns
-    private final Complex[][] data;   // M-by-N array
+public class ComplexMatrix {
+    private int M;             // number of rows
+    private int N;             // number of columns
+    private Complex[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
     public ComplexMatrix(int M, int N) {
@@ -123,7 +116,7 @@ final public class ComplexMatrix {
     }
 
     // does A = B exactly?
-    public boolean eq(ComplexMatrix B) {
+    public boolean equals(ComplexMatrix B) {
         ComplexMatrix A = this;
         if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
         for (int i = 0; i < M; i++)
