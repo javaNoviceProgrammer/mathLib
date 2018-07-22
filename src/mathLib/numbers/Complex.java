@@ -1,8 +1,11 @@
 package mathLib.numbers;
 
+import mathLib.utils.StringUtils;
+
 public class Complex {
-    private final double re;   // the real part
-    private final double im;   // the imaginary part
+
+    private double re;   // the real part
+    private double im;   // the imaginary part
 
     public static final Complex ZERO = new Complex(0,0) ;
     public static final Complex ONE = new Complex(1,0) ;
@@ -27,10 +30,10 @@ public class Complex {
         return re + "+" + "i" + im ;
     }
 
-    public double abs() { 
+    public double abs() {
     	return Math.hypot(re, im); // Math.sqrt(re*re + im*im)
-    }  
-    
+    }
+
     public double absSquared() {
     	return (Math.hypot(re, im)*Math.hypot(re, im)) ;
     }
@@ -80,7 +83,7 @@ public class Complex {
         double imag = a.im - b.im;
         return new Complex(real, imag);
     }
-    
+
     public Complex times(Complex b) {
         Complex a = this;
         double real = a.re * b.re - a.im * b.im;
@@ -92,8 +95,8 @@ public class Complex {
         return new Complex(alpha * re, alpha * im);
     }
 
-    public Complex conjugate() {  
-    	return new Complex(re, -im); 
+    public Complex conjugate() {
+    	return new Complex(re, -im);
     }
 
     public Complex reciprocal() {
@@ -101,12 +104,12 @@ public class Complex {
         return new Complex(re / scale, -im / scale);
     }
 
-    public double re() { 
-    	return re; 
+    public double re() {
+    	return re;
     }
-    
-    public double im() { 
-    	return im; 
+
+    public double im() {
+    	return im;
     }
 
     public Complex divides(Complex b) {
@@ -182,7 +185,32 @@ public class Complex {
     	boolean result = testNull &&  (test1 || test2 || test3 || test4 || test5 || test6 || test7 || test8 || test9) ;
     	return result ;
     }
-    
+
+    public static Complex parseComplex(String st){
+    	boolean hasJ = st.contains("j") ;
+    	boolean hasI = st.contains("i") ;
+    	st = st.trim() ;
+    	st = st.replaceAll("\\s+", "") ;
+    	if(isNumeric(st) && (hasI || hasJ)){
+    		double realPart = 0 ;
+    		double imagPart = 0 ;
+    		String[] num = null ;
+    		if(!hasJ){ num = st.split("i") ; } else{ num = st.split("j") ;}
+			String real = num[0] ;
+			String imag = num[1] ;
+			// the correct format is "a + j b" or " a + i b"
+			if(real.charAt(real.length()-1) == '+') {imagPart = StringUtils.evaluate(imag) ;}
+			else{imagPart = -StringUtils.evaluate(imag) ; }
+			if(real.charAt(0) == '-') {realPart = -StringUtils.evaluate(real.replaceAll("[+-]", "")) ; }
+			else{realPart = StringUtils.evaluate(real.replaceAll("[+-]", "")) ; }
+			return new Complex(realPart, imagPart) ;
+    	}
+    	else if(StringUtils.isNumeric(st)){
+    		return new Complex(StringUtils.evaluate(st), 0) ;
+    	}
+    	else {return null ;}
+    }
+
     // ************ operator overloading **********************
 
  	/**
@@ -398,6 +426,7 @@ public class Complex {
 		System.out.println(u);
 		System.out.println(v);
 		System.out.println(w);
+		System.out.println(parseComplex("1-j2"));
 	}
 
 }

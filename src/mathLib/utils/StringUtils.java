@@ -1,5 +1,7 @@
 package mathLib.utils;
 
+import net.objecthunter.exp4j.ExpressionBuilder;
+
 public class StringUtils {
 
 	public static boolean isNumeric(String s) {
@@ -23,6 +25,11 @@ public class StringUtils {
 			numbers[i] = toDouble(words[i]);
 		}
 		return numbers;
+	}
+
+	public static double evaluate(String expression){
+		double result = new ExpressionBuilder(expression).build().evaluate() ;
+		return result ;
 	}
 
 }
