@@ -62,6 +62,17 @@ public class Matrix {
         return I;
     }
 
+    // create and return the M-by-N constant matrix
+    public static Matrix constant(int M, int N, double c) {
+        Matrix C = new Matrix(M, N);
+        for(int i=0; i<M; i++){
+        	for(int j=0; j<N; j++){
+        		C.data[i][j] = c ;
+        	}
+        }
+        return C;
+    }
+
     // swap rows i and j
     public void swap(int i, int j) {
         double[] temp = data[i];
@@ -89,6 +100,16 @@ public class Matrix {
         return C;
     }
 
+    // return C = A + a
+    public Matrix plus(double a) {
+        Matrix A = this;
+        Matrix C = new Matrix(M, N);
+        for (int i = 0; i < M; i++)
+            for (int j = 0; j < N; j++)
+                C.data[i][j] = A.data[i][j] + a ;
+        return C;
+    }
+
     // return C = A - B
     public Matrix minus(Matrix B) {
         Matrix A = this;
@@ -100,6 +121,16 @@ public class Matrix {
         return C;
     }
 
+    // return C = A - a
+    public Matrix minus(double a) {
+        Matrix A = this;
+        Matrix C = new Matrix(M, N);
+        for (int i = 0; i < M; i++)
+            for (int j = 0; j < N; j++)
+                C.data[i][j] = A.data[i][j] - a ;
+        return C;
+    }
+
     // does A = B exactly?
     public boolean equals(Matrix B) {
         Matrix A = this;
@@ -107,6 +138,16 @@ public class Matrix {
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
                 if (A.data[i][j] != B.data[i][j]) return false;
+        return true;
+    }
+
+    // does A = B within a threshold?
+    public boolean equals(Matrix B, double tol) {
+        Matrix A = this;
+        if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
+        for (int i = 0; i < M; i++)
+            for (int j = 0; j < N; j++)
+                if (Math.abs(A.data[i][j]-B.data[i][j]) > tol) return false;
         return true;
     }
 
@@ -141,21 +182,31 @@ public class Matrix {
 
     // print matrix to standard output
     public void show() {
-        for (int i = 0; i < M; i++) {
-            for (int j = 0; j < N; j++)
-                System.out.printf("" + data[i][j] +  "           ");
-            System.out.println();
-        }
-        System.out.println();
+        System.out.println(this.toString());
     }
 
-    // get the i,j element of the matrix (i=0,1,...  j=0,1,...)
+
+    @Override
+	public String toString() {
+    	StringBuilder st = new StringBuilder() ;
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < N; j++){
+            	if(data[i][j]>=0) {st.append(" "+data[i][j]) ;}
+            	else {st.append(data[i][j]) ;}
+            	st.append("           ") ;
+            }
+            st.append("\n") ;
+        }
+        return st ;
+	}
+
+	// get the i,j element of the matrix (i=0,1,...  j=0,1,...)
     public double getElement(int i, int j){
     	return this.data[i][j] ;
     }
 
     // returning all data elements
-    public double[][] getAllElements(){
+    public double[][] getElements(){
     	return this.data ;
     }
 
@@ -163,5 +214,218 @@ public class Matrix {
     public static Jama.Matrix toJamaMatrix(Matrix A){
     	return new Jama.Matrix(A.data) ;
     }
+
+    // element-wise operations
+
+    public Matrix timesElement(Matrix B){
+        Matrix A = this;
+        Matrix C = new Matrix(A.M, A.N);
+        for(int i=0; i<C.M; i++){
+        	for(int j=0; j<C.N; j++){
+        		C.data[i][j] = A.data[i][j] * B.data[i][j] ;
+        	}
+        }
+        return C;
+    }
+
+    public Matrix divideElement(Matrix B){
+        Matrix A = this;
+        Matrix C = new Matrix(A.M, A.N);
+        for(int i=0; i<C.M; i++){
+        	for(int j=0; j<C.N; j++){
+        		C.data[i][j] = A.data[i][j] / B.data[i][j] ;
+        	}
+        }
+        return C;
+    }
+
+    // ************ operator overloading **********************
+
+ 	/**
+ 	 * Operator overload support: a+b
+ 	 */
+ 	public Matrix add(Matrix v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix addRev(Matrix v) {
+ 		return v.plus(this) ;
+ 	}
+
+ 	public Matrix add(int v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix addRev(int v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix add(long v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix addRev(long v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix add(float v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix addRev(float v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix add(double v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	public Matrix addRev(double v) {
+ 		return this.plus(v) ;
+ 	}
+
+ 	/**
+ 	 * Operator overload support: a-b
+ 	 */
+ 	public Matrix subtract(Matrix v) {
+ 		return this.minus(v) ;
+ 	}
+
+ 	public Matrix subtractRev(Matrix v) {
+ 		return this.times(-1).plus(v) ;
+ 	}
+
+ 	public Matrix subtract(int v) {
+ 		return this.minus(v) ;
+ 	}
+
+ 	public Matrix subtractRev(int v) {
+ 		return this.times(-1).plus(v) ;
+ 	}
+
+ 	public Matrix subtract(long v) {
+ 		return this.minus(v) ;
+ 	}
+
+ 	public Matrix subtractRev(long v) {
+ 		return this.times(-1).plus(v) ;
+ 	}
+
+ 	public Matrix subtract(float v) {
+ 		return this.minus(v) ;
+ 	}
+
+ 	public Matrix subtractRev(float v) {
+ 		return this.times(-1).plus(v) ;
+ 	}
+
+ 	public Matrix subtract(double v) {
+ 		return this.minus(v) ;
+ 	}
+
+ 	public Matrix subtractRev(double v) {
+ 		return this.times(-1).plus(v) ;
+ 	}
+
+ 	/**
+ 	 * Operator overload support: a*b
+ 	 */
+ 	public Matrix multiply(Matrix v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiplyRev(Matrix v) {
+ 		return v.times(this);
+ 	}
+
+ 	public Matrix multiply(int v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiplyRev(int v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiply(long v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiplyRev(long v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiply(float v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiplyRev(float v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiply(double v) {
+ 		return this.times(v);
+ 	}
+
+ 	public Matrix multiplyRev(double v) {
+ 		return this.times(v);
+ 	}
+
+ 	/**
+ 	 * Operator overload support: a/b
+ 	 */
+ 	public Matrix divide(Matrix v) {
+ 		return this.divideElement(v) ;
+ 	}
+
+ 	public Matrix divideRev(Matrix v) {
+ 		return v.divideElement(this) ;
+ 	}
+
+ 	public Matrix divide(int v) {
+ 		return this.times(1/v) ;
+ 	}
+
+ 	public Matrix divideRev(int v) {
+ 		return constant(M, N, v).divideElement(this) ;
+ 	}
+
+ 	public Matrix divide(long v) {
+ 		return this.times(1/v) ;
+ 	}
+
+ 	public Matrix divideRev(long v) {
+ 		return constant(M, N, v).divideElement(this) ;
+ 	}
+
+ 	public Matrix divide(float v) {
+ 		return this.times(1/v) ;
+ 	}
+
+ 	public Matrix divideRev(float v) {
+ 		return constant(M, N, v).divideElement(this) ;
+ 	}
+
+ 	public Matrix divide(double v) {
+ 		return this.times(1/v) ;
+ 	}
+
+ 	public Matrix divideRev(double v) {
+ 		return constant(M, N, v).divideElement(this) ;
+ 	}
+
+ 	/**
+ 	 * Operator overload support: -a
+ 	 */
+ 	public Matrix negate() {
+ 		return this.times(-1) ;
+ 	}
+
+ 	// for test
+ 	public static void main(String[] args) {
+ 		double[][] d = new double[][] {{2, -1.2}, {-5, -2.3}} ;
+		Matrix A = new Matrix(d) ;
+		A.show();
+		System.out.println(identity(A.M)-A);
+	}
 
 }
