@@ -1,9 +1,10 @@
 package mathLib.matrix;
 
-final public class Matrix {
-    private final int M;             // number of rows
-    private final int N;             // number of columns
-    private final double[][] data;   // M-by-N array
+public class Matrix {
+
+    private int M;             // number of rows
+    private int N;             // number of columns
+    private double[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
     public Matrix(int M, int N) {
@@ -26,8 +27,8 @@ final public class Matrix {
             for (int j = 0; j < N; j++)
                     this.data[i][j] = data[i][j];
     }
- 
-    
+
+
     // create matrix based on 1d array --> if data is complex
     public Matrix(double[] data) {
         M = 1; // default is row matrix
@@ -37,10 +38,6 @@ final public class Matrix {
             for (int j = 0; j < N; j++)
                     this.data[i][j] = data[j];
     }
-
-    // copy constructor
-    @SuppressWarnings("unused")
-	private Matrix(Matrix A) { this(A.data); }
 
     // create and return a random M-by-N matrix with values between 0 and 1
     public static Matrix random(int M, int N) {
@@ -104,7 +101,7 @@ final public class Matrix {
     }
 
     // does A = B exactly?
-    public boolean eq(Matrix B) {
+    public boolean equals(Matrix B) {
         Matrix A = this;
         if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
         for (int i = 0; i < M; i++)
@@ -129,7 +126,7 @@ final public class Matrix {
                     C.data[i][j] = C.data[i][j] + (A.data[i][k] * B.data[k][j]) ;
         return C;
     }
-    
+
     // returns multiplication by a double scalar
     public Matrix times(double a) {
         Matrix A = this;
@@ -141,26 +138,30 @@ final public class Matrix {
         }
         return C;
     }
- 
-    
+
     // print matrix to standard output
     public void show() {
         for (int i = 0; i < M; i++) {
-            for (int j = 0; j < N; j++) 
+            for (int j = 0; j < N; j++)
                 System.out.printf("" + data[i][j] +  "           ");
             System.out.println();
         }
         System.out.println();
     }
-    
+
     // get the i,j element of the matrix (i=0,1,...  j=0,1,...)
     public double getElement(int i, int j){
     	return this.data[i][j] ;
     }
-    
+
     // returning all data elements
     public double[][] getAllElements(){
     	return this.data ;
+    }
+
+    // conversion interfaces
+    public static Jama.Matrix toJamaMatrix(Matrix A){
+    	return new Jama.Matrix(A.data) ;
     }
 
 }
