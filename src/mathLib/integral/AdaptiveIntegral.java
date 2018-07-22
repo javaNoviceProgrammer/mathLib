@@ -1,13 +1,13 @@
 package mathLib.integral;
 
-/*************************************************
+/**
  * This is a class designed to calculate the numerical
  * integration of a function (called integral function)
  * with adaptive accuracy.
  *
  * The default error bound is 1% of the convergence, but
  * can be set in the constructor as well.
- *************************************************/
+ */
 
 import flanagan.integration.IntegralFunction;
 import flanagan.integration.Integration;
@@ -34,7 +34,7 @@ public class AdaptiveIntegral {
 	public void setErrorBound(double error){
 		errorBound = error ;
 	}
-	
+
 	public void setMaximumNumberOfIterations(int maxNumIterations){
 		this.maxNumIterations = maxNumIterations ;
 	}
@@ -91,46 +91,5 @@ public class AdaptiveIntegral {
 	public int getNumberOfIterations(){
 		return numIterations ;
 	}
-
-
-	// *************** For test
-//	public static void main(String[] args) {
-//		IntegralFunction func = new IntegralFunction(){
-//			@Override
-//			public double function(double x) {
-//				double y = x*x/Math.cosh(x*x) ;
-//				return y;
-//			}
-//		} ;
-//
-//		double x0 = -1 ;
-//		double x1 = 1 ;
-//		AdaptiveIntegral integral = new AdaptiveIntegral(func, x0, x1) ;
-//		System.out.println(integral.getIntegral());
-//		System.out.println("number of iterations: " + integral.getNumberOfIterations());
-//
-//		double[] x = MoreMath.linspace(0, 2*Math.PI, 1000) ;
-//		IntegralFunction func1 = new IntegralFunction(){
-//			@Override
-//			public double function(double r) {
-//				return Math.cos(r*r*r);
-//			}
-//	} ;
-//	double[] y = new double[x.length] ;
-//	for(int i=0; i<y.length; i++){
-//		AdaptiveIntegral aint = new AdaptiveIntegral(func1, 0, x[i]) ;
-//		y[i] = aint.getIntegral() ;
-//		System.out.println(aint.numIterations);
-//	}
-//	MatlabChart fig = new MatlabChart() ;
-//	fig.plot(x, MoreMath.Arrays.Functions.cos(MoreMath.Arrays.Functions.pow(x, 3)), "r",1f, "func(x)");
-//	fig.plot(x, y, "b", 1f, "int(func(x))");
-//	fig.RenderPlot();
-//	fig.legendON();
-//	fig.legendOFF();
-//	fig.run(true);
-//
-//	}
-	// ***************
 
 }
