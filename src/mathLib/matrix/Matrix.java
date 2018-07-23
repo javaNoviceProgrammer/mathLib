@@ -38,6 +38,18 @@ public class Matrix {
             for (int j = 0; j < N; j++)
                     this.data[i][j] = data[j];
     }
+    
+    public int[] getSize() {
+    	return new int[] {M, N} ;
+    }
+    
+    public int getNumRows() {
+    	return M ;
+    }
+    
+    public int getNumColumns() {
+    	return N ;
+    }
 
     // create and return a random M-by-N matrix with values between 0 and 1
     public static Matrix random(int M, int N) {
@@ -69,6 +81,16 @@ public class Matrix {
         	for(int j=0; j<N; j++){
         		C.data[i][j] = c ;
         	}
+        }
+        return C;
+    }
+    
+    // create and return the M-by-N constant matrix
+    public static Matrix diag(double[] var) {
+    	int M = var.length ;
+        Matrix C = new Matrix(M, M);
+        for(int i=0; i<M; i++){
+        	C.data[i][i] = var[i] ;
         }
         return C;
     }
@@ -237,6 +259,28 @@ public class Matrix {
         	}
         }
         return C;
+    }
+    
+    /**
+     * sub-Blocks of the matrix
+     */
+    
+    public double[] getRow(int row) {
+    	int rowSize = N ;
+    	double[] selectedRow = new double[rowSize] ;
+    	for(int i=0; i<rowSize; i++) {
+    		selectedRow[i] = data[row][i] ;
+    	}
+    	return selectedRow ;
+    }
+    
+    public double[] getColumn(int column) {
+    	int columnSize = M ;
+    	double[] selectedColumn = new double[columnSize] ;
+    	for(int i=0; i<columnSize; i++) {
+    		selectedColumn[i] = data[i][column] ;
+    	}
+    	return selectedColumn ;
     }
 
     // ************ operator overloading **********************
@@ -425,7 +469,7 @@ public class Matrix {
  		double[][] d = new double[][] {{2, -1.2}, {-5, -2.3}} ;
 		Matrix A = new Matrix(d) ;
 		A.show();
-		System.out.println(identity(A.M)-A);
+		System.out.println(identity(A.getNumRows())-A);
 	}
 
 }

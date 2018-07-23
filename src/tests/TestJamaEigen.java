@@ -7,7 +7,7 @@ import static mathLib.numbers.Complex.*;
 
 public class TestJamaEigen {
 	public static void main(String[] args) {
-		double[][] ent = new double[][] { { -1, 1 }, { 1, -1 } };
+		double[][] ent = new double[][] { { -1, -4 }, { 3, 2 } };
 		Matrix A = new Matrix(ent);
 		EigenvalueDecomposition eigen = new EigenvalueDecomposition(A);
 		// for (double x : eigen.getRealEigenvalues()) {
