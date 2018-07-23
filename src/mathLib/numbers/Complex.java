@@ -2,10 +2,10 @@ package mathLib.numbers;
 
 import mathLib.utils.StringUtils;
 
-public class Complex {
+public final class Complex { // immutable class
 
-	private double re; // the real part
-	private double im; // the imaginary part
+	private final double re; // the real part
+	private final double im; // the imaginary part
 
 	public static final Complex ZERO = new Complex(0, 0);
 	public static final Complex ONE = new Complex(1, 0);
