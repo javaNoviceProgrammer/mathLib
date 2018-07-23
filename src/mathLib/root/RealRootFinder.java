@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import flanagan.roots.RealRoot;
 import flanagan.roots.RealRootFunction;
-import mathLib.utils.MoreMath;
+import mathLib.utils.MathUtils;
 
 /**
  * This class finds all roots of function over [a,b] by mapping it to [0,1] interval
@@ -150,7 +150,7 @@ public class RealRootFinder {
 	}
 	
 	public void findAllRoots(){
-		double[] points = MoreMath.linspace(0, 1, stepSize) ;
+		double[] points = MathUtils.linspace(0, 1, stepSize) ;
 		int M = points.length ;
 		for(int i=0; i<M-1; i++){
 			if(funcNormalized.function(points[i])*funcNormalized.function(points[i+1]) < 0){
@@ -188,7 +188,7 @@ public class RealRootFinder {
 	
 	public double getSpecificRoot(int rootNumber){
 		// first partitioning the [0,1] interval
-		double[] points = MoreMath.linspace(0, 1, stepSize) ;
+		double[] points = MathUtils.linspace(0, 1, stepSize) ;
 		int M = points.length ;
 		int k = 0 ;
 		double yStart = 0, yEnd = 0 ;
@@ -209,7 +209,7 @@ public class RealRootFinder {
 	
 	public double getSpecificRoot_from_end(int rootNumber){
 		// first partitioning the [0,1] interval
-		double[] points = MoreMath.linspace(0, 1, stepSize) ;
+		double[] points = MathUtils.linspace(0, 1, stepSize) ;
 		int M = points.length ;
 		int k = 0 ;
 		double yStart = 0, yEnd = 0 ;
@@ -238,11 +238,11 @@ public class RealRootFinder {
 	}
 	
 	public void showAllRoots(){
-		MoreMath.Arrays.show(getAllRoots());
+		MathUtils.Arrays.show(getAllRoots());
 	}
 	
 	public String toString(){
-		return MoreMath.Arrays.toString(getAllRoots()) ;
+		return MathUtils.Arrays.toString(getAllRoots()) ;
 	}
 	
 	public int getNumberOfRoots(){
@@ -306,7 +306,7 @@ public class RealRootFinder {
 		double xStart = Math.PI*(-6) ;
 		double xEnd = Math.PI*6 ;
 		
-		double[] x = MoreMath.linspace(xStart, xEnd, 1000) ;
+		double[] x = MathUtils.linspace(xStart, xEnd, 1000) ;
 		double[] y = new double[x.length] ;
 		for(int i=0; i<x.length; i++){
 			y[i] = func.function(x[i]) ;

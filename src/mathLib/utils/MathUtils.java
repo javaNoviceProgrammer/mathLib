@@ -6,7 +6,7 @@ import mathLib.integral.AdaptiveIntegral;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import java.util.ArrayList;
 
-public class MoreMath {
+public class MathUtils {
 
 
 	/** adding All the extra necessary functions for real double numbers. Complex numbers to follow.
@@ -60,7 +60,7 @@ public class MoreMath {
 
 				@Override
 				public double function(double t) {
-					double y = MoreMath.Functions.sinc(t/Math.PI);
+					double y = MathUtils.Functions.sinc(t/Math.PI);
 					return y;
 				}
 			};
@@ -363,15 +363,15 @@ public class MoreMath {
 
 		// appending a new element to the end of array
 		public static double[] append(double[] x, double x0){
-			return MoreMath.Arrays.concat(x, new double[] {x0}) ;
+			return MathUtils.Arrays.concat(x, new double[] {x0}) ;
 		}
 
 		public static int[] append(int[] x, int x0){
-			return MoreMath.Arrays.concat(x, new int[] {x0}) ;
+			return MathUtils.Arrays.concat(x, new int[] {x0}) ;
 		}
 
 		public static String[] append(String[] x, String x0){
-			return MoreMath.Arrays.concat(x, new String[] {x0}) ;
+			return MathUtils.Arrays.concat(x, new String[] {x0}) ;
 		}
 
 		// converting to string
@@ -447,16 +447,16 @@ public class MoreMath {
 				public static double[] meters_to_feet(double[] length_meters){
 					double[] x = {} ;
 					for(int i=0; i<length_meters.length; i++){
-						double y = MoreMath.Conversions.Length.meters_to_feet(length_meters[i])  ;
-						x = MoreMath.Arrays.append(x, y) ;
+						double y = MathUtils.Conversions.Length.meters_to_feet(length_meters[i])  ;
+						x = MathUtils.Arrays.append(x, y) ;
 					}
 					return x;
 				}
 				public static double[] feet_to_meters(double[] length_feet){
 					double[] x = {} ;
 					for(int i=0; i<length_feet.length; i++){
-						double y = MoreMath.Conversions.Length.feet_to_meters(length_feet[i])  ;
-						x = MoreMath.Arrays.append(x, y) ;
+						double y = MathUtils.Conversions.Length.feet_to_meters(length_feet[i])  ;
+						x = MathUtils.Arrays.append(x, y) ;
 					}
 					return x;
 				}
@@ -466,16 +466,16 @@ public class MoreMath {
 				public static double[] kg_to_lb(double[] weight_kg){
 					double[] x = {} ;
 					for(int i=0; i<weight_kg.length; i++){
-						double y = MoreMath.Conversions.Weight.kg_to_lb(weight_kg[i]) ;
-						x = MoreMath.Arrays.append(x, y) ;
+						double y = MathUtils.Conversions.Weight.kg_to_lb(weight_kg[i]) ;
+						x = MathUtils.Arrays.append(x, y) ;
 					}
 					return x;
 				}
 				public static double[] lb_to_kg(double[] weight_lb){
 					double[] x = {} ;
 					for(int i=0; i<weight_lb.length; i++){
-						double y = MoreMath.Conversions.Weight.lb_to_kg(weight_lb[i]) ;
-						x = MoreMath.Arrays.append(x, y) ;
+						double y = MathUtils.Conversions.Weight.lb_to_kg(weight_lb[i]) ;
+						x = MathUtils.Arrays.append(x, y) ;
 					}
 					return x;
 				}
@@ -485,8 +485,8 @@ public class MoreMath {
 			public static double[] todB(double[] x){
 				double[] t = {} ;
 				for(int i=0; i<x.length; i++){
-					double y = MoreMath.Conversions.todB(x[i])  ;
-					t = MoreMath.Arrays.append(t, y) ;
+					double y = MathUtils.Conversions.todB(x[i])  ;
+					t = MathUtils.Arrays.append(t, y) ;
 				}
 				return t;
 			}
@@ -495,8 +495,8 @@ public class MoreMath {
 			public static double[] fromdB(double[] xdB){
 				double[] t = {} ;
 				for(int i=0; i<xdB.length; i++){
-					double y = MoreMath.Conversions.fromdB(xdB[i])  ;
-					t = MoreMath.Arrays.append(t, y) ;
+					double y = MathUtils.Conversions.fromdB(xdB[i])  ;
+					t = MathUtils.Arrays.append(t, y) ;
 				}
 				return t;
 			}
@@ -564,7 +564,7 @@ public class MoreMath {
 				int n = x.length ;
 				double[] y = new double[n] ;
 				for(int i=0; i<n; i++){
-					y[i] = MoreMath.Functions.asinh(x[i]) ;
+					y[i] = MathUtils.Functions.asinh(x[i]) ;
 				}
 				return y ;
 				}
@@ -573,7 +573,7 @@ public class MoreMath {
 				int n = x.length ;
 				double[] y = new double[n] ;
 				for(int i=0; i<n; i++){
-					y[i] = MoreMath.Functions.acosh(x[i]) ;
+					y[i] = MathUtils.Functions.acosh(x[i]) ;
 				}
 				return y ;
 				}
@@ -582,7 +582,7 @@ public class MoreMath {
 				int n = x.length ;
 				double[] y = new double[n] ;
 				for(int i=0; i<n; i++){
-					y[i] = MoreMath.Functions.atanh(x[i]) ;
+					y[i] = MathUtils.Functions.atanh(x[i]) ;
 				}
 				return y ;
 				}
@@ -591,7 +591,7 @@ public class MoreMath {
 				int n = x.length ;
 				double[] y = new double[n] ;
 				for(int i=0; i<n; i++){
-					y[i] = MoreMath.Functions.acoth(x[i]) ;
+					y[i] = MathUtils.Functions.acoth(x[i]) ;
 				}
 				return y ;
 			}
@@ -614,7 +614,7 @@ public class MoreMath {
 				int n = x.length ;
 				double[] y = new double[n] ;
 				for(int i=0; i<n; i++){
-					y[i] = MoreMath.Functions.sinIntegral(x[i]) ;
+					y[i] = MathUtils.Functions.sinIntegral(x[i]) ;
 				}
 				return y ;
 			}

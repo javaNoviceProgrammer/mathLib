@@ -2,7 +2,7 @@ package mathLib.fourier;
 
 import mathLib.fourier.core.FFT;
 import mathLib.fourier.intf.ConvolutionFunctionPair;
-import mathLib.utils.MoreMath;
+import mathLib.utils.MathUtils;
 
 public class Convolution {
 
@@ -29,10 +29,10 @@ public class Convolution {
 	}
 
 	public void performConvolution(){
-		double[] realFunc1 = MoreMath.Arrays.setZero(2*N) ; // N points zero padding at the end
-		double[] imagFunc1 = MoreMath.Arrays.setZero(2*N) ; // N points zero padding at the end
-		double[] realFunc2 = MoreMath.Arrays.setZero(2*N) ; // N points zero padding at the end
-		double[] imagFunc2 = MoreMath.Arrays.setZero(2*N) ; // N points zero padding at the end
+		double[] realFunc1 = MathUtils.Arrays.setZero(2*N) ; // N points zero padding at the end
+		double[] imagFunc1 = MathUtils.Arrays.setZero(2*N) ; // N points zero padding at the end
+		double[] realFunc2 = MathUtils.Arrays.setZero(2*N) ; // N points zero padding at the end
+		double[] imagFunc2 = MathUtils.Arrays.setZero(2*N) ; // N points zero padding at the end
 		time = new double[N] ;
 		func1 = new double[N] ;
 		func2 = new double[N] ;

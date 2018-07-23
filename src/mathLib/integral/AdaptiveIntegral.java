@@ -11,7 +11,7 @@ package mathLib.integral;
 
 import flanagan.integration.IntegralFunction;
 import flanagan.integration.Integration;
-import mathLib.utils.MoreMath;
+import mathLib.utils.MathUtils;
 
 public class AdaptiveIntegral {
 
@@ -58,7 +58,7 @@ public class AdaptiveIntegral {
 		while(Math.abs(result_final-result_temp) >= Math.abs(errorBound*result_final) && numIntervals < 10*maxNumIterations+1){
 			result_final = result_temp ;
 			result_temp = 0 ;
-			X = MoreMath.linspace(x_start, x_end, numIntervals+1) ;
+			X = MathUtils.linspace(x_start, x_end, numIntervals+1) ;
 			for(int i=0; i<numIntervals; i++){
 				result_temp += getInvervalIntegral(X[i], X[i+1]) ;
 			}
@@ -72,7 +72,7 @@ public class AdaptiveIntegral {
 	private double getFirstGuess(){
 		double firstGuess = 0 ;
 		int numIntervalsCoarse = 5 ;
-		double[] X = MoreMath.linspace(x_start, x_end, numIntervalsCoarse+1) ;
+		double[] X = MathUtils.linspace(x_start, x_end, numIntervalsCoarse+1) ;
 		for(int i=0; i<numIntervalsCoarse; i++){
 			firstGuess += getInvervalIntegral(X[i], X[i+1]) ;
 		}
