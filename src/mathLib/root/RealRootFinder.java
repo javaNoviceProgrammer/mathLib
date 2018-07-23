@@ -299,7 +299,7 @@ public class RealRootFinder {
 		RealRootFunction func = new RealRootFunction(){
 			@Override
 			public double function(double x) {
-				return Math.sin(x);
+				return Math.sin(x) ;
 			}
 		} ;
 		
