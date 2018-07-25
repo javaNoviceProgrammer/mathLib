@@ -1,5 +1,7 @@
 package mathLib.utils;
 
+import java.util.ArrayList;
+
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class StringUtils {
@@ -31,5 +33,16 @@ public class StringUtils {
 		double result = new ExpressionBuilder(expression).build().evaluate() ;
 		return result ;
 	}
+	
+	public static ArrayList<String> toArrayList(String[] st) {
+		ArrayList<String> list = new ArrayList<>() ;
+		for(String s : st) {
+			list.add(s) ;
+		}
+		return list ;
+	}
+	
+	
+	
 
 }
