@@ -18,10 +18,10 @@ public final class Complex { // immutable class
 		im = imag;
 	}
 
-	public Complex() {
+/*	public Complex() {
 		re = 0;
 		im = 0;
-	}
+	}*/
 
 	public String toString() {
 		if (im == 0)
