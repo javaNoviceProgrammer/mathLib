@@ -11,7 +11,7 @@ class Function {
      */
     static double functionA (double x) {
 //        return Math.pow(x, 4) - 2 * Math.pow(x, 3);
-    	return Math.pow(x, 3)*(x-1) ;
+    	return Math.pow(x-1, 3)*(x-1) ;
     }
 
     /**
