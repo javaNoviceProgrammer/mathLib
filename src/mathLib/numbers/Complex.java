@@ -225,17 +225,6 @@ public final class Complex { // immutable class
 		}
 	}
 
-	// for test
-	public static void main(String[] args) {
-		Complex u = 2.1 - j + 6;
-		Complex v = -1 + u;
-		Complex w = 1 / u;
-		System.out.println(u);
-		System.out.println(v);
-		System.out.println(w);
-		System.out.println(parseComplex("0-i3.3166247903554"));
-	}
-
 	// ************ operator overloading **********************
 
 	/**
@@ -441,6 +430,17 @@ public final class Complex { // immutable class
 	 */
 	public Complex negate() {
 		return new Complex(-this.re, -this.im);
+	}
+
+	// for test
+	public static void main(String[] args) {
+		Complex u = 2.1 - j + 6;
+		Complex v = -1 + u;
+		Complex w = 1 / u;
+		System.out.println(u);
+		System.out.println(v);
+		System.out.println(w);
+		System.out.println(parseComplex("0-i3.3166247903554"));
 	}
 
 }
