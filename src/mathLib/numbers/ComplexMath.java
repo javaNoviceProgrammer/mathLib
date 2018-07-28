@@ -4,6 +4,10 @@ public class ComplexMath {
 
 	public static final Complex PI = new Complex(Math.PI, 0) ;
 
+	private ComplexMath() {
+		// making the class private to prevent instantiation
+	}
+
 	public static double abs(Complex z) {
 		return Math.hypot(z.re(), z.im());
 	}
@@ -36,7 +40,7 @@ public class ComplexMath {
 	public static Complex exp(Complex u) {
 		return new Complex(Math.exp(u.re()) * Math.cos(u.im()), Math.exp(u.re()) * Math.sin(u.im()));
 	}
-	
+
 	public static Complex log(Complex u) {
 		double re = Math.log(abs(u)) ;
 		double im = phaseMinusPiToPi(u) ;
@@ -46,7 +50,7 @@ public class ComplexMath {
 	public static Complex sin(Complex u) {
 		return new Complex(Math.sin(u.re()) * Math.cosh(u.im()), Math.cos(u.re()) * Math.sinh(u.im()));
 	}
-	
+
 	public static Complex asin(Complex u) {
 		Complex a = sqrt(u.times(u).times(-1).plus(1)) ;
 		Complex b = u.times(Complex.plusJ) ;
@@ -56,7 +60,7 @@ public class ComplexMath {
 	public static Complex cos(Complex u) {
 		return new Complex(Math.cos(u.re()) * Math.cosh(u.im()), -Math.sin(u.re()) * Math.sinh(u.im()));
 	}
-	
+
 	public static Complex acos(Complex u) {
 		return PI.divides(2).minus(asin(u)) ;
 	}
@@ -64,35 +68,35 @@ public class ComplexMath {
 	public static Complex tan(Complex u) {
 		return sin(u).divides(cos(u));
 	}
-	
+
 	public static Complex atan(Complex u) {
 		Complex a = u.times(Complex.minusJ).plus(1) ;
 		Complex b = u.times(Complex.plusJ).plus(1) ;
 		Complex c = Complex.plusJ.times(0.5) ;
 		return log(a).minus(log(b)).times(c) ;
 	}
-	
+
 	public static Complex cot(Complex u) {
 		return tan(u).reciprocal() ;
 	}
-	
+
 	public static Complex acot(Complex u) {
 		return atan(u.reciprocal()) ;
-		
+
 	}
-	
+
 	public static Complex secant(Complex u) {
 		return cos(u).reciprocal() ;
 	}
-	
+
 	public static Complex asec(Complex u) {
 		return acos(u.reciprocal()) ;
 	}
-	
+
 	public static Complex csc(Complex u) {
 		return sin(u).reciprocal() ;
 	}
-	
+
 	public static Complex acsc(Complex u) {
 		return asin(u.reciprocal()) ;
 	}
