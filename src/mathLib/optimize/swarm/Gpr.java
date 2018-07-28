@@ -1,7 +1,7 @@
 package mathLib.optimize.swarm;
 
 /**
- * General pupose rutines
+ * General purpose routines
  *
  */
 public class Gpr {
@@ -21,7 +21,7 @@ public class Gpr {
 	}
 
 	/**
-	 * Prits a debug message (prints class name, method and line number)
+	 * Prints a debug message (prints class name, method and line number)
 	 * @param debug : Only prints message if debug=true
 	 * @param i : int to print
 	 */
@@ -30,7 +30,7 @@ public class Gpr {
 	}
 
 	/**
-	 * Prits a debug message (prints class name, method and line number)
+	 * Prints a debug message (prints class name, method and line number)
 	 * @param debug : Only prints message if debug=true
 	 * @param obj : Object to print
 	 */
@@ -55,7 +55,7 @@ public class Gpr {
 	}
 
 	/**
-	 * Prits a debug message (prints class name, method and line number)
+	 * Prints a debug message (prints class name, method and line number)
 	 * @param currentDebugLevel : Debug level being used
 	 * @param thisMessageLevel : Only prints message if thisMessageLevel >= currentDebugLevel
 	 * @param obj : Object to print
@@ -65,7 +65,7 @@ public class Gpr {
 	}
 
 	/**
-	 * Prits a debug message (prints class name, method and line number)
+	 * Prints a debug message (prints class name, method and line number)
 	 * @param obj : Object to print
 	 */
 	public static void debug(Object obj) {
@@ -73,7 +73,7 @@ public class Gpr {
 	}
 
 	/**
-	 * Prits a debug message (prints class name, method and line number)
+	 * Prints a debug message (prints class name, method and line number)
 	 * @param obj : Object to print
 	 * @param offset : Offset N lines from stacktrace
 	 */
@@ -82,7 +82,7 @@ public class Gpr {
 	}
 
 	/**
-	 * Prits a debug message (prints class name, method and line number)
+	 * Prints a debug message (prints class name, method and line number)
 	 * @param obj : Object to print
 	 * @param offset : Offset N lines from stacktrace
 	 * @param newLine : Print a newline char at the end ('\n')
