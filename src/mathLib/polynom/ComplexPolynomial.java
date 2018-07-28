@@ -2,26 +2,6 @@ package mathLib.polynom;
 
 import mathLib.numbers.Complex;
 
-/******************************************************************************
- *  Compilation:  javac Polynomial.java
- *  Execution:    java Polynomial
- *
- *  Polynomials with complex coefficients.
- *
- *  % java Polynomial
- *  zero(x) =     0
- *  p(x) =        4x^3 + 3x^2 + 2x + 1
- *  q(x) =        3x^2 + 5
- *  p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
- *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
- *  p(q(x))     = 108x^6 + 567x^4 + 996x^2 + 586
- *  0 - p(x)    = -4x^3 - 3x^2 - 2x - 1
- *  p(3)        = 142
- *  p'(x)       = 12x^2 + 6x + 2
- *  p''(x)      = 24x + 6
- *
- ******************************************************************************/
-
 public class ComplexPolynomial {
     private Complex[] coef;  // coefficients
     private int deg;     // degree of polynomial (0 for the zero polynomial)
@@ -41,7 +21,7 @@ public class ComplexPolynomial {
         int d = 0;
         Complex zero = new Complex(0,0) ;
         for (int i = 0; i < coef.length; i++){
-            if (coef[i].equals(zero)) 
+            if (coef[i].equals(zero))
             	continue ;
             else
             	d = i ;
@@ -82,7 +62,7 @@ public class ComplexPolynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     // multiplication by complex number
     public ComplexPolynomial times(Complex alpha) {
     	Complex zero = new Complex(0,0) ;
@@ -93,7 +73,7 @@ public class ComplexPolynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     // multiplication by double number
     public ComplexPolynomial times(double alpha) {
     	Complex zero = new Complex(0,0) ;
@@ -135,7 +115,7 @@ public class ComplexPolynomial {
             p = coef[i].plus(x.times(p));
         return p;
     }
-    
+
     public Complex evaluate(double x) {
         Complex p = new Complex(0,0) ;
         Complex y = new Complex(x,0) ;
@@ -172,14 +152,14 @@ public class ComplexPolynomial {
 
     //*******************************************************************
     // test client
-/*    public static void main(String[] args) { 
+/*    public static void main(String[] args) {
 
     	Complex a3 = new Complex(2,-3), a2 = new Complex(0,3), a1 = new Complex(0,0), a0 = new Complex(-0.1, 10) ;
     	ComplexPolynomial p = new ComplexPolynomial(a3,3).plus(new ComplexPolynomial(a2,2)).plus(new ComplexPolynomial(a1, 1)).plus(new ComplexPolynomial(a0, 0)) ;
-        
+
         System.out.println("p(x) = " + p);
         System.out.println("p(j) = "+ p.evaluate(new Complex(0,1)));
-        System.out.println("p'''(x) = " + p.differentiate().differentiate().differentiate()); 
+        System.out.println("p'''(x) = " + p.differentiate().differentiate().differentiate());
         System.out.println("p(x)*j = " + p.times(new Complex(0,1)));
    }*/
   //*******************************************************************
