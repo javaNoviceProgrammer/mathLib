@@ -1,18 +1,20 @@
-package mathLib.optimize.swarm;
+package mathLib.optimize.swarm.particle;
+
+import mathLib.optimize.swarm.Swarm;
 
 /**
- * Particle update: Each particle selects an rlocal and rother
- * independently from other particles' values
+ * Particle update: Fully random approach
+ * Note that rlocal and rother are randomly choosen for each particle and for each dimention
  *
  *
  */
-public class ParticleUpdateRandomByParticle extends ParticleUpdate {
+public class ParticleUpdateFullyRandom extends ParticleUpdate {
 
 	/**
 	 * Constructor
 	 * @param particle : Sample of particles that will be updated later
 	 */
-	public ParticleUpdateRandomByParticle(Particle particle) {
+	public ParticleUpdateFullyRandom(Particle particle) {
 		super(particle);
 	}
 
@@ -25,10 +27,6 @@ public class ParticleUpdateRandomByParticle extends ParticleUpdate {
 		double particleBestPosition[] = particle.getBestPosition();
 		double neighBestPosition[] = swarm.getNeighborhoodBestPosition(particle);
 
-		double rlocal = Math.random();
-		double rneighborhood = Math.random();
-		double rglobal = Math.random();
-
 		// Update velocity and position
 		for (int i = 0; i < position.length; i++) {
 			// Update position
@@ -36,9 +34,9 @@ public class ParticleUpdateRandomByParticle extends ParticleUpdate {
 
 			// Update velocity
 			velocity[i] = swarm.getInertia() * velocity[i] // Inertia
-					+ rlocal * swarm.getParticleIncrement() * (particleBestPosition[i] - position[i]) // Local best
-					+ rneighborhood * swarm.getNeighborhoodIncrement() * (neighBestPosition[i] - position[i]) // Neighborhood best
-					+ rglobal * swarm.getGlobalIncrement() * (globalBestPosition[i] - position[i]); // Global best
+					+ Math.random() * swarm.getParticleIncrement() * (particleBestPosition[i] - position[i]) // Local best
+					+ Math.random() * swarm.getNeighborhoodIncrement() * (neighBestPosition[i] - position[i]) // Neighborhood best
+					+ Math.random() * swarm.getGlobalIncrement() * (globalBestPosition[i] - position[i]); // Global best
 		}
 	}
 }

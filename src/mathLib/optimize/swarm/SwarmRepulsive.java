@@ -1,5 +1,8 @@
 package mathLib.optimize.swarm;
 
+import mathLib.optimize.swarm.particle.Particle;
+import mathLib.optimize.swarm.particle.ParticleUpdateRepulsive;
+
 /**
  * A swarm of repulsive particles
  *

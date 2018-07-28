@@ -3,6 +3,8 @@ package mathLib.optimize.swarm;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import mathLib.optimize.swarm.particle.Particle;
+
 /**
  * A neighborhood of particles
  *

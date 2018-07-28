@@ -5,6 +5,10 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import mathLib.optimize.swarm.particle.Particle;
+import mathLib.optimize.swarm.particle.ParticleUpdate;
+import mathLib.optimize.swarm.particle.ParticleUpdateSimple;
+
 /**
  * A swarm of particles
  *

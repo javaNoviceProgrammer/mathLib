@@ -1,5 +1,7 @@
 package mathLib.optimize.swarm;
 
+import mathLib.optimize.swarm.particle.Particle;
+
 /**
  * Base Fitness Function
  *
@@ -37,7 +39,8 @@ public abstract class FitnessFunction {
 	 * @param position : Particle's position
 	 * @return Fitness function for a particle
 	 */
-	public abstract double evaluate(double position[]);
+//	public abstract double evaluate(double position[]);
+	public abstract double evaluate(double... position);
 
 	/**
 	 * Evaluates a particles

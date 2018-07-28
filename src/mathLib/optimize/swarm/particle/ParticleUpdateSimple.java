@@ -1,4 +1,6 @@
-package mathLib.optimize.swarm;
+package mathLib.optimize.swarm.particle;
+
+import mathLib.optimize.swarm.Swarm;
 
 /**
  * Particle update strategy
