@@ -1,6 +1,6 @@
 package mathLib.matrix;
 
-public class Matrix {
+public final class Matrix {
 
     private int M;             // number of rows
     private int N;             // number of columns
@@ -38,15 +38,15 @@ public class Matrix {
             for (int j = 0; j < N; j++)
                     this.data[i][j] = data[j];
     }
-    
+
     public int[] getSize() {
     	return new int[] {M, N} ;
     }
-    
+
     public int getNumRows() {
     	return M ;
     }
-    
+
     public int getNumColumns() {
     	return N ;
     }
@@ -84,7 +84,7 @@ public class Matrix {
         }
         return C;
     }
-    
+
     // create and return the M-by-N constant matrix
     public static Matrix diag(double[] var) {
     	int M = var.length ;
@@ -260,11 +260,11 @@ public class Matrix {
         }
         return C;
     }
-    
+
     /**
      * sub-Blocks of the matrix
      */
-    
+
     public double[] getRow(int row) {
     	int rowSize = N ;
     	double[] selectedRow = new double[rowSize] ;
@@ -273,7 +273,7 @@ public class Matrix {
     	}
     	return selectedRow ;
     }
-    
+
     public double[] getColumn(int column) {
     	int columnSize = M ;
     	double[] selectedColumn = new double[columnSize] ;
