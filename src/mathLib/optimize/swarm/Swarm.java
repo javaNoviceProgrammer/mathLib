@@ -52,7 +52,6 @@ public class Swarm implements Iterable<Particle> {
 	/** Variables update */
 	VariablesUpdate variablesUpdate;
 	/** Neighborhood */
-	@SuppressWarnings("unchecked")
 	Neighborhood neighborhood;
 	/** Neighborhood increment (for velocity update), usually called 'c3' constant */
 	double neighborhoodIncrement;
@@ -198,7 +197,6 @@ public class Swarm implements Iterable<Particle> {
 		return minVelocity;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Neighborhood getNeighborhood() {
 		return neighborhood;
 	}
@@ -211,7 +209,6 @@ public class Swarm implements Iterable<Particle> {
 	 * @param particle
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public double[] getNeighborhoodBestPosition(Particle particle) {
 		if (neighborhood == null) return particle.getPosition();
 		double d[] = neighborhood.getBestPosition(particle);
@@ -379,7 +376,6 @@ public class Swarm implements Iterable<Particle> {
 		this.minVelocity = minVelocity;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setNeighborhood(Neighborhood neighborhood) {
 		this.neighborhood = neighborhood;
 	}
