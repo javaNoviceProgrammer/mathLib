@@ -1,9 +1,15 @@
 package mathLib.polynom;
 
 public class Polynomial {
-    private double[] coef;  // coefficients
+    private double[] coef;  // coefficients (length = degree + 1)
     private int deg;     // degree of polynomial (0 for the zero polynomial)
 
+    // a0 + a1*x + a2*x^2 + ... an * x^n
+    public Polynomial(double... coeff) {
+    	this.coef = coeff ;
+    	this.deg = degree() ;
+    }
+    
     // a * x^b
     public Polynomial(double a, int b) {
         coef = new double[b+1];
@@ -13,10 +19,9 @@ public class Polynomial {
 
     // return the degree of this polynomial (0 for the zero polynomial)
     public int degree() {
-        int d = 0;
-        for (int i = 0; i < coef.length; i++)
-            if (coef[i] != 0) d = i;
-        return d;
+        for (int i = coef.length-1; i >=0; i--)
+            if (coef[i] != 0) return i;
+        return 0;
     }
 
     // return c = a + b
@@ -27,6 +32,13 @@ public class Polynomial {
         for (int i = 0; i <= b.deg; i++) c.coef[i] += b.coef[i];
         c.deg = c.degree();
         return c;
+    }
+    
+    // return c = a + b
+    public Polynomial plus(double b) {
+        double[] coeffSum = coef ;
+        coeffSum[0] += b ;
+        return new Polynomial(coeffSum) ;
     }
 
     // return (a - b)
@@ -89,62 +101,42 @@ public class Polynomial {
             deriv.coef[i] = (i + 1) * coef[i + 1];
         return deriv;
     }
+    
+    // integrate this polynomial and return it
+    public Polynomial integrate() {
+        if (deg == 0) return new Polynomial(1);
+        Polynomial integral = new Polynomial(0, deg + 1);
+        integral.deg = deg + 1;
+        for (int i = 1; i < deg+2; i++)
+        	integral.coef[i] = coef[i - 1] / i ;
+        return integral;
+    }
 
     // convert to string representation
     public String toString() {
         if (deg ==  0) return "" + coef[0];
-        if (deg ==  1) return coef[1] + "x + " + coef[0];
-        String s = coef[deg] + "x^" + deg;
+        if (deg ==  1) return coef[1] + " x + " + coef[0];
+        String s = coef[deg] + " x^" + deg;
         for (int i = deg-1; i >= 0; i--) {
             if      (coef[i] == 0) continue;
             else if (coef[i]  > 0) s = s + " + " + ( coef[i]);
             else if (coef[i]  < 0) s = s + " - " + (-coef[i]);
-            if      (i == 1) s = s + "x";
-            else if (i >  1) s = s + "x^" + i;
+            if      (i == 1) s = s + " x";
+            else if (i >  1) s = s + " x^" + i;
         }
         return s;
     }
 
-    //*******************************************************************
-    // test client
-/*    public static void main(String[] args) {
-
-    	DoublePolynomial zero = new DoublePolynomial(0, 0);
-
-        DoublePolynomial p1   = new DoublePolynomial(2.3, 3);
-        DoublePolynomial p2   = new DoublePolynomial(3, 2);
-        DoublePolynomial p3   = new DoublePolynomial(1, 0);
-        DoublePolynomial p4   = new DoublePolynomial(-0.0123, 1);
-        DoublePolynomial p    = p1.plus(p2).plus(p3).plus(p4);   // 4x^3 + 3x^2 + 1
-
-        DoublePolynomial q1   = new DoublePolynomial(3, 2);
-        DoublePolynomial q2   = new DoublePolynomial(5, 0);
-        DoublePolynomial q    = q1.plus(q2);                     // 3x^2 + 5
-
-
-        DoublePolynomial r    = p.plus(q);
-        DoublePolynomial s    = p.times(q);
-        DoublePolynomial t    = p.compose(q);
-
-        System.out.println("zero(x) =     " + zero);
-        System.out.println("p(x) =        " + p);
-        System.out.println("q(x) =        " + q);
-        System.out.println("p(x) + q(x) = " + r);
-        System.out.println("p(x) * q(x) = " + s);
-        System.out.println("p(q(x))     = " + t);
-        System.out.println("0 - p(x)    = " + zero.minus(p));
-        System.out.println("p(3)        = " + p.evaluate(3));
-        System.out.println("p'(x)       = " + p.differentiate());
-        System.out.println("p''(x)      = " + p.differentiate().differentiate());
-
-        System.out.println("p(x) = " + p);
-        System.out.println("p(1.2) = "+ p.evaluate(1.2));
-        System.out.println("p'''(x) = " + p.differentiate().differentiate().differentiate());
-        Complex Z = new Complex(0,0) ;
-        Complex[] coeff = new Complex[]{Z, Z, Z, Z, Z, Z, Z} ;
-        System.out.println(coeff.length);
-
-   }*/
-  //*******************************************************************
+    
+    // for test
+    public static void main(String[] args) {
+		Polynomial p = new Polynomial(-1, 1.2, 2.3) ;
+		System.out.println(p);
+		System.out.println(p.plus(2.1));
+		System.out.println(p.degree());
+		System.out.println(p.differentiate());
+		System.out.println(p.integrate());
+	}
+    
 }
 

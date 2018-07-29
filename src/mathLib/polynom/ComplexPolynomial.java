@@ -2,6 +2,12 @@ package mathLib.polynom;
 
 import mathLib.numbers.Complex;
 
+/**
+ * Polynomial is defined as: P(x) = a0 + a1*x + a2*x^2 + ... + an*x^n
+ * @author meisam
+ *
+ */
+
 public class ComplexPolynomial {
     private Complex[] coef;  // coefficients
     private int deg;     // degree of polynomial (0 for the zero polynomial)
