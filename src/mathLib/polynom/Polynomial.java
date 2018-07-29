@@ -3,9 +3,9 @@ package mathLib.polynom;
 import mathLib.numbers.Complex;
 
 public class Polynomial {
-	
+
 	public static final Polynomial X = new Polynomial(new double[] {0.0, 1.0}) ;
-	
+
     private double[] coef;  // coefficients (length = degree + 1)
     private int deg;     // degree of polynomial (0 for the zero polynomial)
 
@@ -14,14 +14,14 @@ public class Polynomial {
     	this.coef = coeff ;
     	this.deg = degree() ;
     }
-    
+
     // a * x^b
     public Polynomial(double a, int b) {
         coef = new double[b+1];
         coef[b] = a;
         deg = degree();
     }
-    
+
     public Polynomial() {
     	this(new double[] {0.0}) ;
     }
@@ -42,7 +42,7 @@ public class Polynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     public Polynomial plus(double b) {
         double[] coeffSum = new double[coef.length] ;
         coeffSum[0] = coef[0] + b ;
@@ -61,7 +61,7 @@ public class Polynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     public Polynomial minus(double b) {
         double[] coeffSub = new double[coef.length] ;
         coeffSub[0] = coef[0] - b ;
@@ -81,7 +81,7 @@ public class Polynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     public Polynomial times(double b) {
         double[] coeffSum = new double[coef.length] ;
         for(int i=0; i<coef.length; i++) {
@@ -89,11 +89,11 @@ public class Polynomial {
         }
         return new Polynomial(coeffSum) ;
     }
-    
+
     public Polynomial divides(Polynomial b) {
     	return null ;
     }
-    
+
     public Polynomial divides(double b) {
     	if(b == 0)
     		throw new IllegalArgumentException("cannot divide by zero!") ;
@@ -103,7 +103,7 @@ public class Polynomial {
         }
         return new Polynomial(coeffSum) ;
     }
-    
+
     public Polynomial pow(int m) {
         Polynomial a = this ;
         Polynomial p = new Polynomial(new double[] {1.0}) ;
@@ -150,7 +150,7 @@ public class Polynomial {
             deriv.coef[i] = (i + 1) * coef[i + 1];
         return deriv;
     }
-    
+
     public Polynomial diff(int order) {
         if (deg == 0) return new Polynomial(0, 0);
         Polynomial deriv = new Polynomial();
@@ -159,7 +159,7 @@ public class Polynomial {
             deriv = deriv.diff() ;
         return deriv;
     }
-    
+
     // integrate this polynomial and return it
     public Polynomial integrate() {
         if (deg == 0) return new Polynomial(new double[] {0.0, 1.0});
@@ -169,7 +169,7 @@ public class Polynomial {
         	integral.coef[i] = coef[i - 1] / i ;
         return integral;
     }
-    
+
     public Polynomial integrate(int order) {
     	Polynomial integral = new Polynomial() ;
     	integral = integral.plus(this) ;
@@ -178,11 +178,11 @@ public class Polynomial {
     	}
     	return integral ;
     }
-    
+
     public double integrate(double xStart, double xEnd) {
     	return integrate().evaluate(xEnd)-integrate().evaluate(xStart) ;
     }
-    
+
     public Complex[] getRoots() {
     	Complex[] roots = new Complex[deg] ;
     	double[] normalizedCoeff = new double[coef.length] ;
@@ -220,7 +220,7 @@ public class Polynomial {
         }
         return s;
     }
-    
+
 	// ************ operator overloading **********************
 
 	/**
@@ -428,7 +428,7 @@ public class Polynomial {
 		return this.times(-1) ;
 	}
 
-    
+
     // for test
     public static void main(String[] args) {
 		Polynomial p =  X.pow(4) - 1 ;
@@ -438,6 +438,6 @@ public class Polynomial {
 			System.out.println(x);
 		}
 	}
-    
+
 }
 
