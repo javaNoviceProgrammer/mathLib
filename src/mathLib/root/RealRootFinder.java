@@ -310,7 +310,7 @@ public class RealRootFinder {
 		rootFinder.findAllRoots();
 		rootFinder.showAllRoots();
 		System.out.println(rootFinder.getFirstRoot_greater_than_or_equal_to(1));
-		System.out.println(rootFinder.getFirstRoot_smaller_than_or_equal_to(0));
+		System.out.println(rootFinder.getFirstRoot_smaller_than_or_equal_to(5));
 	}
 	
 	
