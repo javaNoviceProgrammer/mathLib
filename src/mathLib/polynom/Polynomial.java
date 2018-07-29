@@ -140,12 +140,21 @@ public class Polynomial {
     }
 
     // differentiate this polynomial and return it
-    public Polynomial differentiate() {
+    public Polynomial diff() {
         if (deg == 0) return new Polynomial(0, 0);
         Polynomial deriv = new Polynomial(0, deg - 1);
         deriv.deg = deg - 1;
         for (int i = 0; i < deg; i++)
             deriv.coef[i] = (i + 1) * coef[i + 1];
+        return deriv;
+    }
+    
+    public Polynomial diff(int order) {
+        if (deg == 0) return new Polynomial(0, 0);
+        Polynomial deriv = new Polynomial();
+        deriv = deriv.plus(this) ;
+        for (int i = 0; i < order; i++)
+            deriv = deriv.diff() ;
         return deriv;
     }
     
@@ -157,6 +166,15 @@ public class Polynomial {
         for (int i = 1; i < deg+2; i++)
         	integral.coef[i] = coef[i - 1] / i ;
         return integral;
+    }
+    
+    public Polynomial integrate(int order) {
+    	Polynomial integral = new Polynomial() ;
+    	integral = integral.plus(this) ;
+    	for(int i=0; i<order; i++) {
+    		integral = integral.integrate() ;
+    	}
+    	return integral ;
     }
     
     public double integrate(double xStart, double xEnd) {
@@ -388,13 +406,13 @@ public class Polynomial {
     
     // for test
     public static void main(String[] args) {
-		Polynomial p = 3 * X.pow(3) - 2 * X.pow(2) + 1 ;
-		System.out.println(p) ;
-		System.out.println(p/2);
-		Polynomial q = p-X.pow(1) ;
-		System.out.println(q) ;
-		System.out.println(q*p);
-		System.out.println(q/p);
+		Polynomial p = 3 * X.pow(20) - 1 ;
+		System.out.println(p);
+		System.out.println(p.diff(0));
+		System.out.println(p.diff(1));
+		System.out.println(p.diff(2));
+		System.out.println(p.diff(3));
+		System.out.println(p.diff(10));
 	}
     
 }
