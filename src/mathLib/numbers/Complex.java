@@ -195,7 +195,7 @@ public final class Complex { // immutable class
 		boolean hasI = st.contains("i");
 		st = st.trim();
 		st = st.replaceAll("\\s+", "");
-		if (isNumeric(st) && (hasI || hasJ)) {
+		if (/*isNumeric(st) && */ (hasI || hasJ)) {
 			double realPart = 0;
 			double imagPart = 0;
 			String[] num = null;

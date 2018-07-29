@@ -1,5 +1,7 @@
 package mathLib.polynom;
 
+import mathLib.numbers.Complex;
+
 public class Polynomial {
 	
 	public static final Polynomial X = new Polynomial(new double[] {0.0, 1.0}) ;
@@ -179,6 +181,29 @@ public class Polynomial {
     
     public double integrate(double xStart, double xEnd) {
     	return integrate().evaluate(xEnd)-integrate().evaluate(xStart) ;
+    }
+    
+    public Complex[] getRoots() {
+    	Complex[] roots = new Complex[deg] ;
+    	double[] normalizedCoeff = new double[coef.length] ;
+    	for(int i=0; i<coef.length; i++) {
+    		normalizedCoeff[i] = coef[i]/coef[coef.length-1] ;
+    	}
+    	double[][] data = new double[deg][deg] ;
+    	for(int i=0; i<deg-1; i++) {
+    		data[i][i+1] = 1 ;
+    	}
+    	for(int i=0; i<deg; i++) {
+    		data[deg-1][i] = -1 * normalizedCoeff[i] ;
+    	}
+    	Jama.Matrix companionMatrix = new Jama.Matrix(data) ;
+    	Jama.EigenvalueDecomposition eigens = companionMatrix.eig() ;
+    	double[] rootsRealPart = eigens.getRealEigenvalues() ;
+    	double[] rootsImagPart = eigens.getImagEigenvalues() ;
+    	for(int i=0; i<deg; i++) {
+    		roots[i] = new Complex(rootsRealPart[i], rootsImagPart[i]) ;
+    	}
+    	return roots ;
     }
 
     // convert to string representation
@@ -406,13 +431,12 @@ public class Polynomial {
     
     // for test
     public static void main(String[] args) {
-		Polynomial p = 3 * X.pow(20) - 1 ;
+		Polynomial p =  X.pow(4) - 1 ;
 		System.out.println(p);
-		System.out.println(p.diff(0));
-		System.out.println(p.diff(1));
-		System.out.println(p.diff(2));
-		System.out.println(p.diff(3));
-		System.out.println(p.diff(10));
+		Complex[] roots = p.getRoots() ;
+		for(Complex x: roots) {
+			System.out.println(x);
+		}
 	}
     
 }
