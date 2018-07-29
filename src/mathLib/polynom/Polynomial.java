@@ -1,11 +1,14 @@
 package mathLib.polynom;
 
 public class Polynomial {
+	
+	public static final Polynomial X = new Polynomial(new double[] {0.0, 1.0}) ;
+	
     private double[] coef;  // coefficients (length = degree + 1)
     private int deg;     // degree of polynomial (0 for the zero polynomial)
 
     // a0 + a1*x + a2*x^2 + ... an * x^n
-    public Polynomial(double... coeff) {
+    public Polynomial(double[] coeff) {
     	this.coef = coeff ;
     	this.deg = degree() ;
     }
@@ -15,6 +18,10 @@ public class Polynomial {
         coef = new double[b+1];
         coef[b] = a;
         deg = degree();
+    }
+    
+    public Polynomial() {
+    	this(new double[] {0.0}) ;
     }
 
     // return the degree of this polynomial (0 for the zero polynomial)
@@ -34,10 +41,12 @@ public class Polynomial {
         return c;
     }
     
-    // return c = a + b
     public Polynomial plus(double b) {
-        double[] coeffSum = coef ;
-        coeffSum[0] += b ;
+        double[] coeffSum = new double[coef.length] ;
+        coeffSum[0] = coef[0] + b ;
+        for(int i=1; i<coef.length; i++) {
+        	coeffSum[i] = coef[i] ;
+        }
         return new Polynomial(coeffSum) ;
     }
 
@@ -50,6 +59,15 @@ public class Polynomial {
         c.deg = c.degree();
         return c;
     }
+    
+    public Polynomial minus(double b) {
+        double[] coeffSub = new double[coef.length] ;
+        coeffSub[0] = coef[0] - b ;
+        for(int i=1; i<coef.length; i++) {
+        	coeffSub[i] = coef[i] ;
+        }
+        return new Polynomial(coeffSub) ;
+    }
 
     // return (a * b)
     public Polynomial times(Polynomial b) {
@@ -60,6 +78,37 @@ public class Polynomial {
                 c.coef[i+j] += (a.coef[i] * b.coef[j]);
         c.deg = c.degree();
         return c;
+    }
+    
+    public Polynomial times(double b) {
+        double[] coeffSum = new double[coef.length] ;
+        for(int i=0; i<coef.length; i++) {
+        	coeffSum[i] = b*coef[i] ;
+        }
+        return new Polynomial(coeffSum) ;
+    }
+    
+    public Polynomial divides(Polynomial b) {
+    	return null ;
+    }
+    
+    public Polynomial divides(double b) {
+    	if(b == 0)
+    		throw new IllegalArgumentException("cannot divide by zero!") ;
+        double[] coeffSum = new double[coef.length] ;
+        for(int i=0; i<coef.length; i++) {
+        	coeffSum[i] = coef[i]/b ;
+        }
+        return new Polynomial(coeffSum) ;
+    }
+    
+    public Polynomial pow(int m) {
+        Polynomial a = this ;
+        Polynomial p = new Polynomial(new double[] {1.0}) ;
+        for(int i=0; i<m; i++) {
+        	p = p.times(a) ;
+        }
+        return p ;
     }
 
     // return a(b(x))  - compute using Horner's method
@@ -73,7 +122,6 @@ public class Polynomial {
         return c;
     }
 
-
     // do a and b represent the same polynomial?
     public boolean equals(Polynomial b) {
         Polynomial a = this;
@@ -82,7 +130,6 @@ public class Polynomial {
             if (a.coef[i] != b.coef[i]) return false;
         return true;
     }
-
 
     // use Horner's method to compute and return the polynomial evaluated at x
     public double evaluate(double x) {
@@ -104,12 +151,16 @@ public class Polynomial {
     
     // integrate this polynomial and return it
     public Polynomial integrate() {
-        if (deg == 0) return new Polynomial(1);
+        if (deg == 0) return new Polynomial(new double[] {0.0, 1.0});
         Polynomial integral = new Polynomial(0, deg + 1);
         integral.deg = deg + 1;
         for (int i = 1; i < deg+2; i++)
         	integral.coef[i] = coef[i - 1] / i ;
         return integral;
+    }
+    
+    public double integrate(double xStart, double xEnd) {
+    	return integrate().evaluate(xEnd)-integrate().evaluate(xStart) ;
     }
 
     // convert to string representation
@@ -126,16 +177,224 @@ public class Polynomial {
         }
         return s;
     }
+    
+	// ************ operator overloading **********************
+
+	/**
+	 * Operator overloading support:
+	 *
+	 * Object a = 5;
+	 *
+	 */
+	public Polynomial valueOf(int v) {
+		return new Polynomial(v, 0);
+	}
+
+	public Polynomial valueOf(long v) {
+		return new Polynomial(v, 0);
+	}
+
+	public Polynomial valueOf(float v) {
+		return new Polynomial(v, 0);
+	}
+
+	public Polynomial valueOf(double v) {
+		return new Polynomial(v, 0);
+	}
+
+	public Polynomial valueOf(Polynomial v) {
+		return new Polynomial(v.coef);
+	}
+
+	/**
+	 * Operator overload support: a+b
+	 */
+	public Polynomial add(Polynomial v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial addRev(Polynomial v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial add(int v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial addRev(int v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial add(long v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial addRev(long v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial add(float v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial addRev(float v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial add(double v) {
+		return this.plus(v) ;
+	}
+
+	public Polynomial addRev(double v) {
+		return this.plus(v) ;
+	}
+
+	/**
+	 * Operator overload support: a-b
+	 */
+	public Polynomial subtract(Polynomial v) {
+		return this.minus(v) ;
+	}
+
+	public Polynomial subtractRev(Polynomial v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public Polynomial subtract(int v) {
+		return this.minus(v) ;
+	}
+
+	public Polynomial subtractRev(int v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public Polynomial subtract(long v) {
+		return this.minus(v) ;
+	}
+
+	public Polynomial subtractRev(long v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public Polynomial subtract(float v) {
+		return this.minus(v) ;
+	}
+
+	public Polynomial subtractRev(float v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public Polynomial subtract(double v) {
+		return this.minus(v) ;
+	}
+
+	public Polynomial subtractRev(double v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	/**
+	 * Operator overload support: a*b
+	 */
+	public Polynomial multiply(Polynomial v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiplyRev(Polynomial v) {
+		return v.times(this);
+	}
+
+	public Polynomial multiply(int v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiplyRev(int v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiply(long v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiplyRev(long v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiply(float v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiplyRev(float v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiply(double v) {
+		return this.times(v);
+	}
+
+	public Polynomial multiplyRev(double v) {
+		return this.times(v);
+	}
+
+	/**
+	 * Operator overload support: a/b
+	 */
+	public Polynomial divide(Polynomial v) {
+		return null;
+	}
+
+	public Polynomial divideRev(Polynomial v) {
+		return null;
+	}
+
+	public Polynomial divide(int v) {
+		return this.divides(v) ;
+	}
+
+	public Polynomial divideRev(int v) {
+		return null;
+	}
+
+	public Polynomial divide(long v) {
+		return this.divides(v) ;
+	}
+
+	public Polynomial divideRev(long v) {
+		return null;
+	}
+
+	public Polynomial divide(float v) {
+		return this.divides(v) ;
+	}
+
+	public Polynomial divideRev(float v) {
+		return null;
+	}
+
+	public Polynomial divide(double v) {
+		return this.divides(v) ;
+	}
+
+	public Polynomial divideRev(double v) {
+		return null;
+	}
+
+	/**
+	 * Operator overload support: -a
+	 */
+	public Polynomial negate() {
+		return this.times(-1) ;
+	}
 
     
     // for test
     public static void main(String[] args) {
-		Polynomial p = new Polynomial(-1, 1.2, 2.3) ;
-		System.out.println(p);
-		System.out.println(p.plus(2.1));
-		System.out.println(p.degree());
-		System.out.println(p.differentiate());
-		System.out.println(p.integrate());
+		Polynomial p = 3 * X.pow(3) - 2 * X.pow(2) + 1 ;
+		System.out.println(p) ;
+		System.out.println(p/2);
+		Polynomial q = p-X.pow(1) ;
+		System.out.println(q) ;
+		System.out.println(q*p);
+		System.out.println(q/p);
 	}
     
 }

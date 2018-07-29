@@ -6,14 +6,6 @@ import flanagan.roots.RealRoot;
 import flanagan.roots.RealRootFunction;
 import mathLib.utils.MathUtils;
 
-/**
- * This class finds all roots of function over [a,b] by mapping it to [0,1] interval
- * @author Meisam
- * Two problems to be solved: 
- * 								1) if zero is a local minimum or maximum it will not be found --> solved by checking the continuity of function
- * 								2) vertical asymptotic points (odd order) and discontinuities (jumps) across x=0 also considered as zeros
- */
-
 public class RealRootFinder {
 	
 	RealRootFunction func;
