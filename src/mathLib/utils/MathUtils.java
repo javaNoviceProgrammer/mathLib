@@ -16,6 +16,10 @@ public class MathUtils {
 	 */
 
 	public static class Functions{
+		public static int factorial (int m) {
+			if(m==0) return 1 ;
+			else return m*factorial(m-1) ;
+		}
 		// adding the hyperbolic inverse functions
 		public static double asinh(double x) {
 			return Math.log(x + Math.sqrt(x*x + 1.0));
@@ -642,15 +646,8 @@ public class MathUtils {
 
 	}
 
-	//**************For Test*****************************************************
-//	public static void main(String[] args) {
-//		double[] x = linspace(-20, 20, 2000) ;
-//		double[] y = Arrays.Functions.sinIntegral(x) ;
-//		MatlabChart fig = new MatlabChart() ;
-//		fig.plot(x, y);
-//		fig.RenderPlot();
-//		fig.run(true);
-//	}
-//
-	//**********************
+	// for test
+	public static void main(String[] args) {
+		System.out.println(Functions.factorial(10));
+	}
 }

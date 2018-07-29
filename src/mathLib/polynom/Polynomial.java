@@ -133,7 +133,17 @@ public class Polynomial {
         return true;
     }
 
-    // use Horner's method to compute and return the polynomial evaluated at x
+    @Override
+	public boolean equals(Object obj) {
+        Polynomial a = this;
+        Polynomial b = (Polynomial) obj ;
+        if (a.deg != b.deg) return false;
+        for (int i = a.deg; i >= 0; i--)
+            if (a.coef[i] != b.coef[i]) return false;
+        return true;
+	}
+
+	// use Horner's method to compute and return the polynomial evaluated at x
     public double evaluate(double x) {
         double p = 0;
         for (int i = deg; i >= 0; i--)
