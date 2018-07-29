@@ -4,14 +4,14 @@ import mathLib.utils.StringUtils;
 
 public final class Complex { // immutable class
 
-	private final double re; // the real part
-	private final double im; // the imaginary part
-
 	public static final Complex ZERO = new Complex(0, 0);
 	public static final Complex ONE = new Complex(1, 0);
 	public static final Complex plusJ = new Complex(0, 1);
 	public static final Complex minusJ = new Complex(0, -1);
 	public static final Complex j = new Complex(0, 1);
+
+	private final double re; // the real part
+	private final double im; // the imaginary part
 
 	public Complex(double real, double imag) {
 		re = real;
