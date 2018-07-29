@@ -170,7 +170,7 @@ public class RealRootFinder {
 		double yEnd = y - stepSize ;
 		double yStart = yEnd - stepSize ;
 		double root = Double.NaN ;
-		while(Double.isNaN(root)){
+		while(Double.isNaN(root) && yStart >= 0){
 			yStart -= stepSize ;
 			yEnd -= stepSize ;
 			root = getRootOverInterval(yStart, yEnd) ;
@@ -291,12 +291,14 @@ public class RealRootFinder {
 		RealRootFunction func = new RealRootFunction(){
 			@Override
 			public double function(double x) {
-				return Math.sin(x) ;
+//				return Math.sin(x) ;
+				if(x<=5) return 2*x-1 ;
+				else return -x + Math.sin(x) + 10 ;
 			}
 		} ;
 		
 		double xStart = Math.PI*(-6) ;
-		double xEnd = Math.PI*6 ;
+		double xEnd = Math.PI*60 ;
 		
 		double[] x = MathUtils.linspace(xStart, xEnd, 1000) ;
 		double[] y = new double[x.length] ;
@@ -307,8 +309,8 @@ public class RealRootFinder {
 		RealRootFinder rootFinder = new RealRootFinder(func, xStart, xEnd) ;
 		rootFinder.findAllRoots();
 		rootFinder.showAllRoots();
-		System.out.println(rootFinder.getFirstRoot_greater_than_or_equal_to(-2));
-		System.out.println(rootFinder.getFirstRoot_smaller_than_or_equal_to(-7));
+		System.out.println(rootFinder.getFirstRoot_greater_than_or_equal_to(1));
+		System.out.println(rootFinder.getFirstRoot_smaller_than_or_equal_to(0));
 	}
 	
 	
