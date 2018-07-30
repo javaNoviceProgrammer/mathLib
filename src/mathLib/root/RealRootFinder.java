@@ -291,9 +291,9 @@ public class RealRootFinder {
 		RealRootFunction func = new RealRootFunction(){
 			@Override
 			public double function(double x) {
-//				return Math.sin(x) ;
-				if(x<=5) return 2*x-1 ;
-				else return -x + Math.sin(x) + 10 ;
+				return x*x-1.0/2.0;
+//				if(x<=5) return 2*x-1 ;
+//				else return -x + Math.sin(x) + 10 ;
 			}
 		} ;
 		
@@ -307,10 +307,11 @@ public class RealRootFinder {
 		}
 		
 		RealRootFinder rootFinder = new RealRootFinder(func, xStart, xEnd) ;
+//		rootFinder.setAccuracy(1e-4);
 		rootFinder.findAllRoots();
 		rootFinder.showAllRoots();
-		System.out.println(rootFinder.getFirstRoot_greater_than_or_equal_to(1));
-		System.out.println(rootFinder.getFirstRoot_smaller_than_or_equal_to(5));
+//		System.out.println(rootFinder.getFirstRoot_greater_than_or_equal_to(1));
+//		System.out.println(rootFinder.getFirstRoot_smaller_than_or_equal_to(5));
 	}
 	
 	

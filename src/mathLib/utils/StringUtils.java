@@ -2,6 +2,7 @@ package mathLib.utils;
 
 import java.util.ArrayList;
 
+import mathLib.numbers.Complex;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class StringUtils {
@@ -29,20 +30,33 @@ public class StringUtils {
 		return numbers;
 	}
 
-	public static double evaluate(String expression){
-		double result = new ExpressionBuilder(expression).build().evaluate() ;
-		return result ;
+	public static double evaluate(String expression) {
+		double result = new ExpressionBuilder(expression).build().evaluate();
+		return result;
 	}
-	
+
 	public static ArrayList<String> toArrayList(String[] st) {
-		ArrayList<String> list = new ArrayList<>() ;
-		for(String s : st) {
-			list.add(s) ;
+		ArrayList<String> list = new ArrayList<>();
+		for (String s : st) {
+			list.add(s);
 		}
-		return list ;
+		return list;
 	}
-	
-	
-	
+
+	public static ArrayList<Complex> toArrayList(Complex[] st) {
+		ArrayList<Complex> list = new ArrayList<>();
+		for (Complex s : st) {
+			list.add(s);
+		}
+		return list;
+	}
+
+	public static ArrayList<Double> toArrayList(Double[] st) {
+		ArrayList<Double> list = new ArrayList<>();
+		for (double s : st) {
+			list.add(s);
+		}
+		return list;
+	}
 
 }

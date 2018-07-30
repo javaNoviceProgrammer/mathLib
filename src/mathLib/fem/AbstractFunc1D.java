@@ -1,4 +1,4 @@
-package mathLib.func;
+package mathLib.fem;
 
 import mathLib.numbers.Complex;
 import mathLib.polynom.ComplexPolynomial;
