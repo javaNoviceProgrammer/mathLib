@@ -10,10 +10,12 @@ public class Test1 {
 		SFG sfg = new SFG(StringUtils.toArrayList(nodes));
 		sfg.addArrow("a", "x", FMath.C1);
 		sfg.addArrow("x", "b", FMath.s);
-		sfg.addArrow("x", "x", FMath.s);
+		sfg.addArrow("x", "x", FMath.t);
 		System.out.println(sfg.printAllNodes());
 		System.out.println(sfg.printAllLoops());
 		System.out.println(sfg.getGain("a", "b"));
+
+		System.out.println(sfg.getGain("a", "b").apply(1.2, 2.0));
 	}
 
 }
