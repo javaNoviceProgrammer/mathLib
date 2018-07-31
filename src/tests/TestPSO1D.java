@@ -16,7 +16,7 @@ public class TestPSO1D {
 			public double evaluate(double... position) {
 				// Let's implement f(x) = x^2-3*x+1
 				double x = position[0];
-				return Math.pow(x, 20) - 3 * x + 1;
+				return Math.pow(x, 2) - 3 * x + 1;
 			}
 		};
 
