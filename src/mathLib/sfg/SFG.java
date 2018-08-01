@@ -1,6 +1,10 @@
 package mathLib.sfg;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Stack;
 
 import edu.uta.futureye.function.FMath;
 import edu.uta.futureye.function.intf.MathFunc;
@@ -368,7 +372,8 @@ public class SFG {
 		}
 	}
 
-	public String printForwardPaths(int src, int dest) {
+	@SuppressWarnings("unused")
+	private String printForwardPaths(int src, int dest) {
 		if (forwardPaths == null)
 			buildForwardPaths(src, dest);
 		int i = 1;
@@ -400,7 +405,7 @@ public class SFG {
 		return output.toString();
 	}
 
-	public void buildForwardPaths(int src, int dest) {
+	private void buildForwardPaths(int src, int dest) {
 		forwardPaths = new ArrayList<>();
 		visited[src-1]=true;
 		DFS(src - 1, dest - 1, FMath.C1, nodesName.get(src-1));
@@ -469,7 +474,15 @@ public class SFG {
 
 				tempStrings = (tPath = forwardPaths.get(i)).getPath()
 						.split(" ");
-				if (recent.getGain().equals(tPath.getGain()) && isEqual(tempStrings)) {
+				//TODO: fix this bug --> define the equality of two Math functions!
+				MathFunc f = recent.getGain() ;
+				MathFunc g = tPath.getGain() ;
+				MathFunc w = f - g ;
+				boolean test = true ;
+				for(double x = -50.0; x<50; x+=5) {
+					test = test & !Double.isNaN(w.apply(x)) && w.apply(x) == 0.0 ;
+				}
+				if (/*recent.getGain().equals(tPath.getGain())*/ test && isEqual(tempStrings)) {
 					removeList.push(prev);
 					break;
 				}
