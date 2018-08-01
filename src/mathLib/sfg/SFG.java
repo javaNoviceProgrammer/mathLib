@@ -480,7 +480,8 @@ public class SFG {
 				MathFunc w = f - g ;
 				boolean test = true ;
 				for(double x = -50.0; x<50; x+=5) {
-					test = test & !Double.isNaN(w.apply(x)) && w.apply(x) == 0.0 ;
+					if(!Double.isNaN(w.apply(x)))
+						test = test && w.apply(x) == 0.0 ;
 				}
 				if (/*recent.getGain().equals(tPath.getGain())*/ test && isEqual(tempStrings)) {
 					removeList.push(prev);
