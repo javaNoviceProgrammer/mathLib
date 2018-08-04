@@ -2,9 +2,9 @@ package mathLib.matrix;
 
 public final class Matrix {
 
-    private int M;             // number of rows
-    private int N;             // number of columns
-    private double[][] data;   // M-by-N array
+    int M;             // number of rows
+    int N;             // number of columns
+    double[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
     public Matrix(int M, int N) {

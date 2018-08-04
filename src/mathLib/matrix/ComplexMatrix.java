@@ -166,17 +166,39 @@ public class ComplexMatrix {
         return C;
     }
 
-    // returns conjugate of a matrix
-//    public ComplexMatrix conjugate() {
-//        ComplexMatrix A = this;
-//        ComplexMatrix C = new ComplexMatrix(A.M, A.N);
-//        for(int i=0; i<C.M; i++){
-//        	for(int j=0; j<C.N; j++){
-//        		C.data[i][j] = A.data[i][j].conjugate() ;
-//        	}
-//        }
-//        return C;
-//    }
+//     returns conjugate of a matrix
+    public ComplexMatrix conjugate() {
+        ComplexMatrix A = this;
+        ComplexMatrix C = new ComplexMatrix(A.M, A.N);
+        for(int i=0; i<C.M; i++){
+        	for(int j=0; j<C.N; j++){
+        		C.data[i][j] = A.data[i][j].conjugate() ;
+        	}
+        }
+        return C;
+    }
+
+    public Matrix re() {
+        ComplexMatrix A = this;
+        Matrix C = new Matrix(A.M, A.N);
+        for(int i=0; i<C.M; i++){
+        	for(int j=0; j<C.N; j++){
+        		C.data[i][j] = A.data[i][j].re() ;
+        	}
+        }
+        return C;
+    }
+
+    public Matrix im() {
+        ComplexMatrix A = this;
+        Matrix C = new Matrix(A.M, A.N);
+        for(int i=0; i<C.M; i++){
+        	for(int j=0; j<C.N; j++){
+        		C.data[i][j] = A.data[i][j].im() ;
+        	}
+        }
+        return C;
+    }
 
 
     // print matrix to standard output
