@@ -3,6 +3,8 @@ package mathLib.utils;
 import flanagan.integration.IntegralFunction;
 import flanagan.math.ArrayMaths;
 import mathLib.integral.AdaptiveIntegral;
+import mathLib.matrix.ComplexMatrix;
+import mathLib.numbers.Complex;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import java.util.ArrayList;
 
@@ -378,6 +380,30 @@ public class MathUtils {
 			return MathUtils.Arrays.concat(x, new String[] {x0}) ;
 		}
 
+		public static double[] getReal(Complex[] u){
+			double[] x = new double[u.length] ;
+			for(int i=0; i<u.length; i++){
+				x[i] = u[i].re() ;
+			}
+			return x ;
+		}
+
+		public static double[] getImag(Complex[] u){
+			double[] x = new double[u.length] ;
+			for(int i=0; i<u.length; i++){
+				x[i] = u[i].im() ;
+			}
+			return x ;
+		}
+
+//		public static double[] getReal(ComplexMatrix[] u){
+//			double[][] x = new double[][] ;
+//			for(int i=0; i<u.length; i++){
+//				x[i] = u[i].re() ;
+//			}
+//			return x ;
+//		}
+
 		// converting to string
 		public static String toString(double[] x){
 			String s = "[ " ;
@@ -407,7 +433,6 @@ public class MathUtils {
 				int minIndex = amath.getMinimumIndex() ;
 				return minIndex ;
 			}
-
 		}
 
 		// finding the maximum value of an array and its index
