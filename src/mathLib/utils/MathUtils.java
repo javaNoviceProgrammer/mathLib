@@ -3,7 +3,6 @@ package mathLib.utils;
 import flanagan.integration.IntegralFunction;
 import flanagan.math.ArrayMaths;
 import mathLib.integral.AdaptiveIntegral;
-import mathLib.matrix.ComplexMatrix;
 import mathLib.numbers.Complex;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import java.util.ArrayList;
