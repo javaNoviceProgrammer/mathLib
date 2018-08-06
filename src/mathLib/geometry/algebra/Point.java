@@ -31,6 +31,10 @@ public class Point {
 	public double getZ() {
 		return z ;
 	}
+	
+	public double getMagnitude() {
+		return Math.sqrt(x*x+y*y+z*z) ;
+	}
 
 	// math operations
 

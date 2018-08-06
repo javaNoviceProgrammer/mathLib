@@ -1,5 +1,6 @@
 package mathLib.geometry;
 
+import mathLib.geometry.algebra.Point;
 import mathLib.util.Conversions;
 import mathLib.util.Units;
 
@@ -24,22 +25,14 @@ public class Triangle {
 		calculateP() ;
 	}
 	
-	public Triangle(double a, int defA, double b, int defB, double c, int defC) {
-		if (defA == 0 && defB == 0 && defC == 0) {
-			this.a = a ;
-			this.b = b ;
-			this.c = c ;
-			calculateAngles() ;
-			calculateR() ;
-			calculateS() ;
-			calculateP() ;
-		}
-		else if (defA == 1 && defB == 0 && defC == 0) {
-			
-		}
-		else {
-			throw new RuntimeException("defA, defB, defC must be either 0 or 1") ;
-		}
+	public Triangle(Point A, Point B, Point C) {
+		this.a = (C-B).getMagnitude() ;
+		this.b = (A-C).getMagnitude() ;
+		this.c = (A-B).getMagnitude() ;
+		calculateAngles() ;
+		calculateR() ;
+		calculateS() ;
+		calculateP() ;
 	}
 
 	private void calculateAngles() {
@@ -106,7 +99,8 @@ public class Triangle {
 	// for test
 	public static void main(String[] args) {
 //		Triangle triangle = new Triangle(3, 4, 5) ;
-		Triangle triangle = new Triangle(5, Triangle.SIDE, 5, Triangle.SIDE, 5, Triangle.SIDE) ;
+//		Triangle triangle = new Triangle(5.0, 5.0*Math.sqrt(2.0), 5.0) ;
+		Triangle triangle = new Triangle(new Point(0, 0, 0), new Point(5, 0, 0), new Point(0, 5, 0)) ;
 		System.out.println("A = " + Conversions.angle(triangle.getAngleA(), Units.radian, Units.degree) + " degree");
 		System.out.println("B = " + Conversions.angle(triangle.getAngleB(), Units.radian, Units.degree) + " degree");
 		System.out.println("C = " + Conversions.angle(triangle.getAngleC(), Units.radian, Units.degree) + " degree");
