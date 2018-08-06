@@ -9,80 +9,11 @@ import java.util.ArrayList;
 
 public class MathUtils {
 
-
-	/** adding All the extra necessary functions for real double numbers. Complex numbers to follow.
-	 *
-	 * @author Meisam
-	 *
-	 */
-
-	public static class Functions{
-		public static int factorial (int m) {
-			if(m==0) return 1 ;
-			else return m*factorial(m-1) ;
-		}
-		// adding the hyperbolic inverse functions
-		public static double asinh(double x) {
-			return Math.log(x + Math.sqrt(x*x + 1.0));
-			}
-
-		public static double acosh(double x) {
-			return Math.log(x + Math.sqrt(x*x - 1.0));
-			}
-
-		public static double atanh(double x) {
-			return 0.5*Math.log( (x + 1.0) / (-x + 1.0) );
-			}
-
-		public static double acoth(double x){
-			return 1/atanh(x) ; // note that acoth(x) has a singularity at x=0
-		}
-
-		// adding sinc function
-		public static double sinc(double x){
-			if(x==0){return 1 ; }
-			else{return Math.sin(Math.PI*x)/(Math.PI*x) ; }
-		}
-
-		public static double sign(double x){
-			if(x>0) {return +1 ;}
-			else if(x<0) {return -1 ;}
-			else {return 0 ;}
-		}
-
-		public static double step(double stepPoint, double x){
-			if(x>=stepPoint){return 1 ;}
-			else{return 0;}
-		}
-
-		public static double unitStep(double stepPoint, double x){
-			if(x>=stepPoint){return 1 ;}
-			else{return 0;}
-		}
-
-		public static double sinIntegral(double x){
-			IntegralFunction func = new IntegralFunction() {
-
-				@Override
-				public double function(double t) {
-					double y = MathUtils.Functions.sinc(t/Math.PI);
-					return y;
-				}
-			};
-			AdaptiveIntegral result = new AdaptiveIntegral(func, 0, x) ;
-			return result.getIntegral() ;
-		}
-
-	}
-
-	// evaluating mathematical expressions with numbers
 	public static double evaluate(String expression){
-//		double result = new DoubleEvaluator().evaluate(expression) ;
 		double result = new ExpressionBuilder(expression).build().evaluate() ;
 		return result ;
 	}
 
-	// adding the "linspace" function just like MATLAB
 	public static double[] linspace(double start, double end, int numPoints){
 		double[] Values = new double[numPoints] ;
 		double Delta ;
@@ -108,6 +39,86 @@ public class MathUtils {
 			Values[i] = values.get(i) ;
 		}
 		return Values ;
+	}
+	
+	public static double deltaKronecker(int i, int j) {
+		if(i == j)
+			return 1 ;
+		else 
+			return 0 ;
+	}
+	
+	public static double deltaKronecker(int i, int j, int k) {
+		if(i == j && i == k)
+			return 1 ;
+		else 
+			return 0 ;
+	}
+	
+	public static double deltaKronecker(int i, int j, int k, int l) {
+		if(i == j && i == k && i == l)
+			return 1 ;
+		else 
+			return 0 ;
+	}
+	
+	public static class Functions{
+		public static int factorial (int m) {
+			if(m==0) return 1 ;
+			else return m*factorial(m-1) ;
+		}
+		// adding the hyperbolic inverse functions
+		public static double asinh(double x) {
+			return Math.log(x + Math.sqrt(x*x + 1.0));
+			}
+	
+		public static double acosh(double x) {
+			return Math.log(x + Math.sqrt(x*x - 1.0));
+			}
+	
+		public static double atanh(double x) {
+			return 0.5*Math.log( (x + 1.0) / (-x + 1.0) );
+			}
+	
+		public static double acoth(double x){
+			return 1/atanh(x) ; // note that acoth(x) has a singularity at x=0
+		}
+	
+		// adding sinc function
+		public static double sinc(double x){
+			if(x==0){return 1 ; }
+			else{return Math.sin(Math.PI*x)/(Math.PI*x) ; }
+		}
+	
+		public static double sign(double x){
+			if(x>0) {return +1 ;}
+			else if(x<0) {return -1 ;}
+			else {return 0 ;}
+		}
+	
+		public static double step(double stepPoint, double x){
+			if(x>=stepPoint){return 1 ;}
+			else{return 0;}
+		}
+	
+		public static double unitStep(double stepPoint, double x){
+			if(x>=stepPoint){return 1 ;}
+			else{return 0;}
+		}
+	
+		public static double sinIntegral(double x){
+			IntegralFunction func = new IntegralFunction() {
+	
+				@Override
+				public double function(double t) {
+					double y = MathUtils.Functions.sinc(t/Math.PI);
+					return y;
+				}
+			};
+			AdaptiveIntegral result = new AdaptiveIntegral(func, 0, x) ;
+			return result.getIntegral() ;
+		}
+	
 	}
 
 	public static class Conversions{

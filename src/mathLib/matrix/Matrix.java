@@ -50,6 +50,10 @@ public final class Matrix {
     public int getNumColumns() {
     	return N ;
     }
+    
+    public double[][] getData() {
+    	return this.data ;
+    }
 
     // create and return a random M-by-N matrix with values between 0 and 1
     public static Matrix random(int M, int N) {
@@ -213,9 +217,19 @@ public final class Matrix {
     	StringBuilder st = new StringBuilder() ;
         for (int i = 0; i < M; i++) {
             for (int j = 0; j < N; j++){
-            	if(data[i][j]>=0) {st.append(" "+data[i][j]) ;}
-            	else {st.append(data[i][j]) ;}
-            	st.append("           ") ;
+            	String sign = "" ;
+            	String val = "" ;
+            	if(data[i][j]>=0) {
+            		sign = " " ;
+            		val = String.format("%.4f", data[i][j]) ;
+            	}
+            	else {
+            		sign = "-" ;
+            		val = String.format("%.4f", Math.abs(data[i][j])) ;
+            	}
+            	st.append(sign) ;
+            	st.append(val) ;
+            	st.append("         ") ;
             }
             st.append("\n") ;
         }
@@ -466,10 +480,10 @@ public final class Matrix {
 
  	// for test
  	public static void main(String[] args) {
- 		double[][] d = new double[][] {{2, -1.2}, {-5, -2.3}} ;
+ 		double[][] d = new double[][] {{2.2222, -1.23}, {-5, -2.3656565656}} ;
 		Matrix A = new Matrix(d) ;
 		A.show();
-		System.out.println(identity(A.getNumRows())-A);
+		System.out.println(A);
 	}
 
 }
