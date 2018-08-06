@@ -1,6 +1,7 @@
 package mathLib.geometry;
 
-import mathLib.util.conversion.Conversions;
+import mathLib.util.Conversions;
+import mathLib.util.Units;
 
 public class Triangle {
 	
@@ -106,9 +107,9 @@ public class Triangle {
 	public static void main(String[] args) {
 //		Triangle triangle = new Triangle(3, 4, 5) ;
 		Triangle triangle = new Triangle(5, Triangle.SIDE, 5, Triangle.SIDE, 5, Triangle.SIDE) ;
-		System.out.println("A = " + Conversions.Angles.toDegree(triangle.getAngleA()) + " degree");
-		System.out.println("B = " + Conversions.Angles.toDegree(triangle.getAngleB()) + " degree");
-		System.out.println("C = " + Conversions.Angles.toDegree(triangle.getAngleC()) + " degree");
+		System.out.println("A = " + Conversions.angle(triangle.getAngleA(), Units.radian, Units.degree) + " degree");
+		System.out.println("B = " + Conversions.angle(triangle.getAngleB(), Units.radian, Units.degree) + " degree");
+		System.out.println("C = " + Conversions.angle(triangle.getAngleC(), Units.radian, Units.degree) + " degree");
 		System.out.println("R = " + triangle.getR());
 		System.out.println("S = " + triangle.getArea());
 	}

@@ -1,6 +1,12 @@
 package mathLib.util;
 
 public class PhysicalConstants {
+	
+	// private constructor to prevent instantiation
+	
+	private PhysicalConstants() {
+		
+	}
 
 	// MKS system (SI units)
 
