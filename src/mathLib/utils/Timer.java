@@ -24,6 +24,11 @@ public class Timer {
 	}
 
 	
+	@Override
+	public String toString() {
+		return "Timer duration = " + elapseTime + " ms";
+	}
+
 	// for test
 	public static void main(String[] args) {
 		Timer timer = new Timer() ;
