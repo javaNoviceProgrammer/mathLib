@@ -45,6 +45,7 @@ public enum Units {
 	// optical power
 	dBm,
 	mW,
+	watt,
 	// dB & nondB
 	dB,
 	nondB

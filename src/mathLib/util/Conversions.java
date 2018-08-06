@@ -3,6 +3,7 @@ package mathLib.util;
 public class Conversions {
 	
 	// convert angle
+	
 	public static double angle(double val, Units from, Units to) {
 		double var1 = getAngleScale(from) ;
 		double var2 = getAngleScale(to) ;
@@ -24,7 +25,8 @@ public class Conversions {
 		return scale ;
 	}
 
-	// convert lenght units
+	// convert length
+	
 	public static double length(double val, Units from, Units to) {
 		double var1 = getLengthScale(from) ;
 		double var2 = getLengthScale(to) ;
@@ -67,7 +69,8 @@ public class Conversions {
 		return scale ;
 	}
 
-	// convert weight units
+	// convert weight
+	
 	public static double weight(double val, Units from, Units to) {
 		double var1 = getWeightScale(from) ;
 		double var2 = getWeightScale(to) ;
@@ -98,12 +101,16 @@ public class Conversions {
 		return scale ;
 	}
 	
+	// convert optical power
+	
 	public static double opticalPower(double val, Units from, Units to) {
 		double var1 = to_mW(val, from) ;
 		if(to == Units.mW)
 			return var1 ;
 		else if(to == Units.dBm)
 			return 10.0*Math.log10(var1) ;
+		else if(to == Units.watt)
+			return var1*1e-3 ;
 		else {
 			throw new IllegalArgumentException("Must enter a unit of Optical Power") ;
 		}
@@ -119,6 +126,9 @@ public class Conversions {
 		case dBm:
 			var1 = Math.pow(10.0, val/10.0) ;
 			break ;
+		case watt:
+			var1 = val*1e3 ;
+			break ;
 		default:
 			throw new IllegalArgumentException("Must enter a unit of Optical Power") ;
 		}
@@ -127,7 +137,7 @@ public class Conversions {
 	
 	// for test
 	public static void main(String[] args) {
-		System.out.println(opticalPower(-1.0, Units.mW, Units.dBm));
+		System.out.println(opticalPower(28.0, Units.mW, Units.watt));
 		
 	}
 
