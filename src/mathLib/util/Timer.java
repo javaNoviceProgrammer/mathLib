@@ -1,4 +1,4 @@
-package mathLib.utils;
+package mathLib.util;
 
 public class Timer {
 	

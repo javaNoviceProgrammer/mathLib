@@ -4,7 +4,7 @@ import static edu.uta.futureye.function.FMath.C;
 import static edu.uta.futureye.function.FMath.s;
 
 import mathLib.sfg.SFG;
-import mathLib.utils.StringUtils;
+import mathLib.util.StringUtils;
 
 public class TestSFG {
 	public static void main(String[] args) {

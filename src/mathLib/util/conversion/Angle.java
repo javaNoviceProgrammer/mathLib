@@ -1,4 +1,4 @@
-package mathLib.utils.conversion;
+package mathLib.util.conversion;
 
 public class Angle {
 

@@ -3,7 +3,7 @@ package mathLib.geometry.algebra;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 
-import mathLib.utils.MathUtils;
+import mathLib.util.MathUtils;
 
 public class Vector {
 

@@ -1,6 +1,6 @@
 package mathLib.numbers;
 
-import mathLib.utils.StringUtils;
+import mathLib.util.StringUtils;
 
 public final class Complex { // immutable class
 

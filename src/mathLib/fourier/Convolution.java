@@ -2,7 +2,7 @@ package mathLib.fourier;
 
 import mathLib.fourier.core.FFT;
 import mathLib.fourier.intf.ConvolutionFunctionPair;
-import mathLib.utils.MathUtils;
+import mathLib.util.MathUtils;
 
 public class Convolution {
 

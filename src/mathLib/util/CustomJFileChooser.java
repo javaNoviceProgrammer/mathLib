@@ -1,4 +1,4 @@
-package mathLib.utils;
+package mathLib.util;
 
 import java.io.File;
 

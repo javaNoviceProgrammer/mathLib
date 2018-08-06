@@ -1,6 +1,6 @@
 package mathLib.geometry;
 
-import mathLib.utils.conversion.Conversions;
+import mathLib.util.conversion.Conversions;
 
 public class Triangle {
 	

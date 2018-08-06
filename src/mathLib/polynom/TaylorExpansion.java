@@ -1,7 +1,8 @@
 package mathLib.polynom;
 
-import mathLib.utils.MathUtils;
 import static mathLib.polynom.Polynomial.*;
+
+import mathLib.util.MathUtils;
 
 public class TaylorExpansion {
 

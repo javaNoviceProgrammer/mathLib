@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import flanagan.roots.RealRoot;
 import flanagan.roots.RealRootFunction;
-import mathLib.utils.MathUtils;
+import mathLib.util.MathUtils;
 
 public class RealRootFinder {
 	

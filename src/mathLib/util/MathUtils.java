@@ -1,4 +1,4 @@
-package mathLib.utils;
+package mathLib.util;
 
 import flanagan.integration.IntegralFunction;
 import flanagan.math.ArrayMaths;

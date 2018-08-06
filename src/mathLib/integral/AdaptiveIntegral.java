@@ -11,7 +11,7 @@ package mathLib.integral;
 
 import flanagan.integration.IntegralFunction;
 import flanagan.integration.Integration;
-import mathLib.utils.MathUtils;
+import mathLib.util.MathUtils;
 
 public class AdaptiveIntegral {
 
