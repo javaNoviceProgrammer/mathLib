@@ -1,5 +1,5 @@
 package mathLib.integral.intf;
 
-public interface IntegralFunction {
+public interface IntegralFunction extends flanagan.integration.IntegralFunction {
 
 }

@@ -18,7 +18,7 @@ public class AdaptiveIntegral {
 	int numIntervals = 10 ; // the entire integral region is divided into this number of subintervals
 	int numPoints = 5 ; // each sub interval is divided into this number of pieces
 	double x_start, x_end ;
-	double errorBound = 1e-9 ; // accuracy to the number of digits
+	double errorBound = 1e-12 ; // accuracy to the number of digits
 	IntegralFunction func ;
 	int numIterations = 0 ;
 	int maxNumIterations = 50 ; // maximum number of iterations
