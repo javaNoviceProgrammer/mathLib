@@ -24,7 +24,9 @@ import plotter.chart.MatlabChart;
 import static edu.uta.futureye.function.FMath.*;
 
 public class WeakFormSecondOrder {
-	// diff equation: a*y'' + b*y' + c*y = f , over [x0, x1] , Boundary value:  y[x0] = y0 and y[x1] = y1
+
+	// diff equation: a*y'' + b*y' + c*y = f , over (x0, x1) , Boundary value:  y(x0) = y0 and y(x1) = y1
+
 	Timer timer ;
 	double x0, x1, y0, y1 ;
 	final MathFunc a, b, c, f ;
@@ -56,15 +58,15 @@ public class WeakFormSecondOrder {
 	public void setGridSize(int numPoints) {
 		this.numPoints = numPoints ;
 	}
-	
+
 	public double[] getGrid() {
 		return x ;
 	}
-	
+
 	public double[] getSolution() {
 		return y ;
 	}
-	
+
 	public LinearInterpolation getInterpolator() {
 		return new LinearInterpolation(x, y) ;
 	}
@@ -89,7 +91,7 @@ public class WeakFormSecondOrder {
 		WeakForm wf = new WeakForm(fe,
 				(u,v) -> -u.diff("x")* (v*a).diff("x") - u * (v*b).diff("x") + c*u*v ,
 				(v) -> f*v) ;
-		
+
 		wf.compile();
 		// step4: Create assembler
 		Assembler assembler = new Assembler(mesh, wf) ;
@@ -126,7 +128,7 @@ public class WeakFormSecondOrder {
 		if(debug)
 			printDebugInfo();
 	}
-	
+
 	public void plotSolution() {
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y);
