@@ -134,11 +134,5 @@ public class Conversions {
 		}
 		return var1 ;
 	}
-	
-	// for test
-	public static void main(String[] args) {
-		System.out.println(opticalPower(28.0, Units.mW, Units.watt));
-		
-	}
 
 }
