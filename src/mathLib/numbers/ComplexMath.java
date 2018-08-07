@@ -112,20 +112,20 @@ public class ComplexMath {
 	}
 
 	// for test
-/*	public static void main(String[] args) {
-		Complex u = Complex.j ;
-//		System.out.println(log(u));
-//		System.out.println(acos(u));
-//		System.out.println(atan(u/2));
-//		System.out.println(cot(u));
-//		System.out.println(acot(u/2));
-//		System.out.println(secant(u));
-//		System.out.println(csc(u));
+	public static void main(String[] args) {
+		Complex u = 10+Complex.j ;
+		System.out.println(log(u));
+		System.out.println(acos(u));
+		System.out.println(atan(u/2));
+		System.out.println(cot(u));
+		System.out.println(acot(u/2));
+		System.out.println(secant(u));
+		System.out.println(csc(u));
 		System.out.println(acsc(u+1));
-//		System.out.println(asin(u));
-//		System.out.println(acsc(u+1));
-//		System.out.println(u/2);
-//		System.out.println(abs(exp(u-1)));
-	}*/
+		System.out.println(asin(u));
+		System.out.println(acsc(u+1));
+		System.out.println(u/2);
+		System.out.println(abs(exp(u-1)));
+	}
 
 }

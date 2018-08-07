@@ -2,7 +2,7 @@ package mathLib.numbers;
 
 import mathLib.util.StringUtils;
 
-public final class Complex { // immutable class
+public class Complex { // immutable class
 
 	public static final Complex ZERO = new Complex(0, 0);
 	public static final Complex ONE = new Complex(1, 0);
@@ -18,21 +18,32 @@ public final class Complex { // immutable class
 		im = imag;
 	}
 
-/*	public Complex() {
-		re = 0;
-		im = 0;
-	}*/
+//	@Override
+//	public String toString() {
+//		if (im == 0)
+//			return re + "";
+//		if (re == 0 && im > 0)
+//			return "i" + im;
+//		if (re == 0 && im < 0)
+//			return "-i" + (-im);
+//		if (im < 0)
+//			return re + "-" + "i" + (-im);
+//		return re + "+" + "i" + im;
+//	}
 
+	@Override
 	public String toString() {
+		String stReal = String.format("%.4f", re) ;
+		String stImag = String.format("%.4f", Math.abs(im)) ;
 		if (im == 0)
-			return re + "";
+			return stReal + "";
 		if (re == 0 && im > 0)
-			return "i" + im;
+			return "i" + stImag;
 		if (re == 0 && im < 0)
-			return "-i" + (-im);
+			return "-i" + stImag;
 		if (im < 0)
-			return re + "-" + "i" + (-im);
-		return re + "+" + "i" + im;
+			return stReal + "-" + "i" + stImag;
+		return stReal + "+" + "i" + stImag;
 	}
 
 	public double abs() {
@@ -228,28 +239,28 @@ public final class Complex { // immutable class
 	// ************ operator overloading **********************
 
 	/**
-	 * Operator overloading support:
+	 * Operator overloading support (must be implemented as static)
 	 *
 	 * Object a = 5;
 	 *
 	 */
-	public Complex valueOf(int v) {
+	public static Complex valueOf(int v) {
 		return new Complex(v, 0);
 	}
 
-	public Complex valueOf(long v) {
+	public static Complex valueOf(long v) {
 		return new Complex(v, 0);
 	}
 
-	public Complex valueOf(float v) {
+	public static Complex valueOf(float v) {
 		return new Complex(v, 0);
 	}
 
-	public Complex valueOf(double v) {
+	public static Complex valueOf(double v) {
 		return new Complex(v, 0);
 	}
 
-	public Complex valueOf(Complex v) {
+	public static Complex valueOf(Complex v) {
 		return new Complex(v.re, v.im);
 	}
 
@@ -434,6 +445,8 @@ public final class Complex { // immutable class
 
 	// for test
 	public static void main(String[] args) {
+		Complex t = 1 ;
+		System.out.println(t);
 		Complex u = 2.1 - j + 6;
 		Complex v = -1 + u;
 		Complex w = 1 / u;
