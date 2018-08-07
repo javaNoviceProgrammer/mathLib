@@ -133,6 +133,7 @@ public class WeakFormSecondOrder {
 		fig.RenderPlot();
 		fig.xlabel("grid");
 		fig.ylabel("solution");
+		fig.setFigLineWidth(0, 2.0f);
 		fig.run(true);
 	}
 
@@ -145,7 +146,7 @@ public class WeakFormSecondOrder {
 
 	// for test
 	public static void main(String[] args) {
-		MathFunc a = C(1.0) ;
+		MathFunc a = C(1.0)*FMath.x*FMath.x ;
 		MathFunc b = FMath.x ;
 		MathFunc c = C(0.0) ;
 		MathFunc f = sin(FMath.x)*FMath.x*FMath.x ;
