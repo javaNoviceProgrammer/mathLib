@@ -16,7 +16,6 @@ import edu.uta.futureye.lib.weakform.WeakForm;
 import edu.uta.futureye.util.MeshGenerator;
 import edu.uta.futureye.util.Utils;
 import edu.uta.futureye.util.container.NodeList;
-import mathLib.util.MathUtils;
 import mathLib.util.Timer;
 
 public class WeakFormSecondOrder {
