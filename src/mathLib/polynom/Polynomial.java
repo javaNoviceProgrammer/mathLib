@@ -239,23 +239,23 @@ public class Polynomial {
 	 * Object a = 5;
 	 *
 	 */
-	public Polynomial valueOf(int v) {
+	public static Polynomial valueOf(int v) {
 		return new Polynomial(v, 0);
 	}
 
-	public Polynomial valueOf(long v) {
+	public static Polynomial valueOf(long v) {
 		return new Polynomial(v, 0);
 	}
 
-	public Polynomial valueOf(float v) {
+	public static Polynomial valueOf(float v) {
 		return new Polynomial(v, 0);
 	}
 
-	public Polynomial valueOf(double v) {
+	public static Polynomial valueOf(double v) {
 		return new Polynomial(v, 0);
 	}
 
-	public Polynomial valueOf(Polynomial v) {
+	public static Polynomial valueOf(Polynomial v) {
 		return new Polynomial(v.coef);
 	}
 
@@ -447,6 +447,8 @@ public class Polynomial {
 		for(Complex x: roots) {
 			System.out.println(x);
 		}
+		Polynomial q = 1-X-X.pow(2)-X.pow(3);
+		System.out.println(q);
 	}
 
 }
