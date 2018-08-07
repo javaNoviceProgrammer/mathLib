@@ -54,9 +54,8 @@ public class DiffOperator {
 
 	// for test
 	public static void main(String[] args) {
-		DiffOperator D = new DiffOperator(10, 1.0) ;
+		DiffOperator D = new DiffOperator(5, 1.0) ;
 		System.out.println(D.getDxxMatrix());
-		System.out.println(D.getDxMatrix()*D.getDxMatrix()*4.0);
 	}
 
 }

@@ -29,7 +29,7 @@ public final class Matrix {
     }
 
 
-    // create matrix based on 1d array --> if data is complex
+    // create matrix based on 1d array 
     public Matrix(double[] data) {
         M = 1; // default is row matrix
         N = data.length;
@@ -43,11 +43,11 @@ public final class Matrix {
     	return new int[] {M, N} ;
     }
 
-    public int getNumRows() {
+    public int getRowDim() {
     	return M ;
     }
 
-    public int getNumColumns() {
+    public int getColumnDim() {
     	return N ;
     }
     
@@ -299,6 +299,40 @@ public final class Matrix {
 
     // ************ operator overloading **********************
 
+    public static Matrix valueOf(double[][] v) {
+    	return new Matrix(v) ;
+    }
+    
+    public static Matrix valueOf(int[][] v) {
+    	int M = v.length ;
+    	int N = v[0].length ;
+    	double[][] data = new double[M][N] ;
+    	for(int i=0; i<M; i++)
+    		for(int j=0; j<N; j++)
+    			data[i][j] = v[i][j] ;
+    	return new Matrix(data) ;
+    }
+    
+    public static Matrix valueOf(float[][] v) {
+    	int M = v.length ;
+    	int N = v[0].length ;
+    	double[][] data = new double[M][N] ;
+    	for(int i=0; i<M; i++)
+    		for(int j=0; j<N; j++)
+    			data[i][j] = v[i][j] ;
+    	return new Matrix(data) ;
+    }
+    
+    public static Matrix valueOf(long[][] v) {
+    	int M = v.length ;
+    	int N = v[0].length ;
+    	double[][] data = new double[M][N] ;
+    	for(int i=0; i<M; i++)
+    		for(int j=0; j<N; j++)
+    			data[i][j] = v[i][j] ;
+    	return new Matrix(data) ;
+    }
+    
  	/**
  	 * Operator overload support: a+b
  	 */
@@ -484,6 +518,13 @@ public final class Matrix {
 		Matrix A = new Matrix(d) ;
 		A.show();
 		System.out.println(A);
+		
+		// operator overloading
+		Matrix B = d ;
+		System.out.println(B);
+		
+		Matrix C = new int[][]{{1, 2, 3, 4}, {3, 5, 7, -2}} ;
+		System.out.println(C);
 	}
 
 }
