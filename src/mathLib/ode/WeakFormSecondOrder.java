@@ -8,6 +8,7 @@ import edu.uta.futureye.algebra.solver.Solver;
 import edu.uta.futureye.core.Mesh;
 import edu.uta.futureye.core.NodeType;
 import edu.uta.futureye.core.intf.FiniteElement;
+import edu.uta.futureye.function.FMath;
 import edu.uta.futureye.function.SingleVarFunc;
 import edu.uta.futureye.function.intf.MathFunc;
 import edu.uta.futureye.lib.assembler.Assembler;
@@ -16,7 +17,11 @@ import edu.uta.futureye.lib.weakform.WeakForm;
 import edu.uta.futureye.util.MeshGenerator;
 import edu.uta.futureye.util.Utils;
 import edu.uta.futureye.util.container.NodeList;
+import flanagan.interpolation.LinearInterpolation;
 import mathLib.util.Timer;
+import plotter.chart.MatlabChart;
+
+import static edu.uta.futureye.function.FMath.*;
 
 public class WeakFormSecondOrder {
 	// diff equation: a*y'' + b*y' + c*y = f , over [x0, x1] , Boundary value:  y[x0] = y0 and y[x1] = y1
@@ -25,7 +30,7 @@ public class WeakFormSecondOrder {
 	final MathFunc a, b, c, f ;
 	int numPoints ;
 	double[] x, y ;
-	boolean debug = false ;
+	boolean debug = true ;
 
 	public WeakFormSecondOrder(MathFunc a, MathFunc b, MathFunc c, MathFunc f){
 		this.a = a ;
@@ -51,6 +56,18 @@ public class WeakFormSecondOrder {
 	public void setGridSize(int numPoints) {
 		this.numPoints = numPoints ;
 	}
+	
+	public double[] getGrid() {
+		return x ;
+	}
+	
+	public double[] getSolution() {
+		return y ;
+	}
+	
+	public LinearInterpolation getInterpolator() {
+		return new LinearInterpolation(x, y) ;
+	}
 
 	public void solve() {
 		timer = new Timer() ;
@@ -72,7 +89,8 @@ public class WeakFormSecondOrder {
 		WeakForm wf = new WeakForm(fe,
 				(u,v) -> -u.diff("x")* (v*a).diff("x") - u * (v*b).diff("x") + c*u*v ,
 				(v) -> f*v) ;
-
+		
+		wf.compile();
 		// step4: Create assembler
 		Assembler assembler = new Assembler(mesh, wf) ;
 		assembler.assembleGlobal();
@@ -101,21 +119,43 @@ public class WeakFormSecondOrder {
 		y = new double[u.getDim()] ;
 		NodeList nodes = mesh.getNodeList() ;
 		for(int i=1; i<=u.getDim(); i++){
-			x[i] = nodes.at(i).coord(0);
-			y[i] = u.get(i) ;
+			x[i-1] = nodes.at(i).coord(1);
+			y[i-1] = u.get(i) ;
 		}
 		timer.end();
+		if(debug)
+			printDebugInfo();
+	}
+	
+	public void plotSolution() {
+		MatlabChart fig = new MatlabChart() ;
+		fig.plot(x, y);
+		fig.RenderPlot();
+		fig.xlabel("grid");
+		fig.ylabel("solution");
+		fig.run(true);
 	}
 
 	private void printDebugInfo() {
+		System.out.println("xMin = " + x0);
+		System.out.println("xMax = " + x1);
 		System.out.println(timer);
 	}
 
 
 	// for test
 	public static void main(String[] args) {
-
+		MathFunc a = C(1.0) ;
+		MathFunc b = FMath.x ;
+		MathFunc c = C(0.0) ;
+		MathFunc f = sin(FMath.x)*FMath.x*FMath.x ;
+		WeakFormSecondOrder wf = new WeakFormSecondOrder(a, b, c, f) ;
+		wf.setDegub(true);
+		wf.setGridSize(100);
+		wf.setBoundary(1.0, 10.0);
+		wf.setBoundaryValue(0.0, -2.0);
+		wf.solve();
+		wf.plotSolution();
 	}
-
 
 }
