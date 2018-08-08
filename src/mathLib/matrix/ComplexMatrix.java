@@ -50,10 +50,6 @@ public class ComplexMatrix {
                     this.data[i][j] = data[j];
     }
 
-    // copy constructor
-    @SuppressWarnings("unused")
-	private ComplexMatrix(ComplexMatrix A) { this(A.data); }
-
     // create and return a random M-by-N matrix with values between 0 and 1
     public static ComplexMatrix random(int M, int N) {
         ComplexMatrix A = new ComplexMatrix(M, N);
@@ -199,7 +195,6 @@ public class ComplexMatrix {
         }
         return C;
     }
-
 
     // print matrix to standard output
     public void show() {
