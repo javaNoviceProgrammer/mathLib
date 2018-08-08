@@ -2,13 +2,13 @@ package mathLib.ode;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import edu.uta.futureye.algebra.intf.Matrix;
 import edu.uta.futureye.algebra.intf.Vector;
 import edu.uta.futureye.algebra.solver.Solver;
 import edu.uta.futureye.core.Mesh;
 import edu.uta.futureye.core.NodeType;
 import edu.uta.futureye.core.intf.FiniteElement;
-import edu.uta.futureye.function.FMath;
 import edu.uta.futureye.function.SingleVarFunc;
 import edu.uta.futureye.function.intf.MathFunc;
 import edu.uta.futureye.lib.assembler.Assembler;
@@ -20,8 +20,6 @@ import edu.uta.futureye.util.container.NodeList;
 import flanagan.interpolation.LinearInterpolation;
 import mathLib.util.Timer;
 import plotter.chart.MatlabChart;
-
-import static edu.uta.futureye.function.FMath.*;
 
 public class WeakFormSecondOrder {
 
@@ -143,22 +141,6 @@ public class WeakFormSecondOrder {
 		System.out.println("xMin = " + x0);
 		System.out.println("xMax = " + x1);
 		System.out.println(timer);
-	}
-
-
-	// for test
-	public static void main(String[] args) {
-		MathFunc a = C(1.0)*FMath.x*FMath.x ;
-		MathFunc b = FMath.x ;
-		MathFunc c = C(0.0) ;
-		MathFunc f = sin(FMath.x)*FMath.x*FMath.x ;
-		WeakFormSecondOrder wf = new WeakFormSecondOrder(a, b, c, f) ;
-		wf.setDegub(true);
-		wf.setGridSize(100);
-		wf.setBoundary(1.0, 10.0);
-		wf.setBoundaryValue(0.0, -2.0);
-		wf.solve();
-		wf.plotSolution();
 	}
 
 }
