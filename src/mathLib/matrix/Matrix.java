@@ -29,7 +29,7 @@ public class Matrix {
     }
 
 
-    // create matrix based on 1d array 
+    // create matrix based on 1d array
     public Matrix(double[] data) {
         M = 1; // default is row matrix
         N = data.length;
@@ -50,7 +50,7 @@ public class Matrix {
     public int getColumnDim() {
     	return N ;
     }
-    
+
     public double[][] getData() {
     	return this.data ;
     }
@@ -289,7 +289,7 @@ public class Matrix {
     	}
     	return selectedColumn ;
     }
-    
+
     public Matrix inv() {
     	Jama.Matrix B = toJamaMatrix(this) ;
     	Jama.Matrix invB = B.inverse() ;
@@ -301,7 +301,7 @@ public class Matrix {
     public static Matrix valueOf(double[][] v) {
     	return new Matrix(v) ;
     }
-    
+
     public static Matrix valueOf(int[][] v) {
     	int M = v.length ;
     	int N = v[0].length ;
@@ -311,7 +311,7 @@ public class Matrix {
     			data[i][j] = v[i][j] ;
     	return new Matrix(data) ;
     }
-    
+
     public static Matrix valueOf(float[][] v) {
     	int M = v.length ;
     	int N = v[0].length ;
@@ -321,7 +321,7 @@ public class Matrix {
     			data[i][j] = v[i][j] ;
     	return new Matrix(data) ;
     }
-    
+
     public static Matrix valueOf(long[][] v) {
     	int M = v.length ;
     	int N = v[0].length ;
@@ -331,7 +331,7 @@ public class Matrix {
     			data[i][j] = v[i][j] ;
     	return new Matrix(data) ;
     }
-    
+
  	/**
  	 * Operator overload support: a+b
  	 */
@@ -517,16 +517,16 @@ public class Matrix {
 		Matrix A = new Matrix(d) ;
 		A.show();
 		System.out.println(A);
-		
+
 		// operator overloading
 		Matrix B = d ;
 		System.out.println(B);
-		
+
 		Matrix C = new int[][]{{1, 2, 3, 4}, {3, 5, 7, -2}} ;
 		System.out.println(C);
-		
+
 		System.out.println(A.inv());
-		
+
 		System.out.println(A.inv() * A);
 		System.out.println(identity(2).equals(A.inv() * A));
 		System.out.println(identity(2).equals(A.inv() * A, 1e-10));
