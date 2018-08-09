@@ -18,19 +18,6 @@ public class Complex { // immutable class
 		im = imag;
 	}
 
-//	@Override
-//	public String toString() {
-//		if (im == 0)
-//			return re + "";
-//		if (re == 0 && im > 0)
-//			return "i" + im;
-//		if (re == 0 && im < 0)
-//			return "-i" + (-im);
-//		if (im < 0)
-//			return re + "-" + "i" + (-im);
-//		return re + "+" + "i" + im;
-//	}
-
 	@Override
 	public String toString() {
 		String stReal = String.format("%.4f", re) ;

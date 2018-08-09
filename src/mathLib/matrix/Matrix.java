@@ -99,13 +99,6 @@ public final class Matrix {
         return C;
     }
 
-    // swap rows i and j
-    public void swap(int i, int j) {
-        double[] temp = data[i];
-        data[i] = data[j];
-        data[j] = temp;
-    }
-
     // create and return the transpose of the invoking matrix
     public Matrix transpose() {
         Matrix A = new Matrix(N, M);
