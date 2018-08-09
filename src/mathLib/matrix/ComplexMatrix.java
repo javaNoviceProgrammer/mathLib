@@ -4,9 +4,10 @@ import mathLib.numbers.Complex;
 import static mathLib.numbers.Complex.*;
 
 public class ComplexMatrix {
-    private int M;             // number of rows
-    private int N;             // number of columns
-    private Complex[][] data;   // M-by-N array
+    
+	int M;             // number of rows
+    int N;             // number of columns
+    Complex[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
     private ComplexMatrix(int M, int N) {
@@ -45,28 +46,45 @@ public class ComplexMatrix {
         M = 1; // default is row matrix
         N = data.length;
         this.data = new Complex[M][N];
-        for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
-                    this.data[i][j] = data[j];
+                    this.data[0][j] = data[j];
+    }
+    
+    public ComplexMatrix(double[] data) {
+        M = 1; // default is row matrix
+        N = data.length;
+        this.data = new Complex[M][N];
+            for (int j = 0; j < N; j++)
+                    this.data[0][j] = new Complex(data[j], 0.0);
+    }
+    
+    public int[] getSize() {
+    	return new int[] {M, N} ;
     }
 
-    // create and return a random M-by-N matrix with values between 0 and 1
+    public int getRowDim() {
+    	return M ;
+    }
+
+    public int getColumnDim() {
+    	return N ;
+    }
+    
+    public Complex[][] getData() {
+    	return this.data ;
+    }
+
     public static ComplexMatrix random(int M, int N) {
         ComplexMatrix A = new ComplexMatrix(M, N);
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
-                A.data[i][j] = new Complex(Math.random(),0) ;
+                A.data[i][j] = new Complex(Math.random(), Math.random()) ;
         return A;
     }
 
     // create and return the N-by-N identity matrix
     public static ComplexMatrix identity(int N) {
         ComplexMatrix I = new ComplexMatrix(N, N);
-        for(int i=0; i<N; i++){
-        	for(int j=0; j<N; j++){
-        		I.data[i][j] = new Complex(0,0) ;
-        	}
-        }
         for (int i = 0; i < N; i++){
             I.data[i][i] = new Complex(1,0);
         }
@@ -92,6 +110,16 @@ public class ComplexMatrix {
                 C.data[i][j] = A.data[i][j].plus(B.data[i][j]) ;
         return C;
     }
+    
+    public ComplexMatrix plus(Matrix B) {
+        ComplexMatrix A = this;
+        if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
+        ComplexMatrix C = new ComplexMatrix(M, N);
+        for (int i = 0; i < M; i++)
+            for (int j = 0; j < N; j++)
+                C.data[i][j] = A.data[i][j].plus(B.data[i][j]) ;
+        return C;
+    }
 
     // return C = A - B
     public ComplexMatrix minus(ComplexMatrix B) {
@@ -104,26 +132,51 @@ public class ComplexMatrix {
         return C;
     }
 
+    public ComplexMatrix minus(Matrix B) {
+        ComplexMatrix A = this;
+        if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
+        ComplexMatrix C = new ComplexMatrix(M, N);
+        for (int i = 0; i < M; i++)
+            for (int j = 0; j < N; j++)
+                C.data[i][j] = A.data[i][j].minus(B.data[i][j]) ;
+        return C;
+    }
+    
     // does A = B exactly?
     public boolean equals(ComplexMatrix B) {
         ComplexMatrix A = this;
         if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
-                if (A.data[i][j] != B.data[i][j]) return false;
+                if (!A.data[i][j].equals(B.data[i][j])) return false;
         return true;
     }
+    
+//    public boolean equals(Matrix B) {
+//        ComplexMatrix A = this;
+//        if (B.M != A.M || B.N != A.N) throw new RuntimeException("Illegal matrix dimensions.");
+//        for (int i = 0; i < M; i++)
+//            for (int j = 0; j < N; j++)
+//                if (!A.data[i][j].equals(B.data[i][j])) return false;
+//        return true;
+//    }
 
     // return C = A * B
     public ComplexMatrix times(ComplexMatrix B) {
         ComplexMatrix A = this;
         if (A.N != B.M) throw new RuntimeException("Illegal matrix dimensions.");
         ComplexMatrix C = new ComplexMatrix(A.M, B.N);
-        for(int i=0; i<C.M; i++){
-        	for(int j=0; j<C.N; j++){
-        		C.data[i][j] = new Complex(0,0) ;
-        	}
-        }
+        for (int i = 0; i < C.M; i++)
+            for (int j = 0; j < C.N; j++)
+                for (int k = 0; k < A.N; k++)
+                    C.data[i][j] = C.data[i][j].plus(A.data[i][k].times(B.data[k][j]));
+        return C;
+    }
+    
+    public ComplexMatrix times(Matrix B) {
+        ComplexMatrix A = this;
+        if (A.N != B.M) throw new RuntimeException("Illegal matrix dimensions.");
+        ComplexMatrix C = new ComplexMatrix(A.M, B.N);
         for (int i = 0; i < C.M; i++)
             for (int j = 0; j < C.N; j++)
                 for (int k = 0; k < A.N; k++)
@@ -215,7 +268,7 @@ public class ComplexMatrix {
     	ComplexMatrix C = new ComplexMatrix(M, N);
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
-                C.data[i][j] = A.data[i][j] + a ;
+                C.data[i][j] = A.data[i][j].plus(a) ;
         return C;
     }
     
@@ -224,7 +277,7 @@ public class ComplexMatrix {
     	ComplexMatrix C = new ComplexMatrix(M, N);
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
-                C.data[i][j] = A.data[i][j] + a ;
+                C.data[i][j] = A.data[i][j].plus(a) ;
         return C;
     }
     
@@ -233,7 +286,7 @@ public class ComplexMatrix {
     	ComplexMatrix C = new ComplexMatrix(M, N);
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
-                C.data[i][j] = A.data[i][j] - a ;
+                C.data[i][j] = A.data[i][j].minus(a) ;
         return C;
     }
     
@@ -242,7 +295,7 @@ public class ComplexMatrix {
     	ComplexMatrix C = new ComplexMatrix(M, N);
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
-                C.data[i][j] = A.data[i][j] - a ;
+                C.data[i][j] = A.data[i][j].minus(a) ;
         return C;
     }
     
@@ -251,7 +304,7 @@ public class ComplexMatrix {
     	ComplexMatrix C = new ComplexMatrix(M, N);
         for(int i=0; i<M; i++){
         	for(int j=0; j<N; j++){
-        		C.data[i][j] = c ;
+        		C.data[i][j] = new Complex(c, 0.0) ;
         	}
         }
         return C;
@@ -272,18 +325,7 @@ public class ComplexMatrix {
     	ComplexMatrix C = new ComplexMatrix(A.M, A.N);
         for(int i=0; i<C.M; i++){
         	for(int j=0; j<C.N; j++){
-        		C.data[i][j] = A.data[i][j] * B.data[i][j] ;
-        	}
-        }
-        return C;
-    }
-
-    public ComplexMatrix divideElement(ComplexMatrix B){
-    	ComplexMatrix A = this;
-    	ComplexMatrix C = new ComplexMatrix(A.M, A.N);
-        for(int i=0; i<C.M; i++){
-        	for(int j=0; j<C.N; j++){
-        		C.data[i][j] = A.data[i][j] / B.data[i][j] ;
+        		C.data[i][j] = A.data[i][j].times(B.data[i][j]) ;
         	}
         }
         return C;
@@ -294,7 +336,29 @@ public class ComplexMatrix {
     	ComplexMatrix C = new ComplexMatrix(A.M, A.N);
         for(int i=0; i<C.M; i++){
         	for(int j=0; j<C.N; j++){
-        		C.data[i][j] = A.data[i][j] * B.data[i][j] ;
+        		C.data[i][j] = A.data[i][j].times(B.data[i][j]) ;
+        	}
+        }
+        return C;
+    }
+
+    public ComplexMatrix divideElement(ComplexMatrix B){
+    	ComplexMatrix A = this;
+    	ComplexMatrix C = new ComplexMatrix(A.M, A.N);
+        for(int i=0; i<C.M; i++){
+        	for(int j=0; j<C.N; j++){
+        		C.data[i][j] = A.data[i][j].divides(B.data[i][j]) ;
+        	}
+        }
+        return C;
+    }
+    
+    public ComplexMatrix divideElement(Matrix B){
+    	ComplexMatrix A = this;
+    	ComplexMatrix C = new ComplexMatrix(A.M, A.N);
+        for(int i=0; i<C.M; i++){
+        	for(int j=0; j<C.N; j++){
+        		C.data[i][j] = A.data[i][j].divides(B.data[i][j]) ;
         	}
         }
         return C;
@@ -343,6 +407,26 @@ public class ComplexMatrix {
     	for(int i=0; i<M; i++)
     		for(int j=0; j<N; j++)
     			data[i][j] = v[i][j] ;
+    	return new ComplexMatrix(data) ;
+    }
+    
+    public static ComplexMatrix valueOf(Matrix v) {
+    	int M = v.getRowDim() ;
+    	int N = v.getColumnDim() ;
+    	Complex[][] data = new Complex[M][N] ;
+    	for(int i=0; i<M; i++)
+    		for(int j=0; j<N; j++)
+    			data[i][j] = new Complex(v.getElement(i, j), 0.0) ;
+    	return new ComplexMatrix(data) ;
+    }
+    
+    public static ComplexMatrix valueOf(ComplexMatrix v) {
+    	int M = v.getRowDim() ;
+    	int N = v.getColumnDim() ;
+    	Complex[][] data = new Complex[M][N] ;
+    	for(int i=0; i<M; i++)
+    		for(int j=0; j<N; j++)
+    			data[i][j] = v.getElement(i, j) ;
     	return new ComplexMatrix(data) ;
     }
     
@@ -554,14 +638,17 @@ public class ComplexMatrix {
  		Complex[][] d = new Complex[][] {{2.2222, -1.23}, {-5+j, -2.3656565656}} ;
  		ComplexMatrix A = new ComplexMatrix(d) ;
 		A.show();
-		System.out.println(A);
 		
 		// operator overloading
 		ComplexMatrix B = d ;
 		B.show();
 		
-		ComplexMatrix C = new int[][]{{1, 2, 3, 4}, {3, 5, 7, -2}} ;
+		ComplexMatrix C = new int[][]{{1, 2, 3, 4}, {3, 5, 7, -2}, {3, 5, 7, -2}, {3, 5, 7, -2}} ;
 		C.show();
+		
+		ComplexMatrix D = C + 2*identity(C.getRowDim()) ;
+		D.show();
+		
 	}
  	
 }

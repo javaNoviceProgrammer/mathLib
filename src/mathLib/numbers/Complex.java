@@ -151,7 +151,15 @@ public class Complex { // immutable class
 
 	public boolean equals(Complex b) {
 		Complex a = this;
-		if (a.re() == b.re() & a.im() == b.im())
+		if (a.re() == b.re() && a.im() == b.im())
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean equals(double b) {
+		Complex a = this;
+		if (a.im() == 0.0 && a.re() == b)
 			return true;
 		else
 			return false;
@@ -441,6 +449,10 @@ public class Complex { // immutable class
 		System.out.println(v);
 		System.out.println(w);
 		System.out.println(parseComplex("0-i3.3166247903554"));
+		System.out.println(u.equals(w));
+		System.out.println(u.equals(v));
+		System.out.println(u.equals(new Complex(u.re(), u.im())));
+		System.out.println(u.equals(8.1-j));
 	}
 
 }

@@ -1,6 +1,6 @@
 package mathLib.matrix;
 
-public final class Matrix {
+public class Matrix {
 
     int M;             // number of rows
     int N;             // number of columns
@@ -289,6 +289,12 @@ public final class Matrix {
     	}
     	return selectedColumn ;
     }
+    
+    public Matrix inv() {
+    	Jama.Matrix B = toJamaMatrix(this) ;
+    	Jama.Matrix invB = B.inverse() ;
+    	return new Matrix(invB.getArray()) ;
+    }
 
     // ************ operator overloading **********************
 
@@ -518,6 +524,12 @@ public final class Matrix {
 		
 		Matrix C = new int[][]{{1, 2, 3, 4}, {3, 5, 7, -2}} ;
 		System.out.println(C);
+		
+		System.out.println(A.inv());
+		
+		System.out.println(A.inv() * A);
+		System.out.println(identity(2).equals(A.inv() * A));
+		System.out.println(identity(2).equals(A.inv() * A, 1e-10));
 	}
 
 }
