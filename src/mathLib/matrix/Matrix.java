@@ -28,7 +28,6 @@ public class Matrix {
                     this.data[i][j] = data[i][j];
     }
 
-
     // create matrix based on 1d array
     public Matrix(double[] data) {
         M = 1; // default is row matrix
@@ -271,25 +270,31 @@ public class Matrix {
     /**
      * sub-Blocks of the matrix
      */
-
-    public double[] getRow(int row) {
+    
+    public Matrix getRow(int row) {
     	int rowSize = N ;
-    	double[] selectedRow = new double[rowSize] ;
+    	double[][] selectedRow = new double[1][rowSize] ;
     	for(int i=0; i<rowSize; i++) {
-    		selectedRow[i] = data[row][i] ;
+    		selectedRow[0][i] = data[row][i] ;
     	}
-    	return selectedRow ;
+    	return new Matrix(selectedRow) ;
     }
 
-    public double[] getColumn(int column) {
+    public Matrix getColumn(int column) {
     	int columnSize = M ;
-    	double[] selectedColumn = new double[columnSize] ;
+    	double[][] selectedColumn = new double[columnSize][1] ;
     	for(int i=0; i<columnSize; i++) {
-    		selectedColumn[i] = data[i][column] ;
+    		selectedColumn[i][0] = data[i][column] ;
     	}
-    	return selectedColumn ;
+    	return new Matrix(selectedColumn) ;
     }
 
+    /**
+     * inverse of the matrix
+     * 
+     * @return Matrix
+     */
+    
     public Matrix inv() {
     	Jama.Matrix B = toJamaMatrix(this) ;
     	Jama.Matrix invB = B.inverse() ;
@@ -515,21 +520,25 @@ public class Matrix {
  	public static void main(String[] args) {
  		double[][] d = new double[][] {{2.2222, -1.23}, {-5, -2.3656565656}} ;
 		Matrix A = new Matrix(d) ;
-		A.show();
+
 		System.out.println(A);
+		System.out.println(A.getRow(0));
+		System.out.println(A.getRow(1));
+		System.out.println(A.getColumn(0));
+		System.out.println(A.getColumn(1));
 
 		// operator overloading
-		Matrix B = d ;
-		System.out.println(B);
-
-		Matrix C = new int[][]{{1, 2, 3, 4}, {3, 5, 7, -2}} ;
-		System.out.println(C);
-
-		System.out.println(A.inv());
-
-		System.out.println(A.inv() * A);
-		System.out.println(identity(2).equals(A.inv() * A));
-		System.out.println(identity(2).equals(A.inv() * A, 1e-10));
+//		Matrix B = d ;
+//		System.out.println(B);
+//
+//		Matrix C = new int[][]{{1, 2, 3, 4}, {3, 5, 7, -2}} ;
+//		System.out.println(C);
+//
+//		System.out.println(A.inv());
+//
+//		System.out.println(A.inv() * A);
+//		System.out.println(identity(2).equals(A.inv() * A));
+//		System.out.println(identity(2).equals(A.inv() * A, 1e-10));
 	}
 
 }

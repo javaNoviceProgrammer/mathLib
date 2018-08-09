@@ -46,6 +46,10 @@ public class ComplexMath {
 		double im = phaseMinusPiToPi(u) ;
 		return new Complex(re, im) ;
 	}
+	
+	public static Complex log10(Complex u) {
+		return log(u)/Math.log(10.0) ;
+	}
 
 	public static Complex sin(Complex u) {
 		return new Complex(Math.sin(u.re()) * Math.cosh(u.im()), Math.cos(u.re()) * Math.sinh(u.im()));

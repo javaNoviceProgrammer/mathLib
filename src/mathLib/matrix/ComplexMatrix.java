@@ -365,6 +365,28 @@ public class ComplexMatrix {
         }
         return C;
     }
+    
+    /**
+     * sub-Blocks of the matrix
+     */
+
+    public ComplexMatrix getRow(int row) {
+    	int rowSize = N ;
+    	Complex[][] selectedRow = new Complex[1][rowSize] ;
+    	for(int i=0; i<rowSize; i++) {
+    		selectedRow[0][i] = data[row][i] ;
+    	}
+    	return new ComplexMatrix(selectedRow) ;
+    }
+
+    public ComplexMatrix getColumn(int column) {
+    	int columnSize = M ;
+    	Complex[][] selectedColumn = new Complex[columnSize][1] ;
+    	for(int i=0; i<columnSize; i++) {
+    		selectedColumn[i][0] = data[i][column] ;
+    	}
+    	return new ComplexMatrix(selectedColumn) ;
+    }
 
     // ************ operator overloading **********************
 
@@ -644,7 +666,7 @@ public class ComplexMatrix {
  		return this.times(-1) ;
  	}
 
- 	// for test
+ 	// for test ************************************
  	public static void main(String[] args) {
  		Complex[][] d = new Complex[][] {{1, 1}, {-5+j, 1}} ;
  		ComplexMatrix A = new ComplexMatrix(d) ;
@@ -664,8 +686,15 @@ public class ComplexMatrix {
  		Matrix E = new Matrix(f) ;
 		E.show();
 
-		(E*A).show();
-		(A*E).show();
+//		(E*A).show();
+//		(A*E).show() ;
+		
+//		E.getColumn(0).show();
+//		E.getColumn(1).show();
+//		E.getRow(0).show(); 
+//		E.getRow(1).show();
+		
+		(A*E.getRow(0).transpose()).show();
 
 	}
 
