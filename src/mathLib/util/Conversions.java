@@ -134,5 +134,83 @@ public class Conversions {
 		}
 		return var1 ;
 	}
+	
+	// convert time
+	
+	public static double time(double val, Units from, Units to) {
+		double var1 = getTimeScale(from) ;
+		double var2 = getTimeScale(to) ;
+		return (var1/var2)*val ;
+	}
+	
+	private static double getTimeScale(Units unit) {
+		double scale = 1.0 ;
+		switch (unit) {
+		case fsec:
+			scale = 1e-15 ;
+			break;
+		case psec:
+			scale = 1e-12 ;
+			break ;
+		case nsec:
+			scale = 1e-9 ;
+			break ;
+		case usec:
+			scale = 1e-6 ;
+			break ;
+		case msec:
+			scale = 1e-3 ;
+			break ;
+		case sec:
+			scale = 1.0 ;
+			break;
+		case minute:
+			scale = 60.0 ;
+			break ;
+		case hour:
+			scale = 60.0*60.0 ;
+			break ;
+		case day:
+			scale = 24.0*60.0*60.0 ;
+			break ;
+		case year:
+			scale = 365.0*24.0*60.0*60.0 ;
+		default:
+			throw new IllegalArgumentException("Must enter a unit of Time") ;
+		}
+		return scale ;
+	}
+	
+	// convert frequency
+	
+	public static double freq(double val, Units from, Units to) {
+		double var1 = getFreqScale(from) ;
+		double var2 = getFreqScale(to) ;
+		return (var1/var2)*val ;
+	}
+	
+	private static double getFreqScale(Units unit) {
+		double scale = 1.0 ;
+		switch (unit) {
+		case THz:
+			scale = 1e12 ;
+			break;
+		case GHz:
+			scale = 1e9 ;
+			break ;
+		case MHz:
+			scale = 1e6 ;
+			break ;
+		case KHz:
+			scale = 1e3 ;
+			break ;
+		case Hz:
+			scale = 1.0 ;
+			break ;
+		default:
+			throw new IllegalArgumentException("Must enter a unit of Frequency") ;
+		}
+		return scale ;
+	}
 
 }

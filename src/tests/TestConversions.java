@@ -4,9 +4,13 @@ import mathLib.util.Conversions;
 import mathLib.util.Units;
 
 public class TestConversions {
-	// for test
+
 	public static void main(String[] args) {
+		// convert optical power
 		double u = Conversions.opticalPower(5.0, Units.dBm, Units.mW) ;
 		System.out.println(u);
+		// convert time
+		double v = Conversions.time(3600, Units.minute, Units.day) ;
+		System.out.println(v);
 	}
 }

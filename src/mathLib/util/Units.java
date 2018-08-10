@@ -12,9 +12,22 @@ public enum Units {
 	mile,
 	yard,
 	// time
+	fsec,
+	psec,
 	nsec, 
 	usec, 
 	msec,
+	sec,
+	minute,
+	hour,
+	day,
+	year,
+	// frequency
+	THz,
+	GHz,
+	MHz,
+	KHz,
+	Hz,
 	// waveguide loss
 	dBperCm,
 	dBperMeter,
