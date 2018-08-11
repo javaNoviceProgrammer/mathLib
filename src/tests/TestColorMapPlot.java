@@ -10,11 +10,11 @@ import static edu.uta.futureye.function.FMath.*;
 
 public class TestColorMapPlot {
 	public static void main(String[] args) {
-		double[] xVal = MathUtils.linspace(-5*Math.PI, 5*Math.PI, 500) ;
-		double[] yVal = MathUtils.linspace(0.0, 10.0, 500) ;
+		double[] xVal = MathUtils.linspace(-5*Math.PI, 5*Math.PI, 1000) ;
+		double[] yVal = MathUtils.linspace(0.0, 10.0, 1000) ;
 		MeshGrid grid = new MeshGrid(xVal, yVal) ;
 		double[][] fVal = new double[yVal.length][xVal.length] ;
-		MathFunc f = sin(x)*y ;
+		MathFunc f = sin(x)*cos(y) ;
 		for(int i=0; i<yVal.length; i++) {
 			for(int j=0; j<xVal.length; j++) {
 				fVal[i][j] = f.apply(grid.getX(i, j), grid.getY(i, j)) ;
