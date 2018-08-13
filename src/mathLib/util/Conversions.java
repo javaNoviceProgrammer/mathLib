@@ -212,5 +212,34 @@ public class Conversions {
 		}
 		return scale ;
 	}
+	
+	// convert time
+	
+	public static double wgLoss(double val, Units from, Units to) {
+		double var1 = getTimeScale(from) ;
+		double var2 = getTimeScale(to) ;
+		return (var1/var2)*val ;
+	}
+	
+	private static double getWgLossScale(Units unit) {
+		double scale = 1.0 ;
+		switch (unit) {
+		case perMeter:
+			scale = 1 ;
+			break;
+		case perCm:
+			scale = 1 ;
+			break ;
+		case dBperCm:
+			scale = 1 ;
+			break ;
+		case dBperMeter:
+			scale = 1 ;
+			break ;
+		default:
+			throw new IllegalArgumentException("Must enter a unit of Frequency") ;
+		}
+		return scale ;
+	}
 
 }
