@@ -1,15 +1,15 @@
 package mathLib.util;
 
 public class Conversions {
-	
+
 	// convert angle
-	
+
 	public static double angle(double val, Units from, Units to) {
 		double var1 = getAngleScale(from) ;
 		double var2 = getAngleScale(to) ;
 		return (var1/var2)*val ;
 	}
-	
+
 	private static double getAngleScale(Units unit) {
 		double scale = 1.0 ;
 		switch (unit) {
@@ -26,13 +26,13 @@ public class Conversions {
 	}
 
 	// convert length
-	
+
 	public static double length(double val, Units from, Units to) {
 		double var1 = getLengthScale(from) ;
 		double var2 = getLengthScale(to) ;
 		return (var1/var2)*val ;
 	}
-	
+
 	private static double getLengthScale(Units unit) {
 		double scale = 1.0 ;
 		switch (unit) {
@@ -70,13 +70,13 @@ public class Conversions {
 	}
 
 	// convert weight
-	
+
 	public static double weight(double val, Units from, Units to) {
 		double var1 = getWeightScale(from) ;
 		double var2 = getWeightScale(to) ;
 		return (var1/var2)*val ;
 	}
-	
+
 	private static double getWeightScale(Units unit) {
 		double scale = 1.0 ;
 		switch (unit) {
@@ -100,9 +100,9 @@ public class Conversions {
 		}
 		return scale ;
 	}
-	
+
 	// convert optical power
-	
+
 	public static double opticalPower(double val, Units from, Units to) {
 		double var1 = to_mW(val, from) ;
 		if(to == Units.mW)
@@ -115,12 +115,12 @@ public class Conversions {
 			throw new IllegalArgumentException("Must enter a unit of Optical Power") ;
 		}
 	}
-	
+
 	private static double to_mW(double val, Units unit) {
 		double var1 = val ;
 		switch (unit) {
 		case mW:
-			if(val<0) throw new IllegalArgumentException("Must enter a positive number") ; 
+			if(val<0) throw new IllegalArgumentException("Must enter a positive number") ;
 			var1 = val ;
 			break;
 		case dBm:
@@ -134,15 +134,15 @@ public class Conversions {
 		}
 		return var1 ;
 	}
-	
+
 	// convert time
-	
+
 	public static double time(double val, Units from, Units to) {
 		double var1 = getTimeScale(from) ;
 		double var2 = getTimeScale(to) ;
 		return (var1/var2)*val ;
 	}
-	
+
 	private static double getTimeScale(Units unit) {
 		double scale = 1.0 ;
 		switch (unit) {
@@ -180,15 +180,15 @@ public class Conversions {
 		}
 		return scale ;
 	}
-	
+
 	// convert frequency
-	
+
 	public static double freq(double val, Units from, Units to) {
 		double var1 = getFreqScale(from) ;
 		double var2 = getFreqScale(to) ;
 		return (var1/var2)*val ;
 	}
-	
+
 	private static double getFreqScale(Units unit) {
 		double scale = 1.0 ;
 		switch (unit) {
@@ -212,15 +212,15 @@ public class Conversions {
 		}
 		return scale ;
 	}
-	
+
 	// convert time
-	
+
 	public static double wgLoss(double val, Units from, Units to) {
 		double var1 = getTimeScale(from) ;
 		double var2 = getTimeScale(to) ;
 		return (var1/var2)*val ;
 	}
-	
+
 	private static double getWgLossScale(Units unit) {
 		double scale = 1.0 ;
 		switch (unit) {
