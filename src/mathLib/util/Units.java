@@ -14,8 +14,8 @@ public enum Units {
 	// time
 	fsec,
 	psec,
-	nsec, 
-	usec, 
+	nsec,
+	usec,
 	msec,
 	sec,
 	minute,
@@ -29,6 +29,7 @@ public enum Units {
 	KHz,
 	Hz,
 	// waveguide loss
+	dBperMiliMeter,
 	dBperCm,
 	dBperMeter,
 	perCm,

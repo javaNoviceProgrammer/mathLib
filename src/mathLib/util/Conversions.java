@@ -216,8 +216,8 @@ public class Conversions {
 	// convert time
 
 	public static double wgLoss(double val, Units from, Units to) {
-		double var1 = getTimeScale(from) ;
-		double var2 = getTimeScale(to) ;
+		double var1 = getWgLossScale(from) ;
+		double var2 = getWgLossScale(to) ;
 		return (var1/var2)*val ;
 	}
 
@@ -225,19 +225,22 @@ public class Conversions {
 		double scale = 1.0 ;
 		switch (unit) {
 		case perMeter:
-			scale = 1 ;
+			scale = 1.0 ;
 			break;
 		case perCm:
-			scale = 1 ;
+			scale = 100.0 ;
+			break ;
+		case dBperMiliMeter:
+			scale = 100.0*Math.log(10.0) ;
 			break ;
 		case dBperCm:
-			scale = 1 ;
+			scale = 10.0*Math.log(10.0) ;
 			break ;
 		case dBperMeter:
-			scale = 1 ;
+			scale = Math.log(10.0)/10.0 ;
 			break ;
 		default:
-			throw new IllegalArgumentException("Must enter a unit of Frequency") ;
+			throw new IllegalArgumentException("Must enter a unit of WG Loss") ;
 		}
 		return scale ;
 	}

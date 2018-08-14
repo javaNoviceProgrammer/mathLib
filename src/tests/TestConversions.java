@@ -12,5 +12,8 @@ public class TestConversions {
 		// convert time
 		double v = Conversions.time(3600, Units.minute, Units.day) ;
 		System.out.println(v);
+		// convert wg loss
+		double w = Conversions.wgLoss(1.0, Units.perMeter, Units.dBperMeter) ;
+		System.out.println(w);
 	}
 }
