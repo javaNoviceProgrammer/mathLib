@@ -3,7 +3,7 @@ package tests;
 import static edu.uta.futureye.function.FMath.C;
 import static edu.uta.futureye.function.FMath.s;
 
-import mathLib.sfg.SFG;
+import mathLib.sfg.symbolic.SFG;
 import mathLib.util.StringUtils;
 
 public class TestSFG {

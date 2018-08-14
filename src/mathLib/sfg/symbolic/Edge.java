@@ -1,4 +1,4 @@
-package mathLib.sfg;
+package mathLib.sfg.symbolic;
 
 import edu.uta.futureye.function.intf.MathFunc;
 
