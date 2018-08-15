@@ -87,11 +87,41 @@ public class DiffOperator2D {
 		return new Matrix(DxxPlusDyy) ;
 	}
 	
+	public double[][] getDx() {
+		return Dx ;
+	}
 	
+	public Matrix getDxMatrix() {
+		return Dx ;
+	}
+	
+	public double[][] getDxx() {
+		return Dxx ;
+	}
+	
+	public Matrix getDxxMatrix() {
+		return Dxx ;
+	}
+	
+	public double[][] getDy() {
+		return Dy ;
+	}
+	
+	public Matrix getDyMatrix() {
+		return Dy ;
+	}
+	
+	public double[][] getDyy() {
+		return Dyy ;
+	}
+	
+	public Matrix getDyyMatrix() {
+		return Dyy ;
+	}
 	
 	// for test
 	public static void main(String[] args) {
-		DiffOperator2D diff = new DiffOperator2D(400/20, 220/20, 1.0, 1.0) ;
+		DiffOperator2D diff = new DiffOperator2D(400/15, 220/15, 1.0, 1.0) ;
 //		System.out.println(diff.getDxxPlusDyyMatrix());
 		Timer timer = new Timer() ;
 		timer.start();
