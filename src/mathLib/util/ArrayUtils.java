@@ -1,6 +1,6 @@
 package mathLib.util;
 
-import mathLib.matrix.ComplexMatrix;
+import mathLib.matrix.Matrix;
 import mathLib.numbers.Complex;
 
 public class ArrayUtils {
@@ -16,11 +16,27 @@ public class ArrayUtils {
 		}
 		return dataComplex ;
 	}
-
+	
+	public static double[][] reShape(double[] arg, int row, int column) {
+		int nx = row ;
+		int ny = column ;
+		if(nx*ny != arg.length)
+			throw new IllegalArgumentException("Dimensions don't agree!") ;
+		double[][] var0 = new double[nx][ny] ;
+		for(int i=0; i<nx; i++) {
+			for(int j=0; j<ny; j++) {
+				var0[i][j] = arg[i*ny+j] ;
+			}
+		}
+		return var0 ;
+	}
+	
+	
 	// for test
 	public static void main(String[] args) {
-		double[][] d = {{1.0,2.0,3.0}, {-2.1, 7.0, 0.0}, {-11.0, -10.0, -9.0}} ;
-		new ComplexMatrix(d).show();
+		double[] arg = MathUtils.linspace(0, 1, 10) ;
+		Matrix mat = reShape(arg, 10, 1) ;
+		System.out.println(mat);
 	}
 
 }
