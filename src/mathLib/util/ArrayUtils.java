@@ -31,7 +31,6 @@ public class ArrayUtils {
 		return var0 ;
 	}
 	
-	
 	// for test
 	public static void main(String[] args) {
 		double[] arg = MathUtils.linspace(0, 1, 10) ;
