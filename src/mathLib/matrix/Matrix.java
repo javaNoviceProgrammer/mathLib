@@ -1,5 +1,7 @@
 package mathLib.matrix;
 
+import mathLib.geometry.algebra.Vector;
+
 public class Matrix {
 
     int M;             // number of rows
@@ -306,6 +308,10 @@ public class Matrix {
     public static Matrix valueOf(double[][] v) {
     	return new Matrix(v) ;
     }
+    
+    public static Matrix valueOf(double[] v) {
+    	return new Matrix(v) ;
+    }
 
     public static Matrix valueOf(int[][] v) {
     	int M = v.length ;
@@ -314,6 +320,14 @@ public class Matrix {
     	for(int i=0; i<M; i++)
     		for(int j=0; j<N; j++)
     			data[i][j] = v[i][j] ;
+    	return new Matrix(data) ;
+    }
+    
+    public static Matrix valueOf(int[] v) {
+    	int M = v.length ;
+    	double[] data = new double[M] ;
+    	for(int i=0; i<M; i++)
+    			data[i] = (double) v[i] ;
     	return new Matrix(data) ;
     }
 
@@ -326,6 +340,14 @@ public class Matrix {
     			data[i][j] = v[i][j] ;
     	return new Matrix(data) ;
     }
+    
+    public static Matrix valueOf(float[] v) {
+    	int M = v.length ;
+    	double[] data = new double[M] ;
+    	for(int i=0; i<M; i++)
+    			data[i] = (double) v[i] ;
+    	return new Matrix(data) ;
+    }
 
     public static Matrix valueOf(long[][] v) {
     	int M = v.length ;
@@ -334,6 +356,14 @@ public class Matrix {
     	for(int i=0; i<M; i++)
     		for(int j=0; j<N; j++)
     			data[i][j] = v[i][j] ;
+    	return new Matrix(data) ;
+    }
+    
+    public static Matrix valueOf(long[] v) {
+    	int M = v.length ;
+    	double[] data = new double[M] ;
+    	for(int i=0; i<M; i++)
+    			data[i] = (double) v[i] ;
     	return new Matrix(data) ;
     }
 
@@ -428,6 +458,10 @@ public class Matrix {
  	 */
  	public Matrix multiply(Matrix v) {
  		return this.times(v);
+ 	}
+ 	
+ 	public Matrix multiply(Vector v) {
+ 		return this.times(v.asMatrix());
  	}
 
  	public Matrix multiplyRev(Matrix v) {
