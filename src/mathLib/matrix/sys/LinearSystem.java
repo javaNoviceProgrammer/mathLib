@@ -1,4 +1,9 @@
-package mathLib.matrix;
+package mathLib.matrix.sys;
+
+/**
+ * Solving A*x = y ;
+ *
+ */
 
 public class LinearSystem {
 

@@ -3,6 +3,8 @@ package mathLib.matrix.powerIter.methods;
 import mathLib.matrix.powerIter.EigenValueVector;
 import mathLib.matrix.powerIter.LUDecomposition;
 import mathLib.matrix.powerIter.PowerIterationMatrix;
+import mathLib.numbers.Complex;
+import mathLib.numbers.ComplexMath;
 
 /*
  * Returns the smallest Eigenvalue
@@ -10,7 +12,7 @@ import mathLib.matrix.powerIter.PowerIterationMatrix;
 public class InverseIteration implements PowerIteration {
 
 	@Override
-	public EigenValueVector solve(PowerIterationMatrix matrix, double[] initialEigenVector,
+	public EigenValueVector solve(PowerIterationMatrix matrix, Complex[] initialEigenVector,
 			double error) {
 		/**
 		 * Algorithm:
@@ -22,8 +24,8 @@ public class InverseIteration implements PowerIteration {
 		 * Repeat 2 to 4 while li - li-1 < E 
 		 * OBS.: Xi is an eigenvector from eigenVector li. Yi is a vector.
 		 */
-		double lastEigenValue;
-		double newEigenValue = 0;
+		Complex lastEigenValue;
+		Complex newEigenValue = 0;
 		int i = 0;
 
 		// Step 1:
@@ -60,13 +62,13 @@ public class InverseIteration implements PowerIteration {
 			// li = (T(Xi) * M^(-1) * Xi) / (T(Xi) * Xi => li = (T(Xi) * yi+1) /
 			// (T(Xi) * Xi)
 			PowerIterationMatrix transposeMatrixEigenVector = evectorX.transpose();
-			double evalueNumerator = transposeMatrixEigenVector.times(vectorY).get(
+			Complex evalueNumerator = transposeMatrixEigenVector.times(vectorY).get(
 					0, 0);
-			double avalorDenominador = transposeMatrixEigenVector.times(evectorX)
+			Complex avalorDenominador = transposeMatrixEigenVector.times(evectorX)
 					.get(0, 0);
 			newEigenValue = evalueNumerator / avalorDenominador;
 			i++;
-		} while (i == 1 || Math.abs(newEigenValue - lastEigenValue) > error);
+		} while (i == 1 || ComplexMath.abs(newEigenValue - lastEigenValue) > error);
 
 		EigenValueVector eigenValueVector = new EigenValueVector();
 		eigenValueVector.eigenValue = 1.0 / newEigenValue;
@@ -80,13 +82,6 @@ public class InverseIteration implements PowerIteration {
 		System.out.println("Eigen Value:" + ev.eigenValue);
 		System.out.println("Eigen Vector:");		
 		PowerIterationMatrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
-		
-		System.out.println("Parametrized Results");
-		System.out.println(ev.eigenVector[0]/ev.eigenVector[2]);
-		System.out.println(ev.eigenVector[1]/ev.eigenVector[2]);
-		System.out.println(ev.eigenVector[2]/ev.eigenVector[2]);
-		
-
 	}
 
 }

@@ -1,7 +1,11 @@
 package mathLib.matrix.powerIter.methods;
 
+import Jama.Matrix;
+import mathLib.matrix.ComplexMatrix;
 import mathLib.matrix.powerIter.EigenValueVector;
 import mathLib.matrix.powerIter.PowerIterationMatrix;
+import mathLib.numbers.Complex;
+import mathLib.numbers.ComplexMath;
 
 /**
  * Regular Iteration find the largest EigenValue.
@@ -15,10 +19,10 @@ import mathLib.matrix.powerIter.PowerIterationMatrix;
 public class RegularIteration implements PowerIteration {
 
 	@Override
-	public EigenValueVector solve(PowerIterationMatrix matrix, double[] initialEigenVector, double error) {
+	public EigenValueVector solve(PowerIterationMatrix matrix, Complex[] initialEigenVector, double error) {
 
-		double lastEigenValue;
-		double newEigenValue = 0;
+		Complex lastEigenValue;
+		Complex newEigenValue = 0;
 		int i = 0;
 
 		// Step 1:
@@ -33,13 +37,13 @@ public class RegularIteration implements PowerIteration {
 			eigenVector = PowerIterationMatrix.normalize(vetorY);
 			// Step 4:
 			PowerIterationMatrix matrixTranspostaAvetor = eigenVector.transpose();
-			double avalorNumerador = matrixTranspostaAvetor.times(matrix)
+			Complex avalorNumerador = matrixTranspostaAvetor.times(matrix)
 					.times(eigenVector).get(0, 0);
-			double avalorDenominador = matrixTranspostaAvetor.times(eigenVector)
+			Complex avalorDenominador = matrixTranspostaAvetor.times(eigenVector)
 					.get(0, 0);
 			newEigenValue = avalorNumerador / avalorDenominador;
 			i++;
-		} while (i == 1 || Math.abs(newEigenValue - lastEigenValue) > error);
+		} while (i == 1 || ComplexMath.abs(newEigenValue - lastEigenValue) > error);
 
 		EigenValueVector eigenValueVector = new EigenValueVector();
 		eigenValueVector.eigenValue = newEigenValue;
@@ -52,7 +56,8 @@ public class RegularIteration implements PowerIteration {
 		System.out.println("Regular Iteration find the largest EigenValue.");
 		System.out.println("Eigen Value:" + ev.eigenValue);
 		System.out.println("Eigen Vector:");
-		PowerIterationMatrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
+		for(int i=0; i<ev.eigenVector.length; i++)
+			System.out.print(ev.eigenVector[i] + "   ");
 		
 	}
 }

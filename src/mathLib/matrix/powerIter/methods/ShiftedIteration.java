@@ -2,13 +2,14 @@ package mathLib.matrix.powerIter.methods;
 
 import mathLib.matrix.powerIter.EigenValueVector;
 import mathLib.matrix.powerIter.PowerIterationMatrix;
+import mathLib.numbers.Complex;
 
 public class ShiftedIteration implements PowerIteration {
 	
 	public double estimatedValue = 7;
 
 	@Override
-	public EigenValueVector solve(PowerIterationMatrix matrix, double[] initialEigenVector, double error) {
+	public EigenValueVector solve(PowerIterationMatrix matrix, Complex[] initialEigenVector, double error) {
 		/**
 		 * Shifted Iteration Algorithm:
 		 * 1) A' = A - u * I
@@ -20,7 +21,7 @@ public class ShiftedIteration implements PowerIteration {
 		PowerIterationMatrix displacementMatrix = matrix.minus(changedIdentityMatrix);
 		PowerIteration inverse = new InverseIteration();
 		EigenValueVector eigenValueVector = inverse.solve(displacementMatrix, initialEigenVector, error);
-		eigenValueVector.eigenValue += estimatedValue;
+		eigenValueVector.eigenValue = eigenValueVector.eigenValue + estimatedValue;
 		return eigenValueVector;
 	}
 
@@ -28,13 +29,8 @@ public class ShiftedIteration implements PowerIteration {
 	public void printCommandLine(EigenValueVector ev) {
 		System.out.println("Shifted Iteration.");
 		System.out.println("Eigen Value:" + ev.eigenValue);
-		System.out.println("Eigen Vector:");		
+		System.out.println("Eigen Vector:");
 		PowerIterationMatrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
-		
-		System.out.println("Parametrized Results");
-		System.out.println(ev.eigenVector[0]/ev.eigenVector[2]);
-		System.out.println(ev.eigenVector[1]/ev.eigenVector[2]);
-		System.out.println(ev.eigenVector[2]/ev.eigenVector[2]);
 		
 	}
 

@@ -1,6 +1,8 @@
 package mathLib.matrix.powerIter;
 
+import mathLib.numbers.Complex;
+
 public class EigenValueVector {
-	public double eigenValue;
-	public double[] eigenVector;
+	public Complex eigenValue;
+	public Complex[] eigenVector;
 }

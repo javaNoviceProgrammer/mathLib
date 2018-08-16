@@ -8,6 +8,9 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import mathLib.numbers.Complex;
+import mathLib.numbers.ComplexMath;
+
 /*
  * This class is based on Jama = Java Matrix Class 
  * The Java Matrix Class provides the fundamental operations of numerical
@@ -30,7 +33,7 @@ public class PowerIterationMatrix {
 	 * 
 	 * @serial internal array storage.
 	 */
-	private double[][] A;
+	private Complex[][] A;
 
 	/**
 	 * Row and column dimensions.
@@ -56,7 +59,7 @@ public class PowerIterationMatrix {
 	public PowerIterationMatrix(int m, int n) {
 		this.m = m;
 		this.n = n;
-		A = new double[m][n];
+		A = new Complex[m][n];
 	}
 
 	/**
@@ -73,7 +76,18 @@ public class PowerIterationMatrix {
 	public PowerIterationMatrix(int m, int n, double s) {
 		this.m = m;
 		this.n = n;
-		A = new double[m][n];
+		A = new Complex[m][n];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				A[i][j] = new Complex(s, 0.0);
+			}
+		}
+	}
+	
+	public PowerIterationMatrix(int m, int n, Complex s) {
+		this.m = m;
+		this.n = n;
+		A = new Complex[m][n];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				A[i][j] = s;
@@ -100,6 +114,24 @@ public class PowerIterationMatrix {
 						"All rows must have the same length.");
 			}
 		}
+		Complex[][] data = new Complex[m][n] ;
+		for(int i=0; i<m; i++)
+			for(int j=0; j<n; j++)
+				data[i][j] = new Complex(A[i][j], 0.0) ;
+		
+		this.A = data;
+	}
+	
+	public PowerIterationMatrix(Complex[][] A) {
+		m = A.length;
+		n = A[0].length;
+		for (int i = 0; i < m; i++) {
+			if (A[i].length != n) {
+				throw new IllegalArgumentException(
+						"All rows must have the same length.");
+			}
+		}
+		
 		this.A = A;
 	}
 
@@ -115,9 +147,22 @@ public class PowerIterationMatrix {
 	 */
 
 	public PowerIterationMatrix(double[][] A, int m, int n) {
-		this.A = A;
 		this.m = m;
 		this.n = n;
+		Complex[][] data = new Complex[m][n] ;
+		for(int i=0; i<m; i++)
+			for(int j=0; j<n; j++)
+				data[i][j] = new Complex(A[i][j], 0.0) ;
+		
+		this.A = data;
+
+	}
+	
+	public PowerIterationMatrix(Complex[][] A, int m, int n) {
+		this.m = m;
+		this.n = n;
+		this.A = A;
+
 	}
 
 	/**
@@ -132,6 +177,21 @@ public class PowerIterationMatrix {
 	 *                Array length must be a multiple of m.
 	 */
 
+	public PowerIterationMatrix(Complex vals[], int m) {
+		this.m = m;
+		n = (m != 0 ? vals.length / m : 0);
+		if (m * n != vals.length) {
+			throw new IllegalArgumentException(
+					"Array length must be a multiple of m.");
+		}
+		A = new Complex[m][n];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				A[i][j] = vals[i + j * m];
+			}
+		}
+	}
+	
 	public PowerIterationMatrix(double vals[], int m) {
 		this.m = m;
 		n = (m != 0 ? vals.length / m : 0);
@@ -139,10 +199,10 @@ public class PowerIterationMatrix {
 			throw new IllegalArgumentException(
 					"Array length must be a multiple of m.");
 		}
-		A = new double[m][n];
+		A = new Complex[m][n];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				A[i][j] = vals[i + j * m];
+				A[i][j] = new Complex(vals[i + j * m], 0.0);
 			}
 		}
 	}
@@ -164,7 +224,24 @@ public class PowerIterationMatrix {
 		int m = A.length;
 		int n = A[0].length;
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
+		for (int i = 0; i < m; i++) {
+			if (A[i].length != n) {
+				throw new IllegalArgumentException(
+						"All rows must have the same length.");
+			}
+			for (int j = 0; j < n; j++) {
+				C[i][j] = new Complex(A[i][j], 0.0);
+			}
+		}
+		return X;
+	}
+	
+	public static PowerIterationMatrix constructWithCopy(Complex[][] A) {
+		int m = A.length;
+		int n = A[0].length;
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			if (A[i].length != n) {
 				throw new IllegalArgumentException(
@@ -183,7 +260,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix copy() {
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = A[i][j];
@@ -206,7 +283,7 @@ public class PowerIterationMatrix {
 	 * @return Pointer to the two-dimensional array of matrix elements.
 	 */
 
-	public double[][] getArray() {
+	public Complex[][] getArray() {
 		return A;
 	}
 
@@ -216,8 +293,8 @@ public class PowerIterationMatrix {
 	 * @return Two-dimensional array copy of matrix elements.
 	 */
 
-	public double[][] getArrayCopy() {
-		double[][] C = new double[m][n];
+	public Complex[][] getArrayCopy() {
+		Complex[][] C = new Complex[m][n];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = A[i][j];
@@ -232,8 +309,8 @@ public class PowerIterationMatrix {
 	 * @return Matrix elements packed in a one-dimensional array by columns.
 	 */
 
-	public double[] getColumnPackedCopy() {
-		double[] vals = new double[m * n];
+	public Complex[] getColumnPackedCopy() {
+		Complex[] vals = new Complex[m * n];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				vals[i + j * m] = A[i][j];
@@ -248,8 +325,8 @@ public class PowerIterationMatrix {
 	 * @return Matrix elements packed in a one-dimensional array by rows.
 	 */
 
-	public double[] getRowPackedCopy() {
-		double[] vals = new double[m * n];
+	public Complex[] getRowPackedCopy() {
+		Complex[] vals = new Complex[m * n];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				vals[i * n + j] = A[i][j];
@@ -289,7 +366,7 @@ public class PowerIterationMatrix {
 	 * @exception ArrayIndexOutOfBoundsException
 	 */
 
-	public double get(int i, int j) {
+	public Complex get(int i, int j) {
 		return A[i][j];
 	}
 
@@ -311,7 +388,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix getMatrix(int i0, int i1, int j0, int j1) {
 		PowerIterationMatrix X = new PowerIterationMatrix(i1 - i0 + 1, j1 - j0 + 1);
-		double[][] B = X.getArray();
+		Complex[][] B = X.getArray();
 		try {
 			for (int i = i0; i <= i1; i++) {
 				for (int j = j0; j <= j1; j++) {
@@ -338,7 +415,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix getMatrix(int[] r, int[] c) {
 		PowerIterationMatrix X = new PowerIterationMatrix(r.length, c.length);
-		double[][] B = X.getArray();
+		Complex[][] B = X.getArray();
 		try {
 			for (int i = 0; i < r.length; i++) {
 				for (int j = 0; j < c.length; j++) {
@@ -367,7 +444,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix getMatrix(int i0, int i1, int[] c) {
 		PowerIterationMatrix X = new PowerIterationMatrix(i1 - i0 + 1, c.length);
-		double[][] B = X.getArray();
+		Complex[][] B = X.getArray();
 		try {
 			for (int i = i0; i <= i1; i++) {
 				for (int j = 0; j < c.length; j++) {
@@ -396,7 +473,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix getMatrix(int[] r, int j0, int j1) {
 		PowerIterationMatrix X = new PowerIterationMatrix(r.length, j1 - j0 + 1);
-		double[][] B = X.getArray();
+		Complex[][] B = X.getArray();
 		try {
 			for (int i = 0; i < r.length; i++) {
 				for (int j = j0; j <= j1; j++) {
@@ -422,6 +499,10 @@ public class PowerIterationMatrix {
 	 */
 
 	public void set(int i, int j, double s) {
+		A[i][j] = new Complex(s, 0.0);
+	}
+	
+	public void set(int i, int j, Complex s) {
 		A[i][j] = s;
 	}
 
@@ -541,7 +622,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix transpose() {
 		PowerIterationMatrix X = new PowerIterationMatrix(n, m);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[j][i] = A[i][j];
@@ -561,7 +642,7 @@ public class PowerIterationMatrix {
 		for (int j = 0; j < n; j++) {
 			double s = 0;
 			for (int i = 0; i < m; i++) {
-				s += Math.abs(A[i][j]);
+				s += ComplexMath.abs(A[i][j]);
 			}
 			f = Math.max(f, s);
 		}
@@ -576,7 +657,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix uminus() {
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = -A[i][j];
@@ -596,7 +677,7 @@ public class PowerIterationMatrix {
 	public PowerIterationMatrix plus(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = A[i][j] + B.A[i][j];
@@ -634,7 +715,7 @@ public class PowerIterationMatrix {
 	public PowerIterationMatrix minus(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = A[i][j] - B.A[i][j];
@@ -672,7 +753,7 @@ public class PowerIterationMatrix {
 	public PowerIterationMatrix arrayTimes(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = A[i][j] * B.A[i][j];
@@ -710,7 +791,7 @@ public class PowerIterationMatrix {
 	public PowerIterationMatrix arrayRightDivide(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = A[i][j] / B.A[i][j];
@@ -748,7 +829,7 @@ public class PowerIterationMatrix {
 	public PowerIterationMatrix arrayLeftDivide(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = B.A[i][j] / A[i][j];
@@ -785,7 +866,7 @@ public class PowerIterationMatrix {
 
 	public PowerIterationMatrix times(double s) {
 		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
-		double[][] C = X.getArray();
+		Complex[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				C[i][j] = s * A[i][j];
@@ -827,17 +908,17 @@ public class PowerIterationMatrix {
 					"Matrix inner dimensions must agree.");
 		}
 		PowerIterationMatrix X = new PowerIterationMatrix(m, B.n);
-		double[][] C = X.getArray();
-		double[] Bcolj = new double[n];
+		Complex[][] C = X.getArray();
+		Complex[] Bcolj = new Complex[n];
 		for (int j = 0; j < B.n; j++) {
 			for (int k = 0; k < n; k++) {
 				Bcolj[k] = B.A[k][j];
 			}
 			for (int i = 0; i < m; i++) {
-				double[] Arowi = A[i];
-				double s = 0;
+				Complex[] Arowi = A[i];
+				Complex s = 0;
 				for (int k = 0; k < n; k++) {
-					s += Arowi[k] * Bcolj[k];
+					s = s + Arowi[k] * Bcolj[k];
 				}
 				C[i][j] = s;
 			}
@@ -851,10 +932,10 @@ public class PowerIterationMatrix {
 	 * @return sum of the diagonal elements.
 	 */
 
-	public double trace() {
-		double t = 0;
+	public Complex trace() {
+		Complex t = 0;
 		for (int i = 0; i < Math.min(m, n); i++) {
-			t += A[i][i];
+			t = t + A[i][i];
 		}
 		return t;
 	}
@@ -871,7 +952,7 @@ public class PowerIterationMatrix {
 
 	public static PowerIterationMatrix random(int m, int n) {
 		PowerIterationMatrix A = new PowerIterationMatrix(m, n);
-		double[][] X = A.getArray();
+		Complex[][] X = A.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				X[i][j] = Math.random();
@@ -892,10 +973,13 @@ public class PowerIterationMatrix {
 
 	public static PowerIterationMatrix identity(int m, int n) {
 		PowerIterationMatrix A = new PowerIterationMatrix(m, n);
-		double[][] X = A.getArray();
+		Complex[][] X = A.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				X[i][j] = (i == j ? 1.0 : 0.0);
+				if (i==j)
+					X[i][j] = new Complex(1.0, 0.0) ;
+				else
+					X[i][j] = Complex.ZERO ;
 			}
 		}
 		return A;
@@ -1062,11 +1146,11 @@ public class PowerIterationMatrix {
 	 * @return U
 	 */
 	public static LUDecomposition getLU(PowerIterationMatrix matrix) {
-		double mulitplier;
+		Complex mulitplier;
 		int m = matrix.getRowDimension();
 		int n = matrix.getColumnDimension();
-		double[][] l = new double[m][n];
-		double[][] u = new double[m][n];
+		Complex[][] l = new Complex[m][n];
+		Complex[][] u = new Complex[m][n];
 
 		for (int i = 0; i < m; i++) {
 			l[i][i] = 1;
@@ -1081,7 +1165,7 @@ public class PowerIterationMatrix {
 				l[i][j] = mulitplier;
 				// Calcula (linha i) - (linha j) * mj:
 				for (int k = 0; k < m; k++) {
-					u[i][k] -= u[j][k] * mulitplier;
+					u[i][k] = u[i][k] - u[j][k] * mulitplier;
 				}
 			}
 		}
@@ -1092,9 +1176,9 @@ public class PowerIterationMatrix {
 	public static PowerIterationMatrix solveSubstitution(PowerIterationMatrix matrizTriangularInferior, PowerIterationMatrix termosIndependentes) {
 		PowerIterationMatrix solucao = new PowerIterationMatrix(matrizTriangularInferior.getRowDimension(), 1);
 		for (int i = 0; i < matrizTriangularInferior.getRowDimension(); i++) {
-			double valor = 0;
+			Complex valor = 0;
 			for (int j = i - 1; j >= 0; j--) {
-				valor += matrizTriangularInferior.get(i, j) * solucao.get(j, 0);
+				valor = valor + matrizTriangularInferior.get(i, j) * solucao.get(j, 0);
 			}
 			valor = (termosIndependentes.get(i, 0) - valor) / matrizTriangularInferior.get(i, i);
 			solucao.set(i, 0, valor);
@@ -1105,9 +1189,9 @@ public class PowerIterationMatrix {
 	public static PowerIterationMatrix solveRetrosubstitution(PowerIterationMatrix matrizTriangularSuperior, PowerIterationMatrix termosIndependentes) {
 		PowerIterationMatrix solucao = new PowerIterationMatrix(matrizTriangularSuperior.getRowDimension(), 1);
 		for (int i = matrizTriangularSuperior.getRowDimension() - 1; i >= 0; i--) {
-			double valor = 0;
+			Complex valor = 0;
 			for (int j = i + 1; j < matrizTriangularSuperior.getRowDimension(); j++) {
-				valor += matrizTriangularSuperior.get(i, j) * solucao.get(j, 0);
+				valor = valor + matrizTriangularSuperior.get(i, j) * solucao.get(j, 0);
 			}
 			valor = (termosIndependentes.get(i, 0) - valor) / matrizTriangularSuperior.get(i, i);
 			solucao.set(i, 0, valor);
@@ -1115,11 +1199,11 @@ public class PowerIterationMatrix {
 		return solucao;
 	}
 	
-	public static double[] matrixToVector(PowerIterationMatrix matriz) {
+	public static Complex[] matrixToVector(PowerIterationMatrix matriz) {
 		return matriz.getColumnPackedCopy();
 	}
 
-	public static double[] matrixToVector(double[][] matrix) {
+	public static Complex[] matrixToVector(double[][] matrix) {
 		return new PowerIterationMatrix(matrix).getColumnPackedCopy();
 	}
 	
@@ -1131,10 +1215,26 @@ public class PowerIterationMatrix {
 		return new PowerIterationMatrix(matriz);
 	}
 	
+	public static PowerIterationMatrix vectorToMatrix(Complex[] vector) {
+		Complex[][] matriz = new Complex[vector.length][1];
+		for (int i = 0; i < matriz.length; i++) {
+			matriz[i][0] = vector[i];
+		}
+		return new PowerIterationMatrix(matriz);
+	}
+	
 	public static double vectorMagnitude(double[] vetor) {
 		double modulo = 0;
 		for (int i = 0; i < vetor.length; i++) {
 			modulo += vetor[i] * vetor[i];
+		}
+		return Math.sqrt(modulo);
+	}
+	
+	public static double vectorMagnitude(Complex[] vetor) {
+		double modulo = 0;
+		for (int i = 0; i < vetor.length; i++) {
+			modulo = modulo + vetor[i].absSquared();
 		}
 		return Math.sqrt(modulo);
 	}
