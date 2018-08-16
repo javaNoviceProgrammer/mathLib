@@ -6,8 +6,16 @@ import mathLib.numbers.Complex;
 
 public class ShiftedIteration implements PowerIteration {
 	
-	public double estimatedValue = 7;
+	public Complex estimatedValue ;
+	
+	public void setEstimatevalue(Complex s) {
+		this.estimatedValue = s ;
+	}
 
+	public void setEstimatevalue(double s) {
+		this.estimatedValue = s ;
+	}
+	
 	@Override
 	public EigenValueVector solve(PowerIterationMatrix matrix, Complex[] initialEigenVector, double error) {
 		/**

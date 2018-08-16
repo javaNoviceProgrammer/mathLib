@@ -874,6 +874,17 @@ public class PowerIterationMatrix {
 		}
 		return X;
 	}
+	
+	public PowerIterationMatrix times(Complex s) {
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
+		Complex[][] C = X.getArray();
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				C[i][j] = s * A[i][j];
+			}
+		}
+		return X;
+	}
 
 	/**
 	 * Multiply a matrix by a scalar in place, A = s*A

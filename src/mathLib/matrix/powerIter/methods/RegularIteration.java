@@ -1,7 +1,5 @@
 package mathLib.matrix.powerIter.methods;
 
-import Jama.Matrix;
-import mathLib.matrix.ComplexMatrix;
 import mathLib.matrix.powerIter.EigenValueVector;
 import mathLib.matrix.powerIter.PowerIterationMatrix;
 import mathLib.numbers.Complex;

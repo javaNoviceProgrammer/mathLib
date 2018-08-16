@@ -81,7 +81,8 @@ public class InverseIteration implements PowerIteration {
 		System.out.println("Inverse Iteration find the smallest EigenValue.");
 		System.out.println("Eigen Value:" + ev.eigenValue);
 		System.out.println("Eigen Vector:");		
-		PowerIterationMatrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
+		for(int i=0; i<ev.eigenVector.length; i++)
+			System.out.print(ev.eigenVector[i] + "   ");
 	}
 
 }
