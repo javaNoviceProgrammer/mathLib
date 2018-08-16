@@ -1,4 +1,4 @@
-package mathLib.matrix.powerIter.util;
+package mathLib.matrix.powerIter;
 
 public class EigenValueVector {
 	public double eigenValue;

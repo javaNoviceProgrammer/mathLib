@@ -1,4 +1,4 @@
-package mathLib.matrix.powerIter.util;
+package mathLib.matrix.powerIter;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -19,7 +19,7 @@ import java.util.Locale;
  Methods for reading and printing matrices are also included.  All the
  operations in this version of the Matrix Class involve real matrices.
  */
-public class Matrix {
+public class PowerIterationMatrix {
 
 	/*
 	 * ------------------------ Class variables ------------------------
@@ -53,7 +53,7 @@ public class Matrix {
 	 *            Number of colums.
 	 */
 
-	public Matrix(int m, int n) {
+	public PowerIterationMatrix(int m, int n) {
 		this.m = m;
 		this.n = n;
 		A = new double[m][n];
@@ -70,7 +70,7 @@ public class Matrix {
 	 *            Fill the matrix with this scalar value.
 	 */
 
-	public Matrix(int m, int n, double s) {
+	public PowerIterationMatrix(int m, int n, double s) {
 		this.m = m;
 		this.n = n;
 		A = new double[m][n];
@@ -91,7 +91,7 @@ public class Matrix {
 	 * @see #constructWithCopy
 	 */
 
-	public Matrix(double[][] A) {
+	public PowerIterationMatrix(double[][] A) {
 		m = A.length;
 		n = A[0].length;
 		for (int i = 0; i < m; i++) {
@@ -114,7 +114,7 @@ public class Matrix {
 	 *            Number of colums.
 	 */
 
-	public Matrix(double[][] A, int m, int n) {
+	public PowerIterationMatrix(double[][] A, int m, int n) {
 		this.A = A;
 		this.m = m;
 		this.n = n;
@@ -132,7 +132,7 @@ public class Matrix {
 	 *                Array length must be a multiple of m.
 	 */
 
-	public Matrix(double vals[], int m) {
+	public PowerIterationMatrix(double vals[], int m) {
 		this.m = m;
 		n = (m != 0 ? vals.length / m : 0);
 		if (m * n != vals.length) {
@@ -160,10 +160,10 @@ public class Matrix {
 	 *                All rows must have the same length
 	 */
 
-	public static Matrix constructWithCopy(double[][] A) {
+	public static PowerIterationMatrix constructWithCopy(double[][] A) {
 		int m = A.length;
 		int n = A[0].length;
-		Matrix X = new Matrix(m, n);
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			if (A[i].length != n) {
@@ -181,8 +181,8 @@ public class Matrix {
 	 * Make a deep copy of a matrix
 	 */
 
-	public Matrix copy() {
-		Matrix X = new Matrix(m, n);
+	public PowerIterationMatrix copy() {
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -309,8 +309,8 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public Matrix getMatrix(int i0, int i1, int j0, int j1) {
-		Matrix X = new Matrix(i1 - i0 + 1, j1 - j0 + 1);
+	public PowerIterationMatrix getMatrix(int i0, int i1, int j0, int j1) {
+		PowerIterationMatrix X = new PowerIterationMatrix(i1 - i0 + 1, j1 - j0 + 1);
 		double[][] B = X.getArray();
 		try {
 			for (int i = i0; i <= i1; i++) {
@@ -336,8 +336,8 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public Matrix getMatrix(int[] r, int[] c) {
-		Matrix X = new Matrix(r.length, c.length);
+	public PowerIterationMatrix getMatrix(int[] r, int[] c) {
+		PowerIterationMatrix X = new PowerIterationMatrix(r.length, c.length);
 		double[][] B = X.getArray();
 		try {
 			for (int i = 0; i < r.length; i++) {
@@ -365,8 +365,8 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public Matrix getMatrix(int i0, int i1, int[] c) {
-		Matrix X = new Matrix(i1 - i0 + 1, c.length);
+	public PowerIterationMatrix getMatrix(int i0, int i1, int[] c) {
+		PowerIterationMatrix X = new PowerIterationMatrix(i1 - i0 + 1, c.length);
 		double[][] B = X.getArray();
 		try {
 			for (int i = i0; i <= i1; i++) {
@@ -394,8 +394,8 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public Matrix getMatrix(int[] r, int j0, int j1) {
-		Matrix X = new Matrix(r.length, j1 - j0 + 1);
+	public PowerIterationMatrix getMatrix(int[] r, int j0, int j1) {
+		PowerIterationMatrix X = new PowerIterationMatrix(r.length, j1 - j0 + 1);
 		double[][] B = X.getArray();
 		try {
 			for (int i = 0; i < r.length; i++) {
@@ -442,7 +442,7 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public void setMatrix(int i0, int i1, int j0, int j1, Matrix X) {
+	public void setMatrix(int i0, int i1, int j0, int j1, PowerIterationMatrix X) {
 		try {
 			for (int i = i0; i <= i1; i++) {
 				for (int j = j0; j <= j1; j++) {
@@ -467,7 +467,7 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public void setMatrix(int[] r, int[] c, Matrix X) {
+	public void setMatrix(int[] r, int[] c, PowerIterationMatrix X) {
 		try {
 			for (int i = 0; i < r.length; i++) {
 				for (int j = 0; j < c.length; j++) {
@@ -494,7 +494,7 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public void setMatrix(int[] r, int j0, int j1, Matrix X) {
+	public void setMatrix(int[] r, int j0, int j1, PowerIterationMatrix X) {
 		try {
 			for (int i = 0; i < r.length; i++) {
 				for (int j = j0; j <= j1; j++) {
@@ -521,7 +521,7 @@ public class Matrix {
 	 *                Submatrix indices
 	 */
 
-	public void setMatrix(int i0, int i1, int[] c, Matrix X) {
+	public void setMatrix(int i0, int i1, int[] c, PowerIterationMatrix X) {
 		try {
 			for (int i = i0; i <= i1; i++) {
 				for (int j = 0; j < c.length; j++) {
@@ -539,8 +539,8 @@ public class Matrix {
 	 * @return A'
 	 */
 
-	public Matrix transpose() {
-		Matrix X = new Matrix(n, m);
+	public PowerIterationMatrix transpose() {
+		PowerIterationMatrix X = new PowerIterationMatrix(n, m);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -574,8 +574,8 @@ public class Matrix {
 	 * @return -A
 	 */
 
-	public Matrix uminus() {
-		Matrix X = new Matrix(m, n);
+	public PowerIterationMatrix uminus() {
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -593,9 +593,9 @@ public class Matrix {
 	 * @return A + B
 	 */
 
-	public Matrix plus(Matrix B) {
+	public PowerIterationMatrix plus(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
-		Matrix X = new Matrix(m, n);
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -613,7 +613,7 @@ public class Matrix {
 	 * @return A + B
 	 */
 
-	public Matrix plusEquals(Matrix B) {
+	public PowerIterationMatrix plusEquals(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -631,9 +631,9 @@ public class Matrix {
 	 * @return A - B
 	 */
 
-	public Matrix minus(Matrix B) {
+	public PowerIterationMatrix minus(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
-		Matrix X = new Matrix(m, n);
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -651,7 +651,7 @@ public class Matrix {
 	 * @return A - B
 	 */
 
-	public Matrix minusEquals(Matrix B) {
+	public PowerIterationMatrix minusEquals(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -669,9 +669,9 @@ public class Matrix {
 	 * @return A.*B
 	 */
 
-	public Matrix arrayTimes(Matrix B) {
+	public PowerIterationMatrix arrayTimes(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
-		Matrix X = new Matrix(m, n);
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -689,7 +689,7 @@ public class Matrix {
 	 * @return A.*B
 	 */
 
-	public Matrix arrayTimesEquals(Matrix B) {
+	public PowerIterationMatrix arrayTimesEquals(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -707,9 +707,9 @@ public class Matrix {
 	 * @return A./B
 	 */
 
-	public Matrix arrayRightDivide(Matrix B) {
+	public PowerIterationMatrix arrayRightDivide(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
-		Matrix X = new Matrix(m, n);
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -727,7 +727,7 @@ public class Matrix {
 	 * @return A./B
 	 */
 
-	public Matrix arrayRightDivideEquals(Matrix B) {
+	public PowerIterationMatrix arrayRightDivideEquals(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -745,9 +745,9 @@ public class Matrix {
 	 * @return A.\B
 	 */
 
-	public Matrix arrayLeftDivide(Matrix B) {
+	public PowerIterationMatrix arrayLeftDivide(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
-		Matrix X = new Matrix(m, n);
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -765,7 +765,7 @@ public class Matrix {
 	 * @return A.\B
 	 */
 
-	public Matrix arrayLeftDivideEquals(Matrix B) {
+	public PowerIterationMatrix arrayLeftDivideEquals(PowerIterationMatrix B) {
 		checkMatrixDimensions(B);
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -783,8 +783,8 @@ public class Matrix {
 	 * @return s*A
 	 */
 
-	public Matrix times(double s) {
-		Matrix X = new Matrix(m, n);
+	public PowerIterationMatrix times(double s) {
+		PowerIterationMatrix X = new PowerIterationMatrix(m, n);
 		double[][] C = X.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -802,7 +802,7 @@ public class Matrix {
 	 * @return replace A by s*A
 	 */
 
-	public Matrix timesEquals(double s) {
+	public PowerIterationMatrix timesEquals(double s) {
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				A[i][j] = s * A[i][j];
@@ -821,12 +821,12 @@ public class Matrix {
 	 *                Matrix inner dimensions must agree.
 	 */
 
-	public Matrix times(Matrix B) {
+	public PowerIterationMatrix times(PowerIterationMatrix B) {
 		if (B.m != n) {
 			throw new IllegalArgumentException(
 					"Matrix inner dimensions must agree.");
 		}
-		Matrix X = new Matrix(m, B.n);
+		PowerIterationMatrix X = new PowerIterationMatrix(m, B.n);
 		double[][] C = X.getArray();
 		double[] Bcolj = new double[n];
 		for (int j = 0; j < B.n; j++) {
@@ -869,8 +869,8 @@ public class Matrix {
 	 * @return An m-by-n matrix with uniformly distributed random elements.
 	 */
 
-	public static Matrix random(int m, int n) {
-		Matrix A = new Matrix(m, n);
+	public static PowerIterationMatrix random(int m, int n) {
+		PowerIterationMatrix A = new PowerIterationMatrix(m, n);
 		double[][] X = A.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -890,8 +890,8 @@ public class Matrix {
 	 * @return An m-by-n matrix with ones on the diagonal and zeros elsewhere.
 	 */
 
-	public static Matrix identity(int m, int n) {
-		Matrix A = new Matrix(m, n);
+	public static PowerIterationMatrix identity(int m, int n) {
+		PowerIterationMatrix A = new PowerIterationMatrix(m, n);
 		double[][] X = A.getArray();
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
@@ -1001,7 +1001,8 @@ public class Matrix {
 	 *            the input stream.
 	 */
 
-	public static Matrix read(BufferedReader input) throws java.io.IOException {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static PowerIterationMatrix read(BufferedReader input) throws java.io.IOException {
 		StreamTokenizer tokenizer = new StreamTokenizer(input);
 
 		// Although StreamTokenizer will parse numbers, it doesn't recognize
@@ -1050,7 +1051,7 @@ public class Matrix {
 		int m = v.size(); // Now we've got the number of rows.
 		double[][] A = new double[m][];
 		v.copyInto(A); // copy the rows out of the vector
-		return new Matrix(A);
+		return new PowerIterationMatrix(A);
 	}
 
 	/*
@@ -1060,7 +1061,7 @@ public class Matrix {
 	 * 
 	 * @return U
 	 */
-	public static LUDecomposition getLU(Matrix matrix) {
+	public static LUDecomposition getLU(PowerIterationMatrix matrix) {
 		double mulitplier;
 		int m = matrix.getRowDimension();
 		int n = matrix.getColumnDimension();
@@ -1085,11 +1086,11 @@ public class Matrix {
 			}
 		}
 
-		return new LUDecomposition(new Matrix(l), new Matrix(u));
+		return new LUDecomposition(new PowerIterationMatrix(l), new PowerIterationMatrix(u));
 	}
 	
-	public static Matrix solveSubstitution(Matrix matrizTriangularInferior, Matrix termosIndependentes) {
-		Matrix solucao = new Matrix(matrizTriangularInferior.getRowDimension(), 1);
+	public static PowerIterationMatrix solveSubstitution(PowerIterationMatrix matrizTriangularInferior, PowerIterationMatrix termosIndependentes) {
+		PowerIterationMatrix solucao = new PowerIterationMatrix(matrizTriangularInferior.getRowDimension(), 1);
 		for (int i = 0; i < matrizTriangularInferior.getRowDimension(); i++) {
 			double valor = 0;
 			for (int j = i - 1; j >= 0; j--) {
@@ -1101,8 +1102,8 @@ public class Matrix {
 		return solucao;
 	}
 
-	public static Matrix solveRetrosubstitution(Matrix matrizTriangularSuperior, Matrix termosIndependentes) {
-		Matrix solucao = new Matrix(matrizTriangularSuperior.getRowDimension(), 1);
+	public static PowerIterationMatrix solveRetrosubstitution(PowerIterationMatrix matrizTriangularSuperior, PowerIterationMatrix termosIndependentes) {
+		PowerIterationMatrix solucao = new PowerIterationMatrix(matrizTriangularSuperior.getRowDimension(), 1);
 		for (int i = matrizTriangularSuperior.getRowDimension() - 1; i >= 0; i--) {
 			double valor = 0;
 			for (int j = i + 1; j < matrizTriangularSuperior.getRowDimension(); j++) {
@@ -1114,20 +1115,20 @@ public class Matrix {
 		return solucao;
 	}
 	
-	public static double[] matrixToVector(Matrix matriz) {
+	public static double[] matrixToVector(PowerIterationMatrix matriz) {
 		return matriz.getColumnPackedCopy();
 	}
 
 	public static double[] matrixToVector(double[][] matrix) {
-		return new Matrix(matrix).getColumnPackedCopy();
+		return new PowerIterationMatrix(matrix).getColumnPackedCopy();
 	}
 	
-	public static Matrix vectorToMatrix(double[] vector) {
+	public static PowerIterationMatrix vectorToMatrix(double[] vector) {
 		double[][] matriz = new double[vector.length][1];
 		for (int i = 0; i < matriz.length; i++) {
 			matriz[i][0] = vector[i];
 		}
-		return new Matrix(matriz);
+		return new PowerIterationMatrix(matriz);
 	}
 	
 	public static double vectorMagnitude(double[] vetor) {
@@ -1138,7 +1139,7 @@ public class Matrix {
 		return Math.sqrt(modulo);
 	}
 
-	public static double vectorMagnitude(Matrix matrixVetor) {
+	public static double vectorMagnitude(PowerIterationMatrix matrixVetor) {
 		return vectorMagnitude(matrixToVector(matrixVetor));
 	}
 	
@@ -1151,7 +1152,7 @@ public class Matrix {
 		return vetorNormalizado;
 	}
 
-	public static Matrix normalize(Matrix matrizVetor) {
+	public static PowerIterationMatrix normalize(PowerIterationMatrix matrizVetor) {
 		return matrizVetor.times(1.0 / vectorMagnitude(matrizVetor));
 	}
 
@@ -1162,7 +1163,7 @@ public class Matrix {
 
 	/** Check if size(A) == size(B) **/
 
-	private void checkMatrixDimensions(Matrix B) {
+	private void checkMatrixDimensions(PowerIterationMatrix B) {
 		if (B.m != m || B.n != n) {
 			throw new IllegalArgumentException("Matrix dimensions must agree.");
 		}

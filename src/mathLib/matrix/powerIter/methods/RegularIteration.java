@@ -1,7 +1,7 @@
 package mathLib.matrix.powerIter.methods;
 
-import mathLib.matrix.powerIter.util.EigenValueVector;
-import mathLib.matrix.powerIter.util.Matrix;
+import mathLib.matrix.powerIter.EigenValueVector;
+import mathLib.matrix.powerIter.PowerIterationMatrix;
 
 /**
  * Regular Iteration find the largest EigenValue.
@@ -15,7 +15,7 @@ import mathLib.matrix.powerIter.util.Matrix;
 public class RegularIteration implements PowerIteration {
 
 	@Override
-	public EigenValueVector solve(Matrix matrix, double[] initialEigenVector, double error) {
+	public EigenValueVector solve(PowerIterationMatrix matrix, double[] initialEigenVector, double error) {
 
 		double lastEigenValue;
 		double newEigenValue = 0;
@@ -23,16 +23,16 @@ public class RegularIteration implements PowerIteration {
 
 		// Step 1:
 		
-		Matrix initialMatrixVector = Matrix.vectorToMatrix(initialEigenVector);
-		Matrix eigenVector = Matrix.normalize(initialMatrixVector);
+		PowerIterationMatrix initialMatrixVector = PowerIterationMatrix.vectorToMatrix(initialEigenVector);
+		PowerIterationMatrix eigenVector = PowerIterationMatrix.normalize(initialMatrixVector);
 		do {
 			lastEigenValue = newEigenValue;
 			// Step 2:
-			Matrix vetorY = matrix.times(eigenVector);
+			PowerIterationMatrix vetorY = matrix.times(eigenVector);
 			// Step 3:
-			eigenVector = Matrix.normalize(vetorY);
+			eigenVector = PowerIterationMatrix.normalize(vetorY);
 			// Step 4:
-			Matrix matrixTranspostaAvetor = eigenVector.transpose();
+			PowerIterationMatrix matrixTranspostaAvetor = eigenVector.transpose();
 			double avalorNumerador = matrixTranspostaAvetor.times(matrix)
 					.times(eigenVector).get(0, 0);
 			double avalorDenominador = matrixTranspostaAvetor.times(eigenVector)
@@ -43,7 +43,7 @@ public class RegularIteration implements PowerIteration {
 
 		EigenValueVector eigenValueVector = new EigenValueVector();
 		eigenValueVector.eigenValue = newEigenValue;
-		eigenValueVector.eigenVector = Matrix.matrixToVector(eigenVector);
+		eigenValueVector.eigenVector = PowerIterationMatrix.matrixToVector(eigenVector);
 		return eigenValueVector;
 	}
 
@@ -52,12 +52,7 @@ public class RegularIteration implements PowerIteration {
 		System.out.println("Regular Iteration find the largest EigenValue.");
 		System.out.println("Eigen Value:" + ev.eigenValue);
 		System.out.println("Eigen Vector:");
-		Matrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
-		
-		System.out.println("Parametrized Results");
-		System.out.println(ev.eigenVector[0]/ev.eigenVector[2]);
-		System.out.println(ev.eigenVector[1]/ev.eigenVector[2]);
-		System.out.println(ev.eigenVector[2]/ev.eigenVector[2]);
+		PowerIterationMatrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
 		
 	}
 }

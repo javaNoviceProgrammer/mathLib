@@ -1,4 +1,4 @@
-package mathLib.matrix.powerIter.util;
+package mathLib.matrix.powerIter;
 
 /**
  * LU Decomposition.
@@ -11,21 +11,21 @@ package mathLib.matrix.powerIter.util;
 
 public class LUDecomposition {
 
-	public LUDecomposition(Matrix l, Matrix u) {
+	public LUDecomposition(PowerIterationMatrix l, PowerIterationMatrix u) {
 		super();
 		L = l;
 		U = u;
 	}
 
-	public Matrix getL() {
+	public PowerIterationMatrix getL() {
 		return L;
 	}
 
-	public Matrix getU() {
+	public PowerIterationMatrix getU() {
 		return U;
 	}
 
-	private Matrix L;
-	private Matrix U;
+	private PowerIterationMatrix L;
+	private PowerIterationMatrix U;
 
 }

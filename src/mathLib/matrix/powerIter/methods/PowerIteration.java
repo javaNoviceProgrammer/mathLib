@@ -1,11 +1,11 @@
 package mathLib.matrix.powerIter.methods;
 
-import mathLib.matrix.powerIter.util.EigenValueVector;
-import mathLib.matrix.powerIter.util.Matrix;
+import mathLib.matrix.powerIter.EigenValueVector;
+import mathLib.matrix.powerIter.PowerIterationMatrix;
 /*
  * Interface to use in PowerIteration methods
  *  */
 public interface PowerIteration {
-	public EigenValueVector solve(Matrix matrix, double[] initialEigenVector, double error);
+	public EigenValueVector solve(PowerIterationMatrix matrix, double[] initialEigenVector, double error);
 	public void printCommandLine(EigenValueVector ev);
 }

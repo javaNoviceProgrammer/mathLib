@@ -1,8 +1,8 @@
 package mathLib.matrix.powerIter.methods;
 
-import mathLib.matrix.powerIter.util.EigenValueVector;
-import mathLib.matrix.powerIter.util.LUDecomposition;
-import mathLib.matrix.powerIter.util.Matrix;
+import mathLib.matrix.powerIter.EigenValueVector;
+import mathLib.matrix.powerIter.LUDecomposition;
+import mathLib.matrix.powerIter.PowerIterationMatrix;
 
 /*
  * Returns the smallest Eigenvalue
@@ -10,7 +10,7 @@ import mathLib.matrix.powerIter.util.Matrix;
 public class InverseIteration implements PowerIteration {
 
 	@Override
-	public EigenValueVector solve(Matrix matrix, double[] initialEigenVector,
+	public EigenValueVector solve(PowerIterationMatrix matrix, double[] initialEigenVector,
 			double error) {
 		/**
 		 * Algorithm:
@@ -27,24 +27,24 @@ public class InverseIteration implements PowerIteration {
 		int i = 0;
 
 		// Step 1:
-		Matrix matrizVetorInicial = Matrix.vectorToMatrix(initialEigenVector);
-		Matrix evectorX = Matrix.normalize(matrizVetorInicial);
+		PowerIterationMatrix matrizVetorInicial = PowerIterationMatrix.vectorToMatrix(initialEigenVector);
+		PowerIterationMatrix evectorX = PowerIterationMatrix.normalize(matrizVetorInicial);
 		//Prepare the matrices L and U to be used in 2th step
-		LUDecomposition luMatrix = Matrix.getLU(matrix);
-		Matrix lowerMatrix = luMatrix.getL();
-		Matrix upperMatrix = luMatrix.getU();
+		LUDecomposition luMatrix = PowerIterationMatrix.getLU(matrix);
+		PowerIterationMatrix lowerMatrix = luMatrix.getL();
+		PowerIterationMatrix upperMatrix = luMatrix.getU();
 
 		// Step 2:
 		/*
 		 * M*yi = xi-1 => L*U*yi = xi-1 a) Doing U*yi = Z, solving firstly
 		 * L*Z = xi-1 b) with  Z vector, we can solve U*yi = Z
 		 */
-		Matrix vectorZ = Matrix.solveSubstitution(lowerMatrix, evectorX);
-		Matrix vectorY = Matrix.solveRetrosubstitution(upperMatrix, vectorZ);
+		PowerIterationMatrix vectorZ = PowerIterationMatrix.solveSubstitution(lowerMatrix, evectorX);
+		PowerIterationMatrix vectorY = PowerIterationMatrix.solveRetrosubstitution(upperMatrix, vectorZ);
 		do {
 			lastEigenValue = newEigenValue;
 			// Step 3:
-			evectorX = Matrix.normalize(vectorY);
+			evectorX = PowerIterationMatrix.normalize(vectorY);
 
 			// Calcule yi+1:
 			/*
@@ -53,13 +53,13 @@ public class InverseIteration implements PowerIteration {
 			 * With the Z Vector, we can conclude that U*yi = Z
 			 * 
 			 */
-			vectorZ = Matrix.solveSubstitution(lowerMatrix, evectorX);
-			vectorY = Matrix.solveRetrosubstitution(upperMatrix, vectorZ);
+			vectorZ = PowerIterationMatrix.solveSubstitution(lowerMatrix, evectorX);
+			vectorY = PowerIterationMatrix.solveRetrosubstitution(upperMatrix, vectorZ);
 
 			// Step 4:
 			// li = (T(Xi) * M^(-1) * Xi) / (T(Xi) * Xi => li = (T(Xi) * yi+1) /
 			// (T(Xi) * Xi)
-			Matrix transposeMatrixEigenVector = evectorX.transpose();
+			PowerIterationMatrix transposeMatrixEigenVector = evectorX.transpose();
 			double evalueNumerator = transposeMatrixEigenVector.times(vectorY).get(
 					0, 0);
 			double avalorDenominador = transposeMatrixEigenVector.times(evectorX)
@@ -70,7 +70,7 @@ public class InverseIteration implements PowerIteration {
 
 		EigenValueVector eigenValueVector = new EigenValueVector();
 		eigenValueVector.eigenValue = 1.0 / newEigenValue;
-		eigenValueVector.eigenVector = Matrix.matrixToVector(evectorX);
+		eigenValueVector.eigenVector = PowerIterationMatrix.matrixToVector(evectorX);
 		return eigenValueVector;
 	}
 
@@ -79,7 +79,7 @@ public class InverseIteration implements PowerIteration {
 		System.out.println("Inverse Iteration find the smallest EigenValue.");
 		System.out.println("Eigen Value:" + ev.eigenValue);
 		System.out.println("Eigen Vector:");		
-		Matrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
+		PowerIterationMatrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
 		
 		System.out.println("Parametrized Results");
 		System.out.println(ev.eigenVector[0]/ev.eigenVector[2]);
