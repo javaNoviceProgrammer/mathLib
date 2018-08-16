@@ -11,11 +11,11 @@ import mathLib.util.Timer;
  *
  */
 public class DiffOperator2D {
-	
+
 	int xDim, yDim ;
 	double dx, dy ;
 	double[][] DxxPlusDyy, Dx, Dy, Dxx, Dyy ;
-	
+
 	public DiffOperator2D(int nx, int ny, double dx, double dy) {
 		this.xDim = nx ;
 		this.yDim = ny ;
@@ -27,7 +27,7 @@ public class DiffOperator2D {
 		buildDyy();
 		buildDy();
 	}
-	
+
 	private void buildDxxPlusDyy() {
 		int M = xDim*yDim ;
 		DxxPlusDyy = new double[M][M] ;
@@ -38,7 +38,7 @@ public class DiffOperator2D {
 			}
 		}
 	}
-	
+
 	private void buildDxx() {
 		int M = xDim*yDim ;
 		Dxx = new double[M][M] ;
@@ -48,7 +48,7 @@ public class DiffOperator2D {
 			}
 		}
 	}
-	
+
 	private void buildDx() {
 		int M = xDim*yDim ;
 		Dx = new double[M][M] ;
@@ -58,7 +58,7 @@ public class DiffOperator2D {
 			}
 		}
 	}
-	
+
 	private void buildDyy() {
 		int M = xDim*yDim ;
 		Dyy = new double[M][M] ;
@@ -68,7 +68,7 @@ public class DiffOperator2D {
 			}
 		}
 	}
-	
+
 	private void buildDy() {
 		int M = xDim*yDim ;
 		Dy = new double[M][M] ;
@@ -78,50 +78,50 @@ public class DiffOperator2D {
 			}
 		}
 	}
-	
+
 	public double[][] getDxxPlusDyy() {
 		return DxxPlusDyy ;
 	}
-	
+
 	public Matrix getDxxPlusDyyMatrix() {
 		return new Matrix(DxxPlusDyy) ;
 	}
-	
+
 	public double[][] getDx() {
 		return Dx ;
 	}
-	
+
 	public Matrix getDxMatrix() {
 		return Dx ;
 	}
-	
+
 	public double[][] getDxx() {
 		return Dxx ;
 	}
-	
+
 	public Matrix getDxxMatrix() {
 		return Dxx ;
 	}
-	
+
 	public double[][] getDy() {
 		return Dy ;
 	}
-	
+
 	public Matrix getDyMatrix() {
 		return Dy ;
 	}
-	
+
 	public double[][] getDyy() {
 		return Dyy ;
 	}
-	
+
 	public Matrix getDyyMatrix() {
 		return Dyy ;
 	}
-	
+
 	// for test
 	public static void main(String[] args) {
-		DiffOperator2D diff = new DiffOperator2D(400/15, 220/15, 1.0, 1.0) ;
+		DiffOperator2D diff = new DiffOperator2D(400/10, 220/10, 1.0, 1.0) ;
 //		System.out.println(diff.getDxxPlusDyyMatrix());
 		Timer timer = new Timer() ;
 		timer.start();
