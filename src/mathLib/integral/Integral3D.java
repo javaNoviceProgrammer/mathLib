@@ -1,7 +1,7 @@
 package mathLib.integral;
 
 import mathLib.integral.intf.IntegralDomain3D;
-import mathLib.integral.intf.IntegralFunction;
+import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.integral.intf.IntegralFunction3D;
 
 public class Integral3D {
@@ -23,14 +23,14 @@ public class Integral3D {
 	}
 
 	public double getIntegral() {
-		IntegralFunction func1d = new IntegralFunction() {
+		IntegralFunction1D func1d = new IntegralFunction1D() {
 			@Override
 			public double function(double var1) {
 
-				IntegralFunction func2d = new IntegralFunction() {
+				IntegralFunction1D func2d = new IntegralFunction1D() {
 					@Override
 					public double function(double var2) {
-						IntegralFunction func = new IntegralFunction() {
+						IntegralFunction1D func = new IntegralFunction1D() {
 
 							@Override
 							public double function(double var3) {

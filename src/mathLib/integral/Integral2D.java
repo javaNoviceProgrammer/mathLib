@@ -1,7 +1,7 @@
 package mathLib.integral;
 
 import mathLib.integral.intf.IntegralDomain2D;
-import mathLib.integral.intf.IntegralFunction;
+import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.integral.intf.IntegralFunction2D;
 
 public class Integral2D {
@@ -23,11 +23,11 @@ public class Integral2D {
 	}
 	
 	public double getIntegral() {
-		IntegralFunction func1d = new IntegralFunction() {
+		IntegralFunction1D func1d = new IntegralFunction1D() {
 			@Override
 			public double function(double var1) {
 
-				IntegralFunction func = new IntegralFunction() {
+				IntegralFunction1D func = new IntegralFunction1D() {
 					@Override
 					public double function(double var2) {
 						return func2d.function(var1, var2);
