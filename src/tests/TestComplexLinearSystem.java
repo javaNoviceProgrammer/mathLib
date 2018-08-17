@@ -8,9 +8,9 @@ import mathLib.util.Timer;
 
 public class TestComplexLinearSystem {
 	public static void main(String[] args) {
-		Complex[][] A = new Complex[][] {{1-j, 2*j, 3.0}, {0.5+j/2, j+1, 2}, {1, 1, 1}} ;
-		Complex[] y = new Complex[] {2.0, 3*j, j-2} ;
-		Complex[] solution = new Complex[3] ;
+		Complex[][] A = new Complex[][] {{1-j, 2*j, 3.0,1}, {0.5+j/2, j+1, 2,1}, {1, 1, 1,1}, {2,2,2,3}} ;
+		Complex[] y = new Complex[] {2.0, 3*j, j-2, -1} ;
+		Complex[] solution = new Complex[4] ;
 		Timer timer = new Timer() ;
 		timer.start();
 		new ComplexLinearSystem(A, y, solution) ;

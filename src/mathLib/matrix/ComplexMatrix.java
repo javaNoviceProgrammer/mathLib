@@ -5,6 +5,8 @@ import mathLib.numbers.ComplexMath;
 
 import static mathLib.numbers.Complex.*;
 
+import mathLib.matrix.powerIter.PowerIterationMatrix;
+
 public class ComplexMatrix {
 
 	int M;             // number of rows
@@ -386,6 +388,10 @@ public class ComplexMatrix {
     		selectedColumn[i][0] = data[i][column] ;
     	}
     	return new ComplexMatrix(selectedColumn) ;
+    }
+    
+    public static PowerIterationMatrix toPowerIterationMatrix(ComplexMatrix A){
+    	return new PowerIterationMatrix(A.data) ;
     }
 
     // ************ operator overloading **********************

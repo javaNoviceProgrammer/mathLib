@@ -12,8 +12,7 @@ import mathLib.numbers.ComplexMath;
 public class InverseIteration implements PowerIteration {
 
 	@Override
-	public EigenValueVector solve(PowerIterationMatrix matrix, Complex[] initialEigenVector,
-			double error) {
+	public EigenValueVector solve(PowerIterationMatrix matrix, double error) {
 		/**
 		 * Algorithm:
 		 * 1) Normalize x0 = V/|V| 
@@ -24,6 +23,7 @@ public class InverseIteration implements PowerIteration {
 		 * Repeat 2 to 4 while li - li-1 < E 
 		 * OBS.: Xi is an eigenvector from eigenVector li. Yi is a vector.
 		 */
+		Complex[] initialEigenVector = new Complex[] {1,1,1} ;
 		Complex lastEigenValue;
 		Complex newEigenValue = 0;
 		int i = 0;

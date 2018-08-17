@@ -17,18 +17,19 @@ public class ShiftedIteration implements PowerIteration {
 	}
 	
 	@Override
-	public EigenValueVector solve(PowerIterationMatrix matrix, Complex[] initialEigenVector, double error) {
+	public EigenValueVector solve(PowerIterationMatrix matrix, double error) {
 		/**
 		 * Shifted Iteration Algorithm:
 		 * 1) A' = A - u * I
 		 * 2) Calculates li and Yi using the inverse iteration in A
 		 * I is a identity matrix. u is a estimated value for the eigenvalue.
 		 */
+		
 		PowerIterationMatrix identityMatrix = PowerIterationMatrix.identity(matrix.getRowDimension(), matrix.getColumnDimension());
 		PowerIterationMatrix changedIdentityMatrix = identityMatrix.times(estimatedValue);
 		PowerIterationMatrix displacementMatrix = matrix.minus(changedIdentityMatrix);
 		PowerIteration inverse = new InverseIteration();
-		EigenValueVector eigenValueVector = inverse.solve(displacementMatrix, initialEigenVector, error);
+		EigenValueVector eigenValueVector = inverse.solve(displacementMatrix, error);
 		eigenValueVector.eigenValue = eigenValueVector.eigenValue + estimatedValue;
 		return eigenValueVector;
 	}
@@ -38,7 +39,8 @@ public class ShiftedIteration implements PowerIteration {
 		System.out.println("Shifted Iteration.");
 		System.out.println("Eigen Value:" + ev.eigenValue);
 		System.out.println("Eigen Vector:");
-		PowerIterationMatrix.vectorToMatrix(ev.eigenVector).transpose().print(4,7);
+		for(int i=0; i<ev.eigenVector.length; i++)
+			System.out.print(ev.eigenVector[i] + "   ");
 		
 	}
 

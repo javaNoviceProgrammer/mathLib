@@ -17,8 +17,9 @@ import mathLib.numbers.ComplexMath;
 public class RegularIteration implements PowerIteration {
 
 	@Override
-	public EigenValueVector solve(PowerIterationMatrix matrix, Complex[] initialEigenVector, double error) {
+	public EigenValueVector solve(PowerIterationMatrix matrix, double error) {
 
+		Complex[] initialEigenVector = new Complex[] {1,1,1} ;
 		Complex lastEigenValue;
 		Complex newEigenValue = 0;
 		int i = 0;

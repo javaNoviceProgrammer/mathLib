@@ -1,6 +1,7 @@
 package mathLib.matrix;
 
 import mathLib.geometry.algebra.Vector;
+import mathLib.matrix.powerIter.PowerIterationMatrix;
 
 public class Matrix {
 
@@ -243,6 +244,10 @@ public class Matrix {
     // conversion interfaces
     public static Jama.Matrix toJamaMatrix(Matrix A){
     	return new Jama.Matrix(A.data) ;
+    }
+    
+    public static PowerIterationMatrix toPowerIterationMatrix(Matrix A){
+    	return new PowerIterationMatrix(A.data) ;
     }
 
     // element-wise operations
