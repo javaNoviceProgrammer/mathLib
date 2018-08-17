@@ -1,6 +1,6 @@
 package mathLib.fitting.lmse;
 
-public interface Fitter {
+public interface LeastSquareFitter {
     
     public void setData(double[][] xvalues, double[] zvalues);
     public void setParameters(double[] parameters);

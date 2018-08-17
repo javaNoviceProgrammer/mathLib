@@ -3,7 +3,7 @@ package mathLib.fitting.lmse;
 import Jama.LUDecomposition;
 import Jama.Matrix;
 
-public class NonLinearSolver implements Fitter {
+public class NonLinearSolver implements LeastSquareFitter {
     /**
      * Ignores second derivatives, not very good.
      * for solving non-linear least squares fit of f(x:A) = z with sets of x,z data points.
@@ -12,7 +12,7 @@ public class NonLinearSolver implements Fitter {
     double[]   A,    //Parameter Set
                Z;    //output values
 
-    Function FUNCTION;
+    LeastSquareFunction FUNCTION;
     double[] ERROR;
     double[][] DERIVATIVES;
 
@@ -21,7 +21,7 @@ public class NonLinearSolver implements Fitter {
     double MIN_CHANGE = 1e-6;    //minimum changes
     double STEP = 0.1;
     double MAX_ITERATIONS = 10000;
-    public NonLinearSolver(Function funct){
+    public NonLinearSolver(LeastSquareFunction funct){
 
         FUNCTION=funct;
 

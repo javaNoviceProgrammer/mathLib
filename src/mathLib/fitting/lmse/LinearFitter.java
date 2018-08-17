@@ -7,14 +7,14 @@ import Jama.Matrix;
   * derivatives are evaluated numerically and the function is assumed to be linear in A.
   * Then a linear least squares fit is performed.
  * */
-public class LinearFitter implements Fitter {
+public class LinearFitter implements LeastSquareFitter {
     private final double[] working;
 
     double[][] X;    //values
     double[]   A,    //Parameter Set
                Z;    //output vaues
 
-    Function FUNCTION;
+    LeastSquareFunction FUNCTION;
     double[] ERROR;
 
     double[][] DERIVATIVES;
@@ -22,7 +22,7 @@ public class LinearFitter implements Fitter {
     double[][] ALPHA;
     double DELTA = 0.000001;   //used for calculating derivatives
 
-    public LinearFitter(Function funct){
+    public LinearFitter(LeastSquareFunction funct){
         FUNCTION=funct;
         working = new double[funct.getNParameters()];
     }

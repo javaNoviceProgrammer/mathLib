@@ -2,7 +2,7 @@ package mathLib.fitting.lmse;
 
 import Jama.Matrix;
 
-public class MarquardtFitter implements Fitter {
+public class MarquardtFitter implements LeastSquareFitter {
     /**
      * for solving non-linear least squares fit of f(x:A) = z with sets of x,z data points.
      * */
@@ -10,7 +10,7 @@ public class MarquardtFitter implements Fitter {
     double[]   A,    //Parameter Set
                Z;    //output values
 
-    Function FUNCTION;
+    LeastSquareFunction FUNCTION;
     double[] ERROR;
 
     double[][] DERIVATIVES;
@@ -23,7 +23,7 @@ public class MarquardtFitter implements Fitter {
     double MINCHANGE = 1e-3;    //minimum changes
 
     public int ITERATIONS = 0;
-    public MarquardtFitter(Function funct){
+    public MarquardtFitter(LeastSquareFunction funct){
 
         FUNCTION=funct;
 

@@ -1,6 +1,6 @@
 package mathLib.fitting.lmse;
 
-public interface Function{
+public interface LeastSquareFunction{
     /**
      * Returns the functions evaluated at the specific parameter set
      * @return needs to evaluate the function
