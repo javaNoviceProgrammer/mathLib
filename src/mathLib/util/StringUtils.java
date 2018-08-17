@@ -3,7 +3,6 @@ package mathLib.util;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import mathLib.numbers.Complex;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class StringUtils {
@@ -53,22 +52,6 @@ public class StringUtils {
 	public static ArrayList<String> toArrayList(String[] st) {
 		ArrayList<String> list = new ArrayList<>();
 		for (String s : st) {
-			list.add(s);
-		}
-		return list;
-	}
-
-	public static ArrayList<Complex> toArrayList(Complex[] st) {
-		ArrayList<Complex> list = new ArrayList<>();
-		for (Complex s : st) {
-			list.add(s);
-		}
-		return list;
-	}
-
-	public static ArrayList<Double> toArrayList(Double[] st) {
-		ArrayList<Double> list = new ArrayList<>();
-		for (double s : st) {
 			list.add(s);
 		}
 		return list;

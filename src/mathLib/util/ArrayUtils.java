@@ -1,5 +1,7 @@
 package mathLib.util;
 
+import java.util.ArrayList;
+
 import mathLib.matrix.Matrix;
 import mathLib.numbers.Complex;
 
@@ -30,6 +32,23 @@ public class ArrayUtils {
 		}
 		return var0 ;
 	}
+	
+	public static ArrayList<Complex> toArrayList(Complex[] st) {
+		ArrayList<Complex> list = new ArrayList<>();
+		for (Complex s : st) {
+			list.add(s);
+		}
+		return list;
+	}
+
+	public static ArrayList<Double> toArrayList(Double[] st) {
+		ArrayList<Double> list = new ArrayList<>();
+		for (double s : st) {
+			list.add(s);
+		}
+		return list;
+	}
+	
 	
 	// for test
 	public static void main(String[] args) {
