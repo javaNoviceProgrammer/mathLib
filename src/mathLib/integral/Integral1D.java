@@ -13,7 +13,7 @@ import flanagan.integration.IntegralFunction;
 import flanagan.integration.Integration;
 import mathLib.util.MathUtils;
 
-public class AdaptiveIntegral {
+public class Integral1D {
 
 	int numIntervals = 10 ; // the entire integral region is divided into this number of subintervals
 	int numPoints = 5 ; // each sub interval is divided into this number of pieces
@@ -40,7 +40,7 @@ public class AdaptiveIntegral {
 	}
 
 	// constructor with integral function and start and end of integral
-	public AdaptiveIntegral(
+	public Integral1D(
 			IntegralFunction func,
 			double x_start,
 			double x_end

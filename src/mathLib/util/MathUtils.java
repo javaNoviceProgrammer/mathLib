@@ -2,7 +2,7 @@ package mathLib.util;
 
 import flanagan.integration.IntegralFunction;
 import flanagan.math.ArrayMaths;
-import mathLib.integral.AdaptiveIntegral;
+import mathLib.integral.Integral1D;
 import mathLib.numbers.Complex;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import java.util.ArrayList;
@@ -115,7 +115,7 @@ public class MathUtils {
 					return y;
 				}
 			};
-			AdaptiveIntegral result = new AdaptiveIntegral(func, 0, x) ;
+			Integral1D result = new Integral1D(func, 0, x) ;
 			return result.getIntegral() ;
 		}
 	

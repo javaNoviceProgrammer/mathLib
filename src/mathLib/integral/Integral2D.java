@@ -26,20 +26,20 @@ public class Integral2D {
 		IntegralFunction func1d = new IntegralFunction() {
 			@Override
 			public double function(double var1) {
-				// step1: define an integral function
-				IntegralFunction ff = new IntegralFunction() {
+
+				IntegralFunction func = new IntegralFunction() {
 					@Override
 					public double function(double var2) {
 						return func2d.function(var1, var2);
 					}
 				};
-				// step 2: define the adaptive integral
-				AdaptiveIntegral integral = new AdaptiveIntegral(ff, domain.getVar2Min(var1), domain.getVar2Max(var1)) ;
+
+				Integral1D integral = new Integral1D(func, domain.getVar2Min(var1), domain.getVar2Max(var1)) ;
 				return integral.getIntegral();
 			}
 		};
 		
-		AdaptiveIntegral integral = new AdaptiveIntegral(func1d, domain.getVar1Min(), domain.getVar1Max()) ;
+		Integral1D integral = new Integral1D(func1d, domain.getVar1Min(), domain.getVar1Max()) ;
 		return integral.getIntegral() ;
 	}
 	
