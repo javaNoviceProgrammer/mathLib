@@ -23,7 +23,10 @@ public class InverseIteration implements PowerIteration {
 		 * Repeat 2 to 4 while li - li-1 < E 
 		 * OBS.: Xi is an eigenvector from eigenVector li. Yi is a vector.
 		 */
-		Complex[] initialEigenVector = new Complex[] {1,1,1} ;
+		Complex[] initialEigenVector = new Complex[matrix.getColumnDimension()] ;
+		for(int i=0; i<initialEigenVector.length; i++) {
+			initialEigenVector[i] = new Complex(1.0, 0.0) ;
+		}
 		Complex lastEigenValue;
 		Complex newEigenValue = 0;
 		int i = 0;
@@ -68,7 +71,7 @@ public class InverseIteration implements PowerIteration {
 					.get(0, 0);
 			newEigenValue = evalueNumerator / avalorDenominador;
 			i++;
-		} while (i == 1 || ComplexMath.abs(newEigenValue - lastEigenValue) > error);
+		} while (i == 1 || Math.abs(ComplexMath.abs(newEigenValue) - ComplexMath.abs(lastEigenValue)) > error);
 
 		EigenValueVector eigenValueVector = new EigenValueVector();
 		eigenValueVector.eigenValue = 1.0 / newEigenValue;

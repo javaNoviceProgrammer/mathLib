@@ -2,9 +2,7 @@ package mathLib.pde;
 
 import static mathLib.util.MathUtils.deltaKronecker;
 
-import Jama.EigenvalueDecomposition;
 import mathLib.matrix.Matrix;
-import mathLib.util.Timer;
 
 /**
  * this class is to represent dxx + dyy
@@ -117,18 +115,6 @@ public class DiffOperator2D {
 
 	public Matrix getDyyMatrix() {
 		return Dyy ;
-	}
-
-	// for test
-	public static void main(String[] args) {
-		DiffOperator2D diff = new DiffOperator2D(400/10, 220/10, 1.0, 1.0) ;
-//		System.out.println(diff.getDxxPlusDyyMatrix());
-		Timer timer = new Timer() ;
-		timer.start();
-		EigenvalueDecomposition eigen = new EigenvalueDecomposition(Matrix.toJamaMatrix(diff.getDxxPlusDyyMatrix())) ;
-		timer.end();
-		System.out.println(timer);
-//		System.out.println(new Matrix(eigen.getD().getArray()) );
 	}
 
 }

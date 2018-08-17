@@ -19,7 +19,10 @@ public class RegularIteration implements PowerIteration {
 	@Override
 	public EigenValueVector solve(PowerIterationMatrix matrix, double error) {
 
-		Complex[] initialEigenVector = new Complex[] {1,1,1} ;
+		Complex[] initialEigenVector = new Complex[matrix.getColumnDimension()] ;
+		for(int i=0; i<initialEigenVector.length; i++) {
+			initialEigenVector[i] = new Complex(1.0, 0.0) ;
+		}
 		Complex lastEigenValue;
 		Complex newEigenValue = 0;
 		int i = 0;
@@ -42,7 +45,7 @@ public class RegularIteration implements PowerIteration {
 					.get(0, 0);
 			newEigenValue = avalorNumerador / avalorDenominador;
 			i++;
-		} while (i == 1 || ComplexMath.abs(newEigenValue - lastEigenValue) > error);
+		} while (i == 1 || Math.abs(ComplexMath.abs(newEigenValue) - ComplexMath.abs(lastEigenValue)) > error);
 
 		EigenValueVector eigenValueVector = new EigenValueVector();
 		eigenValueVector.eigenValue = newEigenValue;

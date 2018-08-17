@@ -246,8 +246,16 @@ public class Matrix {
     	return new Jama.Matrix(A.data) ;
     }
     
+    public Jama.Matrix getJamaMatrix(){
+    	return new Jama.Matrix(this.data) ;
+    }
+    
     public static PowerIterationMatrix toPowerIterationMatrix(Matrix A){
     	return new PowerIterationMatrix(A.data) ;
+    }
+    
+    public PowerIterationMatrix getPowerIterationMatrix(){
+    	return new PowerIterationMatrix(this.data) ;
     }
 
     // element-wise operations
