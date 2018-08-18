@@ -10,7 +10,7 @@ import static edu.uta.futureye.function.FMath.*;
 
 public class TestColorMapPlot {
 	public static void main(String[] args) {
-		double[] xVal = MathUtils.linspace(-5*Math.PI, 5*Math.PI, 200) ;
+		double[] xVal = MathUtils.linspace(-5*Math.PI, 5*Math.PI, 1000) ;
 		double[] yVal = MathUtils.linspace(0.0, 10.0, 1000) ;
 		MeshGrid grid = new MeshGrid(xVal, yVal) ;
 		double[][] fVal = new double[xVal.length][yVal.length] ;
