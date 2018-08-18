@@ -12,5 +12,7 @@ public class TestComplex {
 		System.out.println(v);
 		System.out.println(sin(PI/2));
 		System.out.println(sin(PI/4));
+		Complex w = 1.2 ;
+		System.out.println(w);
 	}
 }
