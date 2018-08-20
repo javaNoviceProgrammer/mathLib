@@ -4,11 +4,13 @@ import mathLib.optimize.swarm.FitnessFunction;
 import mathLib.optimize.swarm.Swarm;
 import mathLib.optimize.swarm.particle.Particle;
 import mathLib.optimize.swarm.particle.SimpleParticle3D;
+import mathLib.util.Timer;
 
 public class Example3D {
 
 	public static void main(String[] args) {
-
+		Timer timer = new Timer() ;
+		timer.start();
 		// step 1: define the function
 		FitnessFunction func = new FitnessFunction() {
 
@@ -44,6 +46,8 @@ public class Example3D {
 		double yOptimum = swarm.getBestPosition()[1] ;
 		double zOptimum = swarm.getBestPosition()[2] ;
 		double funcMin = swarm.getBestFitness() ;
+		timer.end(); 
+		System.out.println(timer);
 		System.out.println("min x = " + xOptimum);
 		System.out.println("min y = " + yOptimum);
 		System.out.println("min z = " + zOptimum);
