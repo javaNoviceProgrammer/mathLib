@@ -453,6 +453,7 @@ public class Polynomial {
 		MathUtils.Arrays.show(roots);
 		Polynomial q = 1-X-X.pow(2)-X.pow(3);
 		System.out.println(q);
+		System.out.println("\n\n");
 	}
 
 }
