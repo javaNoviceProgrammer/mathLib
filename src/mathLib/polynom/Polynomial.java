@@ -1,6 +1,7 @@
 package mathLib.polynom;
 
 import mathLib.numbers.Complex;
+import mathLib.util.MathUtils;
 
 public class Polynomial {
 
@@ -219,7 +220,12 @@ public class Polynomial {
     // convert to string representation
     public String toString() {
         if (deg ==  0) return "" + coef[0];
-        if (deg ==  1) return coef[1] + " x + " + coef[0];
+        if (deg ==  1) {
+        	if(coef[0] != 0.0)
+        		return coef[1] + " x + " + coef[0];
+        	else
+        		return coef[1] + " x" ;
+        }
         String s = coef[deg] + " x^" + deg;
         for (int i = deg-1; i >= 0; i--) {
             if      (coef[i] == 0) continue;
@@ -444,9 +450,7 @@ public class Polynomial {
 		Polynomial p =  X.pow(4) - 1 ;
 		System.out.println(p);
 		Complex[] roots = p.getRoots() ;
-		for(Complex x: roots) {
-			System.out.println(x);
-		}
+		MathUtils.Arrays.show(roots);
 		Polynomial q = 1-X-X.pow(2)-X.pow(3);
 		System.out.println(q);
 	}
