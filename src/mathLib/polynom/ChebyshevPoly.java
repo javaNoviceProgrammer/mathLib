@@ -41,6 +41,8 @@ public class ChebyshevPoly {
 		System.out.println(secondKind(3));
 		System.out.println(secondKind(4));
 		
+		System.out.println("\n"+(firstKind(1)*firstKind(2)).integrate());
+		
 	}
 	
 	
