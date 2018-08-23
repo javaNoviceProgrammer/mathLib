@@ -1,26 +1,27 @@
 package mathLib.polynom;
 
+import static mathLib.polynom.Polynomial.*;
+
 public class ChebyshevPoly {
 
-	
 	public static Polynomial firstKind(int n) {
 		if(n==0)
-			return 0*Polynomial.X + 1 ;
+			return 0*X + 1 ;
 		else if(n==1)
-			return Polynomial.X ;
+			return X ;
 		else if(n >= 2)
-			return 2*Polynomial.X*firstKind(n-1)-firstKind(n-2) ;
+			return 2*X*firstKind(n-1)-firstKind(n-2) ;
 		else 
 			throw new IllegalArgumentException("degree must be 0 or higher") ;
 	}
 	
 	public static Polynomial secondKind(int n) {
 		if(n==0)
-			return 0*Polynomial.X + 1 ;
+			return 0*X + 1 ;
 		else if(n==1)
-			return 2*Polynomial.X ;
+			return 2*X ;
 		else if(n >= 2)
-			return 2*Polynomial.X*secondKind(n-1)-secondKind(n-2) ;
+			return 2*X*secondKind(n-1)-secondKind(n-2) ;
 		else 
 			throw new IllegalArgumentException("degree must be 0 or higher") ;
 	}
