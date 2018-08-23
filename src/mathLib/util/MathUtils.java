@@ -424,9 +424,23 @@ public class MathUtils {
 			s = s + x[n-1]+" ]" ;
 			return s ;
 		}
+		
+		public static String toString(Complex[] x){
+			String s = "[ " ;
+			int n = x.length ;
+			for(int i=0; i<n-1; i++){
+				s += x[i] + ", " ;
+			}
+			s = s + x[n-1]+" ]" ;
+			return s ;
+		}
 
 		// printing the array on the screen
 		public static void show(double[] x){
+			System.out.println(toString(x));
+		}
+		
+		public static void show(Complex[] x){
 			System.out.println(toString(x));
 		}
 
