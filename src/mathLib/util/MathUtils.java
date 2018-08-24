@@ -4,13 +4,24 @@ import flanagan.integration.IntegralFunction;
 import flanagan.math.ArrayMaths;
 import mathLib.integral.Integral1D;
 import mathLib.numbers.Complex;
+import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MathUtils {
 
 	public static double evaluate(String expression){
 		double result = new ExpressionBuilder(expression).build().evaluate() ;
+		return result ;
+	}
+
+	public static double evaluate(String expression, Map<String, Double> vars){
+		ExpressionBuilder eb = new ExpressionBuilder(expression) ;
+		eb.variables(vars.keySet()) ;
+		Expression ex = eb.build() ;
+		ex.setVariables(vars) ;
+		double result = ex.evaluate() ;
 		return result ;
 	}
 
@@ -40,28 +51,28 @@ public class MathUtils {
 		}
 		return Values ;
 	}
-	
+
 	public static double deltaKronecker(int i, int j) {
 		if(i == j)
 			return 1 ;
-		else 
+		else
 			return 0 ;
 	}
-	
+
 	public static double deltaKronecker(int i, int j, int k) {
 		if(i == j && i == k)
 			return 1 ;
-		else 
+		else
 			return 0 ;
 	}
-	
+
 	public static double deltaKronecker(int i, int j, int k, int l) {
 		if(i == j && i == k && i == l)
 			return 1 ;
-		else 
+		else
 			return 0 ;
 	}
-	
+
 	public static class Functions{
 		public static int factorial (int m) {
 			if(m==0) return 1 ;
@@ -71,44 +82,44 @@ public class MathUtils {
 		public static double asinh(double x) {
 			return Math.log(x + Math.sqrt(x*x + 1.0));
 			}
-	
+
 		public static double acosh(double x) {
 			return Math.log(x + Math.sqrt(x*x - 1.0));
 			}
-	
+
 		public static double atanh(double x) {
 			return 0.5*Math.log( (x + 1.0) / (-x + 1.0) );
 			}
-	
+
 		public static double acoth(double x){
 			return 1/atanh(x) ; // note that acoth(x) has a singularity at x=0
 		}
-	
+
 		// adding sinc function
 		public static double sinc(double x){
 			if(x==0){return 1 ; }
 			else{return Math.sin(Math.PI*x)/(Math.PI*x) ; }
 		}
-	
+
 		public static double sign(double x){
 			if(x>0) {return +1 ;}
 			else if(x<0) {return -1 ;}
 			else {return 0 ;}
 		}
-	
+
 		public static double step(double stepPoint, double x){
 			if(x>=stepPoint){return 1 ;}
 			else{return 0;}
 		}
-	
+
 		public static double unitStep(double stepPoint, double x){
 			if(x>=stepPoint){return 1 ;}
 			else{return 0;}
 		}
-	
+
 		public static double sinIntegral(double x){
 			IntegralFunction func = new IntegralFunction() {
-	
+
 				@Override
 				public double function(double t) {
 					double y = MathUtils.Functions.sinc(t/Math.PI);
@@ -118,7 +129,7 @@ public class MathUtils {
 			Integral1D result = new Integral1D(func, 0, x) ;
 			return result.getIntegral() ;
 		}
-	
+
 	}
 
 	public static class Conversions{
@@ -424,7 +435,7 @@ public class MathUtils {
 			s = s + x[n-1]+" ]" ;
 			return s ;
 		}
-		
+
 		public static String toString(Complex[] x){
 			String s = "[ " ;
 			int n = x.length ;
@@ -439,7 +450,7 @@ public class MathUtils {
 		public static void show(double[] x){
 			System.out.println(toString(x));
 		}
-		
+
 		public static void show(Complex[] x){
 			System.out.println(toString(x));
 		}
