@@ -7,8 +7,8 @@ public class Polynomial {
 
 	public static final Polynomial X = new Polynomial(new double[] {0.0, 1.0}) ;
 
-    private double[] coef;  // coefficients (length = degree + 1)
-    private int deg;     // degree of polynomial (0 for the zero polynomial)
+    double[] coef;  // coefficients (length = degree + 1)
+    int deg;     // degree of polynomial (0 for the zero polynomial)
 
     // a0 + a1*x + a2*x^2 + ... an * x^n
     public Polynomial(double[] coeff) {
