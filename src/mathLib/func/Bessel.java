@@ -1,5 +1,8 @@
 package mathLib.func;
 
+import mathLib.integral.Integral1D;
+import mathLib.integral.intf.IntegralFunction1D;
+
 public class Bessel {
 	protected static final double[] A_i0 = new double[]{-4.4153416464793395E-18D, 3.3307945188222384E-17D,
 			-2.431279846547955E-16D, 1.715391285555133E-15D, -1.1685332877993451E-14D, 7.676185498604936E-14D,
@@ -499,4 +502,34 @@ public class Bessel {
 			return var3;
 		}
 	}
+
+	public static double jn(double var0, double var1) throws ArithmeticException {
+		if(Math.floor(var0) == var0)
+			return jn((int) var0, var1) ;
+
+		IntegralFunction1D func1 = new IntegralFunction1D() {
+			@Override
+			public double function(double theta) {
+				return Math.cos(var1*Math.sin(theta)-var0*theta)/Math.PI ;
+			}
+		};
+
+		Integral1D result1 = new Integral1D(func1, 0.0, Math.PI) ;
+
+		IntegralFunction1D func2 = new IntegralFunction1D() {
+			@Override
+			public double function(double t) {
+				double x = var1, alpha = var0 ;
+				return Math.exp(-x*Math.sinh(t)-alpha*t) ;
+			}
+		};
+		Integral1D result2 = new Integral1D(func2, 0.0, 100.0) ;
+
+		double result = result1.getIntegral() - Math.sin(var0*Math.PI)/Math.PI * result2.getIntegral() ;
+
+		return result ;
+	}
+
+
+
 }
