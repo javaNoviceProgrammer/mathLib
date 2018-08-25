@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class MathUtils {
+	
+	public static boolean isNumeric(String s){
+		return s != null && s.matches("[-+]?\\d*\\.?\\d+");
+	}
 
 	public static double evaluate(String expression){
 		double result = new ExpressionBuilder(expression).build().evaluate() ;
