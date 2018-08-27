@@ -1,20 +1,17 @@
-package mathLib.fitting;
+package mathLib.fitting.poly;
 
-import mathLib.fitting.lmse.LeastSquareFitter;
-import mathLib.fitting.lmse.LeastSquareFunction;
-import mathLib.fitting.lmse.MarquardtFitter;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
 import plotter.chart.MatlabChart;
 
-public class PolynomialFitting {
+public class PolynomialFittingPSO {
 
 	int degree ;
 	Polynomial polyfit = null ;
 	double[] valX, valY ;
 	double[][] xData ;
 	
-	public PolynomialFitting(int degree) {
+	public PolynomialFittingPSO(int degree) {
 		this.degree = degree ;
 	}
 	
@@ -27,33 +24,7 @@ public class PolynomialFitting {
 	}
 	
 	public void fit() {
-		// step 1: Least square function
-		LeastSquareFunction func = new LeastSquareFunction() {
-			
-			@Override
-			public int getNParameters() {
-				return degree + 1 ;
-			}
-			
-			@Override
-			public int getNInputs() {
-				return 1;
-			}
-			
-			@Override
-			public double evaluate(double[] values, double[] parameters) {
-				double x = values[0] ;
-				polyfit = new Polynomial(parameters) ;
-				return polyfit.evaluate(x);
-			}
-		};
 		
-		// setting up the least square fitting
-		LeastSquareFitter fit = new MarquardtFitter(func) ;
-		fit.setParameters(MathUtils.Arrays.setValue(1.0, degree+1));
-		fit.setData(xData, valY);
-		fit.fitData();
-		polyfit = new Polynomial(fit.getParameters()) ;
 	}
 	
 	public double interpolate(double var) {
@@ -64,12 +35,16 @@ public class PolynomialFitting {
 		return polyfit ;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return polyfit ;
+	}
+
 	// for test
 	public static void main(String[] args) {
 		double[] x = MathUtils.linspace(0.0, 2.0, 100) ;
 		double[] y = MathUtils.Arrays.Functions.sinc(x) ;
-		PolynomialFitting pFit = new PolynomialFitting(6) ;
+		PolynomialFittingPSO pFit = new PolynomialFittingPSO(6) ;
 		pFit.setData(x, y);
 		pFit.fit();
 		
