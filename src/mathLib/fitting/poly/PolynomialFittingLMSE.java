@@ -5,6 +5,7 @@ import mathLib.fitting.lmse.LeastSquareFunction;
 import mathLib.fitting.lmse.MarquardtFitter;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
+import mathLib.util.Timer;
 import plotter.chart.MatlabChart;
 
 public class PolynomialFittingLMSE {
@@ -73,10 +74,17 @@ public class PolynomialFittingLMSE {
 	// for test
 	public static void main(String[] args) {
 		double[] x = MathUtils.linspace(0.0, 2.0, 100) ;
-		double[] y = MathUtils.Arrays.Functions.sinc(x) ;
-		PolynomialFittingLMSE pFit = new PolynomialFittingLMSE(6) ;
+		double[] y = MathUtils.Arrays.Functions.abs(MathUtils.Arrays.Functions.sinc(x)) ;
+		
+		Timer timer = new Timer() ;
+		timer.start();
+		
+		PolynomialFittingLMSE pFit = new PolynomialFittingLMSE(11) ;
 		pFit.setData(x, y);
 		pFit.fit();
+		
+		timer.end();
+		System.out.println(timer);
 		
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y, "b");

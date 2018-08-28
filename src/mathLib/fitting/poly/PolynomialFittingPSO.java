@@ -1,5 +1,8 @@
 package mathLib.fitting.poly;
 
+import mathLib.optimize.swarm.FitnessFunction;
+import mathLib.optimize.swarm.Swarm;
+import mathLib.optimize.swarm.particle.Particle;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
 import plotter.chart.MatlabChart;
@@ -9,7 +12,6 @@ public class PolynomialFittingPSO {
 	int degree ;
 	Polynomial polyfit = null ;
 	double[] valX, valY ;
-	double[][] xData ;
 	
 	public PolynomialFittingPSO(int degree) {
 		this.degree = degree ;
@@ -18,12 +20,36 @@ public class PolynomialFittingPSO {
 	public void setData(double[] valX, double[] valY) {
 		this.valX = valX ;
 		this.valY = valY ;
-		xData = new double[valX.length][1] ;
-		for(int i=0; i<valX.length; i++)
-			xData[i][0] = valX[i] ;
 	}
 	
 	public void fit() {
+		
+		FitnessFunction func = new FitnessFunction() {
+			@Override
+			public double evaluate(double... position) {
+				// 1. define a polynomial of degree n
+				polyfit = new Polynomial(position) ;
+				double sum = 0 ;
+				for(int i=0; i<valX.length; i++) {
+					double a = polyfit.evaluate(valX[i]) ;
+					sum += (a-valY[i])*(a-valY[i]) ;
+				}
+				sum /= valX.length ;
+				double rmse = Math.sqrt(sum) ;
+				return rmse;
+			}
+		};
+		
+		func.setMaximize(false);
+		
+		class simpleParticle extends Particle {
+			public simpleParticle() {
+				super(degree) ;
+			}
+		}
+		// 2. calculate error rmse
+		Particle particle = new simpleParticle() ;
+		Swarm swarm = new Swarm(100, particle, func) ;
 		
 	}
 	
