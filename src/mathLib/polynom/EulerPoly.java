@@ -1,14 +1,11 @@
 package mathLib.polynom;
 
-import static mathLib.util.MathUtils.Functions.* ;
+import static mathLib.polynom.Polynomial.X;
+import static mathLib.polynom.Polynomial.ZERO;
+import static mathLib.util.MathUtils.Functions.factorial;
 
 import edu.uta.futureye.function.FMath;
-import edu.uta.futureye.function.SingleVarFunc;
-import edu.uta.futureye.function.basic.FX;
 import edu.uta.futureye.function.intf.MathFunc;
-import mathLib.util.ArrayUtils;
-
-import static mathLib.polynom.Polynomial.* ;
 
 public class EulerPoly {
 

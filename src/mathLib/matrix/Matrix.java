@@ -1,5 +1,8 @@
 package mathLib.matrix;
 
+import Jama.EigenvalueDecomposition;
+import flanagan.roots.RealRoot;
+import flanagan.roots.RealRootFunction;
 import mathLib.geometry.algebra.Vector;
 import mathLib.matrix.powerIter.PowerIterationMatrix;
 
@@ -250,6 +253,10 @@ public class Matrix {
     	return new Jama.Matrix(this.data) ;
     }
     
+    public double det() {
+    	return toJamaMatrix(this).det() ;
+    }
+    
     public static PowerIterationMatrix toPowerIterationMatrix(Matrix A){
     	return new PowerIterationMatrix(A.data) ;
     }
@@ -314,6 +321,24 @@ public class Matrix {
     	Jama.Matrix B = toJamaMatrix(this) ;
     	Jama.Matrix invB = B.inverse() ;
     	return new Matrix(invB.getArray()) ;
+    }
+    
+    
+    public double findEigenValue(double approx) {
+    	Matrix A = this ;
+    	RealRootFunction func = new RealRootFunction() {
+			
+			@Override
+			public double function(double x) {
+				Matrix temp = identity(M) - x * A ;
+				return temp.det();
+			}
+		};
+		
+		RealRoot root = new RealRoot() ;
+		root.setEstimate(approx);
+		return root.bisect(func, 0.5*approx, 1.5*approx) ;
+		
     }
 
     // ************ operator overloading **********************
@@ -569,10 +594,23 @@ public class Matrix {
 		Matrix A = new Matrix(d) ;
 
 		System.out.println(A);
-		System.out.println(A.getRow(0));
-		System.out.println(A.getRow(1));
-		System.out.println(A.getColumn(0));
-		System.out.println(A.getColumn(1));
+		
+		System.out.println(A.det());
+		
+		double eigen = A.findEigenValue(1.2) ;
+		System.out.println(eigen);
+		
+		System.out.println((identity(2)-0.30244*A).det());
+		
+//		EigenvalueDecomposition eg = A.getJamaMatrix().eig() ;
+//		for(int i=0; i<eg.getRealEigenvalues().length; i++) {
+//			System.out.println(eg.getRealEigenvalues()[i] + " + i + " + eg.getImagEigenvalues()[i]);
+//		}
+		
+//		System.out.println(A.getRow(0));
+//		System.out.println(A.getRow(1));
+//		System.out.println(A.getColumn(0));
+//		System.out.println(A.getColumn(1));
 
 		// operator overloading
 //		Matrix B = d ;
