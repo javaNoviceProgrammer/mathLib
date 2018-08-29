@@ -73,7 +73,7 @@ public class EulerPoly {
 		MathFunc f = FMath.asin(FMath.x) ;
 		System.out.println(f);
 		System.out.println(f.diff("x"));
-//		System.out.println(f.diff("x").apply(0.0));
+		System.out.println(f.diff("x").apply(0.0));
 
 	}
 
