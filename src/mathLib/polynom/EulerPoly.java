@@ -1,6 +1,13 @@
 package mathLib.polynom;
 
 import static mathLib.util.MathUtils.Functions.* ;
+
+import edu.uta.futureye.function.FMath;
+import edu.uta.futureye.function.SingleVarFunc;
+import edu.uta.futureye.function.basic.FX;
+import edu.uta.futureye.function.intf.MathFunc;
+import mathLib.util.ArrayUtils;
+
 import static mathLib.polynom.Polynomial.* ;
 
 public class EulerPoly {
@@ -65,6 +72,11 @@ public class EulerPoly {
 		System.out.println(eulerNumber(18));
 
 		System.out.println(euler(6).evaluate(0.5)*Math.pow(2, 6));
+
+		MathFunc f = FMath.asin(FMath.x) ;
+		System.out.println(f);
+		System.out.println(f.diff("x"));
+//		System.out.println(f.diff("x").apply(0.0));
 
 	}
 
