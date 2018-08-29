@@ -163,6 +163,7 @@ public class Polynomial {
     }
 
     public Polynomial diff(int order) {
+    	if (order == 0) return this ;
         if (deg == 0) return new Polynomial(0, 0);
         Polynomial deriv = new Polynomial();
         deriv = deriv.plus(this) ;
