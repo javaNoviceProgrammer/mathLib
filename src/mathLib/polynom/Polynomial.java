@@ -6,6 +6,7 @@ import mathLib.util.MathUtils;
 public class Polynomial {
 
 	public static final Polynomial X = new Polynomial(new double[] {0.0, 1.0}) ;
+	public static final Polynomial ZERO = new Polynomial() ;
 
     double[] coef;  // coefficients (length = degree + 1)
     int deg;     // degree of polynomial (0 for the zero polynomial)
@@ -222,8 +223,10 @@ public class Polynomial {
     public String toString() {
         if (deg ==  0) return "" + coef[0];
         if (deg ==  1) {
-        	if(coef[0] != 0.0)
+        	if(coef[0] > 0.0)
         		return coef[1] + " x + " + coef[0];
+        	else if (coef[0] < 0.0)
+        		return coef[1] + " x - " + Math.abs(coef[0]);
         	else
         		return coef[1] + " x" ;
         }
@@ -455,6 +458,9 @@ public class Polynomial {
 		Polynomial q = 1-X-X.pow(2)-X.pow(3);
 		System.out.println(q);
 		System.out.println("\n\n");
+
+		q = q - 1 ;
+		System.out.println(q);
 	}
 
 }

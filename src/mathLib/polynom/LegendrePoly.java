@@ -25,17 +25,17 @@ public class LegendrePoly {
 
 	// for test
 	public static void main(String[] args) {
-//		System.out.println(legendre(0));
-//		System.out.println(legendre(1));
-//		System.out.println(legendre(2));
-//		System.out.println(legendre(3));
-//		System.out.println(legendre(4));
-//		System.out.println(legendre(5));
-//		System.out.println(legendre(6));
-//		System.out.println(legendre(7));
-//		System.out.println(legendre(8));
-//		System.out.println(legendre(9));
-//		System.out.println(legendre(10));
+		System.out.println(legendre(0));
+		System.out.println(legendre(1));
+		System.out.println(legendre(2));
+		System.out.println(legendre(3));
+		System.out.println(legendre(4));
+		System.out.println(legendre(5));
+		System.out.println(legendre(6));
+		System.out.println(legendre(7));
+		System.out.println(legendre(8));
+		System.out.println(legendre(9));
+		System.out.println(legendre(10));
 
 		System.out.println(associatedLegendre(2, 0));
 	}
