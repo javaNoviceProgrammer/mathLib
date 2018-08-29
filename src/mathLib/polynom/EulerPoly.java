@@ -4,9 +4,6 @@ import static mathLib.polynom.Polynomial.X;
 import static mathLib.polynom.Polynomial.ZERO;
 import static mathLib.util.MathUtils.Functions.factorial;
 
-import edu.uta.futureye.function.FMath;
-import edu.uta.futureye.function.intf.MathFunc;
-
 public class EulerPoly {
 
 	public static Polynomial euler(int degree) {
@@ -68,12 +65,7 @@ public class EulerPoly {
 		System.out.println(eulerNumber(14));
 		System.out.println(eulerNumber(18));
 
-		System.out.println(euler(6).evaluate(0.5)*Math.pow(2, 6));
-
-		MathFunc f = FMath.asin(FMath.x) ;
-		System.out.println(f);
-		System.out.println(f.diff("x"));
-		System.out.println(f.diff("x").apply(0.0));
+		System.out.println(euler(14).evaluate(0.5)*Math.pow(2, 6));
 
 	}
 

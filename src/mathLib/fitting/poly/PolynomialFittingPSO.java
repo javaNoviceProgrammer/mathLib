@@ -12,18 +12,18 @@ public class PolynomialFittingPSO {
 	int degree ;
 	Polynomial polyfit = null ;
 	double[] valX, valY ;
-	
+
 	public PolynomialFittingPSO(int degree) {
 		this.degree = degree ;
 	}
-	
+
 	public void setData(double[] valX, double[] valY) {
 		this.valX = valX ;
 		this.valY = valY ;
 	}
-	
+
 	public void fit() {
-		
+
 		FitnessFunction func = new FitnessFunction() {
 			@Override
 			public double evaluate(double... position) {
@@ -39,9 +39,9 @@ public class PolynomialFittingPSO {
 				return rmse;
 			}
 		};
-		
+
 		func.setMaximize(false);
-		
+
 		class simpleParticle extends Particle {
 			public simpleParticle() {
 				super(degree) ;
@@ -50,17 +50,17 @@ public class PolynomialFittingPSO {
 		// 2. calculate error rmse
 		Particle particle = new simpleParticle() ;
 		Swarm swarm = new Swarm(100, particle, func) ;
-		
+
 	}
-	
+
 	public double interpolate(double var) {
 		return polyfit.evaluate(var) ;
 	}
-	
+
 	public Polynomial getPolynomial() {
 		return polyfit ;
 	}
-	
+
 	@Override
 	public String toString() {
 		return polyfit ;
@@ -73,20 +73,20 @@ public class PolynomialFittingPSO {
 		PolynomialFittingPSO pFit = new PolynomialFittingPSO(6) ;
 		pFit.setData(x, y);
 		pFit.fit();
-		
+
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y, "b");
-		
+
 		double[] z = new double[x.length] ;
 		for(int i=0; i<z.length; i++)
 			z[i] = pFit.interpolate(x[i]) ;
-		
+
 		fig.plot(x, z, "r");
 		fig.RenderPlot();
 		fig.markerON();
 		fig.run(true);
-		
+
 		System.out.println(pFit.getPolynomial());
 	}
-	
+
 }

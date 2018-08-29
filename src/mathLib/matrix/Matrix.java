@@ -248,19 +248,19 @@ public class Matrix {
     public static Jama.Matrix toJamaMatrix(Matrix A){
     	return new Jama.Matrix(A.data) ;
     }
-    
+
     public Jama.Matrix getJamaMatrix(){
     	return new Jama.Matrix(this.data) ;
     }
-    
+
     public double det() {
     	return toJamaMatrix(this).det() ;
     }
-    
+
     public static PowerIterationMatrix toPowerIterationMatrix(Matrix A){
     	return new PowerIterationMatrix(A.data) ;
     }
-    
+
     public PowerIterationMatrix getPowerIterationMatrix(){
     	return new PowerIterationMatrix(this.data) ;
     }
@@ -292,7 +292,7 @@ public class Matrix {
     /**
      * sub-Blocks of the matrix
      */
-    
+
     public Matrix getRow(int row) {
     	int rowSize = N ;
     	double[][] selectedRow = new double[1][rowSize] ;
@@ -313,32 +313,32 @@ public class Matrix {
 
     /**
      * inverse of the matrix
-     * 
+     *
      * @return Matrix
      */
-    
+
     public Matrix inv() {
     	Jama.Matrix B = toJamaMatrix(this) ;
     	Jama.Matrix invB = B.inverse() ;
     	return new Matrix(invB.getArray()) ;
     }
-    
-    
+
+
     public double findEigenValue(double approx) {
     	Matrix A = this ;
     	RealRootFunction func = new RealRootFunction() {
-			
+
 			@Override
 			public double function(double x) {
-				Matrix temp = identity(M) - x * A ;
+				Matrix temp = A - x * identity(M) ;
 				return temp.det();
 			}
 		};
-		
+
 		RealRoot root = new RealRoot() ;
 		root.setEstimate(approx);
 		return root.bisect(func, 0.5*approx, 1.5*approx) ;
-		
+
     }
 
     // ************ operator overloading **********************
@@ -346,7 +346,7 @@ public class Matrix {
     public static Matrix valueOf(double[][] v) {
     	return new Matrix(v) ;
     }
-    
+
     public static Matrix valueOf(double[] v) {
     	return new Matrix(v) ;
     }
@@ -360,7 +360,7 @@ public class Matrix {
     			data[i][j] = v[i][j] ;
     	return new Matrix(data) ;
     }
-    
+
     public static Matrix valueOf(int[] v) {
     	int M = v.length ;
     	double[] data = new double[M] ;
@@ -378,7 +378,7 @@ public class Matrix {
     			data[i][j] = v[i][j] ;
     	return new Matrix(data) ;
     }
-    
+
     public static Matrix valueOf(float[] v) {
     	int M = v.length ;
     	double[] data = new double[M] ;
@@ -396,7 +396,7 @@ public class Matrix {
     			data[i][j] = v[i][j] ;
     	return new Matrix(data) ;
     }
-    
+
     public static Matrix valueOf(long[] v) {
     	int M = v.length ;
     	double[] data = new double[M] ;
@@ -497,7 +497,7 @@ public class Matrix {
  	public Matrix multiply(Matrix v) {
  		return this.times(v);
  	}
- 	
+
  	public Matrix multiply(Vector v) {
  		return this.times(v.asMatrix());
  	}
@@ -590,23 +590,19 @@ public class Matrix {
 
  	// for test
  	public static void main(String[] args) {
- 		double[][] d = new double[][] {{2.2222, -1.23}, {-5, -2.3656565656}} ;
+ 		double[][] d = new double[][] {{2.2222, -1.23, 1}, {10, -2.3656565656, 1}, {1,1,1}} ;
 		Matrix A = new Matrix(d) ;
 
 		System.out.println(A);
-		
-		System.out.println(A.det());
-		
+
 		double eigen = A.findEigenValue(1.2) ;
 		System.out.println(eigen);
-		
-		System.out.println((identity(2)-0.30244*A).det());
-		
-//		EigenvalueDecomposition eg = A.getJamaMatrix().eig() ;
-//		for(int i=0; i<eg.getRealEigenvalues().length; i++) {
-//			System.out.println(eg.getRealEigenvalues()[i] + " + i + " + eg.getImagEigenvalues()[i]);
-//		}
-		
+
+		EigenvalueDecomposition eg = A.getJamaMatrix().eig() ;
+		for(int i=0; i<eg.getRealEigenvalues().length; i++) {
+			System.out.println(eg.getRealEigenvalues()[i] + " + i + " + eg.getImagEigenvalues()[i]);
+		}
+
 //		System.out.println(A.getRow(0));
 //		System.out.println(A.getRow(1));
 //		System.out.println(A.getColumn(0));
