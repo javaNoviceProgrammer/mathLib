@@ -1,6 +1,5 @@
 package mathLib.matrix;
 
-import Jama.EigenvalueDecomposition;
 import flanagan.roots.RealRoot;
 import flanagan.roots.RealRootFunction;
 import mathLib.geometry.algebra.Vector;
@@ -202,6 +201,17 @@ public class Matrix {
         	}
         }
         return C;
+    }
+
+    public Matrix pow(int k) {
+    	if(M != N)
+    		throw new IllegalArgumentException("must be a square matrix!") ;
+    	if(k == 0)
+    		return identity(M) ;
+    	else if (k==1)
+    		return this ;
+    	else
+    		return this.times(pow(k-1)) ;
     }
 
     // print matrix to standard output
@@ -590,18 +600,20 @@ public class Matrix {
 
  	// for test
  	public static void main(String[] args) {
- 		double[][] d = new double[][] {{2.2222, -1.23, 1}, {10, -2.3656565656, 1}, {1,1,1}} ;
+ 		double[][] d = new double[][] {{1, 2}, {1, 1}} ;
 		Matrix A = new Matrix(d) ;
 
 		System.out.println(A);
+		System.out.println(A.pow(5));
+		System.out.println(A.pow(20));
 
-		double eigen = A.findEigenValue(1.2) ;
-		System.out.println(eigen);
-
-		EigenvalueDecomposition eg = A.getJamaMatrix().eig() ;
-		for(int i=0; i<eg.getRealEigenvalues().length; i++) {
-			System.out.println(eg.getRealEigenvalues()[i] + " + i + " + eg.getImagEigenvalues()[i]);
-		}
+//		double eigen = A.findEigenValue(1.2) ;
+//		System.out.println(eigen);
+//
+//		EigenvalueDecomposition eg = A.getJamaMatrix().eig() ;
+//		for(int i=0; i<eg.getRealEigenvalues().length; i++) {
+//			System.out.println(eg.getRealEigenvalues()[i] + " + i + " + eg.getImagEigenvalues()[i]);
+//		}
 
 //		System.out.println(A.getRow(0));
 //		System.out.println(A.getRow(1));

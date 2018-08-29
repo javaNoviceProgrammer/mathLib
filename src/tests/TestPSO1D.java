@@ -3,7 +3,7 @@ package tests;
 import mathLib.optimize.swarm.FitnessFunction;
 import mathLib.optimize.swarm.Swarm;
 import mathLib.optimize.swarm.particle.Particle;
-import mathLib.optimize.swarm.particle.SimpleParticle1D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle1D;
 
 public class TestPSO1D {
 

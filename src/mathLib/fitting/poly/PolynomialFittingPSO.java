@@ -3,6 +3,12 @@ package mathLib.fitting.poly;
 import mathLib.optimize.swarm.FitnessFunction;
 import mathLib.optimize.swarm.Swarm;
 import mathLib.optimize.swarm.particle.Particle;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle1D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle2D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle3D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle4D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle5D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle6D;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
 import plotter.chart.MatlabChart;
@@ -41,16 +47,48 @@ public class PolynomialFittingPSO {
 		};
 
 		func.setMaximize(false);
-
-		class simpleParticle extends Particle {
-			public simpleParticle() {
-				super(degree) ;
-			}
-		}
 		// 2. calculate error rmse
-		Particle particle = new simpleParticle() ;
-		Swarm swarm = new Swarm(100, particle, func) ;
 
+		Particle particle = getParticle() ;
+
+		if (particle == null)
+			throw new IllegalArgumentException("degree of polynomial not supported!") ;
+
+		Swarm swarm = new Swarm(1000, particle, func) ;
+		double[] maxPosition = new double[degree+1] ;
+		double[] minPosition = new double[degree+1] ;
+		for(int i=0; i<maxPosition.length; i++) {
+			maxPosition[i] = 100 ;
+			minPosition[i] = -100 ;
+		}
+		swarm.setMaxPosition(maxPosition);
+		swarm.setMinPosition(minPosition);
+		for(int i=0; i<5000; i++)
+			swarm.evolve();
+
+		polyfit = new Polynomial(swarm.getBestPosition()) ;
+
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private <T extends Particle> T getParticle() {
+		switch (degree) {
+		case 0:
+			return (T) new SimpleParticle1D() ;
+		case 1:
+			return (T) new SimpleParticle2D() ;
+		case 2:
+			return (T) new SimpleParticle3D() ;
+		case 3:
+			return (T) new SimpleParticle4D() ;
+		case 4:
+			return (T) new SimpleParticle5D() ;
+		case 5:
+			return (T) new SimpleParticle6D() ;
+		default:
+			return null ;
+		}
 	}
 
 	public double interpolate(double var) {
@@ -68,9 +106,9 @@ public class PolynomialFittingPSO {
 
 	// for test
 	public static void main(String[] args) {
-		double[] x = MathUtils.linspace(0.0, 2.0, 100) ;
-		double[] y = MathUtils.Arrays.Functions.sinc(x) ;
-		PolynomialFittingPSO pFit = new PolynomialFittingPSO(6) ;
+		double[] x = MathUtils.linspace(0.0, 0.5, 100) ;
+		double[] y = MathUtils.Arrays.Functions.exp(x) ;
+		PolynomialFittingPSO pFit = new PolynomialFittingPSO(2) ;
 		pFit.setData(x, y);
 		pFit.fit();
 

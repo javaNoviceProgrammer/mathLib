@@ -3,7 +3,7 @@ package mathLib.optimize.swarm.example;
 import mathLib.optimize.swarm.FitnessFunction;
 import mathLib.optimize.swarm.Swarm;
 import mathLib.optimize.swarm.particle.Particle;
-import mathLib.optimize.swarm.particle.SimpleParticle3D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle3D;
 import mathLib.util.Timer;
 
 public class Example3D {
