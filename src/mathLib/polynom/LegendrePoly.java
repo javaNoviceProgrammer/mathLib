@@ -1,11 +1,11 @@
 package mathLib.polynom;
 
 import static mathLib.polynom.Polynomial.X;
-import static mathLib.util.MathUtils.Functions.* ;
+import static mathLib.util.MathUtils.Functions.factorial;
 
 public class LegendrePoly {
 
-	public static Polynomial getPoly(int degree) {
+	public static Polynomial legendre(int degree) {
 		if(degree == 0)
 			return 0*X + 1 ;
 
@@ -14,19 +14,30 @@ public class LegendrePoly {
 		return (coeff*poly.diff(degree)) ;
 	}
 
+	public static Polynomial associatedLegendre(int l, int m) {
+		int c1 = 1 ;
+		if(m % 2 != 0)
+			throw new IllegalArgumentException("m must be even!") ;
+		Polynomial poly = (1-X*X).pow(m/2) ;
+		return (c1 * poly * legendre(l).diff(m)) ;
+
+	}
+
 	// for test
 	public static void main(String[] args) {
-		System.out.println(getPoly(0));
-		System.out.println(getPoly(1));
-		System.out.println(getPoly(2));
-		System.out.println(getPoly(3));
-		System.out.println(getPoly(4));
-		System.out.println(getPoly(5));
-		System.out.println(getPoly(6));
-		System.out.println(getPoly(7));
-		System.out.println(getPoly(8));
-		System.out.println(getPoly(9));
-		System.out.println(getPoly(10));
+//		System.out.println(legendre(0));
+//		System.out.println(legendre(1));
+//		System.out.println(legendre(2));
+//		System.out.println(legendre(3));
+//		System.out.println(legendre(4));
+//		System.out.println(legendre(5));
+//		System.out.println(legendre(6));
+//		System.out.println(legendre(7));
+//		System.out.println(legendre(8));
+//		System.out.println(legendre(9));
+//		System.out.println(legendre(10));
+
+		System.out.println(associatedLegendre(2, 0));
 	}
 
 
