@@ -1,6 +1,6 @@
 package tests;
 
-import mathLib.func.Bessel;
+import mathLib.func.BesselFunc;
 import mathLib.util.MathUtils;
 import plotter.chart.MatlabChart;
 
@@ -10,7 +10,7 @@ public class TestBesselFunction {
 		double[] x = MathUtils.linspace(0.1, 100.0, 100) ;
 		double[] y = new double[x.length] ;
 		for(int i=0; i<x.length; i++)
-			y[i] = Bessel.jn(-0.5, x[i]) ;
+			y[i] = BesselFunc.jn(-0.5, x[i]) ;
 
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y);

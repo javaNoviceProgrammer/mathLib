@@ -3,7 +3,7 @@ package mathLib.func;
 import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
 
-public class Bessel {
+public class BesselFunc {
 	protected static final double[] A_i0 = new double[]{-4.4153416464793395E-18D, 3.3307945188222384E-17D,
 			-2.431279846547955E-16D, 1.715391285555133E-15D, -1.1685332877993451E-14D, 7.676185498604936E-14D,
 			-4.856446783111929E-13D, 2.95505266312964E-12D, -1.726826291441556E-11D, 9.675809035373237E-11D,
