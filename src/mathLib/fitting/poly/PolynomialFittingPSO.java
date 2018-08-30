@@ -3,14 +3,19 @@ package mathLib.fitting.poly;
 import mathLib.optimize.swarm.FitnessFunction;
 import mathLib.optimize.swarm.Swarm;
 import mathLib.optimize.swarm.particle.Particle;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle10D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle1D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle2D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle3D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle4D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle5D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle6D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle7D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle8D;
+import mathLib.optimize.swarm.particle.simple.SimpleParticle9D;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
+import mathLib.util.Timer;
 import plotter.chart.MatlabChart;
 
 public class PolynomialFittingPSO {
@@ -54,7 +59,7 @@ public class PolynomialFittingPSO {
 		if (particle == null)
 			throw new IllegalArgumentException("degree of polynomial not supported!") ;
 
-		Swarm swarm = new Swarm(1000, particle, func) ;
+		Swarm swarm = new Swarm(100, particle, func) ;
 		double[] maxPosition = new double[degree+1] ;
 		double[] minPosition = new double[degree+1] ;
 		for(int i=0; i<maxPosition.length; i++) {
@@ -63,7 +68,7 @@ public class PolynomialFittingPSO {
 		}
 		swarm.setMaxPosition(maxPosition);
 		swarm.setMinPosition(minPosition);
-		for(int i=0; i<5000; i++)
+		for(int i=0; i<10000; i++)
 			swarm.evolve();
 
 		polyfit = new Polynomial(swarm.getBestPosition()) ;
@@ -86,6 +91,14 @@ public class PolynomialFittingPSO {
 			return (T) new SimpleParticle5D() ;
 		case 5:
 			return (T) new SimpleParticle6D() ;
+		case 6:
+			return (T) new SimpleParticle7D() ;
+		case 7:
+			return (T) new SimpleParticle8D() ;
+		case 8:
+			return (T) new SimpleParticle9D() ;
+		case 9:
+			return (T) new SimpleParticle10D() ;
 		default:
 			return null ;
 		}
@@ -106,11 +119,16 @@ public class PolynomialFittingPSO {
 
 	// for test
 	public static void main(String[] args) {
-		double[] x = MathUtils.linspace(0.0, 0.5, 100) ;
-		double[] y = MathUtils.Arrays.Functions.exp(x) ;
+		double[] x = MathUtils.linspace(0.0, 1*Math.PI, 100) ;
+		double[] y = MathUtils.Arrays.Functions.sin(x) ;
+		
+		Timer timer = new Timer() ;
+		timer.start();
 		PolynomialFittingPSO pFit = new PolynomialFittingPSO(2) ;
 		pFit.setData(x, y);
 		pFit.fit();
+		timer.end();
+		System.out.println(timer);
 
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y, "b");
