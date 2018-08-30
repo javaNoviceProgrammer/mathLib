@@ -218,7 +218,33 @@ public class Matrix {
     public void show() {
         System.out.println(this.toString());
     }
+    
+    public boolean isSquare() {
+    	if(M == N)
+    		return true ;
+    	else
+    		return false ;
+    }
 
+    public boolean isDiagonal() {
+    	if(!isSquare())
+    		return false ;
+    	Matrix A = this - this.transpose() ;
+    	Matrix zero = new Matrix(M, N) ;
+    	if(A.equals(zero))
+    		return true ;
+    	else
+    		return false ;
+    }
+    
+    public boolean isSymmetric() {
+    	if(!isSquare())
+    		return false ;
+    	if(this.equals(this.transpose()))
+    		return true ;
+    	else
+    		return false ;
+    }
 
     @Override
 	public String toString() {
@@ -609,7 +635,7 @@ public class Matrix {
 
  	// for test
  	public static void main(String[] args) {
- 		double[][] d = new double[][] {{1, 2}, {1, -1}} ;
+ 		double[][] d = new double[][] {{1, 0, 0}, {0, -1, 0}, {0, 0, 3}} ;
 		Matrix A = new Matrix(d) ;
 
 		System.out.println(A);
@@ -617,13 +643,17 @@ public class Matrix {
 		System.out.println(A.pow(20));
 		
 		System.out.println(A.trace());
+		
+		System.out.println(A.isDiagonal());
+		System.out.println(A.isSquare());
+		System.out.println(A.isSymmetric());
 
-//		double eigen = A.findEigenValue(1.2) ;
+//		double eigen = A.findEigenValue(5) ;
 //		System.out.println(eigen);
 //
 //		EigenvalueDecomposition eg = A.getJamaMatrix().eig() ;
 //		for(int i=0; i<eg.getRealEigenvalues().length; i++) {
-//			System.out.println(eg.getRealEigenvalues()[i] + " + i + " + eg.getImagEigenvalues()[i]);
+//			System.out.println(eg.getRealEigenvalues()[i] + " + i  " + eg.getImagEigenvalues()[i]);
 //		}
 
 //		System.out.println(A.getRow(0));
