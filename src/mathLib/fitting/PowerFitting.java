@@ -7,18 +7,18 @@ import mathLib.util.MathUtils;
 import mathLib.util.Timer;
 import plotter.chart.MatlabChart;
 
-public class ExponentialFitting {
+public class PowerFitting {
 
 	double[] valX, valY ;
 	double[][] xData ;
 	double a , b ;
 	
 	/**
-	 * single term: a * exp(b)
+	 * single term: a * x^b
 	 * 
 	 */
 	
-	public ExponentialFitting() {
+	public PowerFitting() {
 	}
 	
 	public void setData(double[] valX, double[] valY) {
@@ -48,7 +48,7 @@ public class ExponentialFitting {
 				double x = values[0] ;
 				double a = parameters[0] ;
 				double b = parameters[1] ;
-				return a*Math.exp(b*x);
+				return a*Math.pow(x, b);
 			}
 		};
 		
@@ -63,22 +63,22 @@ public class ExponentialFitting {
 	}
 	
 	public double interpolate(double var) {
-		return a*Math.exp(b*var) ;
+		return a*Math.pow(var, b) ;
 	}
 	
 	@Override
 	public String toString() {
-		return a+" * exp("+b+"*x)";
+		return a + " * x^" + b + ")";
 	}
 
 	// for test
 	public static void main(String[] args) {
 		double[] x = MathUtils.linspace(0.0, 1*Math.PI, 100) ;
-		double[] y = MathUtils.Arrays.Functions.pow(4.0, x) ;
+		double[] y = MathUtils.Arrays.Functions.pow(x, 5) ;
 		
 		Timer timer = new Timer() ;
 		timer.start();
-		ExponentialFitting pFit = new ExponentialFitting() ;
+		PowerFitting pFit = new PowerFitting() ;
 		pFit.setData(x, y);
 		pFit.fit();
 		timer.end();

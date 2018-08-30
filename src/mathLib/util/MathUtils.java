@@ -582,6 +582,15 @@ public class MathUtils {
 				}
 				return y ;
 			}
+			
+			public static double[] pow(double p, double[] x){
+				int n = x.length ;
+				double[] y = new double[n] ;
+				for(int i=0; i<n; i++){
+					y[i] = Math.pow(p, x[i]) ;
+				}
+				return y ;
+			}
 
 			public static double[] exp(double[] x){
 				int n = x.length ;

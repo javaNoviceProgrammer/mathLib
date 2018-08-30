@@ -73,13 +73,13 @@ public class PolynomialFittingLMSE {
 
 	// for test
 	public static void main(String[] args) {
-		double[] x = MathUtils.linspace(0.0, 2.0, 100) ;
-		double[] y = MathUtils.Arrays.Functions.abs(MathUtils.Arrays.Functions.sinc(x)) ;
+		double[] x = MathUtils.linspace(0.0, Math.PI, 100) ;
+		double[] y = MathUtils.Arrays.Functions.sin(x) ;
 		
 		Timer timer = new Timer() ;
 		timer.start();
 		
-		PolynomialFittingLMSE pFit = new PolynomialFittingLMSE(11) ;
+		PolynomialFittingLMSE pFit = new PolynomialFittingLMSE(2) ;
 		pFit.setData(x, y);
 		pFit.fit();
 		
