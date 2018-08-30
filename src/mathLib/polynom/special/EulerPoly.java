@@ -1,8 +1,10 @@
-package mathLib.polynom;
+package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.X;
 import static mathLib.polynom.Polynomial.ZERO;
 import static mathLib.util.MathUtils.Functions.factorial;
+
+import mathLib.polynom.Polynomial;
 
 public class EulerPoly {
 

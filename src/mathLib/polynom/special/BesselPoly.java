@@ -1,6 +1,8 @@
-package mathLib.polynom;
+package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.* ;
+
+import mathLib.polynom.Polynomial;
 
 public class BesselPoly {
 
