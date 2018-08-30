@@ -298,6 +298,15 @@ public class Matrix {
         }
         return C;
     }
+    
+    public double trace() {
+    	if (M != N)
+    		throw new IllegalArgumentException("must be a square matrix!") ;
+    	double sum = 0 ;
+    	for(int i=0; i<M; i++)
+    		sum += data[i][i] ;
+    	return sum ;
+    }
 
     /**
      * sub-Blocks of the matrix
@@ -600,12 +609,14 @@ public class Matrix {
 
  	// for test
  	public static void main(String[] args) {
- 		double[][] d = new double[][] {{1, 2}, {1, 1}} ;
+ 		double[][] d = new double[][] {{1, 2}, {1, -1}} ;
 		Matrix A = new Matrix(d) ;
 
 		System.out.println(A);
 		System.out.println(A.pow(5));
 		System.out.println(A.pow(20));
+		
+		System.out.println(A.trace());
 
 //		double eigen = A.findEigenValue(1.2) ;
 //		System.out.println(eigen);

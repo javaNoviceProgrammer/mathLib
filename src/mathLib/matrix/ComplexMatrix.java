@@ -368,6 +368,15 @@ public class ComplexMatrix {
         return C;
     }
     
+    public Complex trace() {
+    	if (M != N)
+    		throw new IllegalArgumentException("must be a square matrix!") ;
+    	Complex sum = ZERO ;
+    	for(int i=0; i<M; i++)
+    		sum = sum + data[i][i] ;
+    	return sum ;
+    }
+    
     /**
      * sub-Blocks of the matrix
      */
@@ -674,9 +683,11 @@ public class ComplexMatrix {
 
  	// for test ************************************
  	public static void main(String[] args) {
- 		Complex[][] d = new Complex[][] {{1, 1}, {-5+j, 1}} ;
+ 		Complex[][] d = new Complex[][] {{1, 1}, {-5+j, -j+1}} ;
  		ComplexMatrix A = new ComplexMatrix(d) ;
 		A.show();
+		
+		System.out.println(A.trace());
 
 //		// operator overloading
 //		ComplexMatrix B = d ;
