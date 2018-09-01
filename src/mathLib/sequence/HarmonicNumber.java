@@ -1,7 +1,5 @@
-package mathLib.numbers.special;
+package mathLib.sequence;
 
-import mathLib.sequence.SumFunction;
-import mathLib.sequence.Summation;
 import plotter.chart.MatlabChart;
 import static mathLib.util.MathUtils.* ;
 
