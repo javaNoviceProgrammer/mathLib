@@ -1,9 +1,12 @@
-package mathLib.sequence;
+package mathLib.sequence.special;
 
 import plotter.chart.MatlabChart;
 import static mathLib.util.MathUtils.* ;
 
 import java.awt.Color;
+
+import mathLib.sequence.SumFunction;
+import mathLib.sequence.Summation;
 
 public class HarmonicNumber {
 

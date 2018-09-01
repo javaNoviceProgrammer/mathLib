@@ -1,4 +1,4 @@
-package mathLib.sequence;
+package mathLib.sequence.special;
 
 import static mathLib.util.MathUtils.*;
 

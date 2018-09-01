@@ -1,4 +1,4 @@
-package mathLib.sequence;
+package mathLib.sequence.special;
 
 public class FibonacciNumber {
 
