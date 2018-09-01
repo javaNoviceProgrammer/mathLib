@@ -1,8 +1,8 @@
 package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.X;
-import static mathLib.polynom.Polynomial.ZERO;
-import static mathLib.util.MathUtils.Functions.factorial;
+
+import java.math.BigInteger;
 
 import mathLib.polynom.Polynomial;
 
@@ -15,7 +15,7 @@ public class EulerPoly {
 			return X-0.5 ;
 		Polynomial p = X.pow(degree) ;
 		for(int s=0; s<degree; s++) {
-			double coeff = 0.5 * factorial(degree)/(1.0*factorial(s)*factorial(degree-s)) ;
+			double coeff = 0.5 * factorial(degree)/(factorial(s)*factorial(degree-s)) ;
 			p = p - coeff * euler(s) ;
 		}
 		return p ;
@@ -23,16 +23,24 @@ public class EulerPoly {
 
 	public static double eulerNumber(int degree) {
 		if (degree % 2 != 0)
-			return 0.0 ;
+			return 0 ;
 		if (degree == 0)
-			return 1.0 ;
+			return 1 ;
 		double sum = 0 ;
 		for (int k=0; k<degree; k++){
-			double coeff = -0.5 * factorial(degree)/(1.0*factorial(k)*factorial(degree-k)) ;
+			double coeff = -0.5 * factorial(degree)/(factorial(k)*factorial(degree-k)) ;
 			int s = (degree-k)%2 == 0 ? 1 : -1 ;
 			sum += coeff*(s+1.0)*eulerNumber(k) ;
 		}
 		return sum ;
+	}
+
+
+	private static double factorial(int var) {
+		if(var == 0)
+			return 1.0 ;
+		else
+			return var*factorial(var-1) ;
 	}
 
 	// for test
@@ -49,13 +57,7 @@ public class EulerPoly {
 		System.out.println(euler(9));
 		System.out.println(euler(18));
 
-		System.out.println("\n \n ");
-
-		System.out.println(euler(3));
-		System.out.println(euler(3).compose(1-X));
-		System.out.println((euler(3) + euler(3).compose(1-X)).equals(ZERO));
-
-		System.out.println("\n \n ");
+		System.out.println();
 
 		System.out.println(eulerNumber(0));
 		System.out.println(eulerNumber(2));
@@ -65,9 +67,12 @@ public class EulerPoly {
 		System.out.println(eulerNumber(10));
 		System.out.println(eulerNumber(12));
 		System.out.println(eulerNumber(14));
+		System.out.println(eulerNumber(16));
 		System.out.println(eulerNumber(18));
 
-		System.out.println(euler(14).evaluate(0.5)*Math.pow(2, 6));
+		System.out.println();
+		BigInteger c = new BigInteger("-2404879675441") ;
+		System.out.println(c);
 
 	}
 

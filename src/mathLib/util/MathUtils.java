@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class MathUtils {
-	
+
 	public static boolean isNumeric(String s){
 		return s != null && s.matches("[-+]?\\d*\\.?\\d+");
 	}
@@ -77,11 +77,34 @@ public class MathUtils {
 			return 0 ;
 	}
 
+	public static int minusOnePower(int m) {
+		if(m % 2 == 0)
+			return 1 ;
+		else
+			return 0 ;
+	}
+
 	public static class Functions{
-		public static int factorial (int m) {
+
+//		public static int factorial (int m) {
+//			if(m==0) return 1 ;
+//			else return m*factorial(m-1) ;
+//		}
+
+		public static double factorial (int m) {
 			if(m==0) return 1 ;
 			else return m*factorial(m-1) ;
 		}
+
+		public static int combination(int n, int k) {
+			if (n<k)
+				return 0 ;
+			if(k==0 || k==n)
+				return 1 ;
+			else
+				return combination(n-1, k-1) + combination(n-1, k) ;
+		}
+
 		// adding the hyperbolic inverse functions
 		public static double asinh(double x) {
 			return Math.log(x + Math.sqrt(x*x + 1.0));
@@ -582,7 +605,7 @@ public class MathUtils {
 				}
 				return y ;
 			}
-			
+
 			public static double[] pow(double p, double[] x){
 				int n = x.length ;
 				double[] y = new double[n] ;
