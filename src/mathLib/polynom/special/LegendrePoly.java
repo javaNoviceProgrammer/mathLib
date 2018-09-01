@@ -1,7 +1,7 @@
 package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.X;
-import static mathLib.util.MathUtils.Functions.factorial;
+import static mathLib.util.MathUtils.*;
 
 import mathLib.polynom.Polynomial;
 

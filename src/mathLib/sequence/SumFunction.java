@@ -1,4 +1,4 @@
-package mathLib.numbers.discrete;
+package mathLib.sequence;
 
 public interface SumFunction {
 

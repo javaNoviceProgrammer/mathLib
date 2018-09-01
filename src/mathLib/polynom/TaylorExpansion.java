@@ -9,7 +9,7 @@ public class TaylorExpansion {
 	public static Polynomial getExp(int degree) {
 		double[] coeffs = new double[degree + 1];
 		for (int i = 0; i < coeffs.length; i++) {
-			coeffs[i] = 1.0 / MathUtils.Functions.factorial(i);
+			coeffs[i] = 1.0 / MathUtils.factorial(i);
 		}
 		return new Polynomial(coeffs);
 	}
@@ -19,7 +19,7 @@ public class TaylorExpansion {
 		int sign = 1;
 		for (int i = 0; i < coeffs.length; i++) {
 			if (i % 2 != 0) {
-				coeffs[i] = 1.0 / MathUtils.Functions.factorial(i) * sign;
+				coeffs[i] = 1.0 / MathUtils.factorial(i) * sign;
 				sign *= -1;
 			}
 		}
@@ -31,7 +31,7 @@ public class TaylorExpansion {
 		int sign = 1;
 		for (int i = 0; i < coeffs.length; i++) {
 			if (i % 2 == 0) {
-				coeffs[i] = 1.0 / MathUtils.Functions.factorial(i) * sign;
+				coeffs[i] = 1.0 / MathUtils.factorial(i) * sign;
 				sign *= -1;
 			}
 		}
