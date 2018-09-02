@@ -94,10 +94,19 @@ public class MathUtils {
 	}
 
 	public static double factorial(double alpha) {
-		return GammaFunc.gamma(alpha) ;
+		return GammaFunc.gamma(alpha+1) ;
 	}
 
 	public static double combination(int n, int k) {
+		if (n < k)
+			return 0;
+		if (k == 0 || k == n)
+			return 1;
+		else
+			return factorial(n) / (factorial(k) * factorial(n - k));
+	}
+
+	public static double combination(double n, double k) {
 		if (n < k)
 			return 0;
 		if (k == 0 || k == n)
