@@ -47,7 +47,7 @@ public class Example3D {
 		double yOptimum = swarm.getBestPosition()[1] ;
 		double zOptimum = swarm.getBestPosition()[2] ;
 		double funcMin = swarm.getBestFitness() ;
-		timer.end(); 
+		timer.stop(); 
 		System.out.println(timer);
 		System.out.println("min x = " + xOptimum);
 		System.out.println("min y = " + yOptimum);

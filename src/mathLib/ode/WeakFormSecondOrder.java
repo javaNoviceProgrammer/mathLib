@@ -122,7 +122,7 @@ public class WeakFormSecondOrder {
 			x[i-1] = nodes.at(i).coord(1);
 			y[i-1] = u.get(i) ;
 		}
-		timer.end();
+		timer.stop();
 		if(debug)
 			printDebugInfo();
 	}

@@ -81,7 +81,7 @@ public class PowerFitting {
 		PowerFitting pFit = new PowerFitting() ;
 		pFit.setData(x, y);
 		pFit.fit();
-		timer.end();
+		timer.stop();
 		System.out.println(timer);
 		
 		System.out.println(pFit);

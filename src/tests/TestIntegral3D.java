@@ -53,7 +53,7 @@ public class TestIntegral3D {
 		
 		Integral3D integral = new Integral3D(func, domain) ;
 		
-		timer.end();
+		timer.stop();
 		System.out.println(integral.getIntegral());
 		System.out.println(timer);
 		

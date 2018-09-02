@@ -127,7 +127,7 @@ public class PolynomialFittingPSO {
 		PolynomialFittingPSO pFit = new PolynomialFittingPSO(2) ;
 		pFit.setData(x, y);
 		pFit.fit();
-		timer.end();
+		timer.stop();
 		System.out.println(timer);
 
 		MatlabChart fig = new MatlabChart() ;

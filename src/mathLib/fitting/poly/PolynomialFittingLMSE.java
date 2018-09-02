@@ -83,7 +83,7 @@ public class PolynomialFittingLMSE {
 		pFit.setData(x, y);
 		pFit.fit();
 		
-		timer.end();
+		timer.stop();
 		System.out.println(timer);
 		
 		MatlabChart fig = new MatlabChart() ;

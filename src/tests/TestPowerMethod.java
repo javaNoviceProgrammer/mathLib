@@ -45,7 +45,7 @@ public class TestPowerMethod {
 		shift.setEstimatevalue(-20);
 		EigenValueVector v4 = shift.solve(mat, error) ;
 		shift.printCommandLine(v4);
-		timer.end();
+		timer.stop();
 		System.out.println("\n");
 		System.out.println(timer);
 	}

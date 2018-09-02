@@ -2,6 +2,7 @@ package mathLib.util;
 
 import flanagan.integration.IntegralFunction;
 import flanagan.math.ArrayMaths;
+import mathLib.func.GammaFunc;
 import mathLib.integral.Integral1D;
 import mathLib.numbers.Complex;
 import net.objecthunter.exp4j.Expression;
@@ -77,22 +78,23 @@ public class MathUtils {
 	}
 
 	public static int minusOnePower(int m) {
+		if(m == 0)
+			return 1 ;
 		if (m % 2 == 0)
 			return 1;
 		else
-			return 0;
+			return -1;
 	}
-
-	// public static int factorial (int m) {
-	// if(m==0) return 1 ;
-	// else return m*factorial(m-1) ;
-	// }
 
 	public static double factorial(int m) {
 		if (m == 0)
 			return 1;
 		else
 			return m * factorial(m - 1);
+	}
+
+	public static double factorial(double alpha) {
+		return GammaFunc.gamma(alpha) ;
 	}
 
 	public static double combination(int n, int k) {

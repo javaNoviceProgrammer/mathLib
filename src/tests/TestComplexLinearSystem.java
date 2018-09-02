@@ -17,7 +17,7 @@ public class TestComplexLinearSystem {
 		Timer timer = new Timer() ;
 		timer.start();
 		new ComplexLinearSystem(A, y, solution) ;
-		timer.end();
+		timer.stop();
 		System.out.println(timer);
 		for(int i=0; i<solution.length; i++) {
 			System.out.println(solution[i]);

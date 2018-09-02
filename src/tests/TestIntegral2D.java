@@ -45,7 +45,7 @@ public class TestIntegral2D {
 		timer.start();
 		Integral2D integral = new Integral2D(func, circle) ;
 		System.out.println(integral.getIntegral());
-		timer.end();
+		timer.stop();
 		System.out.println(timer);
 		
 	}
