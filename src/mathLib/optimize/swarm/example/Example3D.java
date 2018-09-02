@@ -3,7 +3,7 @@ package mathLib.optimize.swarm.example;
 import mathLib.optimize.swarm.FitnessFunction;
 import mathLib.optimize.swarm.Swarm;
 import mathLib.optimize.swarm.particle.Particle;
-import mathLib.optimize.swarm.particle.simple.SimpleParticle3D;
+import mathLib.optimize.swarm.particle.simple.ParticleChooser;
 import mathLib.util.Timer;
 
 public class Example3D {
@@ -27,7 +27,8 @@ public class Example3D {
 		func.setMaximize(false); // set the optimization criterion (e.g. max or min)
 
 		// step 2: create a particle with the correct optimization dimensions
-		Particle myParticle = new SimpleParticle3D();
+//		Particle myParticle = new SimpleParticle3D();
+		Particle myParticle = ParticleChooser.getParticle(3) ;
 
 		// step 3: create a swarm and evolve it for some number of times
 		Swarm swarm = new Swarm(1000, myParticle, func) ;
