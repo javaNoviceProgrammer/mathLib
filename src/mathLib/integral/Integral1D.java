@@ -10,7 +10,7 @@ package mathLib.integral;
  */
 
 import flanagan.integration.IntegralFunction;
-import flanagan.integration.Integration;
+import mathLib.integral.methods.GaussLobattoQuadrature;
 import mathLib.util.MathUtils;
 
 public class Integral1D {
@@ -18,7 +18,7 @@ public class Integral1D {
 	int numIntervals = 10 ; // the entire integral region is divided into this number of subintervals
 	int numPoints = 5 ; // each sub interval is divided into this number of pieces
 	double x_start, x_end ;
-	double errorBound = 1e-12 ; // accuracy to the number of digits
+	double errorBound = 1e-18 ; // accuracy to the number of digits
 	IntegralFunction func ;
 	int numIterations = 0 ;
 	int maxNumIterations = 50 ; // maximum number of iterations
@@ -79,13 +79,19 @@ public class Integral1D {
 		return firstGuess ;
 	}
 
+//	private double getInvervalIntegral(double x_start, double x_end){
+//
+//		Integration intervalIntegral = new Integration() ;
+//		intervalIntegral.setIntegrationFunction(func);
+//		intervalIntegral.setLimits(x_start, x_end);
+//
+//		return intervalIntegral.gaussQuad(numPoints) ;
+//	}
+
 	private double getInvervalIntegral(double x_start, double x_end){
 
-		Integration intervalIntegral = new Integration() ;
-		intervalIntegral.setIntegrationFunction(func);
-		intervalIntegral.setLimits(x_start, x_end);
-
-		return intervalIntegral.gaussQuad(numPoints) ;
+		GaussLobattoQuadrature intervalIntegral = new GaussLobattoQuadrature(func, x_start, x_end) ;
+		return intervalIntegral.getIntegral() ;
 	}
 
 	public int getNumberOfIterations(){
