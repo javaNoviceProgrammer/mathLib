@@ -8,10 +8,10 @@ import mathLib.sequence.Summation;
 
 public class GaussLaguerreQuadrature {
 
-	// 20 points
+	// 50 points
 	// alpha = 0
 
-	// for calculating integral 0 to infinity
+	// for calculating integral 0 to inf
 
 	double[] points = { 0.028630518339379081948, 0.15088293567693373238, 0.3709487815348964384715,
 			0.689090699881047880962, 1.10562502353991342331, 1.62096175110250141489, 2.2356103759151801252,
@@ -51,8 +51,7 @@ public class GaussLaguerreQuadrature {
 	}
 
 	public double getIntegral() {
-		SumFunction sFunc = k -> weights[k] * func.function(getTransform(points[k]))
-				* Math.exp(getTransform(points[k]));
+		SumFunction sFunc = k -> weights[k] * func.function(getTransform(points[k])) * Math.exp(getTransform(points[k]));
 		Summation integral = new Summation(sFunc);
 		return integral.evaluate(0, points.length - 1);
 	}
