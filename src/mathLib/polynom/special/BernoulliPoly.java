@@ -1,13 +1,13 @@
 package mathLib.polynom.special;
 
-import mathLib.sequence.SumFunction;
-import mathLib.sequence.Summation;
-import mathLib.util.MathUtils;
-
-import static mathLib.util.MathUtils.* ;
-import static mathLib.polynom.Polynomial.* ;
+import static mathLib.polynom.Polynomial.X;
+import static mathLib.polynom.Polynomial.ZERO;
+import static mathLib.util.MathUtils.combination;
+import static mathLib.util.MathUtils.deltaKronecker;
 
 import mathLib.polynom.Polynomial;
+import mathLib.sequence.SumFunction;
+import mathLib.sequence.Summation;
 
 public class BernoulliPoly {
 
