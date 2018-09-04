@@ -52,9 +52,9 @@ public class TestIntegral3D {
 		timer.start(); 
 		
 		Integral3D integral = new Integral3D(func, domain) ;
-		
+		double integralValue = integral.getIntegral() ;
 		timer.stop();
-		System.out.println(integral.getIntegral());
+		System.out.println(integralValue);
 		System.out.println(timer);
 		
 		
