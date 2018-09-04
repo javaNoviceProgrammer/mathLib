@@ -2,6 +2,8 @@ package mathLib.polynom.special;
 
 import mathLib.sequence.SumFunction;
 import mathLib.sequence.Summation;
+import mathLib.util.MathUtils;
+
 import static mathLib.util.MathUtils.* ;
 import static mathLib.polynom.Polynomial.* ;
 

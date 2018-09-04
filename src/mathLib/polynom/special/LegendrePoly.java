@@ -4,6 +4,7 @@ import static mathLib.polynom.Polynomial.X;
 import static mathLib.util.MathUtils.*;
 
 import mathLib.polynom.Polynomial;
+import mathLib.util.MathUtils;
 
 public class LegendrePoly {
 
@@ -40,6 +41,8 @@ public class LegendrePoly {
 		System.out.println(legendre(10));
 
 		System.out.println(associatedLegendre(2, 0));
+		
+		System.out.println(MathUtils.Arrays.toString(legendre(41).getRoots()));
 	}
 
 
