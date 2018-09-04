@@ -1,6 +1,7 @@
 package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.* ;
+import static mathLib.util.MathUtils.* ;
 
 import mathLib.polynom.Polynomial;
 
@@ -12,8 +13,15 @@ public class BesselPoly {
 			return 0*X + 1 ;
 		else if(n==1)
 			return X + 1 ;
-		else if(n >= 2)
-			return (2*n-1)*X*bessel(n-1) + bessel(n-2) ;
+		else if(n >= 2) {
+			Polynomial p = ZERO ;
+			for(int k=0; k<=n; k++) {
+				double coeff = factorial(n+k)/(factorial(n-k)*factorial(k)) ;
+				p = p + coeff * (X/2.0).pow(k) ;
+			}
+//			return (2*n-1)*X*bessel(n-1) + bessel(n-2) ;	
+			return p ;
+		}
 		else 
 			throw new IllegalArgumentException("degree must be 0 or higher") ;
 	}
@@ -23,8 +31,15 @@ public class BesselPoly {
 			return 0*X + 1 ;
 		else if(n==1)
 			return X + 1 ;
-		else if(n >= 2)
-			return (2*n-1)*reverse(n-1) + X*X*reverse(n-2) ;
+		else if(n >= 2) {
+			Polynomial p = ZERO ;
+			for(int k=0; k<=n; k++) {
+				double coeff = factorial(n+k)/(factorial(n-k)*factorial(k)) ;
+				p = p + coeff * X.pow(n-k)/Math.pow(2.0, k) ;
+			}
+//			return (2*n-1)*reverse(n-1) + X*X*reverse(n-2) ;
+			return p ;
+		}
 		else 
 			throw new IllegalArgumentException("degree must be 0 or higher") ;
 	}
