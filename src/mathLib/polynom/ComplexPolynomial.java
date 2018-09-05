@@ -5,6 +5,8 @@ import static mathLib.numbers.Complex.*;
 
 public class ComplexPolynomial {
 	
+	public static final ComplexPolynomial Xc = new ComplexPolynomial(new Complex[] {0, 1}) ;
+	
 	Complex[] coef; // coefficients (length = degree + 1)
 	int deg; // degree of polynomial (0 for the zero polynomial)
 
@@ -405,10 +407,192 @@ public class ComplexPolynomial {
 	public ComplexPolynomial addRev(double v) {
 		return this.plus(v) ;
 	}
-
 	
-	
+	public ComplexPolynomial add(Complex v) {
+		return this.plus(v) ;
+	}
 
+	public ComplexPolynomial addRev(Complex v) {
+		return this.plus(v) ;
+	}
+
+	/**
+	 * Operator overload support: a-b
+	 */
+	public ComplexPolynomial subtract(ComplexPolynomial v) {
+		return this.minus(v) ;
+	}
+
+	public ComplexPolynomial subtractRev(ComplexPolynomial v) {
+		return this.times(-1).plus(v) ;
+	}
+	
+	public ComplexPolynomial subtract(Polynomial v) {
+		return this.minus(v) ;
+	}
+
+	public ComplexPolynomial subtractRev(Polynomial v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public ComplexPolynomial subtract(int v) {
+		return this.minus(v) ;
+	}
+
+	public ComplexPolynomial subtractRev(int v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public ComplexPolynomial subtract(long v) {
+		return this.minus(v) ;
+	}
+
+	public ComplexPolynomial subtractRev(long v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public ComplexPolynomial subtract(float v) {
+		return this.minus(v) ;
+	}
+
+	public ComplexPolynomial subtractRev(float v) {
+		return this.times(-1).plus(v) ;
+	}
+
+	public ComplexPolynomial subtract(double v) {
+		return this.minus(v) ;
+	}
+
+	public ComplexPolynomial subtractRev(double v) {
+		return this.times(-1).plus(v) ;
+	}
+	
+	public ComplexPolynomial subtract(Complex v) {
+		return this.minus(v) ;
+	}
+
+	public ComplexPolynomial subtractRev(Complex v) {
+		return this.times(-1).plus(v) ;
+	}
+	
+	/**
+	 * Operator overload support: a*b
+	 */
+	public ComplexPolynomial multiply(ComplexPolynomial v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiplyRev(ComplexPolynomial v) {
+		return this.times(v) ;
+	}
+	
+	public ComplexPolynomial multiply(Polynomial v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiplyRev(Polynomial v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiply(int v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiplyRev(int v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiply(long v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiplyRev(long v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiply(float v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiplyRev(float v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiply(double v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiplyRev(double v) {
+		return this.times(v) ;
+	}
+	
+	public ComplexPolynomial multiply(Complex v) {
+		return this.times(v) ;
+	}
+
+	public ComplexPolynomial multiplyRev(Complex v) {
+		return this.times(v) ;
+	}
+
+	/**
+	 * Operator overload support: a/b
+	 */
+	public ComplexPolynomial divide(ComplexPolynomial v) {
+		return null ;
+	}
+
+	public ComplexPolynomial divideRev(ComplexPolynomial v) {
+		return null ;
+	}
+	
+	public ComplexPolynomial divide(Polynomial v) {
+		return null ;
+	}
+
+	public ComplexPolynomial divideRev(Polynomial v) {
+		return null ;
+	}
+
+	public ComplexPolynomial divide(int v) {
+		return this.divides(v) ;
+	}
+
+	public ComplexPolynomial divideRev(int v) {
+		return null ;
+	}
+
+	public ComplexPolynomial divide(long v) {
+		return this.divides(v) ;
+	}
+
+	public ComplexPolynomial divideRev(long v) {
+		return null ;
+	}
+
+	public ComplexPolynomial divide(float v) {
+		return this.divides(v) ;
+	}
+
+	public ComplexPolynomial divideRev(float v) {
+		return null ;
+	}
+
+	public ComplexPolynomial divide(double v) {
+		return this.divides(v) ;
+	}
+
+	public ComplexPolynomial divideRev(double v) {
+		return null ;
+	}
+	
+	public ComplexPolynomial divide(Complex v) {
+		return this.divides(v) ;
+	}
+
+	public ComplexPolynomial divideRev(Complex v) {
+		return null ;
+	}
+	
 	// for test
 	public static void main(String[] args) {
 		ComplexPolynomial p = new ComplexPolynomial(new Complex[]{j, -2+0*j, 3*(1+j)/2}) ;
@@ -419,7 +603,9 @@ public class ComplexPolynomial {
 		System.out.println(p.integrate());
 		System.out.println(p.integrate(ZERO, 2+0*j));
 		ComplexPolynomial q = Polynomial.X ;
-		System.out.println(q);
+		System.out.println(q+j);
+		System.out.println(q/2*j+j);
+		System.out.println((q/2*j+j).compose(q*q+j/2));
 		
 	}
 

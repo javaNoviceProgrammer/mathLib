@@ -2,12 +2,12 @@ package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.* ;
 import static mathLib.util.MathUtils.* ;
-
+import static mathLib.polynom.ComplexPolynomial.*;
+import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;
 
 public class BesselPoly {
 
-	
 	public static Polynomial bessel(int n) {
 		if(n==0)
 			return 0*X + 1 ;
@@ -43,6 +43,26 @@ public class BesselPoly {
 		else 
 			throw new IllegalArgumentException("degree must be 0 or higher") ;
 	}
+	
+	/**
+	 * Complex version of the bessel polynomial
+	 * @param n
+	 * @return
+	 */
+	
+	public static ComplexPolynomial besselC(int n) {
+		return bessel(n)+0*Xc ;
+	}
+	
+	/**
+	 * Complex version of the reverse bessel polynomial
+	 * @param n
+	 * @return
+	 */
+	
+	public static ComplexPolynomial reverseC(int n) {
+		return reverse(n)+0*Xc ;
+	}
 
 	
 	// for test
@@ -53,6 +73,7 @@ public class BesselPoly {
 		System.out.println(bessel(3));
 		System.out.println(bessel(4));
 		System.out.println(bessel(5));
+		System.out.println(besselC(5));
 		
 		System.out.println("\n \n");
 		
@@ -62,6 +83,8 @@ public class BesselPoly {
 		System.out.println(reverse(3));
 		System.out.println(reverse(4));
 		System.out.println(reverse(5));
+		System.out.println(reverseC(5));
+		
 	}
 	
 	

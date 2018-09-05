@@ -1,8 +1,10 @@
 package mathLib.polynom.special;
 
+import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;
 import static mathLib.polynom.Polynomial.* ;
 import static mathLib.util.MathUtils.* ;
+import static mathLib.polynom.ComplexPolynomial.*;
 
 public class JacobiPoly {
 
@@ -17,6 +19,18 @@ public class JacobiPoly {
 			result = result + coeff * ((X-1.0)/2.0).pow(s) * ((X+1.0)/2).pow(n-s) ;
 		}
 		return result ;
+	}
+	
+	/**
+	 * Complex version of jacobi polynomial
+	 * @param degree
+	 * @param alpha
+	 * @param beta
+	 * @return
+	 */
+	
+	public static ComplexPolynomial jacobiC(int degree, double alpha, double beta) {
+		return jacobi(degree, alpha, beta)+0*Xc ;
 	}
 
 

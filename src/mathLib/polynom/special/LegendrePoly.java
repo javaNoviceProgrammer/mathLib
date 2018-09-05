@@ -2,7 +2,8 @@ package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.X;
 import static mathLib.util.MathUtils.*;
-
+import static mathLib.polynom.ComplexPolynomial.*;
+import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
 
@@ -25,7 +26,15 @@ public class LegendrePoly {
 		return (c1 * poly * legendre(l).diff(m)) ;
 
 	}
+	
+	public static ComplexPolynomial legendreC(int degree) {
+		return legendre(degree)+0*Xc ;
+	}
 
+	public static ComplexPolynomial associatedLegendreC(int l, int m) {
+		return associatedLegendre(l, m) + 0*Xc ;
+	}
+	
 	// for test
 	public static void main(String[] args) {
 		System.out.println(legendre(0));

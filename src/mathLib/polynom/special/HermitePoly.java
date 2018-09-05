@@ -3,6 +3,10 @@ package mathLib.polynom.special;
 import mathLib.polynom.Polynomial;
 import static mathLib.polynom.Polynomial.* ;
 
+import mathLib.polynom.ComplexPolynomial;
+
+import static mathLib.polynom.ComplexPolynomial.*;
+
 public class HermitePoly {
 
 	public static Polynomial hermite (int degree) {
@@ -16,6 +20,16 @@ public class HermitePoly {
 			return 4*X*X-2 ;
 
 		return 2*X*hermite(degree-1) - hermite(degree-1).diff() ;
+	}
+	
+	/**
+	 * Complex version of hermite polynomial
+	 * @param degree
+	 * @return
+	 */
+	
+	public static ComplexPolynomial hermiteC(int degree) {
+		return hermite(degree)+0*Xc ;
 	}
 
 

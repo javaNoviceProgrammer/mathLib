@@ -2,6 +2,10 @@ package mathLib.polynom.special;
 
 import static mathLib.polynom.Polynomial.*;
 
+import mathLib.numbers.Complex;
+
+import static mathLib.polynom.ComplexPolynomial.*;
+import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;
 
 public class ChebyshevPoly {
@@ -28,6 +32,20 @@ public class ChebyshevPoly {
 			throw new IllegalArgumentException("degree must be 0 or higher") ;
 	}
 	
+	/**
+	 * Complex version of the Chebyshev polynomial
+	 * @param n
+	 * @return
+	 */
+	
+	public static ComplexPolynomial firstKindC(int n) {
+		return firstKind(n)+0*Xc ;
+	}
+	
+	public static ComplexPolynomial secondKindC(int n) {
+		return secondKind(n)+0*Xc ;
+	}
+	
 	// for test
 	public static void main(String[] args) {
 		System.out.println(firstKind(0));
@@ -35,6 +53,7 @@ public class ChebyshevPoly {
 		System.out.println(firstKind(2));
 		System.out.println(firstKind(3));
 		System.out.println(firstKind(4));
+		System.out.println(firstKindC(4)*Complex.j);
 		
 		System.out.println("\n \n");
 		

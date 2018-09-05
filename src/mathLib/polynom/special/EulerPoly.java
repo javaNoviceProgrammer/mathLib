@@ -1,46 +1,56 @@
 package mathLib.polynom.special;
 
+import static mathLib.polynom.ComplexPolynomial.Xc;
 import static mathLib.polynom.Polynomial.X;
 
-import java.math.BigInteger;
-
+import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;
 
 public class EulerPoly {
 
 	public static Polynomial euler(int degree) {
 		if (degree == 0)
-			return 0*X + 1 ;
+			return 0 * X + 1;
 		else if (degree == 1)
-			return X-0.5 ;
-		Polynomial p = X.pow(degree) ;
-		for(int s=0; s<degree; s++) {
-			double coeff = 0.5 * factorial(degree)/(factorial(s)*factorial(degree-s)) ;
-			p = p - coeff * euler(s) ;
+			return X - 0.5;
+		Polynomial p = X.pow(degree);
+		for (int s = 0; s < degree; s++) {
+			double coeff = 0.5 * factorial(degree) / (factorial(s) * factorial(degree - s));
+			p = p - coeff * euler(s);
 		}
-		return p ;
+		return p;
 	}
 
 	public static double eulerNumber(int degree) {
 		if (degree % 2 != 0)
-			return 0 ;
+			return 0;
 		if (degree == 0)
-			return 1 ;
-		double sum = 0 ;
-		for (int k=0; k<degree; k++){
-			double coeff = -0.5 * factorial(degree)/(factorial(k)*factorial(degree-k)) ;
-			int s = (degree-k)%2 == 0 ? 1 : -1 ;
-			sum += coeff*(s+1.0)*eulerNumber(k) ;
+			return 1;
+		double sum = 0;
+		for (int k = 0; k < degree; k++) {
+			double coeff = -0.5 * factorial(degree) / (factorial(k) * factorial(degree - k));
+			int s = (degree - k) % 2 == 0 ? 1 : -1;
+			sum += coeff * (s + 1.0) * eulerNumber(k);
 		}
-		return sum ;
+		return sum;
 	}
 
+	/**
+	 * Complex version of the euler polynomial
+	 * 
+	 * @param degree
+	 * @return
+	 */
+
+	public static ComplexPolynomial eulerC(int degree) {
+		return euler(degree) + 0 * Xc;
+	}
 
 	private static double factorial(int var) {
-		if(var == 0)
-			return 1.0 ;
+		if (var == 0)
+			return 1.0;
 		else
-			return var*factorial(var-1) ;
+			return var * factorial(var - 1);
 	}
 
 	// for test
@@ -56,6 +66,7 @@ public class EulerPoly {
 		System.out.println(euler(8));
 		System.out.println(euler(9));
 		System.out.println(euler(18));
+		System.out.println(eulerC(18));
 
 		System.out.println();
 
@@ -69,10 +80,6 @@ public class EulerPoly {
 		System.out.println(eulerNumber(14));
 		System.out.println(eulerNumber(16));
 		System.out.println(eulerNumber(18));
-
-		System.out.println();
-		BigInteger c = new BigInteger("-2404879675441") ;
-		System.out.println(c);
 
 	}
 
