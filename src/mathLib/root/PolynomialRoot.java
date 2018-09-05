@@ -12,6 +12,11 @@ public class PolynomialRoot {
 		polynomial = new Polynomial(coeffs);
 		roots = polynomial.getRoots();
 	}
+	
+	public PolynomialRoot(Polynomial p) {
+		polynomial = p.copy() ;
+		roots = polynomial.getRoots();
+	}
 
 	public Polynomial getPolynomial() {
 		return polynomial;

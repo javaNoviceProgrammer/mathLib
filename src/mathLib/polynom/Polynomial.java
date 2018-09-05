@@ -240,6 +240,10 @@ public class Polynomial {
         }
         return s;
     }
+    
+    public Polynomial copy() {
+    	return new Polynomial(coef) ;
+    }
 
 	// ************ operator overloading **********************
 
