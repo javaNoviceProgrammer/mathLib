@@ -1,6 +1,8 @@
 package mathLib.polynom;
 
 import mathLib.numbers.Complex;
+import mathLib.util.MathUtils;
+
 import static mathLib.numbers.Complex.*;
 
 import flanagan.complex.ComplexPoly;
@@ -320,7 +322,11 @@ public class ComplexPolynomial {
     }
     
     public Complex[] getRoots() {
-    	throw new UnsupportedOperationException("this is not implemented yet!") ;
+    	Complex[] roots = new Complex[degree()] ;
+    	flanagan.complex.Complex[] rootsCalc = toFlanaganComplexPoly(this).rootsNoMessages() ;
+    	for(int i=0; i<roots.length; i++)
+    		roots[i] = new Complex(rootsCalc[i].getReal(), rootsCalc[i].getImag()) ;
+    	return roots ;
     }
     
     public static ComplexPoly toFlanaganComplexPoly(ComplexPolynomial p) {
@@ -604,18 +610,22 @@ public class ComplexPolynomial {
 	
 	// for test
 	public static void main(String[] args) {
-		ComplexPolynomial p = new ComplexPolynomial(new Complex[]{j, -2+0*j, 3*(1+j)/2}) ;
+		ComplexPolynomial p = new ComplexPolynomial(new Complex[]{1,1,1,1}) ;
 		System.out.println(p);
-		System.out.println(p.evaluate(j));
-		System.out.println(p.diff());
-		System.out.println(p.diff(5));
-		System.out.println(p.integrate());
-		System.out.println(p.integrate(ZERO, 2+0*j));
-		ComplexPolynomial q = Polynomial.X ;
-		System.out.println(q+j);
-		System.out.println(q/2*j+j);
-		System.out.println((q/2*j+j).compose(q*q+j/2));
+//		System.out.println(p.evaluate(j));
+//		System.out.println(p.diff());
+//		System.out.println(p.diff(5));
+//		System.out.println(p.integrate());
+//		System.out.println(p.integrate(ZERO, 2+0*j));
+//		ComplexPolynomial q = Polynomial.X ;
+//		System.out.println(q+j);
+//		System.out.println(q/2*j+j);
+//		System.out.println((q/2*j+j).compose(q*q+j/2));
 		
+		MathUtils.Arrays.show(p.getRoots());
+		
+		Polynomial q = new Polynomial(new double[]{1,1,1,1}) ;
+		MathUtils.Arrays.show(q.getRoots());
 	}
 
 }
