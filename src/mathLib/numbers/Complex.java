@@ -1,5 +1,6 @@
 package mathLib.numbers;
 
+import flanagan.complex.ComplexPoly;
 import mathLib.util.StringUtils;
 
 public class Complex { // immutable class
@@ -177,6 +178,18 @@ public class Complex { // immutable class
 		double real = Math.sqrt(a.abs()) * Math.cos(a.phase() / 2);
 		double imag = Math.sqrt(a.abs()) * Math.sin(a.phase() / 2);
 		return new Complex(real, imag);
+	}
+	
+	public static flanagan.complex.Complex toFlanaganComplex(Complex v) {
+		return new flanagan.complex.Complex(v.re, v.im) ;
+	}
+	
+	public flanagan.complex.Complex getFlanaganComplex() {
+		return new flanagan.complex.Complex(this.re, this.im) ;
+	}
+	
+	public static Complex toNativeComplex(flanagan.complex.Complex v) {
+		return new Complex(v.getReal(), v.getImag()) ;
 	}
 
 	public static boolean isNumeric(String st) {
