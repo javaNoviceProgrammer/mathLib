@@ -1,6 +1,5 @@
 package mathLib.numbers;
 
-import flanagan.complex.ComplexPoly;
 import mathLib.util.StringUtils;
 
 public class Complex { // immutable class
