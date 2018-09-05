@@ -284,9 +284,17 @@ public class Matrix {
     public static Jama.Matrix toJamaMatrix(Matrix A){
     	return new Jama.Matrix(A.data) ;
     }
+    
+    public static flanagan.math.Matrix toFlanaganMatrix(Matrix A) {
+    	return new flanagan.math.Matrix(A.data) ;
+    }
 
     public Jama.Matrix getJamaMatrix(){
     	return new Jama.Matrix(this.data) ;
+    }
+    
+    public flanagan.math.Matrix getFlanaganMatrix(Matrix A) {
+    	return new flanagan.math.Matrix(A.data) ;
     }
 
     public double det() {

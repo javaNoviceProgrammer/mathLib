@@ -3,6 +3,8 @@ package mathLib.polynom;
 import mathLib.numbers.Complex;
 import static mathLib.numbers.Complex.*;
 
+import flanagan.complex.ComplexPoly;
+
 public class ComplexPolynomial {
 	
 	public static final ComplexPolynomial Xc = new ComplexPolynomial(new Complex[] {0, 1}) ;
@@ -319,6 +321,13 @@ public class ComplexPolynomial {
     
     public Complex[] getRoots() {
     	throw new UnsupportedOperationException("this is not implemented yet!") ;
+    }
+    
+    public static ComplexPoly toFlanaganComplexPoly(ComplexPolynomial p) {
+    	flanagan.complex.Complex[] coeffs = new flanagan.complex.Complex[p.degree()+1] ;
+    	for(int i=0; i<coeffs.length; i++)
+    		coeffs[i] = new flanagan.complex.Complex(p.coef[i].re(), p.coef[i].im()) ; ;
+    	return new ComplexPoly(coeffs) ;
     }
     
 	// ************ operator overloading **********************
