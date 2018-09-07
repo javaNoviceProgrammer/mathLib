@@ -38,7 +38,10 @@ public class Integral1DRungeKutta {
 		integral.setInitialValueOfY(0.0);
 		integral.setFinalValueOfX(end);
 		integral.setStepSize(stepSize);
+		
+//		return integral.cashKarp(derivFunc) ;
 		return integral.fourthOrder(derivFunc) ;
+//		return integral.fehlberg(derivFunc) ;
 	}
 	
 	// for test

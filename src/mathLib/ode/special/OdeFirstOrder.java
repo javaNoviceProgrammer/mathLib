@@ -47,10 +47,10 @@ public class OdeFirstOrder extends RungeKutta implements DerivFunction1D {
 		ode.setStepSize(1e-4);
 		double[] xVal = MathUtils.linspace(0, 2, 100) ;
 		double[] yVal = new double[xVal.length] ;
+
 		for(int i=0; i<xVal.length; i++) {
 			ode.setFinalValueOfX(xVal[i]);
 			yVal[i] = ode.fourthOrder(ode) ;
-			
 		}
 		
 		MatlabChart fig = new MatlabChart() ;
