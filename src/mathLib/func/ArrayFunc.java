@@ -16,10 +16,12 @@ public class ArrayFunc {
 
 	// for test
 	public static void main(String[] args) {
-		double[] x = MathUtils.linspace(-10, 10, 1000) ;
-		double[] y = apply(t -> Math.sin(t), x) ;
+		double[] x = MathUtils.linspace(0, 10, 1000) ;
+		double[] y = apply(t -> BesselFunc.j0(t), x) ;
+		double[] z = apply(t -> BesselFunc.j1(t), x) ;
 		MatlabChart fig = new MatlabChart() ;
-		fig.plot(x, y);
+		fig.plot(x, y, "b");
+		fig.plot(x, z, "r");
 		fig.RenderPlot();
 		fig.setFigLineWidth(0, 2);
 		fig.run(true);
