@@ -1,4 +1,4 @@
-package mathLib.fourier.intf;
+package mathLib.func.intf;
 
 public abstract interface ComplexFunction {
 	public abstract double realPart(double x) ;

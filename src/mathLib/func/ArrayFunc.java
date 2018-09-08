@@ -1,15 +1,16 @@
 package mathLib.func;
 
+import mathLib.func.intf.RealFunction;
 import mathLib.util.MathUtils;
 import plotter.chart.MatlabChart;
 
 public class ArrayFunc {
 
-	public static double[] apply(Function func, double[] var0) {
+	public static double[] apply(RealFunction func, double[] var0) {
 		int n = var0.length ;
 		double[] var1 = new double[n] ;
 		for(int i=0; i<n; i++)
-			var1[i] = func.function(var0[i]) ;
+			var1[i] = func.getValue(var0[i]) ;
 		return var1 ;
 	}
 
