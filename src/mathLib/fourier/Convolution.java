@@ -2,6 +2,7 @@ package mathLib.fourier;
 
 import mathLib.fourier.core.FFT;
 import mathLib.fourier.intf.ConvolutionFunctionPair;
+import mathLib.func.intf.RealFunction;
 import mathLib.util.MathUtils;
 
 public class Convolution {
@@ -21,6 +22,31 @@ public class Convolution {
 			double ts
 			){
 		this.funcs = funcs ;
+		this.ts = ts ;
+		M = (int) (Math.log(tPeriod/ts)/Math.log(2) + 1) ;
+		N = (int) (Math.pow(2, M)) ;
+		this.fs = 1.0/ts ;
+		this.df = fs/N ;
+	}
+
+	public Convolution(
+			RealFunction function1,
+			RealFunction function2,
+			double tPeriod,
+			double ts
+			){
+		this.funcs = new ConvolutionFunctionPair() {
+
+			@Override
+			public double func2(double t) {
+				return function2.getValue(t);
+			}
+
+			@Override
+			public double func1(double t) {
+				return function1.getValue(t);
+			}
+		} ;
 		this.ts = ts ;
 		M = (int) (Math.log(tPeriod/ts)/Math.log(2) + 1) ;
 		N = (int) (Math.pow(2, M)) ;
