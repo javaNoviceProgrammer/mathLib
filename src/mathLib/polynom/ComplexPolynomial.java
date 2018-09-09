@@ -8,9 +8,9 @@ import static mathLib.numbers.Complex.*;
 import flanagan.complex.ComplexPoly;
 
 public class ComplexPolynomial {
-	
+
 	public static final ComplexPolynomial Xc = new ComplexPolynomial(new Complex[] {0, 1}) ;
-	
+
 	Complex[] coef; // coefficients (length = degree + 1)
 	int deg; // degree of polynomial (0 for the zero polynomial)
 
@@ -29,7 +29,7 @@ public class ComplexPolynomial {
 		coef[b] = a;
 		deg = degree();
 	}
-	
+
 	public ComplexPolynomial(double a, int b) {
 		coef = new Complex[b + 1];
 		for(int i=0; i<coef.length; i++) {
@@ -38,7 +38,7 @@ public class ComplexPolynomial {
 		coef[b] = new Complex(a, 0.0);
 		deg = degree();
 	}
-	
+
     public ComplexPolynomial() {
 		this(new Complex[] {ZERO}) ;
 	}
@@ -74,7 +74,7 @@ public class ComplexPolynomial {
     private String format(Complex c) {
     	return "(" + c + ")" ;
     }
-    
+
     // return c = a + b
     public ComplexPolynomial plus(ComplexPolynomial b) {
     	ComplexPolynomial a = this;
@@ -84,7 +84,7 @@ public class ComplexPolynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     public ComplexPolynomial plus(Polynomial b) {
     	ComplexPolynomial a = this;
     	ComplexPolynomial c = new ComplexPolynomial(ZERO, Math.max(a.deg, b.deg));
@@ -102,7 +102,7 @@ public class ComplexPolynomial {
         }
         return new ComplexPolynomial(coeffSum) ;
     }
-    
+
     public ComplexPolynomial plus(double b) {
         Complex[] coeffSum = new Complex[coef.length] ;
         coeffSum[0] = coef[0] + b ;
@@ -121,7 +121,7 @@ public class ComplexPolynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     public ComplexPolynomial minus(Polynomial b) {
     	ComplexPolynomial a = this;
     	ComplexPolynomial c = new ComplexPolynomial(ZERO, Math.max(a.deg, b.deg));
@@ -139,7 +139,7 @@ public class ComplexPolynomial {
         }
         return new ComplexPolynomial(coeffSum) ;
     }
-    
+
     public ComplexPolynomial minus(double b) {
         Complex[] coeffSum = new Complex[coef.length] ;
         coeffSum[0] = coef[0] - b ;
@@ -159,7 +159,7 @@ public class ComplexPolynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     public ComplexPolynomial times(Polynomial b) {
     	ComplexPolynomial a = this;
     	ComplexPolynomial c = new ComplexPolynomial(ZERO, a.deg + b.deg);
@@ -169,7 +169,7 @@ public class ComplexPolynomial {
         c.deg = c.degree();
         return c;
     }
-    
+
     public ComplexPolynomial times(Complex b) {
     	Complex[] coeffSum = new Complex[coef.length] ;
         for(int i=0; i<coef.length; i++) {
@@ -177,7 +177,7 @@ public class ComplexPolynomial {
         }
         return new ComplexPolynomial(coeffSum) ;
     }
-    
+
     public ComplexPolynomial times(double b) {
     	Complex[] coeffSum = new Complex[coef.length] ;
         for(int i=0; i<coef.length; i++) {
@@ -200,7 +200,7 @@ public class ComplexPolynomial {
         }
         return new ComplexPolynomial(coeffSum) ;
     }
-    
+
     public ComplexPolynomial divides(double b) {
     	if(b==0)
     		throw new IllegalArgumentException("cannot divide by zero!") ;
@@ -210,7 +210,7 @@ public class ComplexPolynomial {
         }
         return new ComplexPolynomial(coeffSum) ;
     }
-    
+
     public ComplexPolynomial pow(int m) {
     	ComplexPolynomial a = this ;
     	ComplexPolynomial p = new ComplexPolynomial(new Complex[] {1.0}) ;
@@ -230,7 +230,7 @@ public class ComplexPolynomial {
         }
         return c;
     }
-    
+
     public ComplexPolynomial compose(Polynomial b) {
     	ComplexPolynomial a = this;
     	ComplexPolynomial c = new ComplexPolynomial();
@@ -240,7 +240,7 @@ public class ComplexPolynomial {
         }
         return c;
     }
-    
+
     // do a and b represent the same polynomial?
     public boolean equals(ComplexPolynomial b) {
     	ComplexPolynomial a = this;
@@ -267,7 +267,7 @@ public class ComplexPolynomial {
             p = coef[i] + (x * p);
         return p;
     }
-    
+
     public Complex evaluate(double x) {
     	Complex p = 0;
         for (int i = deg; i >= 0; i--)
@@ -316,11 +316,11 @@ public class ComplexPolynomial {
     public Complex integrate(Complex xStart, Complex xEnd) {
     	return integrate().evaluate(xEnd)-integrate().evaluate(xStart) ;
     }
-    
+
     public Complex integrate(double xStart, double xEnd) {
     	return integrate().evaluate(xEnd)-integrate().evaluate(xStart) ;
     }
-    
+
     public Complex[] getRoots() {
     	Complex[] roots = new Complex[degree()] ;
     	flanagan.complex.Complex[] rootsCalc = toFlanaganComplexPoly(this).rootsNoMessages() ;
@@ -328,14 +328,14 @@ public class ComplexPolynomial {
     		roots[i] = new Complex(rootsCalc[i].getReal(), rootsCalc[i].getImag()) ;
     	return roots ;
     }
-    
+
     public static ComplexPoly toFlanaganComplexPoly(ComplexPolynomial p) {
     	flanagan.complex.Complex[] coeffs = new flanagan.complex.Complex[p.degree()+1] ;
     	for(int i=0; i<coeffs.length; i++)
     		coeffs[i] = new flanagan.complex.Complex(p.coef[i].re(), p.coef[i].im()) ; ;
     	return new ComplexPoly(coeffs) ;
     }
-    
+
 	// ************ operator overloading **********************
 
 	/**
@@ -363,7 +363,7 @@ public class ComplexPolynomial {
 	public static ComplexPolynomial valueOf(ComplexPolynomial v) {
 		return new ComplexPolynomial(v.coef);
 	}
-	
+
 	public static ComplexPolynomial valueOf(Polynomial v) {
 		Complex[] coeffs = new Complex[v.coef.length] ;
 		for(int i=0; i<coeffs.length; i++) {
@@ -371,7 +371,7 @@ public class ComplexPolynomial {
 		}
 		return new ComplexPolynomial(coeffs);
 	}
-	
+
 	/**
 	 * Operator overload support: a+b
 	 */
@@ -382,7 +382,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial addRev(ComplexPolynomial v) {
 		return this.plus(v) ;
 	}
-	
+
 	public ComplexPolynomial add(Polynomial v) {
 		return this.plus(v) ;
 	}
@@ -422,7 +422,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial addRev(double v) {
 		return this.plus(v) ;
 	}
-	
+
 	public ComplexPolynomial add(Complex v) {
 		return this.plus(v) ;
 	}
@@ -441,7 +441,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial subtractRev(ComplexPolynomial v) {
 		return this.times(-1).plus(v) ;
 	}
-	
+
 	public ComplexPolynomial subtract(Polynomial v) {
 		return this.minus(v) ;
 	}
@@ -481,7 +481,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial subtractRev(double v) {
 		return this.times(-1).plus(v) ;
 	}
-	
+
 	public ComplexPolynomial subtract(Complex v) {
 		return this.minus(v) ;
 	}
@@ -489,7 +489,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial subtractRev(Complex v) {
 		return this.times(-1).plus(v) ;
 	}
-	
+
 	/**
 	 * Operator overload support: a*b
 	 */
@@ -500,7 +500,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial multiplyRev(ComplexPolynomial v) {
 		return this.times(v) ;
 	}
-	
+
 	public ComplexPolynomial multiply(Polynomial v) {
 		return this.times(v) ;
 	}
@@ -540,7 +540,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial multiplyRev(double v) {
 		return this.times(v) ;
 	}
-	
+
 	public ComplexPolynomial multiply(Complex v) {
 		return this.times(v) ;
 	}
@@ -559,7 +559,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial divideRev(ComplexPolynomial v) {
 		return null ;
 	}
-	
+
 	public ComplexPolynomial divide(Polynomial v) {
 		return null ;
 	}
@@ -599,7 +599,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial divideRev(double v) {
 		return null ;
 	}
-	
+
 	public ComplexPolynomial divide(Complex v) {
 		return this.divides(v) ;
 	}
@@ -607,7 +607,7 @@ public class ComplexPolynomial {
 	public ComplexPolynomial divideRev(Complex v) {
 		return null ;
 	}
-	
+
 	// for test
 	public static void main(String[] args) {
 		ComplexPolynomial p = new ComplexPolynomial(new Complex[]{1,1,1,1}) ;
@@ -621,9 +621,9 @@ public class ComplexPolynomial {
 //		System.out.println(q+j);
 //		System.out.println(q/2*j+j);
 //		System.out.println((q/2*j+j).compose(q*q+j/2));
-		
+
 		MathUtils.Arrays.show(p.getRoots());
-		
+
 		Polynomial q = new Polynomial(new double[]{1,1,1,1}) ;
 		MathUtils.Arrays.show(q.getRoots());
 	}
