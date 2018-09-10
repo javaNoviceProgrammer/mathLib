@@ -164,6 +164,14 @@ public class Complex { // immutable class
 		else
 			return false;
 	}
+	
+	public boolean equals(Complex b, double tol) {
+		Complex a = this;
+		if (ComplexMath.abs(a-b)<tol)
+			return true;
+		else
+			return false;
+	}
 
 	public static Complex plus(Complex a, Complex b) {
 		double real = a.re + b.re;
