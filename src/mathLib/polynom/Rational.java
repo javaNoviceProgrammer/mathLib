@@ -118,6 +118,10 @@ public class Rational {
 		return new Rational(pSimp * pcoef, qSimp * qcoef) ;
 	}
 	
+	public static Rational toRational(Polynomial p) {
+		return new Rational(p, 0*X+1) ;
+	}
+	
 	
 	@Override
 	public String toString() {
@@ -135,9 +139,15 @@ public class Rational {
 
 	// for test
 	public static void main(String[] args) {
-		Rational r = new Rational(2*X*X-2, X.pow(5)-1) ;
-		System.out.println(r);
-		System.out.println(r.getSimplified());
+		Rational r = new Rational(X*X-1, X.pow(3)-1) ;
+		Rational s = new Rational(X-1, X+1) ;
+//		System.out.println(r);
+		Rational q = r.divides(s) ;
+		System.out.println(q);
+		System.out.println(q.getSimplified());
+		System.out.println(q.p.getFactors());
+		System.out.println(q.q.getFactors());
+		System.out.println(getCommanFactors(q.p, q.q));
 	}
 	
 
