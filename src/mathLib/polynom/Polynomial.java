@@ -463,44 +463,44 @@ public class Polynomial {
 	/**
 	 * Operator overload support: a/b
 	 */
-	public Polynomial divide(Polynomial v) {
-		return null;
+	public Rational divide(Polynomial v) {
+		return new Rational(this, v);
 	}
 
-	public Polynomial divideRev(Polynomial v) {
-		return null;
+	public Rational divideRev(Polynomial v) {
+		return v.divides(this);
 	}
 
 	public Polynomial divide(int v) {
 		return this.divides(v) ;
 	}
 
-	public Polynomial divideRev(int v) {
-		return null;
+	public Rational divideRev(int v) {
+		return Rational.valueOf(v)/this ;
 	}
 
 	public Polynomial divide(long v) {
 		return this.divides(v) ;
 	}
 
-	public Polynomial divideRev(long v) {
-		return null;
+	public Rational divideRev(long v) {
+		return Rational.valueOf(v)/this ;
 	}
 
 	public Polynomial divide(float v) {
 		return this.divides(v) ;
 	}
 
-	public Polynomial divideRev(float v) {
-		return null;
+	public Rational divideRev(float v) {
+		return Rational.valueOf(v)/this ;
 	}
 
 	public Polynomial divide(double v) {
 		return this.divides(v) ;
 	}
 
-	public Polynomial divideRev(double v) {
-		return null;
+	public Rational divideRev(double v) {
+		return Rational.valueOf(v)/this ;
 	}
 
 	/**
@@ -534,6 +534,8 @@ public class Polynomial {
 		System.out.println(q);
 		System.out.println(q.getFactors());
 		System.out.println(q.getRootsAsList());
+		System.out.println();
+		System.out.println(p/q);
 		
 	}
 

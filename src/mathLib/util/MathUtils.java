@@ -123,6 +123,17 @@ public class MathUtils {
 		else
 			return combination(n - 1, k - 1) + combination(n - 1, k);
 	}
+	
+	public static boolean areEqual(double a, double b, double tol) {
+		double absError = Math.abs(a-b) ;
+		double relErrorB = Math.abs(absError/b) ;
+		double relErrorA = Math.abs(absError/a) ;
+		if(relErrorA < tol && relErrorB < tol)
+//		if(absError < tol)
+			return true ;
+		else
+			return false ;
+	}
 
 	public static class Functions {
 
