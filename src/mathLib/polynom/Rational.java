@@ -88,6 +88,8 @@ public class Rational {
 		return a ;
 	}
 	
+	// TODO: fix the bug in simplify
+	
 	public Rational simplify() {
 		// leading coefficients of p(x) and q(x)
 		double pcoef = p.coef[p.degree()] ;
