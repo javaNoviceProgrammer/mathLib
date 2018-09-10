@@ -1,11 +1,14 @@
 package mathLib.polynom;
 
-import mathLib.numbers.Complex;
-import mathLib.util.MathUtils;
+import static mathLib.numbers.Complex.ZERO;
+import static mathLib.numbers.Complex.j;
 
-import static mathLib.numbers.Complex.*;
+import java.util.ArrayList;
 
 import flanagan.complex.ComplexPoly;
+import flanagan.math.Fmath;
+import mathLib.numbers.Complex;
+import mathLib.util.MathUtils;
 
 public class ComplexPolynomial {
 
@@ -335,6 +338,23 @@ public class ComplexPolynomial {
     		coeffs[i] = new flanagan.complex.Complex(p.coef[i].re(), p.coef[i].im()) ; ;
     	return new ComplexPoly(coeffs) ;
     }
+    
+    public ArrayList<ComplexPolynomial> getFactors() {
+    	Complex[] roots = getRoots() ;
+    	ArrayList<ComplexPolynomial> factors = new ArrayList<>() ;
+    	for(Complex root : roots) {
+    		if(Math.abs(root.im())<1e-10) {
+    			ComplexPolynomial p = Xc - Fmath.truncate(root.re(), 5) ;
+    			factors.add(p) ;
+    		}
+    		else {
+    			ComplexPolynomial p = Xc - root ;
+    			factors.add(p) ;
+    		}
+    	}
+    	
+    	return factors ;
+    }
 
 	// ************ operator overloading **********************
 
@@ -626,6 +646,9 @@ public class ComplexPolynomial {
 
 		Polynomial q = new Polynomial(new double[]{1,1,1,1}) ;
 		MathUtils.Arrays.show(q.getRoots());
+		
+		System.out.println(p.getFactors());
+		System.out.println(q.getFactors());
 	}
 
 }

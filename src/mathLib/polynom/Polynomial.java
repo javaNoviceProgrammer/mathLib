@@ -1,5 +1,8 @@
 package mathLib.polynom;
 
+import java.util.ArrayList;
+
+import flanagan.math.Fmath;
 import mathLib.numbers.Complex;
 import mathLib.util.MathUtils;
 
@@ -218,6 +221,14 @@ public class Polynomial {
     	}
     	return roots ;
     }
+    
+    public ArrayList<Complex> getRootsAsList() {
+    	ArrayList<Complex> roots = new ArrayList<>() ;
+    	Complex[] allRoots = getRoots() ;
+    	for(Complex r : allRoots)
+    		roots.add(r) ;
+    	return roots ;
+    }
 
     // convert to string representation
     public String toString() {
@@ -243,6 +254,25 @@ public class Polynomial {
     
     public Polynomial copy() {
     	return new Polynomial(coef) ;
+    }
+    
+    public ArrayList<Polynomial> getFactors() {
+    	Complex[] roots = getRoots() ;
+    	ArrayList<Polynomial> factors = new ArrayList<>() ;
+    	for(Complex root : roots) {
+    		if(Math.abs(root.im())<1e-10) {
+    			Polynomial p = X - Fmath.truncate(root.re(), 5)  ;
+    			factors.add(p) ;
+    		}
+    	}
+    	for(Complex root : roots) {
+    		if(root.im() > 0) {
+    			Polynomial p = X*X - Fmath.truncate(2*root.re(), 5)*X + Fmath.truncate(root.absSquared(), 5) ;
+    			factors.add(p) ;
+    		}
+    	}
+    	
+    	return factors ;
     }
 
 	// ************ operator overloading **********************
@@ -455,16 +485,18 @@ public class Polynomial {
 
     // for test
     public static void main(String[] args) {
-		Polynomial p =  X.pow(4) - 1 ;
+		Polynomial p =  X.pow(3) - 1 ;
 		System.out.println(p);
 		Complex[] roots = p.getRoots() ;
 		MathUtils.Arrays.show(roots);
-		Polynomial q = 1-X-X.pow(2)-X.pow(3);
-		System.out.println(q);
-		System.out.println("\n\n");
-
-		q = q - 1 ;
-		System.out.println(q);
+//		Polynomial q = 1-X-X.pow(2)-X.pow(3);
+//		System.out.println(q);
+//		System.out.println("\n\n");
+//
+//		q = q - 1 ;
+//		System.out.println(q);
+		
+		System.out.println(p.getFactors());
 	}
 
 }
