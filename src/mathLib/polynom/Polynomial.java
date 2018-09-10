@@ -137,6 +137,14 @@ public class Polynomial {
             if (a.coef[i] != b.coef[i]) return false;
         return true;
     }
+    
+    public boolean equals(Polynomial b, double tol) {
+        Polynomial a = this;
+        if (a.deg != b.deg) return false;
+        for (int i = a.deg; i >= 0; i--)
+            if (Math.abs(a.coef[i] - b.coef[i])>tol) return false;
+        return true;
+    }
 
     @Override
 	public boolean equals(Object obj) {
@@ -267,12 +275,28 @@ public class Polynomial {
     	}
     	for(Complex root : roots) {
     		if(root.im() > 0) {
-    			Polynomial p = X*X - Fmath.truncate(2*root.re(), 5)*X + Fmath.truncate(root.absSquared(), 5) ;
+    			Polynomial p = X*X - 2*Fmath.truncate(root.re(), 5)*X + Fmath.truncate(root.absSquared(), 5) ;
     			factors.add(p) ;
     		}
     	}
     	
     	return factors ;
+    }
+    
+    public static ArrayList<Polynomial> getCommanFactors(Polynomial p, Polynomial q) {
+    	ArrayList<Polynomial> factorsOfP = p.getFactors() ;
+    	ArrayList<Polynomial> factorsOfQ = q.getFactors() ;
+    	ArrayList<Polynomial> commonFactors = new ArrayList<>() ;
+    	for(Polynomial p1 : factorsOfP)
+    		for(Polynomial q1 : factorsOfQ) {
+    			if(p1.equals(q1, 1e-10))
+    				commonFactors.add(p1) ;
+    		}
+    	return commonFactors ;
+    }
+    
+    public ArrayList<Polynomial> getCommonFactors(Polynomial p) {
+    	return getCommanFactors(this, p) ;
     }
 
 	// ************ operator overloading **********************
@@ -485,7 +509,7 @@ public class Polynomial {
 
     // for test
     public static void main(String[] args) {
-		Polynomial p =  X.pow(3) - 1 ;
+		Polynomial p =  X.pow(4) - 1 ;
 		System.out.println(p);
 		Complex[] roots = p.getRoots() ;
 		MathUtils.Arrays.show(roots);
@@ -497,6 +521,11 @@ public class Polynomial {
 //		System.out.println(q);
 		
 		System.out.println(p.getFactors());
+		
+		Polynomial q = X.pow(8) -1 ;
+		System.out.println(q.getFactors());
+		System.out.println(getCommanFactors(p, q));
+		
 	}
 
 }
