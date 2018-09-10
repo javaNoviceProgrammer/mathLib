@@ -22,14 +22,21 @@ public class ComplexPolynomial {
 		coef = coeff;
 		deg = degree();
 	}
+	
+	public ComplexPolynomial(double[] coeff) {
+		coef = new Complex[coeff.length];
+		for(int i=0; i<coeff.length; i++)
+			coef[i] = new Complex(coeff[i], 0.0) ;
+		deg = degree();
+	}
 
-	// a * x^b
-	public ComplexPolynomial(Complex a, int b) {
-		coef = new Complex[b + 1];
+	// a * x^n
+	public ComplexPolynomial(Complex a, int n) {
+		coef = new Complex[n + 1];
 		for(int i=0; i<coef.length; i++) {
 			coef[i] = ZERO ;
 		}
-		coef[b] = a;
+		coef[n] = a;
 		deg = degree();
 	}
 

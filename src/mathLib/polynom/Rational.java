@@ -1,7 +1,7 @@
 package mathLib.polynom;
 
 import static mathLib.polynom.Polynomial.X;
-import static mathLib.polynom.Polynomial.getCommanFactors;
+import static mathLib.polynom.Polynomial.getCommonFactors;
 
 import java.util.ArrayList;
 
@@ -88,31 +88,6 @@ public class Rational {
 		return a ;
 	}
 	
-//	public void simplify() {
-//		// leading coefficients of p(x) and q(x)
-//		double pcoef = p.coef[p.degree()] ;
-//		double qcoef = q.coef[q.degree()] ;
-//		// find common factors of of p(x) and q(x)
-//		ArrayList<Polynomial> factorsOfP = p.getFactors() ;
-//		ArrayList<Polynomial> factorsOfQ = q.getFactors() ;
-//		ArrayList<Polynomial> commonFactors = getCommanFactors(p, q) ;
-//		// remove the common factors
-//		for(Polynomial common : commonFactors) {
-//			factorsOfP.remove(common) ;
-//			factorsOfQ.remove(common) ;
-//		}
-//		// reconstruct p(x) and q(x)
-//		Polynomial pSimp = 0*X+1 ;
-//		for(Polynomial w : factorsOfP)
-//			pSimp = pSimp * w ;
-//		Polynomial qSimp = 0*X+1 ;
-//		for(Polynomial z : factorsOfQ)
-//			qSimp = qSimp * z ;
-//		
-//		this.p = pSimp * pcoef ;
-//		this.q = qSimp * qcoef ;
-//	}
-	
 	public Rational simplify() {
 		// leading coefficients of p(x) and q(x)
 		double pcoef = p.coef[p.degree()] ;
@@ -120,7 +95,7 @@ public class Rational {
 		// find common factors of of p(x) and q(x)
 		ArrayList<Polynomial> factorsOfP = p.getFactors() ;
 		ArrayList<Polynomial> factorsOfQ = q.getFactors() ;
-		ArrayList<Polynomial> commonFactors = getCommanFactors(p, q) ;
+		ArrayList<Polynomial> commonFactors = getCommonFactors(p, q) ;
 		// remove the common factors
 		for(Polynomial common : commonFactors) {
 			factorsOfP.remove(common) ;
@@ -361,7 +336,7 @@ public class Rational {
 	}
 
 	public Rational divideRev(int v) {
-		return null;
+		return (new Rational(0*X+v)).divides(this);
 	}
 
 	public Rational divide(long v) {
@@ -369,7 +344,7 @@ public class Rational {
 	}
 
 	public Rational divideRev(long v) {
-		return null;
+		return (new Rational(0*X+v)).divides(this);
 	}
 
 	public Rational divide(float v) {
@@ -377,7 +352,7 @@ public class Rational {
 	}
 
 	public Rational divideRev(float v) {
-		return null;
+		return (new Rational(0*X+v)).divides(this);
 	}
 
 	public Rational divide(double v) {
@@ -385,7 +360,7 @@ public class Rational {
 	}
 
 	public Rational divideRev(double v) {
-		return null;
+		return (new Rational(0*X+v)).divides(this);
 	}
 	
 	/**
@@ -397,22 +372,17 @@ public class Rational {
 
 	// for test
 	public static void main(String[] args) {
-		Rational r = new Rational(X*X-1, X.pow(3)-1) ;
+		Rational r = new Rational(X*X-1, X.pow(4)-1) ;
 		Rational s = new Rational(X-1, X+1) ;
 		System.out.println(r);
 		System.out.println(s);
-//		System.out.println(r.LHopital());
-//		Rational q = r.divides(s) ;
-//		System.out.println(q);
-//		System.out.println(q.getSimplified());
-//		System.out.println(q.p.getFactors());
-//		System.out.println(q.q.getFactors());
-//		System.out.println(getCommanFactors(q.p, q.q));
-
-		System.out.println(r*s);
-		System.out.println(r/s);
-		
 		System.out.println(r.simplify());
+		System.out.println(s.simplify());
+		Rational m = r/s ;
+		System.out.println(m);
+		System.out.println(m.p.getFactors());
+		System.out.println(m.q.getFactors());
+		System.out.println(r.simplify()/s.simplify());
 	}
 	
 

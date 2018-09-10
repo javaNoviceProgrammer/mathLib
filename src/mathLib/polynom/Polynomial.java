@@ -310,25 +310,42 @@ public class Polynomial {
     	return factors ;
     }
     
-    public static ArrayList<Polynomial> getCommanFactors(Polynomial p, Polynomial q) {
+    // TODO: fix the problem with number's digit accuracy
+    public static ArrayList<Complex> getCommonRoots(Polynomial p, Polynomial q) {
     	Complex[] rootsOfP = p.getRoots() ;
     	Complex[] rootsOfQ = q.getRoots() ;
     	ArrayList<Complex> commonRoots = new ArrayList<>() ;
-    	for(int i=0; i<rootsOfP.length; i++)
-    		for(int j=0; j<rootsOfQ.length; j++)
-    			if(rootsOfP[i].equals(rootsOfQ[j], 1e-5)) {
-    				if(!commonRoots.contains(rootsOfP[i]))
-    					commonRoots.add(rootsOfP[i]) ;
-    			}
+    	if(p.degree()<q.degree()) {
+        	for(int i=0; i<rootsOfP.length; i++)
+        		for(int j=0; j<rootsOfQ.length; j++)
+        			if(rootsOfP[i].equals(rootsOfQ[j], 1e-3)) {
+        				if(!commonRoots.contains(rootsOfP[i]))
+        					commonRoots.add(rootsOfP[i]) ;
+        			}
+    	}
+    	else {
+        	for(int i=0; i<rootsOfQ.length; i++)
+        		for(int j=0; j<rootsOfP.length; j++)
+        			if(rootsOfQ[i].equals(rootsOfP[j], 1e-3)) {
+        				if(!commonRoots.contains(rootsOfQ[i]))
+        					commonRoots.add(rootsOfQ[i]) ;
+        			}
+    	}
+    	
+    	return commonRoots ;
+    }
+    
+    public static ArrayList<Polynomial> getCommonFactors(Polynomial p, Polynomial q) {
+    	ArrayList<Complex> commonRoots = getCommonRoots(p, q) ;
     	ArrayList<Polynomial> factors = new ArrayList<>() ;
     	for(Complex root : commonRoots) {
-    		if(Math.abs(root.im())<1e-5) {
+    		if(Math.abs(root.im())<1e-6) {
     			Polynomial r = X - Fmath.truncate(root.re(), 5)  ;
     			factors.add(r) ;
     		}
     	}
     	for(Complex root : commonRoots) {
-    		if(root.im() > 1e-5) {
+    		if(root.im() > 1e-6) {
     			Polynomial s = X*X - 2*Fmath.truncate(root.re(), 5)*X + Fmath.truncate(root.absSquared(), 5) ;
     			factors.add(s) ;
     		}
@@ -338,7 +355,7 @@ public class Polynomial {
     }
     
     public ArrayList<Polynomial> getCommonFactors(Polynomial p) {
-    	return getCommanFactors(this, p) ;
+    	return getCommonFactors(this, p) ;
     }
 
 	// ************ operator overloading **********************
@@ -551,9 +568,9 @@ public class Polynomial {
 
     // for test
     public static void main(String[] args) {
-		Polynomial p =  X.pow(4) - 1 ;
-		System.out.println(p);
-		System.out.println(p.getFactors());
+//		Polynomial p =  X.pow(4) - 1 ;
+//		System.out.println(p);
+//		System.out.println(p.getFactors());
 //		Complex[] roots = p.getRoots() ;
 //		MathUtils.Arrays.show(roots);
 //		Polynomial q = 1-X-X.pow(2)-X.pow(3);
@@ -571,15 +588,24 @@ public class Polynomial {
 //		System.out.println(q.getFactors());
 //		System.out.println(getCommanFactors(p, q));
 		
-		Polynomial q = X.pow(4) - X.pow(3) - X.pow(1) + 1 ;
-		System.out.println(q);
-		System.out.println(q.getFactors());
-		System.out.println(q.getRootsAsList());
-		System.out.println();
-		System.out.println(p/q);
-		
-		System.out.println(fromFactors(q.getFactors()));
-		System.out.println(fromRoots(q.getRootsAsList()));
+//		Polynomial q = X.pow(4) - X.pow(3) - X.pow(1) + 1 ;
+//		System.out.println(q);
+//		System.out.println(q.getFactors());
+//		System.out.println(q.getRootsAsList());
+//		System.out.println();
+//		System.out.println(p/q);
+//		
+//		System.out.println(fromFactors(q.getFactors()));
+//		System.out.println(fromRoots(q.getRootsAsList()));
+    	
+//    	Polynomial p = (X-1).pow(5) * (X+3) ;
+//    	Polynomial q = (X-1).pow(2) * (X-1.5) ;
+//    	System.out.println(p);
+//    	System.out.println(q);
+//    	System.out.println(p.getRootsAsList());
+//    	System.out.println(q.getRootsAsList());
+//    	System.out.println(getCommonRoots(q, p));
+//    	System.out.println(getCommonRoots(p, q));
 		
 	}
 

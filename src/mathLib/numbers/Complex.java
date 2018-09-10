@@ -167,7 +167,7 @@ public class Complex { // immutable class
 	
 	public boolean equals(Complex b, double tol) {
 		Complex a = this;
-		if (ComplexMath.abs(a-b)<tol)
+		if (ComplexMath.abs(a-b)/ComplexMath.abs(b)<tol)
 			return true;
 		else
 			return false;
