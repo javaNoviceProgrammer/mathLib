@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import flanagan.math.Fmath;
 import mathLib.numbers.Complex;
+import mathLib.util.MathUtils;
+import plotter.chart.MatlabChart;
 
 public class Polynomial {
 
@@ -208,6 +210,18 @@ public class Polynomial {
 
     public double integrate(double xStart, double xEnd) {
     	return integrate().evaluate(xEnd)-integrate().evaluate(xStart) ;
+    }
+    
+    public void plot(double start, double end) {
+    	double[] x = MathUtils.linspace(start, end, 1000) ;
+    	double[] y = new double[x.length] ;
+    	for(int i=0; i<x.length; i++)
+    		y[i] = this.evaluate(x[i]) ;
+    	MatlabChart fig = new MatlabChart() ;
+    	fig.plot(x, y);
+    	fig.RenderPlot();
+    	fig.setFigLineWidth(0, 2);
+    	fig.run(true);
     }
 
     public Complex[] getRoots() {
