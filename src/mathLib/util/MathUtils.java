@@ -134,6 +134,37 @@ public class MathUtils {
 		else
 			return false ;
 	}
+	
+	public static String formatNumber(double number, int decimal) {
+		String st = number + "" ;
+		switch (decimal) {
+		case 1:
+			st = String.format("%.1f", number) ;
+			break;
+		case 2:
+			st = String.format("%.2f", number) ;
+			break;
+		case 3:
+			st = String.format("%.3f", number) ;
+			break;
+		case 4:
+			st = String.format("%.4f", number) ;
+			break;
+		case 5:
+			st = String.format("%.5f", number) ;
+			break;
+		case 6:
+			st = String.format("%.6f", number) ;
+			break;
+		default:
+			break;
+		}
+		return st ;
+	}
+	
+	public static String formatNumber(double number) {
+		return formatNumber(number, 4) ;
+	}
 
 	public static class Functions {
 

@@ -378,13 +378,16 @@ public class Rational {
 		Rational s = new Rational(X-1, X+1) ;
 		System.out.println(r);
 		System.out.println(s);
-		System.out.println(r.simplify());
-		System.out.println(s.simplify());
+//		System.out.println(r.simplify());
+//		System.out.println(s.simplify());
 		Rational m = r/s ;
 		System.out.println(m);
+//		System.out.println(m.p.getFactors());
+//		System.out.println(m.q.getFactors());
+//		System.out.println(r.simplify()/s.simplify());
 		System.out.println(m.p.getFactors());
 		System.out.println(m.q.getFactors());
-		System.out.println(r.simplify()/s.simplify());
+		System.out.println(getCommonFactors(m.p, m.q));
 	}
 	
 

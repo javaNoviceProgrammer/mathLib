@@ -1,11 +1,15 @@
 package mathLib.polynom;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import flanagan.math.Fmath;
+import org.netlib.arpack.Ssaitr;
+
 import mathLib.numbers.Complex;
 import mathLib.util.MathUtils;
 import plotter.chart.MatlabChart;
+import sun.net.www.content.audio.x_aiff;
 
 public class Polynomial {
 
@@ -267,12 +271,12 @@ public class Polynomial {
     	Polynomial p = 0*X + 1 ;
     	for(Complex root : roots) {
     		if(Math.abs(root.im())<1e-5) {
-    			p = p * (X - Fmath.truncate(root.re(), 5))  ;
+    			p = p * (X - root.re())  ;
     		}
     	}
     	for(Complex root : roots) {
     		if(root.im() > 1e-5) {
-    			p = p * (X*X - 2*Fmath.truncate(root.re(), 5)*X + Fmath.truncate(root.absSquared(), 5)) ;
+    			p = p * (X*X - 2*root.re()*X + root.absSquared()) ;
     		}
     	}
     	
@@ -281,24 +285,31 @@ public class Polynomial {
     
     // convert to string representation
     public String toString() {
-        if (deg ==  0) return "" + coef[0];
+        if (deg ==  0) return "" + format(coef[0]);
         if (deg ==  1) {
         	if(coef[0] > 0.0)
-        		return coef[1] + " x + " + coef[0];
+        		return format(coef[1]) + " x + " + format(coef[0]);
         	else if (coef[0] < 0.0)
-        		return coef[1] + " x - " + Math.abs(coef[0]);
+        		return format(coef[1]) + " x - " + format(Math.abs(coef[0]));
         	else
-        		return coef[1] + " x" ;
+        		return format(coef[1]) + " x" ;
         }
-        String s = coef[deg] + " x^" + deg;
+        String s = format(coef[deg]) + " x^" + deg;
         for (int i = deg-1; i >= 0; i--) {
             if      (coef[i] == 0) continue;
-            else if (coef[i]  > 0) s = s + " + " + ( coef[i]);
-            else if (coef[i]  < 0) s = s + " - " + (-coef[i]);
+            else if (coef[i]  > 0) s = s + " + " + (format(coef[i]));
+            else if (coef[i]  < 0) s = s + " - " + (format(-coef[i]));
             if      (i == 1) s = s + " x";
             else if (i >  1) s = s + " x^" + i;
         }
         return s;
+    }
+    
+    private String format(double c) {
+    	if(c>1e-3)
+    		return String.format("%.4f", c) ;
+    	else
+    		return String.format("%.8f", c) ;
     }
     
     public Polynomial copy() {
@@ -310,13 +321,13 @@ public class Polynomial {
     	ArrayList<Polynomial> factors = new ArrayList<>() ;
     	for(Complex root : roots) {
     		if(Math.abs(root.im())<1e-5) {
-    			Polynomial p = X - Fmath.truncate(root.re(), 5)  ;
+    			Polynomial p = X - root.re() ;
     			factors.add(p) ;
     		}
     	}
     	for(Complex root : roots) {
     		if(root.im() > 1e-5) {
-    			Polynomial p = X*X - 2*Fmath.truncate(root.re(), 5)*X + Fmath.truncate(root.absSquared(), 5) ;
+    			Polynomial p = X*X - 2*root.re()*X + root.absSquared() ;
     			factors.add(p) ;
     		}
     	}
@@ -324,7 +335,6 @@ public class Polynomial {
     	return factors ;
     }
     
-    // TODO: fix the problem with number's digit accuracy
     public static ArrayList<Complex> getCommonRoots(Polynomial p, Polynomial q) {
     	Complex[] rootsOfP = p.getRoots() ;
     	Complex[] rootsOfQ = q.getRoots() ;
@@ -349,22 +359,60 @@ public class Polynomial {
     	return commonRoots ;
     }
     
+//    public static ArrayList<Polynomial> getCommonFactors(Polynomial p, Polynomial q) {
+//    	ArrayList<Complex> commonRoots = getCommonRoots(p, q) ;
+//    	ArrayList<Polynomial> factors = new ArrayList<>() ;
+//    	for(Complex root : commonRoots) {
+//    		if(Math.abs(root.im())<1e-6) {
+//    			Polynomial r = X - root.re()  ;
+//    			factors.add(r) ;
+//    		}
+//    	}
+//    	for(Complex root : commonRoots) {
+//    		if(root.im() > 1e-6) {
+//    			Polynomial s = X*X - 2*root.re()*X + root.absSquared() ;
+//    			factors.add(s) ;
+//    		}
+//    	}
+//    	
+//    	return factors ;
+//    }
+    
     public static ArrayList<Polynomial> getCommonFactors(Polynomial p, Polynomial q) {
-    	ArrayList<Complex> commonRoots = getCommonRoots(p, q) ;
+    	ArrayList<Polynomial> factorsOfP = p.getFactors() ;
+    	ArrayList<Polynomial> factorsOfQ = q.getFactors() ;
     	ArrayList<Polynomial> factors = new ArrayList<>() ;
-    	for(Complex root : commonRoots) {
-    		if(Math.abs(root.im())<1e-6) {
-    			Polynomial r = X - Fmath.truncate(root.re(), 5)  ;
-    			factors.add(r) ;
-    		}
-    	}
-    	for(Complex root : commonRoots) {
-    		if(root.im() > 1e-6) {
-    			Polynomial s = X*X - 2*Fmath.truncate(root.re(), 5)*X + Fmath.truncate(root.absSquared(), 5) ;
-    			factors.add(s) ;
-    		}
+//    	for(int i=0; i<factorsOfP.size(); i++)
+//    		for(int j=0; j<factorsOfQ.size(); j++)
+//    			if(factorsOfP.get(i).toString().equals(factorsOfQ.get(j).toString())) {
+//    				if(!factors.contains(factorsOfP.get(i)))
+//    					factors.add(factorsOfP.get(i)) ;
+//    			}
+//    	
+//    	return factors ;
+    	
+    	ArrayList<String> factorsP = new ArrayList<>() ;
+    	for(Polynomial pp : factorsOfP)
+    		factorsP.add(pp.toString()) ;
+    	ArrayList<String> factorsQ = new ArrayList<>() ;
+    	for(Polynomial qq : factorsOfQ)
+    		factorsQ.add(qq.toString()) ;
+    	ArrayList<String> allPQ = new ArrayList<>(factorsP) ;
+    	allPQ.addAll(factorsQ) ;
+    	Set<String> unionPQ = new HashSet<>(factorsP) ;
+    	unionPQ.addAll(factorsQ) ;
+    	
+    	for(String ss : unionPQ) {
+    		allPQ.remove(ss) ;
     	}
     	
+    	System.out.println("\n" + unionPQ);
+    	System.out.println("\n" + allPQ);
+    	
+    	for(Polynomial pp: factorsOfP) {
+    		if(allPQ.contains(pp.toString()))
+    			factors.add(pp) ;
+    	}
     	return factors ;
     }
     
@@ -582,44 +630,16 @@ public class Polynomial {
 
     // for test
     public static void main(String[] args) {
-//		Polynomial p =  X.pow(4) - 1 ;
-//		System.out.println(p);
-//		System.out.println(p.getFactors());
-//		Complex[] roots = p.getRoots() ;
-//		MathUtils.Arrays.show(roots);
-//		Polynomial q = 1-X-X.pow(2)-X.pow(3);
-//		System.out.println(q);
-//		System.out.println("\n\n");
-//
-//		q = q - 1 ;
-//		System.out.println(q);
+		Polynomial p =  X.pow(3) + X.pow(2) - X - 1 ;
+		System.out.println(p);
+		System.out.println(p.getFactors());
+//		System.out.println(fromFactors(p.getFactors()));
 		
-//		System.out.println(p.getFactors());
+		Polynomial q = X.pow(5) - X.pow(4) - X + 1 ;
+		System.out.println(q);
+		System.out.println(q.getFactors());
 		
-//		Polynomial q = X.pow(8) -1 ;
-//		System.out.println(q);
-//		System.out.println(q.getRootsAsList());
-//		System.out.println(q.getFactors());
-//		System.out.println(getCommanFactors(p, q));
-		
-//		Polynomial q = X.pow(4) - X.pow(3) - X.pow(1) + 1 ;
-//		System.out.println(q);
-//		System.out.println(q.getFactors());
-//		System.out.println(q.getRootsAsList());
-//		System.out.println();
-//		System.out.println(p/q);
-//		
-//		System.out.println(fromFactors(q.getFactors()));
-//		System.out.println(fromRoots(q.getRootsAsList()));
-    	
-//    	Polynomial p = (X-1).pow(5) * (X+3) ;
-//    	Polynomial q = (X-1).pow(2) * (X-1.5) ;
-//    	System.out.println(p);
-//    	System.out.println(q);
-//    	System.out.println(p.getRootsAsList());
-//    	System.out.println(q.getRootsAsList());
-//    	System.out.println(getCommonRoots(q, p));
-//    	System.out.println(getCommonRoots(p, q));
+		System.out.println("\n" + getCommonFactors(p, q));
 		
 	}
 
