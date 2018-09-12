@@ -5,6 +5,11 @@ import static mathLib.polynom.Polynomial.getCommonFactors;
 
 import java.util.ArrayList;
 
+import mathLib.func.ArrayFunc;
+import mathLib.numbers.Complex;
+import mathLib.util.MathUtils;
+import plotter.chart.MatlabChart;
+
 public class Rational {
 
 	Polynomial p, q;
@@ -124,6 +129,51 @@ public class Rational {
 		return new Rational(p, 0*X+1) ;
 	}
 
+	public ArrayList<Complex> zeroes() {
+		Rational a = this.simplify() ;
+		return a.p.getRootsAsList() ;
+	}
+	
+	public ArrayList<Complex> poles() {
+		Rational a = this.simplify() ;
+		return a.q.getRootsAsList() ;
+	}
+	
+	public void plot(double start, double end) {
+		double[] x = MathUtils.linspace(start, end, 1000) ;
+		double[] y = ArrayFunc.apply(t -> this.evaluate(t), x) ;
+		MatlabChart fig = new MatlabChart() ;
+		fig.plot(x, y);
+		fig.RenderPlot();
+		fig.run(true);
+	}
+	
+	public void plotZeroPole() {
+		ArrayList<Complex> zeroes = this.zeroes() ;
+		ArrayList<Complex> poles = this.poles() ;
+		MatlabChart fig = new MatlabChart() ;
+		double[] x = new double[zeroes.size()] ;
+		double[] y = new double[zeroes.size()] ;
+		for(int i=0; i<zeroes.size(); i++) {
+			x[i] = zeroes.get(i).re() ;
+			y[i] = zeroes.get(i).im() ;
+		}
+		fig.plot(x, y, "b");
+		double[] z = new double[poles.size()] ;
+		double[] w = new double[poles.size()] ;
+		for(int i=0; i<poles.size(); i++) {
+			z[i] = poles.get(i).re() ;
+			w[i] = poles.get(i).im() ;
+		}
+		fig.plot(z, w, "r");
+		fig.RenderPlot();
+		fig.setFigLineWidth(0, 0f);
+		fig.setFigLineWidth(1, 0f);
+		fig.markerON();
+		fig.xlabel("Real");
+		fig.ylabel("Imag");
+		fig.run(true);
+	}
 
 	@Override
 	public String toString() {
@@ -380,15 +430,18 @@ public class Rational {
 
 	// for test
 	public static void main(String[] args) {
-		Rational r = new Rational(X*X-1, X.pow(4)-1) ;
-		Rational s = new Rational(X-1, X+1) ;
+		Rational r = new Rational(X*X-1, X.pow(5)-1) ;
+		Rational s = new Rational(X-1, X+3) ;
 		System.out.println(r);
 		System.out.println(s);
 		Rational m = r/s ;
 		System.out.println(m);
 		System.out.println(m.simplify());
-		System.out.println(r.simplify()/s.simplify());
-
+//		System.out.println(r.simplify()/s.simplify());
+		System.out.println(m.zeroes());
+		System.out.println(m.poles());
+		m.plot(-10, 10);
+		m.plotZeroPole();
 	}
 
 

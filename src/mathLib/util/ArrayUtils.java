@@ -43,7 +43,7 @@ public class ArrayUtils {
 		return list;
 	}
 
-	public static ArrayList<Double> toArrayList(Double[] st) {
+	public static ArrayList<Double> toArrayList(double[] st) {
 		ArrayList<Double> list = new ArrayList<>();
 		for (double s : st) {
 			list.add(s);
@@ -214,6 +214,22 @@ public class ArrayUtils {
 		}
 		return AB;
 	}
+	
+	public static int getIntervalIndex(double[] var0, double var1) {
+		int k = 0 ;
+		if(var1 < var0[0] || var1 > var0[var0.length-1])
+			return -1 ;
+		if(var1 == var0[0])
+			return 0 ;
+		if(var1 == var0[var0.length-1])
+			return var0.length-1 ;
+		for(int i=0; i<var0.length; i++)
+			if(var1 == var0[i])
+				return i ;
+		while(var1 > var0[k])
+			k++ ;
+		return k-1 ;
+	}
 
 	// appending a new element to the end of array
 	public static double[] append(double[] x, double x0) {
@@ -324,8 +340,10 @@ public class ArrayUtils {
 	// for test
 	public static void main(String[] args) {
 		double[] arg = MathUtils.linspace(0, 1, 10) ;
-		Matrix mat = reShape(arg, 10, 1) ;
+		Matrix mat = reShape(arg, 2, 5) ;
 		System.out.println(mat);
+		
+		System.out.println(getIntervalIndex(new double[] {1, 2, 3, 4, 7}, 6.99)); ;
 	}
 
 }
