@@ -10,7 +10,7 @@ public class ArrayFunc {
 		int n = var0.length ;
 		double[] var1 = new double[n] ;
 		for(int i=0; i<n; i++)
-			var1[i] = func.getValue(var0[i]) ;
+			var1[i] = func.evaluate(var0[i]) ;
 		return var1 ;
 	}
 

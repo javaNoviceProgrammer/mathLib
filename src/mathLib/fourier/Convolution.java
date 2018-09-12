@@ -39,12 +39,12 @@ public class Convolution {
 
 			@Override
 			public double func2(double t) {
-				return function2.getValue(t);
+				return function2.evaluate(t);
 			}
 
 			@Override
 			public double func1(double t) {
-				return function1.getValue(t);
+				return function1.evaluate(t);
 			}
 		} ;
 		this.ts = ts ;
