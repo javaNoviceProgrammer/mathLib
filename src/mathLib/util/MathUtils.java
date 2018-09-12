@@ -125,11 +125,10 @@ public class MathUtils {
 	}
 	
 	public static boolean areEqual(double a, double b, double tol) {
+		// |x| > 1 ??
+		// |X| < 1 ??
 		double absError = Math.abs(a-b) ;
-		double relErrorB = Math.abs(absError/b) ;
-		double relErrorA = Math.abs(absError/a) ;
-		if(relErrorA < tol && relErrorB < tol)
-//		if(absError < tol)
+		if(absError < tol)
 			return true ;
 		else
 			return false ;
@@ -155,6 +154,18 @@ public class MathUtils {
 			break;
 		case 6:
 			st = String.format("%.6f", number) ;
+			break;
+		case 7:
+			st = String.format("%.7f", number) ;
+			break;
+		case 8:
+			st = String.format("%.8f", number) ;
+			break;
+		case 9:
+			st = String.format("%.9f", number) ;
+			break;
+		case 10:
+			st = String.format("%.10f", number) ;
 			break;
 		default:
 			break;
