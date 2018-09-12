@@ -1,6 +1,7 @@
 package mathLib.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import flanagan.math.ArrayMaths;
 import mathLib.matrix.Matrix;
@@ -19,7 +20,7 @@ public class ArrayUtils {
 		}
 		return dataComplex ;
 	}
-	
+
 	public static double[][] reShape(double[] arg, int row, int column) {
 		int nx = row ;
 		int ny = column ;
@@ -33,7 +34,7 @@ public class ArrayUtils {
 		}
 		return var0 ;
 	}
-	
+
 	public static ArrayList<Complex> toArrayList(Complex[] st) {
 		ArrayList<Complex> list = new ArrayList<>();
 		for (Complex s : st) {
@@ -49,8 +50,8 @@ public class ArrayUtils {
 		}
 		return list;
 	}
-	
-	
+
+
 	// creating an array of zero elements
 	public static double[] setZero(int length) {
 		double[] x = new double[length];
@@ -303,15 +304,28 @@ public class ArrayUtils {
 		}
 
 	}
-	
-	
-	
-	
+
+	// common elements of two array lists
+	public static <E> List<E> getCommonElements(List<E> a, List<E> b) {
+		ArrayList<E> list1 = new ArrayList<>(a) ;
+		ArrayList<E> list2 = new ArrayList<>(b) ;
+		list1.retainAll(b) ;
+		list2.retainAll(a) ;
+		ArrayList<E> list3 = new ArrayList<>(list1) ;
+		ArrayList<E> commons = new ArrayList<>() ;
+		for(E e : list3)
+			if(list1.remove(e) && list2.remove(e))
+				commons.add(e) ;
+
+		return commons ;
+	}
+
+
 	// for test
 	public static void main(String[] args) {
 		double[] arg = MathUtils.linspace(0, 1, 10) ;
 		Matrix mat = reShape(arg, 10, 1) ;
 		System.out.println(mat);
 	}
-	
+
 }
