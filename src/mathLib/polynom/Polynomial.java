@@ -225,6 +225,8 @@ public class Polynomial {
     }
 
     public Complex[] getRoots() {
+    	if(degree() < 1)
+    		return null ;
     	Complex[] roots = new Complex[deg] ;
     	double[] normalizedCoeff = new double[coef.length] ;
     	for(int i=0; i<coef.length; i++) {
@@ -244,15 +246,20 @@ public class Polynomial {
     	for(int i=0; i<deg; i++) {
     		roots[i] = new Complex(rootsRealPart[i], rootsImagPart[i]) ;
     	}
+    	
     	return roots ;
     }
 
     public ArrayList<Complex> getRootsAsList() {
     	ArrayList<Complex> roots = new ArrayList<>() ;
-    	Complex[] allRoots = getRoots() ;
-    	for(Complex r : allRoots)
-    		roots.add(r) ;
-    	return roots ;
+    	if(getRoots() != null) {
+        	Complex[] allRoots = getRoots() ;
+        	for(Complex r : allRoots)
+        		roots.add(r) ;
+        	return roots ;
+    	}
+    	else
+    		return null ;
     }
 
     public static Polynomial fromFactors(ArrayList<Polynomial> factors) {
@@ -330,30 +337,6 @@ public class Polynomial {
 
     	return factors ;
     }
-
-//    public static ArrayList<Complex> getCommonRoots(Polynomial p, Polynomial q) {
-//    	Complex[] rootsOfP = p.getRoots() ;
-//    	Complex[] rootsOfQ = q.getRoots() ;
-//    	ArrayList<Complex> commonRoots = new ArrayList<>() ;
-//    	if(p.degree()<q.degree()) {
-//        	for(int i=0; i<rootsOfP.length; i++)
-//        		for(int j=0; j<rootsOfQ.length; j++)
-//        			if(rootsOfP[i].equals(rootsOfQ[j], 1e-3)) {
-//        				if(!commonRoots.contains(rootsOfP[i]))
-//        					commonRoots.add(rootsOfP[i]) ;
-//        			}
-//    	}
-//    	else {
-//        	for(int i=0; i<rootsOfQ.length; i++)
-//        		for(int j=0; j<rootsOfP.length; j++)
-//        			if(rootsOfQ[i].equals(rootsOfP[j], 1e-3)) {
-//        				if(!commonRoots.contains(rootsOfQ[i]))
-//        					commonRoots.add(rootsOfQ[i]) ;
-//        			}
-//    	}
-//
-//    	return commonRoots ;
-//    }
 
     public static ArrayList<Complex> getCommonRoots(Polynomial p, Polynomial q) {
     	ArrayList<Polynomial> commonFactors = getCommonFactors(p, q) ;

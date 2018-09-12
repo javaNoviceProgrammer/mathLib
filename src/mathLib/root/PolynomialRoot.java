@@ -1,5 +1,7 @@
 package mathLib.root;
 
+import java.util.ArrayList;
+
 import mathLib.numbers.Complex;
 import mathLib.polynom.Polynomial;
 
@@ -24,6 +26,13 @@ public class PolynomialRoot {
 
 	public Complex[] getRootsComplex() {
 		return roots;
+	}
+	
+	public ArrayList<Complex> getRootsAsList() {
+		ArrayList<Complex> rootsList = new ArrayList<>() ;
+		for(Complex c : roots)
+			rootsList.add(c) ;
+		return rootsList ;
 	}
 
 	public double[] getRootsRealPart() {

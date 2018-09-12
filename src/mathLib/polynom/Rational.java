@@ -149,23 +149,31 @@ public class Rational {
 	}
 	
 	public void plotZeroPole() {
-		ArrayList<Complex> zeroes = this.zeroes() ;
-		ArrayList<Complex> poles = this.poles() ;
 		MatlabChart fig = new MatlabChart() ;
-		double[] x = new double[zeroes.size()] ;
-		double[] y = new double[zeroes.size()] ;
-		for(int i=0; i<zeroes.size(); i++) {
-			x[i] = zeroes.get(i).re() ;
-			y[i] = zeroes.get(i).im() ;
+		
+		if(this.zeroes() != null) {
+			ArrayList<Complex> zeroes = this.zeroes() ;
+			double[] x = new double[zeroes.size()] ;
+			double[] y = new double[zeroes.size()] ;
+			for(int i=0; i<zeroes.size(); i++) {
+				x[i] = zeroes.get(i).re() ;
+				y[i] = zeroes.get(i).im() ;
+			}
+			fig.plot(x, y, "b");
 		}
-		fig.plot(x, y, "b");
-		double[] z = new double[poles.size()] ;
-		double[] w = new double[poles.size()] ;
-		for(int i=0; i<poles.size(); i++) {
-			z[i] = poles.get(i).re() ;
-			w[i] = poles.get(i).im() ;
+		
+		
+		if(this.poles() != null) {
+			ArrayList<Complex> poles = this.poles() ;
+			double[] z = new double[poles.size()] ;
+			double[] w = new double[poles.size()] ;
+			for(int i=0; i<poles.size(); i++) {
+				z[i] = poles.get(i).re() ;
+				w[i] = poles.get(i).im() ;
+			}
+			fig.plot(z, w, "r");
 		}
-		fig.plot(z, w, "r");
+		
 		fig.RenderPlot();
 		fig.setFigLineWidth(0, 0f);
 		fig.setFigLineWidth(1, 0f);
@@ -173,6 +181,10 @@ public class Rational {
 		fig.xlabel("Real");
 		fig.ylabel("Imag");
 		fig.run(true);
+	}
+	
+	public double limit(double x0) {
+		return this.simplify().evaluate(x0) ;
 	}
 
 	@Override
@@ -430,18 +442,20 @@ public class Rational {
 
 	// for test
 	public static void main(String[] args) {
-		Rational r = new Rational(X*X-1, X.pow(5)-1) ;
-		Rational s = new Rational(X-1, X+3) ;
+		Rational r = new Rational(X*X-1, X.pow(3)+1) ;
+		Rational s = new Rational((X-1)*(X+3), X+3) ;
 		System.out.println(r);
 		System.out.println(s);
 		Rational m = r/s ;
 		System.out.println(m);
 		System.out.println(m.simplify());
-//		System.out.println(r.simplify()/s.simplify());
 		System.out.println(m.zeroes());
 		System.out.println(m.poles());
 		m.plot(-10, 10);
 		m.plotZeroPole();
+		
+		System.out.println(s.evaluate(-3));
+		System.out.println(s.limit(-3));
 	}
 
 
