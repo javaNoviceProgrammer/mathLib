@@ -1,6 +1,7 @@
-package mathLib.integral;
+package mathLib.integral.other;
 
 import flanagan.integration.RungeKutta;
+import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.ode.intf.DerivFunction1D;
 import mathLib.util.Timer;
