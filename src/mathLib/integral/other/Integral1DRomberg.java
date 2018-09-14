@@ -5,7 +5,6 @@ import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.sequence.SumFunction;
 import mathLib.sequence.Summation;
-import mathLib.util.MathUtils;
 import mathLib.util.Timer;
 
 public class Integral1DRomberg {
@@ -39,7 +38,7 @@ public class Integral1DRomberg {
 	
 	public double integrate(double start, double end) {
 		int n = (int) (Math.log(end-start)/Math.log(2)) ;
-		n += 5 ;
+		n += 10 ;
 		return romberg(n, 3, start, end) ;
 	}
 	
@@ -48,7 +47,7 @@ public class Integral1DRomberg {
 		double xMin = 0.0 ;
 		double xMax = 10.1*Math.PI ;
 		
-		IntegralFunction1D func = t -> MathUtils.Functions.sinc(t*t) ;
+		IntegralFunction1D func = t -> Math.sin(Math.sqrt(t)) ;
 		
 		Timer timer = new Timer() ;
 		timer.start();
