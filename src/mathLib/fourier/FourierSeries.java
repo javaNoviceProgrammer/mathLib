@@ -1,4 +1,4 @@
-package mathLib.fourier.series;
+package mathLib.fourier;
 
 import static mathLib.numbers.Complex.j;
 
