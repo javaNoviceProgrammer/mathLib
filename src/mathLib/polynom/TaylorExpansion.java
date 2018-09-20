@@ -6,16 +6,16 @@ import mathLib.util.MathUtils;
 
 public class TaylorExpansion {
 
-	public static Polynomial getExp(int degree) {
-		double[] coeffs = new double[degree + 1];
+	public static Polynomial getExp(int order) {
+		double[] coeffs = new double[order + 1];
 		for (int i = 0; i < coeffs.length; i++) {
 			coeffs[i] = 1.0 / MathUtils.factorial(i);
 		}
 		return new Polynomial(coeffs);
 	}
 
-	public static Polynomial getSin(int degree) {
-		double[] coeffs = new double[degree + 1];
+	public static Polynomial getSin(int order) {
+		double[] coeffs = new double[order + 1];
 		int sign = 1;
 		for (int i = 0; i < coeffs.length; i++) {
 			if (i % 2 != 0) {
@@ -26,8 +26,8 @@ public class TaylorExpansion {
 		return new Polynomial(coeffs);
 	}
 
-	public static Polynomial getCos(int degree) {
-		double[] coeffs = new double[degree + 1];
+	public static Polynomial getCos(int order) {
+		double[] coeffs = new double[order + 1];
 		int sign = 1;
 		for (int i = 0; i < coeffs.length; i++) {
 			if (i % 2 == 0) {
@@ -38,15 +38,15 @@ public class TaylorExpansion {
 		return new Polynomial(coeffs);
 	}
 
-	public static Polynomial getSinh(int degree) {
-		Polynomial plus = getExp(degree);
-		Polynomial minus = getExp(degree).compose(-X);
+	public static Polynomial getSinh(int order) {
+		Polynomial plus = getExp(order);
+		Polynomial minus = getExp(order).compose(-X);
 		return (plus - minus) / 2;
 	}
 
-	public static Polynomial getCosh(int degree) {
-		Polynomial plus = getExp(degree);
-		Polynomial minus = getExp(degree).compose(-X);
+	public static Polynomial getCosh(int order) {
+		Polynomial plus = getExp(order);
+		Polynomial minus = getExp(order).compose(-X);
 		return (plus + minus) / 2;
 	}
 
