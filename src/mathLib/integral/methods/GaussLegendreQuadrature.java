@@ -24,6 +24,12 @@ public class GaussLegendreQuadrature {
 			0.101930119817240435037, 0.083276741576704748725, 0.0626720483341090635695, 0.040601429800386941331,
 			0.0176140071391521183119 };
 
+
+	// 5 points
+
+//	double[] points = {} ;
+//	double[] weights = {} ;
+
 	IntegralFunction func;
 	double start, end;
 
@@ -46,10 +52,10 @@ public class GaussLegendreQuadrature {
 	// for test
 	public static void main(String[] args) {
 		IntegralFunction1D func1d = x -> x * Math.sin(x);
-		Integral1D integral1d = new Integral1D(func1d, 0, 1000);
+		Integral1D integral1d = new Integral1D(func1d, 0, 10);
 		System.out.println(integral1d.getIntegral());
 
-		GaussLegendreQuadrature glQuad = new GaussLegendreQuadrature(func1d, 0, 1000);
+		GaussLegendreQuadrature glQuad = new GaussLegendreQuadrature(func1d, 0, 10);
 		System.out.println(glQuad.getIntegral());
 	}
 
