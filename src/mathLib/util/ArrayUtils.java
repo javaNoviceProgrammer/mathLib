@@ -343,7 +343,7 @@ public class ArrayUtils {
 		Matrix mat = reShape(arg, 2, 5) ;
 		System.out.println(mat);
 		
-		System.out.println(getIntervalIndex(new double[] {1, 2, 3, 4, 7}, 6.99)); ;
+		System.out.println(getIntervalIndex(new double[] {1, 2, 3, 4, 7}, 3.5)); ;
 	}
 
 }

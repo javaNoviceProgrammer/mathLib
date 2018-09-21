@@ -5,6 +5,8 @@ import edu.uta.futureye.core.Mesh;
 import edu.uta.futureye.core.Node;
 import edu.uta.futureye.util.container.NodeList;
 import mathLib.geometry.algebra.Point;
+import mathLib.util.MathUtils;
+import plotter.util.MeshGrid;
 
 public class Mesh2DRect {
 	
@@ -93,9 +95,17 @@ public class Mesh2DRect {
 		return new Mesh2DRect(pLL, pUR, 2*nx, 2*ny) ;
 	}
 	
+	public MeshGrid getGrid() {
+		double[] x = MathUtils.linspace(pLL.getX(), pUR.getX(), nx) ;
+		double[] y = MathUtils.linspace(pLL.getY(), pUR.getY(), ny) ;
+		return new MeshGrid(x, y) ;
+	}
+	
 	// for test
 	public static void main(String[] args) {
-		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(1, 1), 3, 3) ;
+		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(1, 1), 10, 10) ;
+//		mesh2d.getMesh().computeNodeBelongsToElements();
+		System.out.println(mesh2d.getMesh().getElementList());
 		System.out.println(mesh2d.getMesh().getNodeList().size());
 		System.out.println(mesh2d.getMesh().getElementList().size());
 		mesh2d.refine();
