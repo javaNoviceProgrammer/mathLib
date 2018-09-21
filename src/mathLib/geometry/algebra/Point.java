@@ -15,6 +15,18 @@ public class Point {
 		this.y = y ;
 		this.z = z ;
 	}
+	
+	public static Point getInstance(double x, double y, double z) {
+		return new Point(x, y, z) ;
+	}
+	
+	public static Point getInstance(double x, double y) {
+		return new Point(x, y, 0.0) ;
+	}
+	
+	public static Point getInstance(double x) {
+		return new Point(x, 0.0, 0.0) ;
+	}
 
 	public void setName(String name) {
 		this.name = name ;
@@ -84,23 +96,23 @@ public class Point {
  	 * Object p = 5;
  	 *
  	 */
- 	public Point valueOf(int p) {
+ 	public static Point valueOf(int p) {
  		return new Point(p, 0, 0);
  	}
 
- 	public Point valueOf(long p) {
+ 	public static Point valueOf(long p) {
  		return new Point(p, 0, 0);
  	}
 
- 	public Point valueOf(float p) {
+ 	public static Point valueOf(float p) {
  		return new Point(p, 0, 0);
  	}
 
- 	public Point valueOf(double p) {
+ 	public static Point valueOf(double p) {
  		return new Point(p, 0, 0);
  	}
 
- 	public Point valueOf(Point p) {
+ 	public static Point valueOf(Point p) {
  		return new Point(p.x, p.y, p.z);
  	}
 

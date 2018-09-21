@@ -1,6 +1,7 @@
 package mathLib.fem;
 
 import edu.uta.futureye.core.Mesh;
+import edu.uta.futureye.core.Node;
 import edu.uta.futureye.util.MeshGenerator;
 
 public class Mesh1D {
@@ -34,16 +35,20 @@ public class Mesh1D {
 	}
 	
 	public Mesh1D getRefined() {
-		// divide each element into two
+		// double the number of nodes
 		return new Mesh1D(xMin, xMax, 2*numNodes) ;
 	}
 	
 	// for test
 	public static void main(String[] args) {
 		Mesh1D mesh1d = new Mesh1D(0, 10, 20) ;
+		Mesh1D mesh1d1 = new Mesh1D(0, 10, 30) ;
 		System.out.println(mesh1d.getMesh().getNodeList());
-		mesh1d.refine();
 		System.out.println(mesh1d.getMesh().getNodeList());
+		Node n1 = mesh1d.getMesh().getNodeList().at(20) ;
+		Node n11 = mesh1d1.getMesh().getNodeList().at(30) ;
+		System.out.println(n1);
+		System.out.println(n11);
 	}
 
 }
