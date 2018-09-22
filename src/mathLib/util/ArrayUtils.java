@@ -21,7 +21,21 @@ public class ArrayUtils {
 		return dataComplex ;
 	}
 
-	public static double[][] reShape(double[] arg, int row, int column) {
+//	public static double[][] reShape(double[] arg, int row, int column) {
+//		int nx = row ;
+//		int ny = column ;
+//		if(nx*ny != arg.length)
+//			throw new IllegalArgumentException("Dimensions don't agree!") ;
+//		double[][] var0 = new double[nx][ny] ;
+//		for(int i=0; i<nx; i++) {
+//			for(int j=0; j<ny; j++) {
+//				var0[i][j] = arg[i*ny+j] ;
+//			}
+//		}
+//		return var0 ;
+//	}
+
+	public static double[][] reshapeRow(double[] arg, int row, int column) {
 		int nx = row ;
 		int ny = column ;
 		if(nx*ny != arg.length)
@@ -30,6 +44,20 @@ public class ArrayUtils {
 		for(int i=0; i<nx; i++) {
 			for(int j=0; j<ny; j++) {
 				var0[i][j] = arg[i*ny+j] ;
+			}
+		}
+		return var0 ;
+	}
+
+	public static double[][] reshapeColumn(double[] arg, int row, int column) {
+		int nx = row ;
+		int ny = column ;
+		if(nx*ny != arg.length)
+			throw new IllegalArgumentException("Dimensions don't agree!") ;
+		double[][] var0 = new double[nx][ny] ;
+		for(int j=0; j<ny; j++) {
+			for(int i=0; i<nx; i++) {
+				var0[i][j] = arg[i+j*nx] ;
 			}
 		}
 		return var0 ;
@@ -214,7 +242,7 @@ public class ArrayUtils {
 		}
 		return AB;
 	}
-	
+
 	public static int getIntervalIndex(double[] var0, double var1) {
 		int k = 0 ;
 		if(var1 < var0[0] || var1 > var0[var0.length-1])
@@ -340,9 +368,11 @@ public class ArrayUtils {
 	// for test
 	public static void main(String[] args) {
 		double[] arg = MathUtils.linspace(0, 1, 10) ;
-		Matrix mat = reShape(arg, 2, 5) ;
+		Matrix mat = reshapeRow(arg, 2, 5) ;
 		System.out.println(mat);
-		
+		Matrix mat1 = reshapeColumn(arg, 2, 5) ;
+		System.out.println(mat1);
+
 		System.out.println(getIntervalIndex(new double[] {1, 2, 3, 4, 7}, 3.5)); ;
 	}
 
