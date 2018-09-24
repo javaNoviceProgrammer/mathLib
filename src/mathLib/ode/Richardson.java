@@ -21,11 +21,13 @@ public class Richardson {
 
 	// for test
 	public static void main(String[] args) {
-		RealFunction func = t -> t*t ;
+		RealFunction func = t -> Math.tan(t*t) ;
 		System.out.println(deriv(func, 1, 0));
 		System.out.println(deriv(func, 1, 1));
 		System.out.println(deriv(func, 1, 2));
 		System.out.println(deriv(func, 1, 3));
+		System.out.println(deriv(func, 1, 4));
+		System.out.println(deriv(func, 1, 5));
 	}
 
 }
