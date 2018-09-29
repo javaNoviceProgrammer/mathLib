@@ -308,6 +308,22 @@ public class Matrix {
     public PowerIterationMatrix getPowerIterationMatrix(){
     	return new PowerIterationMatrix(this.data) ;
     }
+    
+    public void setBlock(int r1, int r2, int c1, int c2, Matrix matrix) {
+    	for(int i=r1; i<=r2; i++)
+    		for(int j=c1; j<=c2; j++) {
+    			this.data[i][j] = matrix.getElement(i, j) ;
+    		}
+    }
+    
+    public void setBlock(int r1, int c1, Matrix matrix) {
+    	int r2 = r1 + matrix.getRowDim()-1 ;
+    	int c2 = c1 + matrix.getColumnDim()-1 ;
+    	for(int i=r1; i<=r2; i++)
+    		for(int j=c1; j<=c2; j++) {
+    			this.data[i][j] = matrix.getElement(i, j) ;
+    		}
+    }
 
     // element-wise operations
 
