@@ -218,7 +218,7 @@ public class Matrix {
     public void show() {
         System.out.println(this.toString());
     }
-    
+
     public boolean isSquare() {
     	if(M == N)
     		return true ;
@@ -236,7 +236,7 @@ public class Matrix {
     	else
     		return false ;
     }
-    
+
     public boolean isSymmetric() {
     	if(!isSquare())
     		return false ;
@@ -275,6 +275,10 @@ public class Matrix {
     	return this.data[i][j] ;
     }
 
+    public void setElement(int i, int j, double value){
+    	this.data[i][j] = value ;
+    }
+
     // returning all data elements
     public double[][] getElements(){
     	return this.data ;
@@ -284,7 +288,7 @@ public class Matrix {
     public static Jama.Matrix toJamaMatrix(Matrix A){
     	return new Jama.Matrix(A.data) ;
     }
-    
+
     public static flanagan.math.Matrix toFlanaganMatrix(Matrix A) {
     	return new flanagan.math.Matrix(A.data) ;
     }
@@ -292,7 +296,7 @@ public class Matrix {
     public Jama.Matrix getJamaMatrix(){
     	return new Jama.Matrix(this.data) ;
     }
-    
+
     public flanagan.math.Matrix getFlanaganMatrix(Matrix A) {
     	return new flanagan.math.Matrix(A.data) ;
     }
@@ -308,14 +312,14 @@ public class Matrix {
     public PowerIterationMatrix getPowerIterationMatrix(){
     	return new PowerIterationMatrix(this.data) ;
     }
-    
+
     public void setBlock(int r1, int r2, int c1, int c2, Matrix matrix) {
     	for(int i=r1; i<=r2; i++)
     		for(int j=c1; j<=c2; j++) {
     			this.data[i][j] = matrix.getElement(i, j) ;
     		}
     }
-    
+
     public void setBlock(int r1, int c1, Matrix matrix) {
     	int r2 = r1 + matrix.getRowDim()-1 ;
     	int c2 = c1 + matrix.getColumnDim()-1 ;
@@ -348,7 +352,7 @@ public class Matrix {
         }
         return C;
     }
-    
+
     public double trace() {
     	if (M != N)
     		throw new IllegalArgumentException("must be a square matrix!") ;
@@ -665,9 +669,9 @@ public class Matrix {
 		System.out.println(A);
 		System.out.println(A.pow(5));
 		System.out.println(A.pow(20));
-		
+
 		System.out.println(A.trace());
-		
+
 		System.out.println(A.isDiagonal());
 		System.out.println(A.isSquare());
 		System.out.println(A.isSymmetric());
