@@ -72,7 +72,7 @@ public class ColorMapPlot {
         };
         chartPanel.setMouseZoomable(true, false);
         f.add(chartPanel);
-        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/presentation.png"));
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/mathLib/plot/extra/presentation.png"));
         f.setIconImage(image);
         f.setTitle("Plot Viewer v1.0");
         f.pack();
