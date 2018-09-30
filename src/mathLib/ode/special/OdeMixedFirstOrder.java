@@ -8,8 +8,8 @@ import static edu.uta.futureye.function.FMath.y;
 import edu.uta.futureye.function.intf.MathFunc;
 import flanagan.integration.RungeKutta;
 import mathLib.ode.intf.DerivFunction1D;
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
 
 /**
  * Solves the differential equation of form a(x,y) y' + b(x,y) = f(x,y)

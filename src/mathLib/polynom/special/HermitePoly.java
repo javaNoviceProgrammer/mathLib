@@ -1,11 +1,10 @@
 package mathLib.polynom.special;
 
-import mathLib.polynom.Polynomial;
-import static mathLib.polynom.Polynomial.* ;
+import static mathLib.polynom.ComplexPolynomial.Xc;
+import static mathLib.polynom.Polynomial.X;
 
 import mathLib.polynom.ComplexPolynomial;
-
-import static mathLib.polynom.ComplexPolynomial.*;
+import mathLib.polynom.Polynomial;
 
 public class HermitePoly {
 

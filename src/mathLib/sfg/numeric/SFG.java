@@ -1,6 +1,10 @@
 package mathLib.sfg.numeric;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Stack;
 
 import mathLib.numbers.Complex;
 

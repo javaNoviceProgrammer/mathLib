@@ -1,11 +1,11 @@
 package mathLib.fitting.interpol;
 
 import mathLib.func.ArrayFunc;
+import mathLib.plot.ColorMapPlot;
+import mathLib.plot.util.MeshGrid;
 import mathLib.util.ArrayUtils;
 import mathLib.util.MathUtils;
 import mathLib.util.Timer;
-import plotter.chart.ColorMapPlot;
-import plotter.util.MeshGrid;
 
 /**
  * Bilinear Interpolation procedure

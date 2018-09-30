@@ -1,12 +1,13 @@
 package mathLib.ode.special;
 
+import static edu.uta.futureye.function.FMath.C;
+import static edu.uta.futureye.function.FMath.x;
+
 import edu.uta.futureye.function.intf.MathFunc;
 import flanagan.integration.RungeKutta;
 import mathLib.ode.intf.DerivFunction1D;
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
-
-import static edu.uta.futureye.function.FMath.* ;
 
 /**
  * solving ordinary differential equation of the form  a(x) y' + b(x) y = f(x)

@@ -1,6 +1,8 @@
 package tests;
 
 
+import static mathLib.numbers.Complex.j;
+
 import mathLib.matrix.powerIter.EigenValueVector;
 import mathLib.matrix.powerIter.PowerIterationMatrix;
 import mathLib.matrix.powerIter.methods.InverseIteration;
@@ -9,8 +11,6 @@ import mathLib.matrix.powerIter.methods.RegularIteration;
 import mathLib.matrix.powerIter.methods.ShiftedIteration;
 import mathLib.numbers.Complex;
 import mathLib.util.Timer;
-
-import static mathLib.numbers.Complex.*;
 
 public class TestPowerMethod {
 	

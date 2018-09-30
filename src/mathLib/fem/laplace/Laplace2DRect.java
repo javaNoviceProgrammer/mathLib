@@ -22,9 +22,9 @@ import mathLib.fem.FEMUtils;
 import mathLib.fem.Mesh2DRect;
 import mathLib.func.ArrayFunc;
 import mathLib.geometry.algebra.Point;
+import mathLib.plot.ColorMapPlot;
+import mathLib.plot.util.MeshGrid;
 import mathLib.util.Timer;
-import plotter.chart.ColorMapPlot;
-import plotter.util.MeshGrid;
 
 public class Laplace2DRect {
 

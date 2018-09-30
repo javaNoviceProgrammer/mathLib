@@ -1,7 +1,9 @@
 package tests;
 
-import static mathLib.numbers.Complex.*;
-import static mathLib.numbers.ComplexMath.*;
+import static mathLib.numbers.Complex.j;
+import static mathLib.numbers.ComplexMath.PI;
+import static mathLib.numbers.ComplexMath.cos;
+import static mathLib.numbers.ComplexMath.sin;
 
 import mathLib.numbers.Complex;
 

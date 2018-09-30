@@ -3,10 +3,10 @@ package mathLib.fem;
 import edu.uta.futureye.algebra.intf.Vector;
 import mathLib.fitting.interpol.BilinearInterpolation2D;
 import mathLib.func.ArrayFunc;
+import mathLib.plot.ColorMapPlot;
+import mathLib.plot.util.MeshGrid;
 import mathLib.util.ArrayUtils;
 import mathLib.util.MathUtils;
-import plotter.chart.ColorMapPlot;
-import plotter.util.MeshGrid;
 
 public class FEMUtils {
 

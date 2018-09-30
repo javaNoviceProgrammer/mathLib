@@ -1,6 +1,6 @@
 package mathLib.ode;
 
-import static mathLib.util.MathUtils.*;
+import static mathLib.util.MathUtils.deltaKronecker;
 
 import mathLib.matrix.Matrix;
 

@@ -3,9 +3,9 @@ package mathLib.polynom;
 import java.util.ArrayList;
 
 import mathLib.numbers.Complex;
+import mathLib.plot.MatlabChart;
 import mathLib.util.ArrayUtils;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
 
 public class Polynomial {
 

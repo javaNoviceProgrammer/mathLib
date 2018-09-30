@@ -1,10 +1,12 @@
 package mathLib.polynom.special;
 
+import static mathLib.polynom.ComplexPolynomial.Xc;
+import static mathLib.polynom.Polynomial.X;
+import static mathLib.polynom.Polynomial.ZERO;
+import static mathLib.util.MathUtils.combination;
+
 import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;
-import static mathLib.polynom.Polynomial.* ;
-import static mathLib.util.MathUtils.* ;
-import static mathLib.polynom.ComplexPolynomial.*;
 
 public class JacobiPoly {
 

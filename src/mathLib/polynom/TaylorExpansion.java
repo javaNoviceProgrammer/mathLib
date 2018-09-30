@@ -1,6 +1,6 @@
 package mathLib.polynom;
 
-import static mathLib.polynom.Polynomial.*;
+import static mathLib.polynom.Polynomial.X;
 
 import mathLib.util.MathUtils;
 

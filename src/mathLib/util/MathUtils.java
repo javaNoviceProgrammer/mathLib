@@ -1,5 +1,8 @@
 package mathLib.util;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import flanagan.integration.IntegralFunction;
 import flanagan.math.ArrayMaths;
 import mathLib.func.GammaFunc;
@@ -7,8 +10,6 @@ import mathLib.integral.Integral1D;
 import mathLib.numbers.Complex;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class MathUtils {
 

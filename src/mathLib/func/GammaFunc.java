@@ -4,8 +4,8 @@ import org.apache.commons.math3.exception.NumberIsTooLargeException;
 import org.apache.commons.math3.exception.NumberIsTooSmallException;
 import org.apache.commons.math3.special.Gamma;
 
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
 
 public class GammaFunc  {
 

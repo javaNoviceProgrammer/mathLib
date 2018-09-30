@@ -1,7 +1,7 @@
 package tests;
 
 import mathLib.fitting.poly.PolynomialFittingLMSE;
-import plotter.chart.MatlabChart;
+import mathLib.plot.MatlabChart;
 
 public class TestPolynomialFitting {
 

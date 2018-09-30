@@ -1,11 +1,11 @@
 package mathLib.polynom.special;
 
+import static mathLib.polynom.ComplexPolynomial.Xc;
 import static mathLib.polynom.Polynomial.X;
 import static mathLib.polynom.Polynomial.ZERO;
 import static mathLib.util.MathUtils.combination;
 import static mathLib.util.MathUtils.factorial;
 import static mathLib.util.MathUtils.minusOnePower;
-import static mathLib.polynom.ComplexPolynomial.*;
 
 import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;

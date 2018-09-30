@@ -3,10 +3,10 @@ package mathLib.fitting.poly;
 import mathLib.fitting.lmse.LeastSquareFitter;
 import mathLib.fitting.lmse.LeastSquareFunction;
 import mathLib.fitting.lmse.MarquardtFitter;
+import mathLib.plot.MatlabChart;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
 import mathLib.util.Timer;
-import plotter.chart.MatlabChart;
 
 public class PolynomialFittingLMSE {
 

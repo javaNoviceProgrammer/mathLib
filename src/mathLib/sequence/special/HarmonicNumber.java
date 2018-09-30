@@ -1,10 +1,11 @@
 package mathLib.sequence.special;
 
-import plotter.chart.MatlabChart;
-import static mathLib.util.MathUtils.* ;
+import static mathLib.util.MathUtils.linspace;
+import static mathLib.util.MathUtils.minusOnePower;
 
 import java.awt.Color;
 
+import mathLib.plot.MatlabChart;
 import mathLib.sequence.SumFunction;
 import mathLib.sequence.Summation;
 

@@ -11,9 +11,9 @@ import mathLib.func.intf.RealFunction;
 import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.numbers.Complex;
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 import mathLib.util.Timer;
-import plotter.chart.MatlabChart;
 
 public class FourierSeries {
 	

@@ -1,8 +1,8 @@
 package mathLib.func;
 
 import mathLib.func.intf.RealFunction;
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
 
 public class PeriodicFunction {
 	

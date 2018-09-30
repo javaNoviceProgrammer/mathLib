@@ -1,8 +1,9 @@
 package mathLib.func;
 
 import static edu.uta.futureye.function.FMath.cosh;
+import static edu.uta.futureye.function.FMath.exp;
 import static edu.uta.futureye.function.FMath.sinh;
-import static edu.uta.futureye.function.FMath.*;
+import static edu.uta.futureye.function.FMath.x;
 import static java.lang.Math.cosh;
 import static java.lang.Math.exp;
 import static java.lang.Math.sinh;

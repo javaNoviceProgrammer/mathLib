@@ -1,8 +1,8 @@
 package tests;
 
 import mathLib.func.BesselFunc;
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
 
 public class TestBesselFunction {
 	public static void main(String[] args) {

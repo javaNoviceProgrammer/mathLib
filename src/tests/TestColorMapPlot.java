@@ -1,12 +1,15 @@
 package tests;
 
-import edu.uta.futureye.function.intf.MathFunc;
-import mathLib.util.MathUtils;
-import plotter.chart.ColorMapPlot;
-import plotter.util.MeshGrid;
-import plotter.util.ColorMap.ColorMapName;
+import static edu.uta.futureye.function.FMath.cos;
+import static edu.uta.futureye.function.FMath.sin;
+import static edu.uta.futureye.function.FMath.x;
+import static edu.uta.futureye.function.FMath.y;
 
-import static edu.uta.futureye.function.FMath.*;
+import edu.uta.futureye.function.intf.MathFunc;
+import mathLib.plot.ColorMapPlot;
+import mathLib.plot.util.ColorMap.ColorMapName;
+import mathLib.plot.util.MeshGrid;
+import mathLib.util.MathUtils;
 
 public class TestColorMapPlot {
 	public static void main(String[] args) {

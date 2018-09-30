@@ -1,9 +1,9 @@
 package tests;
 
+import static mathLib.polynom.Polynomial.X;
+
 import mathLib.polynom.Polynomial;
 import mathLib.polynom.Rational;
-
-import static mathLib.polynom.Polynomial.*;
 
 public class TestRational {
 	

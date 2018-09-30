@@ -1,6 +1,6 @@
 package mathLib.sequence.special;
 
-import static mathLib.util.MathUtils.*;
+import static mathLib.util.MathUtils.combination;
 
 public class CatalanNumber {
 

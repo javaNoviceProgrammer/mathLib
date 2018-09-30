@@ -13,10 +13,10 @@ import mathLib.optimize.swarm.particle.simple.SimpleParticle6D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle7D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle8D;
 import mathLib.optimize.swarm.particle.simple.SimpleParticle9D;
+import mathLib.plot.MatlabChart;
 import mathLib.polynom.Polynomial;
 import mathLib.util.MathUtils;
 import mathLib.util.Timer;
-import plotter.chart.MatlabChart;
 
 public class PolynomialFittingPSO {
 

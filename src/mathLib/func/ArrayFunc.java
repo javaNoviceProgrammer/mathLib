@@ -3,9 +3,9 @@ package mathLib.func;
 import mathLib.func.intf.RealFunction;
 import mathLib.func.intf.RealFunction2D;
 import mathLib.func.intf.RealFunction3D;
+import mathLib.plot.MatlabChart;
+import mathLib.plot.util.MeshGrid;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
-import plotter.util.MeshGrid;
 
 public class ArrayFunc {
 

@@ -1,9 +1,10 @@
 package tests;
 
+import static mathLib.numbers.Complex.j;
+
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
 import mathLib.numbers.Complex;
-import static mathLib.numbers.Complex.*;
 
 public class TestJamaEigen {
 	public static void main(String[] args) {

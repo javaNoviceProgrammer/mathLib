@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import mathLib.func.ArrayFunc;
 import mathLib.numbers.Complex;
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
-import plotter.chart.MatlabChart;
 
 public class Rational {
 

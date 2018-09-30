@@ -1,11 +1,11 @@
 package mathLib.matrix;
 
-import mathLib.numbers.Complex;
-import mathLib.numbers.ComplexMath;
-
-import static mathLib.numbers.Complex.*;
+import static mathLib.numbers.Complex.ZERO;
+import static mathLib.numbers.Complex.j;
 
 import mathLib.matrix.powerIter.PowerIterationMatrix;
+import mathLib.numbers.Complex;
+import mathLib.numbers.ComplexMath;
 
 public class ComplexMatrix {
 

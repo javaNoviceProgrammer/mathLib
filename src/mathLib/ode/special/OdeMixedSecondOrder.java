@@ -1,15 +1,16 @@
 package mathLib.ode.special;
 
 import static edu.uta.futureye.function.FMath.C;
-
-import static edu.uta.futureye.function.FMath.*;
+import static edu.uta.futureye.function.FMath.sin;
+import static edu.uta.futureye.function.FMath.x;
+import static edu.uta.futureye.function.FMath.y;
 
 import edu.uta.futureye.function.intf.MathFunc;
 import flanagan.integration.RungeKutta;
 import mathLib.ode.intf.DerivnFunction1D;
+import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 import mathLib.util.Timer;
-import plotter.chart.MatlabChart;
 
 /**
  * solving ordinary differential equation of the form  a(x,y) y'' + b(x,y) y' + c(x,y) y = f(x,y)
