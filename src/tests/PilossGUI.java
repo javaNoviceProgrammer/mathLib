@@ -33,6 +33,8 @@ public class PilossGUI extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 	
+	JProgressBar progressBar ;
+	
 	int radix ;
 	Piloss piloss ;
 
@@ -168,6 +170,7 @@ public class PilossGUI extends JFrame {
 				radix = Integer.parseInt(textField_1.getText()) ;
 				piloss = new Piloss(radix) ;
 				radixButton.setText("Radix = " + radix);
+				progressBar.setValue(0);
 			}
 		});
 		GridBagConstraints gbc_setRadix = new GridBagConstraints();
@@ -213,7 +216,7 @@ public class PilossGUI extends JFrame {
 		gbl_panel_3.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
 		
-		final JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
 		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
@@ -229,10 +232,12 @@ public class PilossGUI extends JFrame {
 				piloss.saveToFile(textField.getText());
 				progressBar.setMinimum(piloss.progressBar.getMinimum());
 				progressBar.setMaximum(piloss.getNumOfConfigs()-1);
+				StringBuilder st = new StringBuilder() ;
 				for(int i=0; i<piloss.getNumOfConfigs(); i++) {
 					progressBar.setValue(i);
-					textArea.append(piloss.allConfigs.get(i) + "\n");
+					st.append(piloss.allConfigs.get(i) + "\n") ;
 				}
+				textArea.setText(st.toString());
 					
 			}
 		});
