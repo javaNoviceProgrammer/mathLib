@@ -321,11 +321,11 @@ public class Matrix {
     }
 
     public void setBlock(int r1, int c1, Matrix matrix) {
-    	int r2 = r1 + matrix.getRowDim()-1 ;
-    	int c2 = c1 + matrix.getColumnDim()-1 ;
-    	for(int i=r1; i<=r2; i++)
-    		for(int j=c1; j<=c2; j++) {
-    			this.data[i][j] = matrix.getElement(i, j) ;
+    	int r2 = r1 + matrix.getRowDim() ;
+    	int c2 = c1 + matrix.getColumnDim() ;
+    	for(int i=r1; i<r2; i++)
+    		for(int j=c1; j<c2; j++) {
+    			this.data[i][j] = matrix.getElement(i-r1, j-c1) ;
     		}
     }
 
