@@ -1,6 +1,10 @@
 package tests;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import mathLib.matrix.Matrix;
+import mathLib.util.ArrayUtils;
+import mathLib.util.MathUtils;
 
 public class Piloss2x2 {
 
@@ -64,10 +68,73 @@ public class Piloss2x2 {
 	public int getRadix() {
 		return this.radix;
 	}
+	
+	int c = 0 ;
 
 	public void findMapping() {
 		if(radix == 0)
 			throw new IllegalArgumentException("Set the radix first!") ;
+		
+		int max = (int) Math.pow(2, radix*radix) ;
+		for(int i=0; i<max; i++) {
+			setSwitchConfig(i);
+			System.out.println(getSwitchConfig());
+			System.out.println(getRoutingMatrix()*input);
+//			if(isValidOutput(getRoutingMatrix())) {
+//				System.out.println(getSwitchConfig());
+//				System.out.println(input);
+//				System.out.println(getRoutingMatrix());
+//			}
+				
+		}
+
+	}
+	
+	public Matrix getRoutingMatrix() {
+		Matrix mat = Matrix.identity(k) ;
+		for(int i=0; i<radix-1; i++)
+			mat = crossing*getColumn(i)*mat ;
+//		return mat*input ;
+		return mat ;
+	}
+	
+	public void setSwitchConfig(int p) {
+		String st = Integer.toBinaryString(p) ;
+		int[] conf = new int[radix*radix] ;
+		for(int i=0; i<st.length(); i++)
+			if(st.charAt(st.length()-i-1) == '1')
+				conf[i] = 1 ;
+
+		int[][] reshape = ArrayUtils.reshapeRow(conf, radix, radix) ;
+		for(int i=0; i<radix; i++)
+			for(int j=0; j<radix; j++)
+				if(reshape[i][j]==1)
+					sw[i][j]= cross ;
+				else
+					sw[i][j] = bar ;
+	}
+	
+	public String getSwitchConfig() {
+		StringBuilder sb = new StringBuilder() ;
+		for(int j=0; j<radix-1; j++) {
+			for(int i=0; i<radix; i++) {
+				if(sw[i][j].equals(cross))
+					sb.append("C") ;
+				else
+					sb.append("B") ;
+			}
+			sb.append("|") ;
+		}
+		
+		for(int i=0; i<radix; i++) {
+			if(sw[i][radix-1].equals(cross))
+				sb.append("C") ;
+			else
+				sb.append("B") ;
+		}
+		
+		return sb ;
+
 	}
 
 	public boolean isValidOutput(Matrix mat) {
@@ -80,20 +147,16 @@ public class Piloss2x2 {
 	}
 
 	public Matrix getColumn(int m) {
-		Matrix[] states = new Matrix[radix] ;
 		Matrix column = new Matrix(k, k) ;
 		for(int i=0; i<radix; i++) {
-			column.setBlock(2*i, 2*i, bar);
+			column.setBlock(2*i, 2*i, sw[i][m]);
 		}
 		return column ;
 	}
 
 	public static void main(String[] args) {
 		Piloss2x2 piloss = new Piloss2x2(2) ;
-		System.out.println(piloss.crossing);
-		System.out.println(piloss.input);
-		System.out.println(piloss.isValidOutput(piloss.input));
-		System.out.println(piloss.getColumn(0));
+		piloss.findMapping();
 
 	}
 

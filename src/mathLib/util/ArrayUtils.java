@@ -48,6 +48,34 @@ public class ArrayUtils {
 		}
 		return var0 ;
 	}
+	
+	public static int[][] reshapeRow(int[] arg, int row, int column) {
+		int nx = row ;
+		int ny = column ;
+		if(nx*ny != arg.length)
+			throw new IllegalArgumentException("Dimensions don't agree!") ;
+		int[][] var0 = new int[nx][ny] ;
+		for(int i=0; i<nx; i++) {
+			for(int j=0; j<ny; j++) {
+				var0[i][j] = arg[i*ny+j] ;
+			}
+		}
+		return var0 ;
+	}
+	
+	public static int[][] reshapeColumn(int[] arg, int row, int column) {
+		int nx = row ;
+		int ny = column ;
+		if(nx*ny != arg.length)
+			throw new IllegalArgumentException("Dimensions don't agree!") ;
+		int[][] var0 = new int[nx][ny] ;
+		for(int j=0; j<ny; j++) {
+			for(int i=0; i<nx; i++) {
+				var0[i][j] = arg[i+j*nx] ;
+			}
+		}
+		return var0 ;
+	}
 
 	public static double[][] reshapeColumn(double[] arg, int row, int column) {
 		int nx = row ;
@@ -298,6 +326,16 @@ public class ArrayUtils {
 		s = s + x[n - 1] + " ]";
 		return s;
 	}
+	
+	public static String toString(int[] x) {
+		String s = "[ ";
+		int n = x.length;
+		for (int i = 0; i < n - 1; i++) {
+			s += x[i] + ", ";
+		}
+		s = s + x[n - 1] + " ]";
+		return s;
+	}
 
 	public static String toString(Complex[] x) {
 		String s = "[ ";
@@ -314,6 +352,10 @@ public class ArrayUtils {
 		System.out.println(toString(x));
 	}
 
+	public static void show(int[] x) {
+		System.out.println(toString(x));
+	}
+	
 	public static void show(Complex[] x) {
 		System.out.println(toString(x));
 	}
