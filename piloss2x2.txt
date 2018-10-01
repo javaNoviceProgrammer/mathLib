@@ -1,0 +1,3 @@
+Total number of valid configurations: 2
+CC|BB
+BB|CC

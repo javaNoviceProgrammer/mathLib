@@ -1,15 +1,19 @@
 package tests;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import java.util.ArrayList;
+import java.util.Iterator;
 
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
+
+import flanagan.io.FileOutput;
 import mathLib.matrix.Matrix;
 import mathLib.util.ArrayUtils;
-import mathLib.util.MathUtils;
 
-public class Piloss2x2 {
+public class Piloss {
 
-	int radix = 2 ;
-	int k = 4 ;
+	int radix ;
+	int k ;
 	int configCount = 0 ;
 
 	Matrix crossing ;
@@ -17,7 +21,11 @@ public class Piloss2x2 {
 	Matrix cross, bar ;
 	Matrix input ;
 	Matrix[][] sw ;
+	
+	JProgressBar progressBar ;
 
+	ArrayList<String> allConfigs ;
+	
 	public void initialize() {
 		double[][] dataCrossing = new double[k][k] ;
 		for(int i=0; i<k; i++) {
@@ -52,12 +60,14 @@ public class Piloss2x2 {
 
 	}
 
-	public Piloss2x2(int radix) {
+	public Piloss(int radix) {
 		this.radix = radix ;
 		this.k = 2*radix ;
 		this.sw = new Matrix[radix][radix] ;
-
+		this.allConfigs = new ArrayList<>() ;
 		initialize();
+		
+		this.progressBar = new JProgressBar() ;
 	}
 
 	public void setRadix(int radix) {
@@ -68,24 +78,30 @@ public class Piloss2x2 {
 	public int getRadix() {
 		return this.radix;
 	}
-	
-	int c = 0 ;
 
 	public void findMapping() {
 		if(radix == 0)
 			throw new IllegalArgumentException("Set the radix first!") ;
 		
 		int max = (int) Math.pow(2, radix*radix) ;
+		
+		progressBar.setMaximum(max-1);
+		progressBar.setMinimum(0);
+//		showProgress();
+		
 		for(int i=0; i<max; i++) {
+			
 			setSwitchConfig(i);
-			System.out.println(getSwitchConfig());
-			System.out.println(getRoutingMatrix()*input);
-//			if(isValidOutput(getRoutingMatrix())) {
-//				System.out.println(getSwitchConfig());
-//				System.out.println(input);
-//				System.out.println(getRoutingMatrix());
-//			}
+			
+			progressBar.setValue(i);
+
+			if(isValidOutput(getRoutingMatrix())) {
 				
+				configCount++ ;
+				
+				allConfigs.add(getSwitchConfig()) ;
+				
+			}		
 		}
 
 	}
@@ -94,8 +110,9 @@ public class Piloss2x2 {
 		Matrix mat = Matrix.identity(k) ;
 		for(int i=0; i<radix-1; i++)
 			mat = crossing*getColumn(i)*mat ;
-//		return mat*input ;
-		return mat ;
+		mat = getColumn(radix-1) * mat ;
+		return mat*input ;
+//		return mat ;
 	}
 	
 	public void setSwitchConfig(int p) {
@@ -153,10 +170,32 @@ public class Piloss2x2 {
 		}
 		return column ;
 	}
+	
+	public int getNumOfConfigs() {
+		return configCount ;
+	}
+	
+	public void saveToFile(String fileName) {
+		FileOutput fo = new FileOutput(fileName, 'w') ;
+		fo.println("Total number of valid configurations: " + getNumOfConfigs());
+		Iterator<String> it = allConfigs.iterator() ;
+		while(it.hasNext())
+			fo.println(it.next());
+		fo.close();
+	}
+	
+	public void showProgress() {
+		JFrame frame = new JFrame("Progress") ;
+		frame.add(progressBar) ;
+		frame.pack();
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 
 	public static void main(String[] args) {
-		Piloss2x2 piloss = new Piloss2x2(2) ;
+		Piloss piloss = new Piloss(2) ;
 		piloss.findMapping();
+//		piloss.saveToFile("piloss8x8.txt");
 
 	}
 
