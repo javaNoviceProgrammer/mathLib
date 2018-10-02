@@ -1,5 +1,6 @@
 package tests;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -87,7 +88,7 @@ public class Piloss {
 		
 		progressBar.setMaximum(max-1);
 		progressBar.setMinimum(0);
-//		showProgress();
+		showProgress();
 		
 		for(int i=0; i<max; i++) {
 			
@@ -187,6 +188,7 @@ public class Piloss {
 	public void showProgress() {
 		JFrame frame = new JFrame("Progress") ;
 		frame.add(progressBar) ;
+		frame.setPreferredSize(new Dimension(600, 50));
 		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -195,7 +197,7 @@ public class Piloss {
 	public static void main(String[] args) {
 		Piloss piloss = new Piloss(2) ;
 		piloss.findMapping();
-//		piloss.saveToFile("piloss8x8.txt");
+		piloss.saveToFile("piloss2x2.txt");
 
 	}
 
