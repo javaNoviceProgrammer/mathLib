@@ -22,11 +22,11 @@ public class Piloss {
 	Matrix cross, bar ;
 	Matrix input ;
 	Matrix[][] sw ;
-	
-	JProgressBar progressBar ;
+
+	JProgressBar progressBar  ;
 
 	ArrayList<String> allConfigs ;
-	
+
 	public void initialize() {
 		double[][] dataCrossing = new double[k][k] ;
 		for(int i=0; i<k; i++) {
@@ -67,8 +67,12 @@ public class Piloss {
 		this.sw = new Matrix[radix][radix] ;
 		this.allConfigs = new ArrayList<>() ;
 		initialize();
-		
+
 		this.progressBar = new JProgressBar() ;
+	}
+
+	public void setProgressbar(JProgressBar progressBar) {
+		this.progressBar = progressBar ;
 	}
 
 	public void setRadix(int radix) {
@@ -83,30 +87,30 @@ public class Piloss {
 	public void findMapping() {
 		if(radix == 0)
 			throw new IllegalArgumentException("Set the radix first!") ;
-		
+
 		int max = (int) Math.pow(2, radix*radix) ;
-		
+
 		progressBar.setMaximum(max-1);
 		progressBar.setMinimum(0);
 		showProgress();
-		
+
 		for(int i=0; i<max; i++) {
-			
+
 			setSwitchConfig(i);
-			
+
 			progressBar.setValue(i);
 
 			if(isValidOutput(getRoutingMatrix())) {
-				
+
 				configCount++ ;
-				
+
 				allConfigs.add(getSwitchConfig()) ;
-				
-			}		
+
+			}
 		}
 
 	}
-	
+
 	public Matrix getRoutingMatrix() {
 		Matrix mat = Matrix.identity(k) ;
 		for(int i=0; i<radix-1; i++)
@@ -115,7 +119,7 @@ public class Piloss {
 		return mat*input ;
 //		return mat ;
 	}
-	
+
 	public void setSwitchConfig(int p) {
 		String st = Integer.toBinaryString(p) ;
 		int[] conf = new int[radix*radix] ;
@@ -131,7 +135,7 @@ public class Piloss {
 				else
 					sw[i][j] = bar ;
 	}
-	
+
 	public String getSwitchConfig() {
 		StringBuilder sb = new StringBuilder() ;
 		for(int j=0; j<radix-1; j++) {
@@ -143,14 +147,14 @@ public class Piloss {
 			}
 			sb.append("|") ;
 		}
-		
+
 		for(int i=0; i<radix; i++) {
 			if(sw[i][radix-1].equals(cross))
 				sb.append("C") ;
 			else
 				sb.append("B") ;
 		}
-		
+
 		return sb ;
 
 	}
@@ -171,11 +175,11 @@ public class Piloss {
 		}
 		return column ;
 	}
-	
+
 	public int getNumOfConfigs() {
 		return configCount ;
 	}
-	
+
 	public void saveToFile(String fileName) {
 		FileOutput fo = new FileOutput(fileName, 'w') ;
 		fo.println("Total number of valid configurations: " + getNumOfConfigs());
@@ -184,7 +188,7 @@ public class Piloss {
 			fo.println(it.next());
 		fo.close();
 	}
-	
+
 	public void showProgress() {
 		JFrame frame = new JFrame("Progress") ;
 		frame.add(progressBar) ;
@@ -195,9 +199,9 @@ public class Piloss {
 	}
 
 	public static void main(String[] args) {
-		Piloss piloss = new Piloss(2) ;
+		Piloss piloss = new Piloss(5) ;
 		piloss.findMapping();
-		piloss.saveToFile("piloss2x2.txt");
+//		piloss.saveToFile("piloss2x2.txt");
 
 	}
 

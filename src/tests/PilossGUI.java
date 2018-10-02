@@ -26,17 +26,17 @@ import javax.swing.JScrollPane;
 public class PilossGUI extends JFrame {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	
+
 	JProgressBar progressBar ;
-	
+
 	int radix ;
-	Piloss piloss ;
+	Piloss piloss = new Piloss(2) ;
 
 	/**
 	 * Launch the application.
@@ -84,7 +84,7 @@ public class PilossGUI extends JFrame {
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Set save path", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -100,7 +100,7 @@ public class PilossGUI extends JFrame {
 		gbl_panel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
-		
+
 		JLabel lblNewLabel = new JLabel("Path:");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
@@ -108,7 +108,7 @@ public class PilossGUI extends JFrame {
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
 		panel.add(lblNewLabel, gbc_lblNewLabel);
-		
+
 		textField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 0, 5);
@@ -117,7 +117,7 @@ public class PilossGUI extends JFrame {
 		gbc_textField.gridy = 0;
 		panel.add(textField, gbc_textField);
 		textField.setColumns(10);
-		
+
 		JButton chooseButton = new JButton("choose");
 		chooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,12 +126,12 @@ public class PilossGUI extends JFrame {
 				textField.setText(fchooser.getSelectedFile().getAbsolutePath());
 			}
 		});
-		
+
 		GridBagConstraints gbc_chooseButton = new GridBagConstraints();
 		gbc_chooseButton.gridx = 2;
 		gbc_chooseButton.gridy = 0;
 		panel.add(chooseButton, gbc_chooseButton);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Configure switch", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
@@ -146,7 +146,7 @@ public class PilossGUI extends JFrame {
 		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
-		
+
 		JLabel radixButton = new JLabel("Radix = ?");
 		GridBagConstraints gbc_radixButton = new GridBagConstraints();
 		gbc_radixButton.anchor = GridBagConstraints.EAST;
@@ -154,7 +154,7 @@ public class PilossGUI extends JFrame {
 		gbc_radixButton.gridx = 0;
 		gbc_radixButton.gridy = 0;
 		panel_1.add(radixButton, gbc_radixButton);
-		
+
 		textField_1 = new JTextField();
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 0, 5);
@@ -163,7 +163,7 @@ public class PilossGUI extends JFrame {
 		gbc_textField_1.gridy = 0;
 		panel_1.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
-		
+
 		JButton setRadix = new JButton("set radix");
 		setRadix.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -177,7 +177,7 @@ public class PilossGUI extends JFrame {
 		gbc_setRadix.gridx = 2;
 		gbc_setRadix.gridy = 0;
 		panel_1.add(setRadix, gbc_setRadix);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Found configurations", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
@@ -192,7 +192,7 @@ public class PilossGUI extends JFrame {
 		gbl_panel_2.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_2.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
-		
+
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
@@ -201,7 +201,7 @@ public class PilossGUI extends JFrame {
 		gbc_textArea.gridy = 0;
 		JScrollPane scroll = new JScrollPane(textArea) ;
 		panel_2.add(scroll, gbc_textArea);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "Progress", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
@@ -215,7 +215,7 @@ public class PilossGUI extends JFrame {
 		gbl_panel_3.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel_3.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
-		
+
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
@@ -224,7 +224,7 @@ public class PilossGUI extends JFrame {
 		gbc_progressBar.gridx = 1;
 		gbc_progressBar.gridy = 0;
 		panel_3.add(progressBar, gbc_progressBar);
-		
+
 		JButton runButton = new JButton("Run");
 		runButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,7 +238,7 @@ public class PilossGUI extends JFrame {
 					st.append(piloss.allConfigs.get(i) + "\n") ;
 				}
 				textArea.setText(st.toString());
-					
+
 			}
 		});
 		GridBagConstraints gbc_runButton = new GridBagConstraints();
@@ -246,7 +246,9 @@ public class PilossGUI extends JFrame {
 		gbc_runButton.gridx = 0;
 		gbc_runButton.gridy = 0;
 		panel_3.add(runButton, gbc_runButton);
-		
+
+
+
 
 	}
 
