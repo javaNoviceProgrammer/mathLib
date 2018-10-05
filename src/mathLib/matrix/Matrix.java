@@ -103,6 +103,40 @@ public class Matrix {
         return C;
     }
 
+    public Matrix removeRow(int row) {
+    	if(row <0 || row >= N)
+    		throw new IllegalArgumentException("row index is out of bound") ;
+    	Matrix b = new Matrix(M-1, N) ;
+    	for(int i=0; i<row; i++)
+    		for(int j=0; j<N; j++)
+    			b.setElement(i, j, data[i][j]);
+
+    	for(int i=row; i<M-1; i++)
+    		for(int j=0; j<N; j++)
+    			b.setElement(i, j, data[i+1][j]);
+
+    	return b ;
+    }
+
+    public Matrix removeColumn(int column) {
+    	if(column <0 || column >= N)
+    		throw new IllegalArgumentException("column index is out of bound") ;
+    	Matrix b = new Matrix(M, N-1) ;
+    	for(int i=0; i<M; i++)
+    		for(int j=0; j<column; j++)
+    			b.setElement(i, j, data[i][j]);
+
+    	for(int i=0; i<M; i++)
+    		for(int j=column; j<N-1; j++)
+    			b.setElement(i, j, data[i][j+1]);
+
+    	return b ;
+    }
+
+    public Matrix removeRowAndColumn(int row, int column) {
+    	return removeRow(row).removeColumn(column) ;
+    }
+
     // create and return the transpose of the invoking matrix
     public Matrix transpose() {
         Matrix A = new Matrix(N, M);
@@ -276,6 +310,10 @@ public class Matrix {
     }
 
     public void setElement(int i, int j, double value){
+    	if(i<0 || i>=M)
+    		throw new IllegalArgumentException("row index is out of bound") ;
+    	if(j<0 || j>=N)
+    		throw new IllegalArgumentException("column index is out of bound") ;
     	this.data[i][j] = value ;
     }
 
@@ -667,14 +705,16 @@ public class Matrix {
 		Matrix A = new Matrix(d) ;
 
 		System.out.println(A);
-		System.out.println(A.pow(5));
-		System.out.println(A.pow(20));
+		System.out.println(A.removeRowAndColumn(0, 1));
 
-		System.out.println(A.trace());
-
-		System.out.println(A.isDiagonal());
-		System.out.println(A.isSquare());
-		System.out.println(A.isSymmetric());
+//		System.out.println(A.pow(5));
+//		System.out.println(A.pow(20));
+//
+//		System.out.println(A.trace());
+//
+//		System.out.println(A.isDiagonal());
+//		System.out.println(A.isSquare());
+//		System.out.println(A.isSymmetric());
 
 //		double eigen = A.findEigenValue(5) ;
 //		System.out.println(eigen);
