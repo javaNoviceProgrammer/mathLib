@@ -1,10 +1,8 @@
 package tests;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import flanagan.io.FileOutput;
@@ -84,19 +82,30 @@ public class Piloss {
 		return this.radix;
 	}
 
-	public void findMapping() {
+	public void findMapping(JProgressBar progressBar) {
 		if(radix == 0)
 			throw new IllegalArgumentException("Set the radix first!") ;
 
 		int max = (int) Math.pow(2, radix*radix) ;
 
-		progressBar.setMaximum(max-1);
-		progressBar.setMinimum(0);
-		showProgress();
+		if(progressBar != null) {
+			progressBar.setMaximum(max-1);
+			progressBar.setMinimum(0);
+		}
+
+		
+//		ProgressMonitor pMonitor = new ProgressMonitor(null, "Calculating", "test", 0, max) ;
+//		pMonitor.setMillisToDecideToPopup(0);
+//		showProgress();
 
 		for(int i=0; i<max; i++) {
+			
+//			if(pMonitor.isCanceled())
+//				System.exit(0);
 
 			setSwitchConfig(i);
+			
+//			pMonitor.setProgress(i);
 
 			progressBar.setValue(i);
 
@@ -108,6 +117,7 @@ public class Piloss {
 
 			}
 		}
+//		pMonitor.close();
 
 	}
 
@@ -190,17 +200,19 @@ public class Piloss {
 	}
 
 	public void showProgress() {
-		JFrame frame = new JFrame("Progress") ;
-		frame.add(progressBar) ;
-		frame.setPreferredSize(new Dimension(600, 50));
-		frame.pack();
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		JFrame frame = new JFrame("Progress") ;
+//		frame.add(progressBar) ;
+//		frame.setPreferredSize(new Dimension(600, 50));
+//		frame.pack();
+//		frame.setVisible(true);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+
 	}
 
 	public static void main(String[] args) {
-		Piloss piloss = new Piloss(5) ;
-		piloss.findMapping();
+		Piloss piloss = new Piloss(4) ;
+		piloss.findMapping(null);
 //		piloss.saveToFile("piloss2x2.txt");
 
 	}
