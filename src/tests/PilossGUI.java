@@ -11,8 +11,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -21,7 +24,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import mathLib.util.CustomJFileChooser;
-import javax.swing.JScrollPane;
 
 public class PilossGUI extends JFrame {
 
@@ -228,15 +230,28 @@ public class PilossGUI extends JFrame {
 		JButton runButton = new JButton("Run");
 		runButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				piloss.findMapping();
+				piloss.findMapping(progressBar);
 				piloss.saveToFile(textField.getText());
-				progressBar.setMinimum(piloss.progressBar.getMinimum());
-				progressBar.setMaximum(piloss.getNumOfConfigs()-1);
+//				progressBar.setMinimum(piloss.progressBar.getMinimum());
+//				progressBar.setMaximum(piloss.getNumOfConfigs()-1);
+				textArea.setText("");
 				StringBuilder st = new StringBuilder() ;
 				for(int i=0; i<piloss.getNumOfConfigs(); i++) {
-					progressBar.setValue(i);
+//					progressBar.setValue(i);
 					st.append(piloss.allConfigs.get(i) + "\n") ;
 				}
+				JPopupMenu popupMenu = new JPopupMenu() ;
+				JMenuItem menuItem = new JMenuItem("clear") ;
+				menuItem.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						textArea.setText("");
+						
+					}
+				});
+				popupMenu.add(menuItem) ;
+				textArea.add(popupMenu);
 				textArea.setText(st.toString());
 
 			}
@@ -253,3 +268,4 @@ public class PilossGUI extends JFrame {
 	}
 
 }
+
