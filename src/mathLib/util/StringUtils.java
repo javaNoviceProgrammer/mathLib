@@ -1,5 +1,6 @@
 package mathLib.util;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -55,6 +56,18 @@ public class StringUtils {
 			list.add(s);
 		}
 		return list;
+	}
+	
+	public static String getFileExtension(File file) {
+		int m = file.getAbsolutePath().lastIndexOf(".") ;
+		String extension = file.getAbsolutePath().substring(m+1) ;
+		return extension ;
+	}
+	
+	// for test
+	public static void main(String[] args) {
+		File f = new File("test.dbsim") ;
+		System.out.println(getFileExtension(f));
 	}
 
 }
