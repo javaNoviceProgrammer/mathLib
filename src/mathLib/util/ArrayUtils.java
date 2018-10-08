@@ -21,20 +21,6 @@ public class ArrayUtils {
 		return dataComplex ;
 	}
 
-//	public static double[][] reShape(double[] arg, int row, int column) {
-//		int nx = row ;
-//		int ny = column ;
-//		if(nx*ny != arg.length)
-//			throw new IllegalArgumentException("Dimensions don't agree!") ;
-//		double[][] var0 = new double[nx][ny] ;
-//		for(int i=0; i<nx; i++) {
-//			for(int j=0; j<ny; j++) {
-//				var0[i][j] = arg[i*ny+j] ;
-//			}
-//		}
-//		return var0 ;
-//	}
-
 	public static double[][] reshapeRow(double[] arg, int row, int column) {
 		int nx = row ;
 		int ny = column ;
