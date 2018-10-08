@@ -19,7 +19,7 @@ public class Tutorial1 {
 		// 2. create the matlab chart using jfreechart
 		MatlabChart fig = new MatlabChart();
 		// 3. add as many variables to the figure
-		fig.plot(x, y);
+		fig.plot(x, y, "b-", 2f, "real numbers");
 		// 4. after adding the plots, render the chart
 		fig.RenderPlot();
 		// 5. set the x and y lables
@@ -27,5 +27,9 @@ public class Tutorial1 {
 		fig.ylabel("Y variable");
 		// 6. show the plot
 		fig.run(true);
+//		fig.legend("northwest");
+		fig.legendON();
+		fig.grid("off", "off");
+		fig.markerON();
 	}
 }

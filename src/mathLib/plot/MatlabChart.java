@@ -31,6 +31,8 @@ import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.RectangleEdge;
 
 import javafx.embed.swing.SwingNode;
+import mathLib.numbers.Complex;
+import mathLib.util.MathUtils;
 
 public class MatlabChart {
 
@@ -122,18 +124,12 @@ public class MatlabChart {
         FindColor(spec,lineWidth);
     }
 
-//    public void plot(double[] x, Complex[] y) {
-//    	String title = "fig" + counter ;
-//    	counter++ ;
-//        String spec = "-b" ;
-//        float lineWidth = 1 ;
-//        final XYSeries series = new XYSeries(title);
-//        for (int i = 0; i < x.length; i++)
-//            series.add(x[i],y[i]);
-//        dataset.addSeries(series);
-//        specs.add(spec) ;
-//        FindColor(spec,lineWidth);
-//    }
+    public void plot(double[] x, Complex[] y) {
+    	double[] yReal = MathUtils.Arrays.getReal(y) ;
+    	double[] yImag = MathUtils.Arrays.getImag(y) ;
+    	plot(x, yReal);
+    	plot(x, yImag);
+    }
 
 
     //*******************Rendering the figures**************************************
@@ -144,7 +140,7 @@ public class MatlabChart {
             if (dataset != null && dataset.getSeriesCount() > 0){
             	try {
             		ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme()); // in case legacy theme is supported by the OS
-                	chart = ChartFactory.createXYLineChart(null,null,null,dataset,PlotOrientation.VERTICAL,false, false, false);
+                	chart = ChartFactory.createXYLineChart(null,null,null,dataset,PlotOrientation.VERTICAL,true, true, false);
 				} catch (Error e) {
 					chart = ChartFactory.createXYLineChart(null,null,null,dataset,PlotOrientation.VERTICAL,false, false, false);
 				}
