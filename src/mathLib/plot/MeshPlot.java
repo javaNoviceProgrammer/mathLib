@@ -25,7 +25,6 @@ import org.jfree.ui.RectangleInsets;
 import edu.uta.futureye.core.Mesh;
 import mathLib.plot.util.ColorMap;
 import mathLib.plot.util.ColorMap.ColorMapName;
-import mathLib.plot.util.MeshGrid;
 
 
 public class MeshPlot {
@@ -85,11 +84,11 @@ public class MeshPlot {
         NumberAxis xAxis = new NumberAxis("x Axis");
         NumberAxis yAxis = new NumberAxis("y Axis");
         xAxis.setAutoRangeIncludesZero(false);
-        xAxis.setLowerBound(mesh.getX(0, 0));
-        xAxis.setUpperBound(mesh.getX(mesh.getXDim()-1, 0));
-        yAxis.setAutoRangeIncludesZero(false);
-        yAxis.setLowerBound(mesh.getY(0, 0));
-        yAxis.setUpperBound(mesh.getY(0, mesh.getYDim()-1));
+//        xAxis.setLowerBound(mesh.getX(0, 0));
+//        xAxis.setUpperBound(mesh.getX(mesh.getXDim()-1, 0));
+//        yAxis.setAutoRangeIncludesZero(false);
+//        yAxis.setLowerBound(mesh.getY(0, 0));
+//        yAxis.setUpperBound(mesh.getY(0, mesh.getYDim()-1));
         XYPlot plot = new XYPlot(dataset, xAxis, yAxis, null);
         XYBlockRenderer r = new XYBlockRenderer();
         double[] range = getFuncMinMax() ;
@@ -117,18 +116,18 @@ public class MeshPlot {
     }
 
     private XYZDataset createDataset() {
-    	dx = (float) (mesh.getX(1, 0) - mesh.getX(0, 0)) ;
-    	dy = (float) (mesh.getY(0, 1) - mesh.getY(0, 0)) ;
+//    	dx = (float) (mesh.getX(1, 0) - mesh.getX(0, 0)) ;
+//    	dy = (float) (mesh.getY(0, 1) - mesh.getY(0, 0)) ;
         DefaultXYZDataset dataset = new DefaultXYZDataset();
-        for (int i = 0; i < mesh.getXDim(); i++) {
-            double[][] data = new double[3][mesh.getYDim()];
-            for (int j = 0; j < mesh.getYDim(); j++) {
-                data[0][j] = mesh.getX(i, j);
-                data[1][j] = mesh.getY(i, j);
-                data[2][j] = func[i][j];
-            }
-            dataset.addSeries("Series" + i, data);
-        }
+//        for (int i = 0; i < mesh.getXDim(); i++) {
+//            double[][] data = new double[3][mesh.getYDim()];
+//            for (int j = 0; j < mesh.getYDim(); j++) {
+//                data[0][j] = mesh.getX(i, j);
+//                data[1][j] = mesh.getY(i, j);
+//                data[2][j] = func[i][j];
+//            }
+//            dataset.addSeries("Series" + i, data);
+//        }
         return dataset;
     }
 

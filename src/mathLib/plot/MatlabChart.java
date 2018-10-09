@@ -188,6 +188,18 @@ public class MatlabChart {
     	}
 
     }
+    
+    
+    //*******************Appending to dataset******************
+    
+    public void append(int FigNumber, double x, double y) {
+    	dataset.getSeries(FigNumber).add(x, y);
+    }
+    
+    public void append(int FigNumber, double[] x, double[] y) {
+    	for(int i=0; i<x.length; i++)
+    		append(FigNumber, x[i], y[i]);
+    }
 
     //*********************************************************
     private void CheckExists() {
