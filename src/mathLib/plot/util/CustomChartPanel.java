@@ -1,4 +1,4 @@
-package mathLib.plot;
+package mathLib.plot.util;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

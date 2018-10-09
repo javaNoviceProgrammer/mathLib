@@ -32,6 +32,7 @@ import org.jfree.ui.RectangleEdge;
 
 import javafx.embed.swing.SwingNode;
 import mathLib.numbers.Complex;
+import mathLib.plot.util.CustomChartPanel;
 import mathLib.util.MathUtils;
 
 public class MatlabChart {
