@@ -20,6 +20,28 @@ public class CustomJFileChooser {
 	public void setPath(String path){
 		fc = new JFileChooser(path) ;
 	}
+	
+	public void setFileExtension(String extension) {
+		FileFilter fileFilter = new FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "*." + extension ;
+			}
+			
+			@Override
+			public boolean accept(File f) {
+				if(f.isDirectory())
+					return true ;
+				if(f != null && f.exists() && extension.equals(StringUtils.getFileExtension(f)))
+					return true ;
+				else
+					return false ;
+			}
+		};
+		
+		fc.setFileFilter(fileFilter);
+	}
 
 	public void openFile(){
 		fc.showOpenDialog(fc) ;
@@ -74,21 +96,25 @@ public class CustomJFileChooser {
 	}
 
 	public String getSelectedDir(){
-		return selectedFile.getPath() ;
+		return fc.getCurrentDirectory() ;
 	}
 
-	public void showCurrentPath(){
-		System.out.println(fc.getCurrentDirectory());
+	public String getCurrentPath(){
+		return selectedFile.getAbsolutePath() ;
 	}
+	
 
 
 
 	//**** for test *******
 	public static void main(String[] args){
 		CustomJFileChooser fc1 = new CustomJFileChooser() ;
-		fc1.openFile("png", "txt");
-		System.out.println(fc1.getSelectedDir());
-
+//		fc1.openFile("png", "txt");
+//		System.out.println(fc1.getSelectedDir());
+		fc1.setFileExtension("txt");
+		fc1.saveFile();
+		System.out.println(fc1.getSelectedFile());
+		System.out.println(fc1.fc.getCurrentDirectory());
 	}
 	//********************
 

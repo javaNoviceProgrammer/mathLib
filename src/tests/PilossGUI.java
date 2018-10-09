@@ -60,6 +60,7 @@ public class PilossGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PilossGUI() {
+		setTitle("PiLoss Switch");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {
@@ -124,6 +125,7 @@ public class PilossGUI extends JFrame {
 		chooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CustomJFileChooser fchooser = new CustomJFileChooser() ;
+				fchooser.setFileExtension("txt");
 				fchooser.saveFile();
 				textField.setText(fchooser.getSelectedFile().getAbsolutePath());
 			}
