@@ -127,8 +127,8 @@ public class MatlabChart {
     public void plot(double[] x, Complex[] y) {
     	double[] yReal = MathUtils.Arrays.getReal(y) ;
     	double[] yImag = MathUtils.Arrays.getImag(y) ;
-    	plot(x, yReal);
-    	plot(x, yImag);
+    	plot(x, yReal, "-b", 2f, "Re");
+    	plot(x, yImag, "-r", 2f, "Im");
     }
 
 
