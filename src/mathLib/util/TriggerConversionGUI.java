@@ -22,8 +22,10 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartPanel;
 
 import flanagan.io.FileOutput;
+import mathLib.func.ArrayFunc;
 import mathLib.plot.MatlabChart;
 import mathLib.util.CustomJFileChooser;
+import java.awt.Toolkit;
 
 public class TriggerConversionGUI extends JFrame {
 
@@ -46,6 +48,7 @@ public class TriggerConversionGUI extends JFrame {
 	private JTextField lightTextField;
 	
 	WavelengthTriggerConversion wt ;
+	double[] lightConvertedDB ;
 	
 	/**
 	 * Launch the application.
@@ -67,6 +70,8 @@ public class TriggerConversionGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public TriggerConversionGUI() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TriggerConversionGUI.class.getResource("/com/sun/javafx/scene/control/skin/modena/HTMLEditor-Paste.png")));
+		setTitle("Trigger Converter");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {
@@ -106,6 +111,8 @@ public class TriggerConversionGUI extends JFrame {
 		fig = new MatlabChart() ;
 		fig.plot(new double[0], new double[0]);
 		fig.RenderPlot();
+		fig.setXLabel("Wavelength (nm)");
+		fig.setYLabel("Voltage (V)");
 		ChartPanel chartPanel = new ChartPanel(fig.getChart());
 		plotPanel.add(chartPanel) ;
 		
@@ -275,6 +282,7 @@ public class TriggerConversionGUI extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
+		gbc_chckbxNewCheckBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 0);
 		gbc_chckbxNewCheckBox.gridx = 6;
 		gbc_chckbxNewCheckBox.gridy = 0;
@@ -299,12 +307,47 @@ public class TriggerConversionGUI extends JFrame {
 		gbc_end.gridy = 1;
 		panel_3.add(end, gbc_end);
 		
+		JCheckBox dbBox = new JCheckBox("to dB");
+		dbBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!dbBox.isSelected()) {
+					fig.clear();
+					fig.plot(wt.lambdaNm, wt.lightConverted);
+					fig.RenderPlot();
+					fig.setYLabel("Voltage (V)");
+				}
+				else {
+					fig.clear();
+					lightConvertedDB = ArrayFunc.apply(t -> 50*t+10*Math.log10(300e-9), wt.lightConverted) ;
+					fig.plot(wt.lambdaNm, lightConvertedDB);
+					fig.RenderPlot();
+					fig.setYLabel("Optical power (dBm)");
+				}
+			}
+		});
+		GridBagConstraints gbc_dbBox = new GridBagConstraints();
+		gbc_dbBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_dbBox.insets = new Insets(0, 0, 5, 0);
+		gbc_dbBox.gridx = 6;
+		gbc_dbBox.gridy = 1;
+		panel_3.add(dbBox, gbc_dbBox);
+		
 		JButton appendButton = new JButton("Plot");
 		appendButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				fig.plot(wt.lambdaNm, wt.lightConverted);
-				fig.RenderPlot();
+				if(!dbBox.isSelected()) {
+					fig.clear();
+					fig.plot(wt.lambdaNm, wt.lightConverted);
+					fig.RenderPlot();
+					fig.setYLabel("Voltage (V)");
+				}
+				else {
+					fig.clear();
+					double[] lightConvertedDB = ArrayFunc.apply(t -> 50*t+10*Math.log10(300e-9), wt.lightConverted) ;
+					fig.plot(wt.lambdaNm, lightConvertedDB);
+					fig.RenderPlot();
+					fig.setYLabel("Optical power (dBm)");
+				}
 				
 				lblNewLabel.setText("Plotted...");
 				
@@ -347,11 +390,21 @@ public class TriggerConversionGUI extends JFrame {
 				fChooser.saveFile(); 
 				String file = fChooser.getSelectedFile().getAbsolutePath() ;
 				FileOutput fo = new FileOutput(file+".txt") ;
-				int m = wt.lambdaNm.length ;
-				for(int i=0; i<m; i++) {
-					String st = wt.lambdaNm[i] + "\t" + wt.lightConverted[i] ;
-					fo.println(st);
+				if(!dbBox.isSelected()) {
+					int m = wt.lambdaNm.length ;
+					for(int i=0; i<m; i++) {
+						String st = wt.lambdaNm[i] + "\t" + wt.lightConverted[i] ;
+						fo.println(st);
+					}
 				}
+				else {
+					int m = wt.lambdaNm.length ;
+					for(int i=0; i<m; i++) {
+						String st = wt.lambdaNm[i] + "\t" + lightConvertedDB[i] ;
+						fo.println(st);
+					}
+				}
+
 				fo.close();
 				System.gc();
 			}

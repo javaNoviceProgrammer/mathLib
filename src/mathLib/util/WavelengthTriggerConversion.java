@@ -93,8 +93,8 @@ public class WavelengthTriggerConversion {
 			}
 		}
 		
-		System.out.println("start = " + time[startIndex]);
-		System.out.println("end = " + time[endIndex]);
+//		System.out.println("start = " + time[startIndex]);
+//		System.out.println("end = " + time[endIndex]);
 		
 		ArrayList<Double> lambda = new ArrayList<>() ;
 		for(int i=startIndex; i<endIndex+1; i++) {
