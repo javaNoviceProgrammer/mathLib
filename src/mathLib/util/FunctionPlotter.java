@@ -23,6 +23,7 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartPanel;
 
 import mathLib.plot.MatlabChart;
+import javax.swing.JCheckBox;
 
 public class FunctionPlotter extends JFrame {
 
@@ -176,9 +177,9 @@ public class FunctionPlotter extends JFrame {
 		gbc_panel_3.gridy = 1;
 		panel.add(panel_3, gbc_panel_3);
 		GridBagLayout gbl_panel_3 = new GridBagLayout();
-		gbl_panel_3.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_panel_3.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_3.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_3.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
 		
@@ -201,7 +202,7 @@ public class FunctionPlotter extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 4;
 		gbc_lblNewLabel.gridy = 0;
 		panel_3.add(lblNewLabel, gbc_lblNewLabel);
@@ -226,6 +227,21 @@ public class FunctionPlotter extends JFrame {
 		gbc_btnNewButton.gridx = 3;
 		gbc_btnNewButton.gridy = 0;
 		panel_3.add(btnNewButton, gbc_btnNewButton);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Marker");
+		chckbxNewCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxNewCheckBox.isSelected())
+					fig.markerON();
+				else
+					fig.markerOFF();
+			}
+		});
+		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
+		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxNewCheckBox.gridx = 6;
+		gbc_chckbxNewCheckBox.gridy = 0;
+		panel_3.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
 		
 
 		
@@ -256,10 +272,16 @@ public class FunctionPlotter extends JFrame {
 					vars.put(variable.getText(), x[i]) ;
 					y[i] = MathUtils.evaluate(function.getText(), vars) ;
 				}
+				
 				fig.setYLabel("f("+variable.getText()+")");
 				fig.setXLabel(variable.getText());
 				fig.plot(x, y, "b");
 				fig.RenderPlot();
+				
+				if(chckbxNewCheckBox.isSelected())
+					fig.markerON();
+				else
+					fig.markerOFF();
 			}
 		});
 		GridBagConstraints gbc_appendButton = new GridBagConstraints();
