@@ -1,4 +1,4 @@
-package tests;
+package mathLib.plot;
 
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -14,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -22,8 +24,10 @@ import org.jfree.chart.ChartPanel;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 import java.awt.BorderLayout;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
-public class TestMatlabChartAppend extends JFrame {
+public class FunctionPlotter extends JFrame {
 
 	/**
 	 * 
@@ -42,8 +46,7 @@ public class TestMatlabChartAppend extends JFrame {
 	int numPoints ;
 	double[] x ;
 	double[] y ;
-	int k ;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -51,7 +54,7 @@ public class TestMatlabChartAppend extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TestMatlabChartAppend frame = new TestMatlabChartAppend();
+					FunctionPlotter frame = new FunctionPlotter();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,7 +66,22 @@ public class TestMatlabChartAppend extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TestMatlabChartAppend() {
+	public FunctionPlotter() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 616, 555);
 		contentPane = new JPanel();
@@ -88,7 +106,8 @@ public class TestMatlabChartAppend extends JFrame {
 		fig = new MatlabChart() ;
 		fig.plot(new double[0], new double[0]);
 		fig.RenderPlot();
-		plotPanel.add(new ChartPanel(fig.getChart())) ;
+		ChartPanel chartPanel = new ChartPanel(fig.getChart());
+		plotPanel.add(chartPanel) ;
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Setup the function", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -107,7 +126,7 @@ public class TestMatlabChartAppend extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_2.insets = new Insets(5, 5, 5, 5);
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
 		gbc_panel_2.gridx = 0;
 		gbc_panel_2.gridy = 0;
@@ -154,6 +173,7 @@ public class TestMatlabChartAppend extends JFrame {
 		
 		JPanel panel_3 = new JPanel();
 		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
+		gbc_panel_3.insets = new Insets(5, 5, 5, 5);
 		gbc_panel_3.fill = GridBagConstraints.BOTH;
 		gbc_panel_3.gridx = 0;
 		gbc_panel_3.gridy = 1;
@@ -197,7 +217,6 @@ public class TestMatlabChartAppend extends JFrame {
 				numPoints = Integer.parseInt(points.getText()) ;
 				x = MathUtils.linspace(xStart, xEndn, numPoints) ;
 				y = new double[x.length] ;
-				k = 0 ;
 				fig.clear();
 				
 				lblNewLabel.setText("All set!");
@@ -230,25 +249,24 @@ public class TestMatlabChartAppend extends JFrame {
 		gbc_end.gridy = 1;
 		panel_3.add(end, gbc_end);
 		
-		JButton appendButton = new JButton("Append Data Point");
+		JButton appendButton = new JButton("Plot");
 		appendButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if(k<x.length) {
+				lblNewLabel.setText("Plotted...");
+				for(int i=0; i<x.length; i++) {
 					Map<String, Double> vars = new HashMap<>() ;
-					vars.put(variable.getText(), x[k]) ;
-					
-					y[k] = MathUtils.evaluate(function.getText(), vars) ;
-					System.out.println(function.getText() + "= " + y[k]);
-					fig.markerON();
-					fig.append(0, x[k], y[k]);
-					k++ ;
-					
-					lblNewLabel.setText("Appending...");
+					vars.put(variable.getText(), x[i]) ;
+					y[i] = MathUtils.evaluate(function.getText(), vars) ;
 				}
+				fig.setYLabel("f("+variable.getText()+")");
+				fig.setXLabel(variable.getText());
+				fig.plot(x, y, "b");
+				fig.RenderPlot();
 			}
 		});
 		GridBagConstraints gbc_appendButton = new GridBagConstraints();
+		gbc_appendButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_appendButton.weighty = 2.0;
 		gbc_appendButton.insets = new Insets(0, 0, 5, 5);
 		gbc_appendButton.gridx = 3;
@@ -271,6 +289,7 @@ public class TestMatlabChartAppend extends JFrame {
 		gbc_points.gridx = 1;
 		gbc_points.gridy = 2;
 		panel_3.add(points, gbc_points);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{variable, function, start, end, points, btnNewButton, appendButton}));
 		
 	}
 }

@@ -23,6 +23,9 @@ public class MathUtils {
 	}
 
 	public static double evaluate(String expression, Map<String, Double> vars) {
+		if(vars == null)
+			return evaluate(expression) ;
+		
 		ExpressionBuilder eb = new ExpressionBuilder(expression);
 		eb.variables(vars.keySet());
 		Expression ex = eb.build();

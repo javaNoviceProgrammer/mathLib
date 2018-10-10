@@ -218,10 +218,13 @@ public class MatlabChart {
     	strokes.clear();
     	specs.clear();
     	dataset = new XYSeriesCollection() ;
-    	plotRenderer = new XYLineAndShapeRenderer() ;
-    	chart = ChartFactory.createXYLineChart(null,getXLabel(),getYLabel(),dataset,PlotOrientation.VERTICAL,true, false, false);
+//    	plotRenderer = new XYLineAndShapeRenderer() ;
+    	chart.getXYPlot().setDataset(dataset);
     	counter = 0 ;
-    	font(font.getName()) ;
+    	chart.getXYPlot().setRenderer(plotRenderer);
+    	
+		this.plot(new double[0], new double[0]);
+		this.RenderPlot();
     }
 
     //*********************************************************
