@@ -22,6 +22,14 @@ public class WavelengthTriggerConversion {
 		triggerList = new ArrayList<>() ;
 	}
 	
+	public void setTriggerFilePath(String triggerFile) {
+		this.triggerFile = triggerFile ;
+	}
+	
+	public void setLightFilePath(String lightFile) {
+		this.lightFile = lightFile ;
+	}
+	
 	public void setStartSweepNm(double startLambdaNm) {
 		this.startLambdaNm = startLambdaNm ;
 	}
@@ -101,12 +109,14 @@ public class WavelengthTriggerConversion {
 			lambdaNm[i] = lambda.get(i) ;
 			lightConverted[i] = light[i+startIndex] ;
 		}
-		
+	
+	}
+	
+	public void plot() {
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(lambdaNm, lightConverted);
 		fig.RenderPlot();
 		fig.run(true);
-		
 	}
 	
 	public static void main(String[] args) {
@@ -114,11 +124,12 @@ public class WavelengthTriggerConversion {
 		
 		wt.setStartSweepNm(1519);
 		wt.setEndSweepNm(1521);
-		wt.setSweepStepNm(1e-3);
+//		wt.setSweepStepNm(1e-3);
 		wt.setSweepSpeed(1);
 		
 		wt.readData();
 		wt.findTriggerInterval();
+		wt.plot();
 	}
 
 }
