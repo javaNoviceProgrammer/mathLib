@@ -1,5 +1,6 @@
 package mathLib.util;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,10 +23,6 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartPanel;
 
 import mathLib.plot.MatlabChart;
-
-import java.awt.BorderLayout;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 
 public class FunctionPlotter extends JFrame {
 
@@ -288,8 +285,6 @@ public class FunctionPlotter extends JFrame {
 		gbc_points.fill = GridBagConstraints.HORIZONTAL;
 		gbc_points.gridx = 1;
 		gbc_points.gridy = 2;
-		panel_3.add(points, gbc_points);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{variable, function, start, end, points, btnNewButton, appendButton}));
-		
+		panel_3.add(points, gbc_points);		
 	}
 }
