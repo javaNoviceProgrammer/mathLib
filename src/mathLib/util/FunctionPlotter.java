@@ -1,4 +1,4 @@
-package mathLib.plot;
+package mathLib.util;
 
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -22,7 +22,7 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartPanel;
 
 import mathLib.plot.MatlabChart;
-import mathLib.util.MathUtils;
+
 import java.awt.BorderLayout;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
