@@ -768,7 +768,7 @@ public class MatlabChart {
 	    JFrame chartFrame = new JFrame() ;
 	    chartFrame.add(cpanel) ;
 	    chartFrame.setSize(640, 450);
-        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/presentation.png"));
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/mathLib/plot/extra/presentation.png"));
         chartFrame.setIconImage(image);
         chartFrame.setTitle("Plot Viewer v1.0");
         chartFrame.setVisible(true);
