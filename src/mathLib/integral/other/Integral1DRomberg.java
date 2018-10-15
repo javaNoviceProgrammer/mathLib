@@ -45,7 +45,7 @@ public class Integral1DRomberg {
 	// for test
 	public static void main(String[] args) {
 		double xMin = 0.0 ;
-		double xMax = 10.0 ;
+		double xMax = 1.0 ;
 		
 		IntegralFunction1D func = t -> Math.sin((t-1)/(t*t+1)) ;
 		
