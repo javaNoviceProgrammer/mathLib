@@ -27,7 +27,7 @@ public class HyperGeometric2F1 {
 			}
 		};
 		Integral1D integral = new Integral1D(func, 0, 1) ;
-		integral.setNumPoints(10);
+		integral.setNumPoints(200);
 		integral.setErrorBound(1e-12);
 		return integral.getIntegral() ;
 	}
@@ -39,7 +39,7 @@ public class HyperGeometric2F1 {
 	// for test
 	public static void main(String[] args){
 		HyperGeometric2F1 hg = new HyperGeometric2F1(0.5, (3*2.93-1)/(2*2.93), 1.5) ;
-		double[] x = MathUtils.linspace(-1, 10, 100) ;
+		double[] x = MathUtils.linspace(-1, 10, 15) ;
 		double[] y = new double[x.length] ;
 		for(int i=0; i<x.length; i++){
 			y[i] = x[i] * hg.getValue(-x[i]*x[i]) ;
