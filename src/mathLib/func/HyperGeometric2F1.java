@@ -2,8 +2,6 @@ package mathLib.func;
 
 import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
-import mathLib.plot.MatlabChart;
-import mathLib.util.MathUtils;
 
 public class HyperGeometric2F1 {
 
@@ -38,17 +36,38 @@ public class HyperGeometric2F1 {
 
 	// for test
 	public static void main(String[] args){
-		HyperGeometric2F1 hg = new HyperGeometric2F1(0.5, (3*2.93-1)/(2*2.93), 1.5) ;
-		double[] x = MathUtils.linspace(-1, 10, 15) ;
-		double[] y = new double[x.length] ;
-		for(int i=0; i<x.length; i++){
-			y[i] = x[i] * hg.getValue(-x[i]*x[i]) ;
-//			System.out.println(y[i]);
-		}
-		MatlabChart fig = new MatlabChart() ;
-		fig.plot(x, y);
-		fig.RenderPlot();
-		fig.run(true);
+		double b = 3.0 ;
+		HyperGeometric2F1 hg = new HyperGeometric2F1(0.5, (3*b-1)/(2*b), 1.5) ;
+//		double[] x = MathUtils.linspace(-1, 10, 15) ;
+//		double[] y = new double[x.length] ;
+//		for(int i=0; i<x.length; i++){
+//			y[i] = x[i] * hg.getValue(-x[i]*x[i]) ;
+////			System.out.println(y[i]);
+//		}
+//		MatlabChart fig = new MatlabChart() ;
+//		fig.plot(x, y);
+//		fig.RenderPlot();
+//		fig.run(true);
+		
+		double x = 100.0 ;
+		System.out.println(x * hg.getValue(-x*x));
+		
+//		double[] b = MathUtils.linspace(1.1, 10, 10) ;
+//		RealFunction func = new RealFunction() {
+//			
+//			@Override
+//			public double evaluate(double b) {
+//				HyperGeometric2F1 hg = new HyperGeometric2F1(0.5, (3*b-1)/(2*b), 1.5) ;
+//				double f = 500 ;
+//				double y = f * hg.getValue(-f*f) ;
+//				return y;
+//			}
+//		};
+//		double[] y = ArrayFunc.apply(t -> func.evaluate(t), b) ;
+//		MatlabChart fig = new MatlabChart() ;
+//		fig.plot(b, y);
+//		fig.RenderPlot();
+//		fig.run(true);
 	}
 
 }
