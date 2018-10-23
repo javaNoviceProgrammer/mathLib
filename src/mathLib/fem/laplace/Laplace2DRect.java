@@ -20,9 +20,7 @@ import edu.uta.futureye.lib.weakform.WeakForm;
 import edu.uta.futureye.util.Utils;
 import mathLib.fem.FEMUtils;
 import mathLib.fem.Mesh2DRect;
-import mathLib.func.ArrayFunc;
 import mathLib.geometry.algebra.Point;
-import mathLib.plot.ColorMapPlot;
 import mathLib.plot.util.MeshGrid;
 import mathLib.util.Timer;
 
@@ -95,12 +93,12 @@ public class Laplace2DRect {
 		// 6. Output the result to a MATLAB chart
 		MeshGrid grid = mesh2d.getGrid() ;
 
-		FEMUtils.plotResult(grid, u);
+//		FEMUtils.plotResult(grid, u);
 		FEMUtils.plotResultDense(grid, u, 5, 5);
 
-		double[][] solExact = ArrayFunc.apply((a,b)-> Math.sin(Math.PI*a)*Math.sinh(Math.PI*b)/Math.sinh(Math.PI) , grid) ;
-		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
-		figExact.run(true);
+//		double[][] solExact = ArrayFunc.apply((a,b)-> Math.sin(Math.PI*a)*Math.sinh(Math.PI*b)/Math.sinh(Math.PI) , grid) ;
+//		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
+//		figExact.run(true);
 
 	}
 
