@@ -31,8 +31,8 @@ public class Integral1DRungeKutta {
 	public double inetgrate(double start, double end) {
 		this.start = start ;
 		this.end = end ;
-		// default step size is 1e-4 of the interval
-		this.stepSize = (end-start)/1e4 ;
+		if(stepSize == 0D)
+			this.stepSize = (end-start)/1e4 ;
 		
 		DerivFunction1D derivFunc = new DerivFunction1D() {
 
@@ -50,12 +50,10 @@ public class Integral1DRungeKutta {
 		integral.setFinalValueOfX(end);
 		integral.setStepSize(stepSize);
 
-//		return integral.cashKarp(derivFunc) ;
 		return integral.fourthOrder(derivFunc) ;
-//		return integral.fehlberg(derivFunc) ;
 	}
 
-	public double getIntegral() {
+	public double integrate() {
 		DerivFunction1D derivFunc = new DerivFunction1D() {
 
 			@Override
@@ -72,9 +70,7 @@ public class Integral1DRungeKutta {
 		integral.setFinalValueOfX(end);
 		integral.setStepSize(stepSize);
 
-//		return integral.cashKarp(derivFunc) ;
 		return integral.fourthOrder(derivFunc) ;
-//		return integral.fehlberg(derivFunc) ;
 	}
 
 	// for test
@@ -93,7 +89,7 @@ public class Integral1DRungeKutta {
 		Timer timer1 = new Timer() ;
 		timer1.start();
 		Integral1DRungeKutta integral = new Integral1DRungeKutta(func, 0, end) ;
-		double i1 = integral.getIntegral() ;
+		double i1 = integral.integrate() ;
 		timer1.stop();
 
 		System.out.println("RungeKutta result = "+i1);
