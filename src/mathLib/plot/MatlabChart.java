@@ -8,9 +8,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -35,9 +38,11 @@ import mathLib.numbers.Complex;
 import mathLib.plot.util.CustomChartPanel;
 import mathLib.util.MathUtils;
 
-public class MatlabChart {
+public class MatlabChart implements Serializable {
 
-    Font font;
+	private static final long serialVersionUID = -6846021898053436205L;
+	
+	Font font;
     JFreeChart chart = null ;
     LegendTitle legend;
     ArrayList<Color> colors;
@@ -724,46 +729,18 @@ public class MatlabChart {
         return chart.getXYPlot() ;
     }
 
-//    public void run(){
-//        JFrame chartFrame = new JFrame() ;
-//        chartFrame.setSize(640, 450);
-//        chartFrame.getContentPane().add(new ChartPanel(chart)) ;
-//        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/People/Meisam/GUI/Plotters/MatlabPlotter/Extras/presentation.png"));
-//        chartFrame.setIconImage(image);
-//        chartFrame.setTitle("Plot Viewer v1.0");
-//        chartFrame.setVisible(true);
-//    }
-//
-//    public void run(boolean systemExit){
-//        JFrame chartFrame = new JFrame() ;
-//        chartFrame.setSize(640, 450);
-//        chartFrame.getContentPane().add(new ChartPanel(chart)) ;
-//        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/People/Meisam/GUI/Plotters/MatlabPlotter/Extras/presentation.png"));
-//        chartFrame.setIconImage(image);
-//        chartFrame.setTitle("Plot Viewer v1.0");
-//        chartFrame.setVisible(true);
-//        if(systemExit){
-//        	chartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        }
-//    }
-
     public void run(){
-        // look and feel
-/*        try {
+        try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
     	CustomChartPanel cpanel = new CustomChartPanel(this.chart, 640, 450, 640, 450, 640, 450, true, true, true, true, true, true) ;
 	    JFrame chartFrame = new JFrame() ;
 	    chartFrame.add(cpanel) ;
@@ -775,21 +752,17 @@ public class MatlabChart {
     }
 
     public void run(boolean systemExit){
-/*        try {
+        try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
     	CustomChartPanel cpanel = new CustomChartPanel(this.chart, 640, 450, 640, 450, 640, 450, true, true, true, true, true, true) ;
 	    JFrame chartFrame = new JFrame() ;
 	    chartFrame.add(cpanel) ;
