@@ -9,12 +9,12 @@ import java.io.ObjectOutputStream;
 
 public class ObjectUtils {
 	
-	public static void writeToFile(File file) {
+	public static void writeToFile(Object obj, File file) {
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos) ;
-			oos.writeObject(oos);
+			oos.writeObject(obj);
 			fos.close();
 			oos.close();
 		} catch (IOException e) {
