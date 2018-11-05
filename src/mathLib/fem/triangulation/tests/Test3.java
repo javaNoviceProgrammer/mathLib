@@ -14,6 +14,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
@@ -86,11 +87,14 @@ public class Test3 extends Application {
 //			points.add(c) ;
 //		}
 		
-		
+		Circle c1 = new Circle(0+offset, 0+offset, radius, Color.BLACK) ;
+		Circle c2 = new Circle(0+offset, 0+offset, 0.99*radius, Color.BLACK) ;
+		Shape border = Shape.subtract(c1, c2) ;
 		
 		AnchorPane pane = new AnchorPane() ;
 		pane.getChildren().addAll(points) ;
 		pane.getChildren().addAll(edges) ;
+		pane.getChildren().add(border) ;
 		pane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		ScrollPane pane1 = new ScrollPane(pane) ;
 		Scene scene = new Scene(pane1, 600, 400) ;
