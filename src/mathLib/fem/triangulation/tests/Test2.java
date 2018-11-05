@@ -27,8 +27,8 @@ public class Test2 extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		double[] x = MathUtils.linspace(0, 1000, 100) ;
-		double[] y = MathUtils.linspace(0, 500, 100) ;
+		double[] x = MathUtils.linspace(0, 500, 20) ;
+		double[] y = MathUtils.linspace(0, 500, 20) ;
 
 		List<Vector2D> pointSet = new ArrayList<>() ;
 		for(int i=0; i<x.length; i++)
