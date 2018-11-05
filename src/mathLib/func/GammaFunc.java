@@ -62,7 +62,7 @@ public class GammaFunc  {
 
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.markerON();
 		fig.run(true);
 	}

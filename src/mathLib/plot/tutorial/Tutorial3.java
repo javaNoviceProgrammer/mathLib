@@ -20,7 +20,7 @@ public class Tutorial3 {
 			y[i] = ComplexMath.sin(new Complex(x[i], 0.0)) ;
 		MatlabChart fig = new MatlabChart();
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.xlabel("X variable");
 		fig.ylabel("Y variable");
 		fig.run(true);

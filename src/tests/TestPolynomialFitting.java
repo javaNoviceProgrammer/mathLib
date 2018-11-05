@@ -28,7 +28,7 @@ public class TestPolynomialFitting {
 		}
 		
 		fig.plot(x, neFit, "r");
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.markerON();
 		fig.run(true);
 		

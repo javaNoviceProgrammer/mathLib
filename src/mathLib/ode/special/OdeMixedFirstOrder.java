@@ -59,7 +59,7 @@ public class OdeMixedFirstOrder extends RungeKutta implements DerivFunction1D {
 
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(xVal, yVal, "b");
-		fig.RenderPlot();
+		fig.renderPlot();
 //		fig.markerON();
 		fig.xlabel("X");
 		fig.ylabel("Solution Y");

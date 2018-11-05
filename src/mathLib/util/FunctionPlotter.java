@@ -103,7 +103,7 @@ public class FunctionPlotter extends JFrame {
 		
 		fig = new MatlabChart() ;
 		fig.plot(new double[0], new double[0]);
-		fig.RenderPlot();
+		fig.renderPlot();
 		ChartPanel chartPanel = new ChartPanel(fig.getChart());
 		plotPanel.add(chartPanel) ;
 		
@@ -276,7 +276,7 @@ public class FunctionPlotter extends JFrame {
 				fig.setYLabel("f("+variable.getText()+")");
 				fig.setXLabel(variable.getText());
 				fig.plot(x, y, "b");
-				fig.RenderPlot();
+				fig.renderPlot();
 				
 				if(chckbxNewCheckBox.isSelected())
 					fig.markerON();

@@ -110,7 +110,7 @@ public class TriggerConversionGUI extends JFrame {
 		
 		fig = new MatlabChart() ;
 		fig.plot(new double[0], new double[0]);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.setXLabel("Wavelength (nm)");
 		fig.setYLabel("Voltage (V)");
 		ChartPanel chartPanel = new ChartPanel(fig.getChart());
@@ -313,14 +313,14 @@ public class TriggerConversionGUI extends JFrame {
 				if(!dbBox.isSelected()) {
 					fig.clear();
 					fig.plot(wt.lambdaNm, wt.lightConverted);
-					fig.RenderPlot();
+					fig.renderPlot();
 					fig.setYLabel("Voltage (V)");
 				}
 				else {
 					fig.clear();
 					lightConvertedDB = ArrayFunc.apply(t -> 50*t+10*Math.log10(300e-9), wt.lightConverted) ;
 					fig.plot(wt.lambdaNm, lightConvertedDB);
-					fig.RenderPlot();
+					fig.renderPlot();
 					fig.setYLabel("Optical power (dBm)");
 				}
 			}
@@ -338,14 +338,14 @@ public class TriggerConversionGUI extends JFrame {
 				if(!dbBox.isSelected()) {
 					fig.clear();
 					fig.plot(wt.lambdaNm, wt.lightConverted);
-					fig.RenderPlot();
+					fig.renderPlot();
 					fig.setYLabel("Voltage (V)");
 				}
 				else {
 					fig.clear();
 					double[] lightConvertedDB = ArrayFunc.apply(t -> 50*t+10*Math.log10(300e-9), wt.lightConverted) ;
 					fig.plot(wt.lambdaNm, lightConvertedDB);
-					fig.RenderPlot();
+					fig.renderPlot();
 					fig.setYLabel("Optical power (dBm)");
 				}
 				

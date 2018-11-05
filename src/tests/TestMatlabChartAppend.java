@@ -87,7 +87,7 @@ public class TestMatlabChartAppend extends JFrame {
 		
 		fig = new MatlabChart() ;
 		fig.plot(new double[0], new double[0]);
-		fig.RenderPlot();
+		fig.renderPlot();
 		plotPanel.add(new ChartPanel(fig.getChart())) ;
 		
 		JPanel panel = new JPanel();

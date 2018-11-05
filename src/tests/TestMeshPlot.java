@@ -8,7 +8,7 @@ public class TestMeshPlot {
 		double[] x = {} ;
 		double[] y = {} ;
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.append(0, 0, 0);
 		fig.append(0, 5, 0);
 		fig.append(0, 0, 5);

@@ -56,7 +56,7 @@ public class OdeFirstOrder extends RungeKutta implements DerivFunction1D {
 		
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(xVal, yVal);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.markerON();
 		fig.xlabel("X");
 		fig.ylabel("Solution Y");

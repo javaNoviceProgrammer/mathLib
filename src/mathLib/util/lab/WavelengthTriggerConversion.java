@@ -115,7 +115,7 @@ public class WavelengthTriggerConversion {
 	public void plot() {
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(lambdaNm, lightConverted);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.run(true);
 	}
 	

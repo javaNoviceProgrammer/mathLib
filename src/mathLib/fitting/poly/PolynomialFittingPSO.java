@@ -138,7 +138,7 @@ public class PolynomialFittingPSO {
 			z[i] = pFit.interpolate(x[i]) ;
 
 		fig.plot(x, z, "r");
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.markerON();
 		fig.run(true);
 

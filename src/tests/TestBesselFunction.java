@@ -14,7 +14,7 @@ public class TestBesselFunction {
 
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.run(true);
 
 		// explicit equation
@@ -23,7 +23,7 @@ public class TestBesselFunction {
 			yExplicit[i] = Math.sqrt(2.0/(Math.PI*x[i]))*Math.cos(x[i]) ;
 
 		fig.plot(x, yExplicit, "r");
-		fig.RenderPlot();
+		fig.renderPlot();
 
 	}
 }

@@ -35,7 +35,7 @@ public class PeriodicFunction {
 		double[] x = MathUtils.linspace(-10, 10, 100000) ;
 		double[] y = ArrayFunc.apply(t -> pFunc.evaluate(t), x) ;
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.run(true);
 	}
 

@@ -219,7 +219,7 @@ public class Polynomial {
     		y[i] = this.evaluate(x[i]) ;
     	MatlabChart fig = new MatlabChart() ;
     	fig.plot(x, y);
-    	fig.RenderPlot();
+    	fig.renderPlot();
     	fig.setFigLineWidth(0, 2);
     	fig.run(true);
     }

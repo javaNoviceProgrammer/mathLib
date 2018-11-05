@@ -21,7 +21,7 @@ public class Tutorial1 {
 		// 3. add as many variables to the figure
 		fig.plot(x, y, "b-", 2f, "real numbers");
 		// 4. after adding the plots, render the chart
-		fig.RenderPlot();
+		fig.renderPlot();
 		// 5. set the x and y lables
 		fig.xlabel("X variable");
 		fig.ylabel("Y variable");

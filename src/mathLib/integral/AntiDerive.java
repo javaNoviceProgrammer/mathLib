@@ -74,7 +74,7 @@ public class AntiDerive {
 	public void plot() {
 		fig = new MatlabChart() ;
 		fig.plot(x,y) ;
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.xlabel("Variable");
 		fig.ylabel("Function");
 //		fig.markerON();
@@ -131,7 +131,7 @@ public class AntiDerive {
 
 		MatlabChart fig = ant.fig ;
 		fig.plot(x,y, "r") ;
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.xlabel("Variable");
 		fig.ylabel("Function");
 		fig.setFigLineWidth(1, 3f);

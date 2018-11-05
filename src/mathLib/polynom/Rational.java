@@ -144,7 +144,7 @@ public class Rational {
 		double[] y = ArrayFunc.apply(t -> this.evaluate(t), x) ;
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.run(true);
 	}
 	
@@ -174,7 +174,7 @@ public class Rational {
 			fig.plot(z, w, "r");
 		}
 		
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.setFigLineWidth(0, 0f);
 		fig.setFigLineWidth(1, 0f);
 		fig.markerON();

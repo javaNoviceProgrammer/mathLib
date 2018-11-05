@@ -41,7 +41,7 @@ public class TestRungeKutta {
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(sol[0], sol[1], "b");
 		fig.plot(sol[0], sol[2], "r");
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.run(true);
 		fig.markerON();
 		

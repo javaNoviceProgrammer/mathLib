@@ -57,7 +57,7 @@ public class ArrayFunc {
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y, "b");
 		fig.plot(x, z, "r");
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.setFigLineWidth(0, 2);
 		fig.run(true);
 	}

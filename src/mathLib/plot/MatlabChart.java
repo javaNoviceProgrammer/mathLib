@@ -139,7 +139,7 @@ public class MatlabChart implements Serializable {
 
 
     //*******************Rendering the figures**************************************
-    public void RenderPlot() {
+    public void renderPlot() {
         // Create chart
     	if(chart == null){
             JFreeChart chart = null;
@@ -229,7 +229,7 @@ public class MatlabChart implements Serializable {
     	chart.getXYPlot().setRenderer(plotRenderer);
     	
 		this.plot(new double[0], new double[0]);
-		this.RenderPlot();
+		this.renderPlot();
     }
 
     //*********************************************************
@@ -690,7 +690,7 @@ public class MatlabChart implements Serializable {
     	for(int i=0; i<M; i++){
     		colors.set(i, color) ;
     	}
-    	RenderPlot();
+    	renderPlot();
     }
 
     public void setAllColors(Color color){
@@ -698,7 +698,7 @@ public class MatlabChart implements Serializable {
     	for(int i=0; i<M; i++){
     		colors.set(i, color) ;
     	}
-    	RenderPlot();
+    	renderPlot();
     }
 
     public void setSpecificChartColor(int datasetNumber, javafx.scene.paint.Color colorfx){

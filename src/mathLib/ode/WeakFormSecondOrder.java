@@ -130,7 +130,7 @@ public class WeakFormSecondOrder {
 	public void plotSolution() {
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.xlabel("grid");
 		fig.ylabel("solution");
 		fig.setFigLineWidth(0, 2.0f);

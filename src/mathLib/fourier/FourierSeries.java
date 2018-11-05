@@ -166,7 +166,7 @@ public class FourierSeries {
 		
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y1, "b");
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.run(true);
 		
 	}

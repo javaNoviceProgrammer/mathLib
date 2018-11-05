@@ -50,7 +50,7 @@ public class HarmonicNumber {
 			y[i] = alternativeHamonic((int) x[i]) ;
 		}
 		fig.plot(x, y);
-		fig.RenderPlot();
+		fig.renderPlot();
 		fig.setAllColors(Color.RED);
 		fig.markerON();
 		fig.run(true);
