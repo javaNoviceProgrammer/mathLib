@@ -5,7 +5,6 @@ import java.util.List;
 
 import edu.uta.futureye.core.Mesh;
 import edu.uta.futureye.core.Node;
-import edu.uta.futureye.util.container.NodeList;
 import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;
