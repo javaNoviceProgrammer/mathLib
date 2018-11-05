@@ -18,6 +18,7 @@ import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;
 import mathLib.fem.triangulation.Vector2D;
 import mathLib.util.MathUtils;
+import mathLib.util.Timer;
 
 public class Test3 extends Application {
 	public static void main(String[] args) {
@@ -26,9 +27,9 @@ public class Test3 extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		double radius = 100 ;
-		double[] r = MathUtils.linspace(0.1*radius, radius, 10) ;
-		double[] theta = MathUtils.linspace(0, 2*Math.PI, 10) ;
+		double radius = 1000 ;
+		double[] r = MathUtils.linspace(0.1*radius, radius, 20) ;
+		double[] theta = MathUtils.linspace(0, 2*Math.PI, 50) ;
 
 		List<Vector2D> pointSet = new ArrayList<>() ;
 		double x, y ;
@@ -40,6 +41,9 @@ public class Test3 extends Application {
 			}
 		pointSet.add(new Vector2D(0, 0)) ;
 
+		Timer timer = new Timer() ;
+		timer.start();
+		
 		DelaunayTriangulator mesh = new DelaunayTriangulator(pointSet) ;
 		try {
 			mesh.triangulate();
@@ -47,11 +51,14 @@ public class Test3 extends Application {
 			e.printStackTrace();
 		}
 		
+		timer.stop();
+		System.out.println(timer);
+		
 		List<Triangle2D> triangles = mesh.getTriangles() ;
 //		for(int i=0; i<triangles.size(); i++)
 //			System.out.println(triangles.get(i));
 
-		double offset = 200 ;
+		double offset = 2000 ;
 		
 		Set<Line> edges = new HashSet<>() ;
 		for(Triangle2D t : triangles) {
