@@ -20,18 +20,13 @@ public class StringUtils {
 		}
 	}
 
-	public static String fixedWidthDoubletoString(double var0, int var2, int var3) {
+	public static String fixedWidthDoubletoString(double number, int decimals) {
 		DecimalFormat var4 = new DecimalFormat();
-		var4.setMaximumFractionDigits(var3);
-		var4.setMinimumFractionDigits(var3);
+		var4.setMaximumFractionDigits(decimals);
+		var4.setMinimumFractionDigits(decimals);
 		var4.setGroupingUsed(false);
 
-		String var5;
-		for (var5 = var4.format(var0); var5.length() < var2; var5 = " " + var5) {
-			;
-		}
-
-		return var5;
+		return var4.format(number);
 	}
 
 	public static double[] toDoubleArray(String s) {
@@ -66,8 +61,7 @@ public class StringUtils {
 	
 	// for test
 	public static void main(String[] args) {
-		File f = new File("test.dbsim") ;
-		System.out.println(getFileExtension(f));
+		System.out.println(fixedWidthDoubletoString(11111/2d, 4));
 	}
 
 }
