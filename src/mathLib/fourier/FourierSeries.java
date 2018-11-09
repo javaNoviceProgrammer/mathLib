@@ -136,7 +136,7 @@ public class FourierSeries {
 			@Override
 			public double evaluate(double x) {
 				if(x>= -0.5 && x <= 0.5)
-					return x ;
+					return x*x ;
 				else
 					return 0.0 ;
 			}
@@ -160,12 +160,14 @@ public class FourierSeries {
 		
 		double[] x = MathUtils.linspace(start, end, 1000) ;
 		double[] y1 = ArrayFunc.apply(series.getSeries(200), x) ;
+		double[] y2 = ArrayFunc.apply(func, x) ;
 		
 		timer.stop(); 
 		System.out.println(timer);
 		
 		MatlabChart fig = new MatlabChart() ;
-		fig.plot(x, y1, "b");
+		fig.plot(x, y2, "r", 2f, "Exact");
+		fig.plot(x, y1, "b", 2f, "Series");
 		fig.renderPlot();
 		fig.run(true);
 		
