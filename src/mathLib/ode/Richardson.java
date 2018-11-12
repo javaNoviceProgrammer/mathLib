@@ -1,14 +1,17 @@
 package mathLib.ode;
 
+import static edu.uta.futureye.function.FMath.cos;
+import static edu.uta.futureye.function.FMath.x;
+
 import edu.uta.futureye.function.intf.MathFunc;
 import mathLib.func.ArrayFunc;
 import mathLib.func.intf.RealFunction;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 
-import static edu.uta.futureye.function.FMath.*;
-
 public class Richardson {
+
+	// df/dx
 
 	public static double deriv(RealFunction func, double x, double dx, int n) {
 		return extrapolate(func, x, n, dx) ;
@@ -38,6 +41,40 @@ public class Richardson {
 		return extrapolate(func, x, 5, 1e-1) ;
 	}
 
+	// d^2 f/dx^2
+
+	public static double deriv2(RealFunction func, double x, double dx, int n) {
+		RealFunction deriv = t -> deriv(func, t, dx, n) ;
+		return deriv(deriv, x, dx, n) ;
+	}
+
+	public static double deriv2(RealFunction func, double x, int n) {
+		RealFunction deriv = t -> deriv(func, t, n) ;
+		return deriv(deriv, x, n) ;
+	}
+
+	public static double deriv2(RealFunction func, double x) {
+		RealFunction deriv = t -> deriv(func, t) ;
+		return deriv(deriv, x) ;
+	}
+
+	// d^3 f/dx^3
+
+	public static double deriv3(RealFunction func, double x, double dx, int n) {
+		RealFunction deriv2 = t -> deriv2(func, t, dx, n) ;
+		return deriv(deriv2, x, dx, n) ;
+	}
+
+	public static double deriv3(RealFunction func, double x, int n) {
+		RealFunction deriv2 = t -> deriv2(func, t, n) ;
+		return deriv(deriv2, x, n) ;
+	}
+
+	public static double deriv3(RealFunction func, double x) {
+		RealFunction deriv2 = t -> deriv2(func, t, 2) ;
+		return deriv(deriv2, x) ;
+	}
+
 	private static double extrapolate(RealFunction func, double x, int n, double h) {
 		if(n<0)
 			throw new IllegalArgumentException("n must be greater than or equal to 0") ;
@@ -58,12 +95,11 @@ public class Richardson {
 		System.out.println("forth iteration:  "  + deriv(func, 2, 1e-1, 4));
 		System.out.println("fifth iteration:  "  + deriv(func, 2, 1e-1, 5));
 
-		RealFunction dfunc = t -> deriv(func, t) ;
 		// plotting first deriv
 		MatlabChart fig = new MatlabChart() ;
 		double[] x = MathUtils.linspace(0.5, Math.PI*4, 1000) ;
 		double[] y1 = ArrayFunc.apply(t -> f.diff("x").apply(t), x) ;
-		double[] y2 = ArrayFunc.apply(dfunc, x) ;
+		double[] y2 = ArrayFunc.apply(t -> deriv(func, t, 2), x) ;
 		fig.plot(x, y1, "b");
 		fig.plot(x, y2, "r");
 		fig.renderPlot();
@@ -72,16 +108,29 @@ public class Richardson {
 		fig.title("First Derivative");
 
 		// plotting second deriv
-		RealFunction d2func = t -> deriv(dfunc, t) ;
 		MatlabChart fig1 = new MatlabChart() ;
 		double[] y3 = ArrayFunc.apply(t -> f.diff("x").diff("x").apply(t), x) ;
-		double[] y4 = ArrayFunc.apply(d2func, x) ;
+		double[] y4 = ArrayFunc.apply(t -> deriv2(func, t, 2), x) ;
 		fig1.plot(x, y3, "b");
 		fig1.plot(x, y4, "r");
 		fig1.renderPlot();
 		fig1.run(true);
 		fig1.markerON();
 		fig1.title("Second Derivative");
+
+		// plotting third deriv
+		MatlabChart fig2 = new MatlabChart() ;
+		double[] y5 = ArrayFunc.apply(t -> f.diff("x").diff("x").diff("x").apply(t), x) ;
+		double[] y6 = ArrayFunc.apply(t -> deriv3(func, t, 2), x) ;
+		fig2.plot(x, y5, "b");
+		fig2.plot(x, y6, "r");
+		fig2.renderPlot();
+		fig2.run(true);
+		fig2.markerON();
+		fig2.title("Third Derivative");
+
+		System.out.println("Exact: " + f.diff("x").diff("x").diff("x").apply(0.5));
+		System.out.println("Richardson: " + deriv3(func, 0.5, 2));
 	}
 
 }
