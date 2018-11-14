@@ -3,6 +3,9 @@ package mathLib.func.symbolic;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.util.Constant;
+
 /**
  * Array of Function arguments. 
  * In mathematical context, this class represents an array of 

@@ -23,10 +23,13 @@ import com.sun.org.apache.bcel.internal.generic.InstructionList;
 import com.sun.org.apache.bcel.internal.generic.MethodGen;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
 
+import jdk.internal.org.objectweb.asm.Label;
+import jdk.internal.org.objectweb.asm.MethodVisitor;
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.fem.core.Node;
 import mathLib.fem.util.BytecodeConst;
 import mathLib.fem.util.BytecodeUtils;
+import mathLib.fem.util.ClassGenerator;
 import mathLib.fem.util.Constant;
 import mathLib.fem.util.FuncClassLoader;
 import mathLib.func.symbolic.basic.FC;

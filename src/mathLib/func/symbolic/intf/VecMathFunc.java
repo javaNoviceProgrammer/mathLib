@@ -3,7 +3,9 @@ package mathLib.func.symbolic.intf;
 import java.util.List;
 import java.util.Map;
 
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Vector valued mathematical function

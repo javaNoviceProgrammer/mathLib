@@ -9,7 +9,9 @@ import com.sun.org.apache.bcel.internal.generic.InstructionHandle;
 import com.sun.org.apache.bcel.internal.generic.InstructionList;
 import com.sun.org.apache.bcel.internal.generic.MethodGen;
 
+import jdk.internal.org.objectweb.asm.MethodVisitor;
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.util.CompiledFunc;
 

@@ -1,5 +1,6 @@
 package mathLib.func.symbolic.intf;
 
+import mathLib.fem.core.Element;
 import mathLib.fem.util.container.ObjList;
 
 public interface ShapeFunction {
