@@ -1,5 +1,6 @@
-package mathLib.matrix.powerIter;
+package mathLib.matrix.powerIter.external;
 
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.FutureyeException;
 import mathLib.matrix.algebra.FullMatrix;
 import mathLib.matrix.algebra.FullVector;
