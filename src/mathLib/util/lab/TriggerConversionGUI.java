@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,7 +26,6 @@ import flanagan.io.FileOutput;
 import mathLib.func.ArrayFunc;
 import mathLib.plot.MatlabChart;
 import mathLib.util.CustomJFileChooser;
-import java.awt.Toolkit;
 
 public class TriggerConversionGUI extends JFrame {
 

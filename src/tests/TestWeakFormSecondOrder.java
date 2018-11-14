@@ -3,8 +3,8 @@ package tests;
 import static edu.uta.futureye.function.FMath.C;
 import static edu.uta.futureye.function.FMath.sin;
 
-import edu.uta.futureye.function.FMath;
-import edu.uta.futureye.function.intf.MathFunc;
+import mathLib.func.symbolic.FMath;
+import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.ode.WeakFormSecondOrder;
 
 public class TestWeakFormSecondOrder {

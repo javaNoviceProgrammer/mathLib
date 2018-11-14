@@ -1,8 +1,6 @@
 package mathLib.fem;
 
-import edu.uta.futureye.core.Mesh;
-import edu.uta.futureye.core.Node;
-import edu.uta.futureye.util.MeshGenerator;
+import mathLib.fem.util.MeshGenerator;
 
 public class Mesh1D {
 	

@@ -3,9 +3,9 @@ package mathLib.ode;
 import static edu.uta.futureye.function.FMath.cos;
 import static edu.uta.futureye.function.FMath.x;
 
-import edu.uta.futureye.function.intf.MathFunc;
 import mathLib.func.ArrayFunc;
 import mathLib.func.intf.RealFunction;
+import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 

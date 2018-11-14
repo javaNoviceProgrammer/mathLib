@@ -22,7 +22,7 @@ import org.jfree.data.xy.XYZDataset;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 
-import edu.uta.futureye.core.Mesh;
+import mathLib.fem.core.Mesh;
 import mathLib.plot.util.ColorMap;
 import mathLib.plot.util.ColorMap.ColorMapName;
 

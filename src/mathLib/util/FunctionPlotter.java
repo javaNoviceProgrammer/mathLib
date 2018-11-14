@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +24,6 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartPanel;
 
 import mathLib.plot.MatlabChart;
-import javax.swing.JCheckBox;
 
 public class FunctionPlotter extends JFrame {
 

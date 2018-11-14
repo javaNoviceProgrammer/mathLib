@@ -5,9 +5,9 @@ import static mathLib.numbers.Complex.j;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.uta.futureye.function.intf.MathFunc;
 import mathLib.func.ArrayFunc;
 import mathLib.func.intf.RealFunction;
+import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.numbers.Complex;

@@ -1,5 +1,6 @@
 package tests;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,7 +22,6 @@ import org.jfree.chart.ChartPanel;
 
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
-import java.awt.BorderLayout;
 
 public class TestMatlabChartAppend extends JFrame {
 

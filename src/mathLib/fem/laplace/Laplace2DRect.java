@@ -6,21 +6,16 @@ import static edu.uta.futureye.function.FMath.y;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.uta.futureye.algebra.intf.Matrix;
-import edu.uta.futureye.algebra.intf.Vector;
-import edu.uta.futureye.algebra.solver.Solver;
-import edu.uta.futureye.core.Mesh;
-import edu.uta.futureye.core.NodeType;
-import edu.uta.futureye.core.intf.FiniteElement;
-import edu.uta.futureye.function.MultiVarFunc;
-import edu.uta.futureye.function.intf.MathFunc;
-import edu.uta.futureye.lib.assembler.Assembler;
-import edu.uta.futureye.lib.element.FELinearTriangle;
-import edu.uta.futureye.lib.weakform.WeakForm;
-import edu.uta.futureye.util.Utils;
 import mathLib.fem.FEMUtils;
 import mathLib.fem.Mesh2DRect;
+import mathLib.fem.assembler.Assembler;
+import mathLib.fem.core.intf.FiniteElement;
+import mathLib.fem.element.FELinearTriangle;
+import mathLib.fem.weakform.WeakForm;
+import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.geometry.algebra.Point;
+import mathLib.matrix.algebra.solver.Solver;
 import mathLib.plot.util.MeshGrid;
 import mathLib.util.Timer;
 

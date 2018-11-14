@@ -1,6 +1,6 @@
 package mathLib.ode;
 
-import edu.uta.futureye.function.intf.MathFunc;
+import mathLib.func.symbolic.intf.MathFunc;
 
 public class WeakFormFirstOrder {
 

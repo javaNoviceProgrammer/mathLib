@@ -6,8 +6,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Stack;
 
-import edu.uta.futureye.function.FMath;
-import edu.uta.futureye.function.intf.MathFunc;
+import mathLib.func.symbolic.FMath;
+import mathLib.func.symbolic.intf.MathFunc;
 
 public class SFG {
 

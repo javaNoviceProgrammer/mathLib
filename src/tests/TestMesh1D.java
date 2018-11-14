@@ -1,7 +1,6 @@
 package tests;
 
-import edu.uta.futureye.core.Mesh;
-import edu.uta.futureye.util.MeshGenerator;
+import mathLib.fem.util.MeshGenerator;
 
 public class TestMesh1D {
 	public static void main(String[] args) {

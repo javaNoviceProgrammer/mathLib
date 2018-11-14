@@ -1,9 +1,5 @@
 package mathLib.fem;
 
-import edu.uta.futureye.core.Element;
-import edu.uta.futureye.core.Mesh;
-import edu.uta.futureye.core.Node;
-import edu.uta.futureye.util.container.NodeList;
 import mathLib.geometry.algebra.Point;
 import mathLib.plot.util.MeshGrid;
 import mathLib.util.MathUtils;

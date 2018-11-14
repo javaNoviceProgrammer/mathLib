@@ -4,8 +4,8 @@ import static edu.uta.futureye.function.FMath.C;
 import static edu.uta.futureye.function.FMath.sin;
 import static edu.uta.futureye.function.FMath.x;
 
-import edu.uta.futureye.function.intf.MathFunc;
 import flanagan.integration.RungeKutta;
+import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.ode.intf.DerivnFunction1D;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
