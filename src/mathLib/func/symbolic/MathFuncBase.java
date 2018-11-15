@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.bcel.Constants;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import com.sun.org.apache.bcel.internal.generic.ALOAD;
@@ -24,8 +28,7 @@ import com.sun.org.apache.bcel.internal.generic.InstructionList;
 import com.sun.org.apache.bcel.internal.generic.MethodGen;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
 
-import jdk.internal.org.objectweb.asm.Label;
-import jdk.internal.org.objectweb.asm.MethodVisitor;
+import jdk.nashorn.internal.codegen.types.ArrayType;
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.fem.core.Node;
 import mathLib.fem.util.BytecodeConst;

@@ -3,9 +3,14 @@ package mathLib.fem.util;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 /**
  * A wrapper class for ClassWriter This is used to generate a class
- * 
+ *
  *
  */
 public class ClassGenerator implements Opcodes {
@@ -23,7 +28,7 @@ public class ClassGenerator implements Opcodes {
 
 	/**
 	 * Start generating a class
-	 * 
+	 *
 	 * @param interfaces
 	 */
 	public void startClass(String parent, String[] interfaces) {
@@ -57,7 +62,7 @@ public class ClassGenerator implements Opcodes {
 
 	/**
 	 * Start generating a method of the class
-	 * 
+	 *
 	 * @param access
 	 * @param name
 	 * @param type
@@ -69,7 +74,7 @@ public class ClassGenerator implements Opcodes {
 
 	/**
 	 * Start generating code of a method
-	 * 
+	 *
 	 * @param mv
 	 * @param startLabel
 	 */
@@ -80,7 +85,7 @@ public class ClassGenerator implements Opcodes {
 
 	/**
 	 * Get ClassWriter
-	 * 
+	 *
 	 * @return
 	 */
 	public ClassWriter getClassWriter() {
@@ -89,7 +94,7 @@ public class ClassGenerator implements Opcodes {
 
 	/**
 	 * End generating code of a method
-	 * 
+	 *
 	 * @param mv
 	 * @param endLabel
 	 */
@@ -100,7 +105,7 @@ public class ClassGenerator implements Opcodes {
 
 	/**
 	 * Dump the byte array of the generated class
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -115,7 +120,7 @@ public class ClassGenerator implements Opcodes {
 	/**
 	 * A simple example use `javap -v Test.class` to print the generated human
 	 * readable bytecode
-	 * 
+	 *
 	 * @param args
 	 */
 	@SuppressWarnings("rawtypes")
