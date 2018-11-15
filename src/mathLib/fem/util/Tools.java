@@ -14,6 +14,8 @@ import mathLib.fem.core.Element;
 import mathLib.fem.core.Mesh;
 import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeRefined;
+import mathLib.fem.core.NodeType;
+import mathLib.fem.core.geometry.Point;
 import mathLib.fem.shapefun.SFBilinearLocal2D;
 import mathLib.fem.shapefun.SFLinearLocal2D;
 import mathLib.fem.util.container.ElementList;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;

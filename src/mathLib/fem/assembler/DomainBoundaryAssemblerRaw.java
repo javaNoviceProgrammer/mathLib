@@ -1,11 +1,16 @@
 package mathLib.fem.assembler;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.symbolic.operator.FOIntegrate;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.util.CompiledFunc;
 
 public class DomainBoundaryAssemblerRaw {

@@ -2,11 +2,16 @@ package mathLib.fem.assembler;
 
 import mathLib.fem.core.DOF;
 import mathLib.fem.core.DOFOrder;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.util.container.DOFList;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class DomainBoundaryAssembler {
 	BasicAssembler domainAss;

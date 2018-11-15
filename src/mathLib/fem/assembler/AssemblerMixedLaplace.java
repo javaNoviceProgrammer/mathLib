@@ -1,5 +1,6 @@
 package mathLib.fem.assembler;
 
+import mathLib.fem.core.Mesh;
 import mathLib.fem.core.intf.AssemblerOld;
 import mathLib.fem.core.intf.WeakFormOld;
 import mathLib.fem.util.container.ElementList;

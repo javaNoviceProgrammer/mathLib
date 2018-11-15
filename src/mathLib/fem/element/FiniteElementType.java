@@ -1,5 +1,8 @@
 package mathLib.fem.element;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+
 public interface FiniteElementType {
 	/**
 	 * Associate degrees of freedom (DOF) to element e

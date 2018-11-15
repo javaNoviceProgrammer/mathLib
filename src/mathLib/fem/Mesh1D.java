@@ -1,6 +1,7 @@
 package mathLib.fem;
 
 import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.util.MeshGenerator;
 
 public class Mesh1D {

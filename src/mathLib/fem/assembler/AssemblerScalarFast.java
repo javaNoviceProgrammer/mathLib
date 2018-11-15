@@ -1,9 +1,14 @@
 package mathLib.fem.assembler;
 
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeRefined;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.AssemblerOld;
 import mathLib.fem.core.intf.WeakFormOld;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;

@@ -2,6 +2,7 @@ package mathLib.fem;
 
 import mathLib.fitting.interpol.BilinearInterpolation2D;
 import mathLib.func.ArrayFunc;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.plot.ColorMapPlot;
 import mathLib.plot.util.MeshGrid;
 import mathLib.util.ArrayUtils;

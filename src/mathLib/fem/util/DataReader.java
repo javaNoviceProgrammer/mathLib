@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 import mathLib.matrix.algebra.SpaceVector;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class DataReader {
 	public static boolean debug = false;

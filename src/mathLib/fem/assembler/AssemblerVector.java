@@ -7,8 +7,14 @@ import java.util.Set;
 
 import mathLib.fem.core.DOF;
 import mathLib.fem.core.DOFOrder;
+import mathLib.fem.core.Edge;
 import mathLib.fem.core.EdgeLocal;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Face;
 import mathLib.fem.core.FaceLocal;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.Volume;
 import mathLib.fem.core.geometry.GeoEntity;
 import mathLib.fem.core.geometry.GeoEntity2D;
@@ -19,6 +25,7 @@ import mathLib.fem.element.FiniteElementType;
 import mathLib.fem.util.container.DOFList;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.util.container.VertexList;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
 import mathLib.matrix.algebra.FullMatrix;
@@ -26,6 +33,8 @@ import mathLib.matrix.algebra.SparseBlockMatrix;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class AssemblerVector implements AssemblerOld {
 	protected Mesh mesh;
