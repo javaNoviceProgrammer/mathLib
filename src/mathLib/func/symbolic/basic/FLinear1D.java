@@ -1,7 +1,9 @@
 package mathLib.func.symbolic.basic;
 
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.fem.util.Constant;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
 
 /**

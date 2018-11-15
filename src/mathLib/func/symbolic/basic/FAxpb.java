@@ -2,8 +2,10 @@ package mathLib.func.symbolic.basic;
 
 import java.util.Map;
 
+import mathLib.fem.util.Constant;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.SingleVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.intf.MathFunc;
 

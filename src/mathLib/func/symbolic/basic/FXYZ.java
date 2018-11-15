@@ -2,6 +2,7 @@ package mathLib.func.symbolic.basic;
 
 import java.util.List;
 
+import mathLib.fem.util.Constant;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.intf.MathFunc;

@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.sun.org.apache.bcel.internal.generic.ClassGen;
-import com.sun.org.apache.bcel.internal.generic.ConstantPoolGen;
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
-import com.sun.org.apache.bcel.internal.generic.InstructionFactory;
-import com.sun.org.apache.bcel.internal.generic.InstructionList;
-import com.sun.org.apache.bcel.internal.generic.MethodGen;
+import org.apache.bcel.generic.ArrayType;
+import org.apache.bcel.generic.ClassGen;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.InstructionConstants;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.InstructionList;
+import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.Type;
 
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.func.symbolic.basic.FComposite;

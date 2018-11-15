@@ -1,10 +1,19 @@
 package mathLib.func.symbolic.basic;
 
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.fem.core.Edge;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
+import mathLib.fem.core.geometry.Point;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Tools;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.ElementDependentFunction;
 import mathLib.func.symbolic.intf.MathFunc;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Compute derivative u_x of a vector u that defined on a mesh

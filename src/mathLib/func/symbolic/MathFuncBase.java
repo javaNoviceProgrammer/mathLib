@@ -2,15 +2,12 @@ package mathLib.func.symbolic;
 
 import static org.apache.bcel.Constants.ACC_PUBLIC;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.bcel.Constants;
 import org.apache.bcel.generic.AALOAD;

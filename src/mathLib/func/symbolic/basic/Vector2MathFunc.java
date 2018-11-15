@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.uta.futureye.util.Tools;
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.fem.core.Element;
 import mathLib.fem.core.Mesh;
 import mathLib.fem.core.Node;
+import mathLib.fem.core.geometry.Point;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Tools;
 import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.Variable;

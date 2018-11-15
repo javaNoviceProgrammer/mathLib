@@ -1,8 +1,11 @@
 package mathLib.func.symbolic.basic;
 
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
 import mathLib.fem.util.FutureyeException;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.ElementDependentFunction;
 import mathLib.func.symbolic.intf.MathFunc;
 

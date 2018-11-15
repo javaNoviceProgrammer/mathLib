@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.func.symbolic.VN;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.util.CompiledFunc;

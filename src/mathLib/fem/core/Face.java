@@ -1,9 +1,11 @@
 package mathLib.fem.core;
 
 import mathLib.fem.core.geometry.GeoEntity2D;
+import mathLib.fem.core.geometry.Point;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ObjList;
 import mathLib.matrix.algebra.SpaceVector;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Global face of an element

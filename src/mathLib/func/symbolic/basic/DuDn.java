@@ -1,12 +1,17 @@
 package mathLib.func.symbolic.basic;
 
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.fem.core.Edge;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Face;
 import mathLib.fem.core.geometry.GeoEntity;
 import mathLib.fem.util.FutureyeException;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.ElementDependentFunction;
 import mathLib.func.symbolic.intf.MathFunc;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * \frac{ \partial{u} }{ \partial{\mathbf{n}} }

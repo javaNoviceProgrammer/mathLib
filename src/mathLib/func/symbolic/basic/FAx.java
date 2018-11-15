@@ -1,8 +1,10 @@
 package mathLib.func.symbolic.basic;
 
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.fem.util.Constant;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.SingleVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
 
 /**

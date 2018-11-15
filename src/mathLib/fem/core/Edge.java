@@ -1,7 +1,9 @@
 package mathLib.fem.core;
 
 import mathLib.fem.core.geometry.GeoEntity1D;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.NodeList;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Global edge of an element

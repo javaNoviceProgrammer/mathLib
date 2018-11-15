@@ -3,13 +3,13 @@ package mathLib.func.symbolic.intf;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.org.apache.bcel.internal.generic.ConstantPoolGen;
-import com.sun.org.apache.bcel.internal.generic.InstructionFactory;
-import com.sun.org.apache.bcel.internal.generic.InstructionHandle;
-import com.sun.org.apache.bcel.internal.generic.InstructionList;
-import com.sun.org.apache.bcel.internal.generic.MethodGen;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.InstructionHandle;
+import org.apache.bcel.generic.InstructionList;
+import org.apache.bcel.generic.MethodGen;
+import org.objectweb.asm.MethodVisitor;
 
-import jdk.internal.org.objectweb.asm.MethodVisitor;
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;

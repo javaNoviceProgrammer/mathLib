@@ -3,6 +3,7 @@ package mathLib.func.symbolic.operator;
 import java.util.List;
 import java.util.Map;
 
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 
