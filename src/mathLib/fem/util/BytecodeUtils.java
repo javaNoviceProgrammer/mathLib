@@ -47,7 +47,7 @@ public class BytecodeUtils {
 		return map;
 	}
 
-	public static ClassGen genClass(MathFunc func, String[] varNames, String funcClsName, 
+	public static ClassGen genClass(MathFunc func, String[] varNames, String funcClsName,
 			boolean writeClassFile, boolean staticMethod) {
 		String packageName = "edu.uta.futureye.bytecode";
 		String clsName = funcClsName;
