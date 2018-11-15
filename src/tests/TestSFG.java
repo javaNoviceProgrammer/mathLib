@@ -1,14 +1,13 @@
 package tests;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.s;
+import static mathLib.func.symbolic.FMath.*;
 
 import mathLib.sfg.symbolic.SFG;
 import mathLib.util.StringUtils;
 
 public class TestSFG {
 	public static void main(String[] args) {
-		
+
 		String[] nodes = {"I", "A", "B", "C", "D", "O"} ;
 		SFG sfg = new SFG(StringUtils.toArrayList(nodes)) ;
 		sfg.addArrow("I", "A", C(1));
@@ -19,9 +18,9 @@ public class TestSFG {
 		sfg.addArrow("D", "C", s);
 		sfg.addArrow("C", "O", C(1));
 		sfg.buildForwardPaths("I", "O");
-		
+
 		System.out.println(sfg.getGain());
-		
+
 		System.out.println(sfg.printAllLoops_compactForm());
 	}
 

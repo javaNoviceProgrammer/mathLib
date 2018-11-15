@@ -1,5 +1,6 @@
 package tests;
 
+import mathLib.fem.core.Mesh;
 import mathLib.fem.util.MeshGenerator;
 
 public class TestMesh1D {

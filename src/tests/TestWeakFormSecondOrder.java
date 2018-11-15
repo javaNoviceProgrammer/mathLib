@@ -1,7 +1,6 @@
 package tests;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.sin;
+import static mathLib.func.symbolic.FMath.*;
 
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.intf.MathFunc;
