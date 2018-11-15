@@ -1,6 +1,7 @@
 package mathLib.plot.tutorial;
 
 import static java.lang.Math.PI;
+import static mathLib.numbers.Complex.*;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -17,7 +18,7 @@ public class Tutorial3 {
 		double[] x = MathUtils.linspace(-3 * PI, 3 * PI, 1000);
 		Complex[] y = new Complex[x.length] ;
 		for(int i=0; i<x.length; i++)
-			y[i] = ComplexMath.sin(new Complex(x[i], 0.0)) ;
+			y[i] = ComplexMath.exp(j*x[i]) ;
 		MatlabChart fig = new MatlabChart();
 		fig.plot(x, y);
 		fig.renderPlot();
