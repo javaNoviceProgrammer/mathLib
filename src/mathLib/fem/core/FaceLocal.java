@@ -5,6 +5,7 @@ import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.DOFList;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.util.container.VertexList;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Local face of an element

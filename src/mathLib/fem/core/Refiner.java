@@ -5,6 +5,7 @@ import java.util.Map;
 
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.util.container.VertexList;
 

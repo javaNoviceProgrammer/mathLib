@@ -5,6 +5,8 @@
  */
 package mathLib.fem.element;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
 import mathLib.fem.core.RectAreaCoord;
 import mathLib.fem.core.intf.CoordTrans;
 import mathLib.fem.core.intf.FiniteElement;

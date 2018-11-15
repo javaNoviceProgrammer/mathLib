@@ -1,20 +1,23 @@
 package mathLib.fem.laplace;
 
-import static edu.uta.futureye.function.FMath.x;
-import static edu.uta.futureye.function.FMath.y;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import static mathLib.func.symbolic.FMath.*;
 import mathLib.fem.FEMUtils;
 import mathLib.fem.Mesh2DRect;
 import mathLib.fem.assembler.Assembler;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.element.FELinearTriangle;
+import mathLib.fem.util.Utils;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.geometry.algebra.Point;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.Solver;
 import mathLib.plot.util.MeshGrid;
 import mathLib.util.Timer;

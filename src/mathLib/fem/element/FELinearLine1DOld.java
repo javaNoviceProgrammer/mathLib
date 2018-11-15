@@ -1,6 +1,9 @@
 package mathLib.fem.element;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Vertex;
 import mathLib.fem.shapefun.SFLinearLocal1D;
 import mathLib.fem.util.container.VertexList;
 

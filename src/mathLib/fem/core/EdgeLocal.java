@@ -1,10 +1,12 @@
 package mathLib.fem.core;
 
 import mathLib.fem.core.geometry.GeoEntity1D;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.DOFList;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.util.container.VertexList;
 import mathLib.func.symbolic.FMath;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Local edge of an element

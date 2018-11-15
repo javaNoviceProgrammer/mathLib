@@ -1,7 +1,10 @@
 package mathLib.fem.weakform;
 
 import mathLib.fem.core.DOF;
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Node;
+import mathLib.fem.util.Utils;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
 
 /**

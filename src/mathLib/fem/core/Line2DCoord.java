@@ -1,19 +1,20 @@
 package mathLib.fem.core;
 
-import static edu.uta.futureye.function.FMath.pow;
-import static edu.uta.futureye.function.FMath.sqrt;
+import static mathLib.func.symbolic.FMath.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.org.apache.bcel.internal.generic.ALOAD;
-import com.sun.org.apache.bcel.internal.generic.ConstantPoolGen;
-import com.sun.org.apache.bcel.internal.generic.DALOAD;
-import com.sun.org.apache.bcel.internal.generic.InstructionFactory;
-import com.sun.org.apache.bcel.internal.generic.InstructionHandle;
-import com.sun.org.apache.bcel.internal.generic.InstructionList;
-import com.sun.org.apache.bcel.internal.generic.MethodGen;
-import com.sun.org.apache.bcel.internal.generic.PUSH;
+import org.apache.bcel.generic.ALOAD;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.DALOAD;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.InstructionHandle;
+import org.apache.bcel.generic.InstructionList;
+import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.PUSH;
+import org.objectweb.asm.MethodVisitor;
+
 import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 
 import mathLib.fem.core.intf.CoordTrans;

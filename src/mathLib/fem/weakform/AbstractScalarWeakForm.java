@@ -1,12 +1,14 @@
 package mathLib.fem.weakform;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
 import mathLib.fem.core.intf.WeakFormOld;
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
 import mathLib.fem.util.FutureyeException;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;
 import mathLib.func.symbolic.operator.FOIntegrate;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 public abstract class AbstractScalarWeakForm implements WeakFormOld {
 	protected DOF trialDOF = null;

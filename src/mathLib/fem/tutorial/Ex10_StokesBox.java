@@ -1,14 +1,18 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.C1;
-import static edu.uta.futureye.function.FMath.grad;
+import static mathLib.func.symbolic.FMath.*;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.fem.assembler.BasicVecAssembler;
+import mathLib.fem.core.Edge;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.element.FEBilinearV_ConstantP;
+import mathLib.fem.util.Constant;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.weakform.VecWeakForm;
@@ -21,6 +25,7 @@ import mathLib.matrix.algebra.SparseBlockMatrix;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.SchurComplementStokesSolver;
 import mathLib.util.io.MeshReader;
 

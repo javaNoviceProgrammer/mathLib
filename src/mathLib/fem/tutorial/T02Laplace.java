@@ -3,12 +3,17 @@ package mathLib.fem.tutorial;
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerScalar;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.util.MeshGenerator;
 import mathLib.fem.weakform.WeakFormBuilder;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.SingleVarFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.external.SolverJBLAS;
 
 

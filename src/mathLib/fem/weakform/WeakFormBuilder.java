@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
 import mathLib.fem.core.intf.WeakFormOld;
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.basic.FX;
 import mathLib.func.symbolic.intf.MathFunc;
