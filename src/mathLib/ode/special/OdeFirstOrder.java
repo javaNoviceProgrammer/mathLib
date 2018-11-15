@@ -1,7 +1,6 @@
 package mathLib.ode.special;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.x;
+import static mathLib.func.symbolic.FMath.*;
 
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.intf.MathFunc;
@@ -11,14 +10,14 @@ import mathLib.util.MathUtils;
 
 /**
  * solving ordinary differential equation of the form  a(x) y' + b(x) y = f(x)
- * 
+ *
  *	a(x) cannot be null, but b(x) and f(x) can be null.
  */
 
 public class OdeFirstOrder extends RungeKutta implements DerivFunction1D {
-	
+
 	MathFunc a, b, f ;
-	
+
 	public OdeFirstOrder(MathFunc a, MathFunc b, MathFunc f) {
 		if(a == null)
 			throw new IllegalArgumentException("First argument cannot be null") ;
@@ -26,19 +25,19 @@ public class OdeFirstOrder extends RungeKutta implements DerivFunction1D {
 			b = C(0) ;
 		if(f == null)
 			f = C(0) ;
-		
+
 		this.a = a ;
 		this.b = b ;
 		this.f = f ;
 	}
-	
+
 	@Override
 	public double deriv(double x, double y) {
 		// y' = g(x,y)
 		double g = (f.apply(x)-b.apply(x)*y)/a.apply(x) ;
 		return g;
 	}
-	
+
 	// for test
 	public static void main(String[] args) {
 		// solving y' = 2x on [0,2] with y(0) = 0
@@ -53,7 +52,7 @@ public class OdeFirstOrder extends RungeKutta implements DerivFunction1D {
 			ode.setFinalValueOfX(xVal[i]);
 			yVal[i] = ode.fourthOrder(ode) ;
 		}
-		
+
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(xVal, yVal);
 		fig.renderPlot();

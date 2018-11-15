@@ -1,9 +1,6 @@
 package mathLib.ode.special;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.sin;
-import static edu.uta.futureye.function.FMath.x;
-import static edu.uta.futureye.function.FMath.y;
+import static mathLib.func.symbolic.FMath.*;
 
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.intf.MathFunc;
@@ -14,7 +11,7 @@ import mathLib.util.Timer;
 
 /**
  * solving ordinary differential equation of the form  a(x,y) y''' + b(x,y) y'' + c(x,y) y' + d(x,y) y = f(x,y)
- * 
+ *
  *	a(x,y) cannot be null, but b(x,y), c(x,y), d(x,y) and f(x,y) can be null.
  *
  *	solution gives y(x), y'(x), and y''(x)
@@ -23,7 +20,7 @@ import mathLib.util.Timer;
 public class OdeMixedThirdOrder extends RungeKutta implements DerivnFunction1D {
 
 	MathFunc a, b, c, d, f ;
-	
+
 	public OdeMixedThirdOrder(MathFunc a, MathFunc b, MathFunc c, MathFunc d, MathFunc f) {
 		if(a == null)
 			throw new IllegalArgumentException("First argument cannot be null") ;
@@ -35,17 +32,17 @@ public class OdeMixedThirdOrder extends RungeKutta implements DerivnFunction1D {
 			d = C(0) ;
 		if(f == null)
 			f = C(0) ;
-		
+
 		this.a = a ;
 		this.b = b ;
 		this.c = c ;
 		this.d = d ;
 		this.f = f ;
 	}
-	
+
 	@Override
 	public double[] derivn(double x, double[] yy) {
-		// z = y' => y'' = z' 
+		// z = y' => y'' = z'
 		// w = y'' = z' => w' = y'''
 		// y' = g0(x,y,z)
 		// z' = g1(x,y,z)
@@ -59,7 +56,7 @@ public class OdeMixedThirdOrder extends RungeKutta implements DerivnFunction1D {
 		g2 = g2/a.apply(x,y) ;
 		return new double[] {g0, g1, g2} ;
 	}
-	
+
 	// for test
 	public static void main(String[] args) {
 		Timer timer = new Timer() ;
@@ -77,10 +74,10 @@ public class OdeMixedThirdOrder extends RungeKutta implements DerivnFunction1D {
 			yVal[i] = ode.fourthOrder(ode)[0] ;
 			dyVal[i] = ode.fourthOrder(ode)[1] ;
 		}
-		
+
 		timer.stop();
 		System.out.println(timer);
-		
+
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(xVal, yVal, "b");
 		fig.renderPlot();
@@ -89,6 +86,6 @@ public class OdeMixedThirdOrder extends RungeKutta implements DerivnFunction1D {
 		fig.ylabel("Solution Y");
 		fig.run(true);
 	}
-	
+
 
 }

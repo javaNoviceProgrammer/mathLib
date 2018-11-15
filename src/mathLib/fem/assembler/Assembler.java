@@ -1,19 +1,23 @@
 package mathLib.fem.assembler;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
 import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class Assembler {
 	Mesh mesh;
 	BasicAssembler assembler;
-	
+
 	Matrix gA;
 	Vector gb;
-	
+
 	Assembler parentAssembler;
-	
+
 	public Assembler(Mesh mesh, WeakForm weakForm) {
 		this.mesh = mesh;
 		this.assembler = new BasicAssembler(mesh, weakForm);
@@ -28,7 +32,7 @@ public class Assembler {
 		this.parentAssembler = parent;
 		this.assembler = new BasicAssembler(mesh, weakForm);
 	}
-	
+
 	/**
 	 * Assemble local stiff and load on a give element
 	 * @param e
@@ -44,8 +48,8 @@ public class Assembler {
 	 */
 	public void assembleGlobal(Element e) {
 		if(null != this.parentAssembler) {
-			assembleGlobal(e, 
-					this.parentAssembler.getGlobalStiffMatrix(), 
+			assembleGlobal(e,
+					this.parentAssembler.getGlobalStiffMatrix(),
 					this.parentAssembler.getGlobalLoadVector());
 		} else {
 			throw new RuntimeException("Call assembleGlobal(Mesh mesh) first!");
@@ -70,10 +74,10 @@ public class Assembler {
 	/**
 	 * Assemble stiff matrix and load vector on a given mesh
 	 * into parameter stiff and load.
-	 * 
+	 *
 	 * Several assemblers can be chained by using this method
 	 * to assemble stiff matrix and load vector
-	 * 
+	 *
 	 * @param mesh
 	 * @param stiff
 	 * @param load
@@ -85,7 +89,7 @@ public class Assembler {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param e
 	 * @param stiff
 	 * @param load

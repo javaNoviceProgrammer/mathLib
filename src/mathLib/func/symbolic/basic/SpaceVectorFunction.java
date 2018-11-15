@@ -3,18 +3,20 @@ package mathLib.func.symbolic.basic;
 import java.util.LinkedList;
 
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.VecMathFuncBase;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class SpaceVectorFunction extends VecMathFuncBase {
 	protected MathFunc[] data = null;
-	
+
 	public SpaceVectorFunction(int dim) {
 		this.dim = dim;
 		data = new MathFunc[dim];
 	}
-	
+
 	public SpaceVectorFunction(MathFunc ...f) {
 		if(f == null || f.length ==0) {
 			Exception e = new FutureyeException("Dim of SpaceVectorFunction should be > 0!");
@@ -30,7 +32,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 			}
 		}
 	}
-	
+
 	public SpaceVectorFunction(Vector v) {
 		this.dim = v.getDim();
 		data = new MathFunc[dim];
@@ -38,7 +40,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 			data[i-1] = new FC(v.get(i));
 		}
 	}
-	
+
 	@Override
 	public MathFunc get(int index) {
 		return data[index-1];
@@ -49,7 +51,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		data[index-1] = value;
 		varNames = Utils.mergeList(varNames, value.getVarNames());
 	}
-	
+
 	@Override
 	public VecMathFunc set(VecMathFunc v) {
 		for(int i=1; i<=dim; i++) {
@@ -58,7 +60,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		this.setVarNames(v.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc set(double a, VecMathFunc v) {
 		for(int i=1; i<=dim; i++) {
@@ -67,7 +69,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		this.setVarNames(v.varNames());
 		return this;
 	}
-	
+
 	public VecMathFunc inc(VecMathFunc v) {
 		for(int i=1; i<=dim; i++) {
 			data[i-1] = data[i-1].A(v.get(i));
@@ -75,7 +77,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		varNames = Utils.mergeList(varNames, v.varNames());
 		return this;
 	}
-	
+
 	public VecMathFunc inc(double a, VecMathFunc g) {
 		for(int i=1; i<=dim; i++) {
 			data[i-1] = data[i-1].A(g.get(i).M(a));
@@ -83,7 +85,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		varNames = Utils.mergeList(varNames, g.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc scale(double a) {
 		for(int i=1; i<=dim; i++) {
@@ -91,7 +93,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc ax(double a) {
 		for(int i=1; i<=dim; i++) {
@@ -99,7 +101,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc axpy(double a, VecMathFunc g) {
 		for(int i=1; i<=dim; i++) {
@@ -108,7 +110,7 @@ public class SpaceVectorFunction extends VecMathFuncBase {
 		varNames = Utils.mergeList(varNames, g.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc copy() {
 		SpaceVectorFunction rlt = new SpaceVectorFunction(dim);

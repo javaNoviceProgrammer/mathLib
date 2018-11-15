@@ -6,108 +6,110 @@ import mathLib.matrix.algebra.FullVector;
 import mathLib.matrix.algebra.SparseVectorHashMap;
 import mathLib.matrix.algebra.intf.AlgebraMatrix;
 import mathLib.matrix.algebra.intf.AlgebraVector;
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.SparseMatrix;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.external.SolverJBLAS;
 
 /**
  * Iterative solver
- * 
+ *
  *
  */
 public class Solver {
 
 	public double epsRelIter = 1e-9;
-	
+
 	public double epsAbsIterMin = 1e-15;
 	public double epsAbsIterMax = 1e-6;
-	
+
 	public double maxIter = 20000;
-	
+
 	public boolean debug = false;
-	
+
 	/**
-	 * Conjugate Gradients iterative method, solves 
+	 * Conjugate Gradients iterative method, solves
 	 * symmetric positive definite linear system:
 	 * <tt>Ax = b</tt>
-	 * 
+	 *
 	 * @param A
 	 * @param b
 	 * @param x
 	 * @return
 	 */
-	public AlgebraVector solveCG(AlgebraMatrix A, AlgebraVector b, 
+	public AlgebraVector solveCG(AlgebraMatrix A, AlgebraVector b,
 			AlgebraVector x) {
 
 		double alpha = 0, beta = 0, rho = 0, rho_1 = 0;
-		
+
 		int dim = b.getDim();
 		AlgebraVector r = new FullVector(dim);
 		AlgebraVector z = new FullVector(dim);
 		AlgebraVector p = new FullVector(dim);
 		AlgebraVector q = new FullVector(dim);
-		
+
 		// r = b - Ax
 		//A.multAdd(-1, x, r.set(b));
 		A.mult(x, r);
 		r.axpy(-1.0, b);
-		
+
 		double firstNorm2 = r.norm2();
 		double norm2 = 0;
 		//for (iter.setFirst(); !iter.converged(r, x); iter.next()) {
 		for(int i=0;i<maxIter;i++) {
 			norm2 = r.norm2();
-			if((norm2<=this.epsRelIter*firstNorm2 && norm2<=this.epsAbsIterMax) || 
+			if((norm2<=this.epsRelIter*firstNorm2 && norm2<=this.epsAbsIterMax) ||
 					norm2<=this.epsAbsIterMin) {
 				if(debug)
 					System.out.println(
-						String.format("Iter----->i=%05d, RError=%8.3e, AError=%8.3e", 
+						String.format("Iter----->i=%05d, RError=%8.3e, AError=%8.3e",
 								i,norm2/firstNorm2,norm2));
 				return x;
 			}
-			
+
 		    //M.apply(r, z);
 			//Mz=r
-			//M：预�?�件矩阵，�?�为I,z==r
+			//M：预�?�件矩阵，�?�为I,z==r
 			z=r;
-			
+
 		    rho = r.dot(z);
-		
+
 		    if (i==0)
 		        p.set(z);
 		    else {
 		        beta = rho / rho_1;
 		        p.axpy(beta, z); //p=beta*p+z
 		    }
-		
+
 		    //q = A*p
 		    A.mult(p, q);
 		    alpha = rho / p.dot(q);
-		
+
 		    x.add(alpha, p); //x=x+alpha*p
 		    r.add(-alpha, q); //r=r-alpha*q
-		
+
 		    rho_1 = rho;
 		}
 		System.out.println("Iter Max----->maxIter="+maxIter+"  norm2="+norm2);
 		return x;
     }
-	
+
 	/**
 	 * Conjugate Gradients squared iterative method,
 	 * solves the unsymmetric linear system
 	 * <tt>Ax = b</tt>
-	 * 
+	 *
 	 * @param A
 	 * @param b
 	 * @param x
 	 * @return
 	 */
-	public AlgebraVector solveCGS(AlgebraMatrix A, AlgebraVector b, 
+	public AlgebraVector solveCGS(AlgebraMatrix A, AlgebraVector b,
 			AlgebraVector x) {
 
         double rho_1 = 0, rho_2 = 0, alpha = 0, beta = 0;
-		
+
 		int dim = b.getDim();
 		AlgebraVector r = new FullVector(dim);
 		AlgebraVector p = new FullVector(dim);
@@ -119,30 +121,30 @@ public class Solver {
 		AlgebraVector uhat = new FullVector(dim);
 		AlgebraVector sum = new FullVector(dim);
 		AlgebraVector rtilde = new FullVector(dim);
-        
+
 		// r = b - Ax
 		//A.multAdd(-1, x, r.set(b));
 		A.mult(x, r);
 		r.axpy(-1.0, b);
 	    rtilde.set(r);
-		
+
 		double firstNorm2 = r.norm2();
 		double norm2 = 0;
 		long begin = System.currentTimeMillis(),end=0;
 		//for (iter.setFirst(); !iter.converged(r, x); iter.next()) {
 		for(int i=0;i<maxIter;i++) {
 			norm2 = r.norm2();
-			if((norm2<=this.epsRelIter*firstNorm2 && norm2<=this.epsAbsIterMax) || 
+			if((norm2<=this.epsRelIter*firstNorm2 && norm2<=this.epsAbsIterMax) ||
 					norm2<=this.epsAbsIterMin) {
 				if(debug) {
 					end = System.currentTimeMillis();
 					System.out.println(
-						String.format("Iter----->i=%05d, RError=%8.3e, AError=%8.3e, Time=%dms", 
+						String.format("Iter----->i=%05d, RError=%8.3e, AError=%8.3e, Time=%dms",
 								i,norm2/firstNorm2,norm2,(end-begin)));
 				}
 				return x;
 			}
-			
+
             rho_1 = rtilde.dot(r);
             if (rho_1 == 0) {
         		//System.out.println("Iter NotConverge maxIter="+i+"  norm2="+norm2);
@@ -162,11 +164,11 @@ public class Solver {
 
             //M.apply(p, phat);
             phat.set(p);
-            
+
             A.mult(phat, vhat);
             alpha = rho_1 / rtilde.dot(vhat);
             q.set(-alpha, vhat).add(u);
-            
+
             //M.apply(sum.set(u).add(q), uhat);
             uhat.set(sum.set(u).add(q));
             x.add(alpha, uhat);
@@ -178,10 +180,10 @@ public class Solver {
 		end = System.currentTimeMillis();
 		System.out.println("Iter Max----->maxIter="+maxIter+", Norm2="+norm2+", Time="+(end-begin));
 		return x;
-    }	
-	
+    }
+
 	/////////////////////////////////////////////////////////////
-	
+
 	public Vector solveCG(SparseMatrix A, Vector b, Vector x) {
 		if( !( A.getRowDim() == A.getColDim() &&
 				A.getRowDim() == b.getDim()) ) {
@@ -198,14 +200,14 @@ public class Solver {
 		}
 		return x;
 	}
-	
+
 	public Vector solveCG(SparseMatrix A, Vector b) {
 		SparseVector x = new SparseVectorHashMap(b.getDim(),0.1);
 		return solveCG(A,b,x);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param A
 	 * @param b
 	 * @return
@@ -213,10 +215,10 @@ public class Solver {
 	public Vector solveAuto(Matrix A, Vector b) {
 		//test
         SolverJBLAS sol = new SolverJBLAS();
-		Vector x = sol.solveDGESV(A, b);		
+		Vector x = sol.solveDGESV(A, b);
 		return x;
 	}
-	
+
 	public <Vec extends Vector> Vec solveCGS(SparseMatrix A, Vec b, Vec x) {
 		if( !( A.getRowDim() == A.getColDim() &&
 				A.getRowDim() == b.getDim()) ) {
@@ -234,7 +236,7 @@ public class Solver {
 		}
 		return x;
 	}
-	
+
 	public <Vec extends Vector> Vec solveCGS(SparseMatrix A, Vec b) {
 		@SuppressWarnings("unchecked")
 		Vec x = (Vec)b.copy();
@@ -243,26 +245,26 @@ public class Solver {
 		}
 		return solveCGS(A,b,x);
 	}
-	
+
 	////////////////////////////////////////////////////////////////
-	
+
 	@Deprecated
 	public Vector solveCG2(Matrix A, Vector b, Vector x) {
 
 		double alpha = 0, beta = 0, rho = 0, rho_1 = 0;
-		
-		
+
+
 		Vector r = new SparseVectorHashMap(b.getDim());
-		
+
 		Vector z = new SparseVectorHashMap(b.getDim());
 		Vector p = new SparseVectorHashMap(b.getDim());
 		Vector q = new SparseVectorHashMap(b.getDim());
-		
+
 		// r = b - Ax
 		//A.multAdd(-1, x, r.set(b));
 		A.mult(x, r);
 		r.axpy(-1.0, b);
-		
+
 		double firstNorm2 = r.norm2();
 		double norm2 = 0;
 		//for (iter.setFirst(); !iter.converged(r, x); iter.next()) {
@@ -272,14 +274,14 @@ public class Solver {
 				System.out.println("----->i="+i+"  norm2="+norm2);
 				return x;
 			}
-			
+
 		    //M.apply(r, z);
 			//Mz=r
-			//M：预�?�件矩阵，�?�为I,z==r
+			//M：预�?�件矩阵，�?�为I,z==r
 			z=r;
-			
+
 		    rho = r.dot(z);
-		
+
 		    if (i==0)
 		        p.set(z);
 		    else {
@@ -288,20 +290,20 @@ public class Solver {
 		        //p=beta*p+z
 		        p.axpy(beta, z);
 		    }
-		
+
 		    //q = A*p
 		    //A.mult(p, q);
 		    A.mult(p, q);
 		    alpha = rho / p.dot(q);
-		
+
 		    x.add(alpha, p);
 		    r.add(-alpha, q);
-		    
+
 		    rho_1 = rho;
 		}
 		System.out.println("Iter Max----->maxIter="+maxIter+"  norm2="+norm2);
 		return x;
     }
-	
+
 
 }

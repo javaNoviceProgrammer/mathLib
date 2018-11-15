@@ -3,10 +3,15 @@ package mathLib.fem.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
+import mathLib.fem.core.NodeType;
+import mathLib.fem.util.container.NodeList;
 import mathLib.func.symbolic.intf.MathFunc;
 
 public class MeshGenerator {
-	
+
 	public static Mesh linear1D(double x0, double x1, int nx) {
 		Mesh mesh = new Mesh();
 		double L = x1 - x0 ;
@@ -25,8 +30,8 @@ public class MeshGenerator {
 		}
 		return mesh;
 	}
-	
-	
+
+
 	/*
 	 * Generate a rectangle mesh on [x0,x1]*[y0,y1] with nx points in X
 	 * direction and ny points in Y direction
@@ -38,13 +43,13 @@ public class MeshGenerator {
 		double stepy = (y1 - y0) / ny;
 		// generate nodes
 		/**
-		 * nx=3, ny=3 
-		 * node index: 1,2,...,9 
+		 * nx=3, ny=3
+		 * node index: 1,2,...,9
 		 * element index: (1),(2),...,(4)
-		 * 7-----8-----9 
-		 * | (3) | (4) | 
-		 * 4-----5-----6 
-		 * | (1) | (2) | 
+		 * 7-----8-----9
+		 * | (3) | (4) |
+		 * 4-----5-----6
+		 * | (1) | (2) |
 		 * 1-----2-----3
 		 */
 		for (int i = 0; i < ny; i++) {
@@ -59,7 +64,7 @@ public class MeshGenerator {
 
 		// generate elements
 		NodeList nodes = mesh.getNodeList();
-		
+
 		for (int i = 0; i < nx - 1; i++) {
 			for (int j = 0; j < ny - 1; j++) {
 				int n1 = i * nx + j;
@@ -98,6 +103,6 @@ public class MeshGenerator {
 		System.out.println(test.getNodeList());
 		System.out.println(test.getElementList());
 //		test.printMeshInfo();
-		
+
 	}
 }

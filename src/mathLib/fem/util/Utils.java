@@ -14,9 +14,15 @@ import java.util.Set;
 import mathLib.fem.core.CoordinateTransform;
 import mathLib.fem.core.DOF;
 import mathLib.fem.core.DOFOrder;
+import mathLib.fem.core.Edge;
 import mathLib.fem.core.EdgeLocal;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Face;
 import mathLib.fem.core.FaceLocal;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeRefined;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.Vertex;
 import mathLib.fem.core.Volume;
 import mathLib.fem.core.geometry.GeoEntity;
@@ -27,17 +33,21 @@ import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.core.intf.VecFiniteElement;
 import mathLib.fem.util.container.DOFList;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.util.container.VertexList;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;
 import mathLib.func.symbolic.intf.VecMathFunc;
 import mathLib.matrix.algebra.SpaceVector;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class Utils {
 

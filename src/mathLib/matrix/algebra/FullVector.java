@@ -1,10 +1,11 @@
 package mathLib.matrix.algebra;
 
 import mathLib.matrix.algebra.intf.AlgebraVector;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Full(dense) vector. Data is stored in a double array.
- * 
+ *
  *
  */
 public class FullVector implements AlgebraVector {
@@ -12,7 +13,7 @@ public class FullVector implements AlgebraVector {
 	 * Vector dimension(length)
 	 */
 	protected int dim = 0;
-	
+
 	/**
 	 * Vector data stored in a double array.
 	 */
@@ -24,7 +25,7 @@ public class FullVector implements AlgebraVector {
 		for(int i=dim; --i>=0;)
 			data[i] = 0.0;
 	}
-	
+
 	public FullVector(double[] data, boolean bCopy) {
 		this.dim = data.length;
 		if(bCopy) {
@@ -34,24 +35,24 @@ public class FullVector implements AlgebraVector {
 			this.data = data;
 		}
 	}
-	
+
 	public FullVector(int dim, double defaultValue) {
 		this.dim = dim;
 		this.data = new double[this.dim];
 		for(int i=dim; --i>=0;)
 			data[i] = defaultValue;
 	}
-	
+
 	public FullVector(Vector v) {
 		this.dim = v.getDim();
 		this.data = new double[this.dim];
 		for(int i=dim; --i>=0;)
 			data[i] = v.get(i+1);
 	}
-	
+
 	/**
 	 * set every element to scale*Math.random()+shift
-	 * 
+	 *
 	 * @param scale
 	 * @param shift
 	 */
@@ -59,17 +60,17 @@ public class FullVector implements AlgebraVector {
 		for(int i=dim; --i>=0;)
 			data[i] = scale*Math.random()+shift;
 	}
-	
+
 	@Override
 	public int getDim() {
 		return this.dim;
 	}
-	
+
 	@Override
 	public double[] getData() {
 		return this.data;
 	}
-	
+
 	@Override
 	public FullVector set(AlgebraVector v) {
 		double[] yData = v.getData();
@@ -94,7 +95,7 @@ public class FullVector implements AlgebraVector {
 			this.data[i] *= a;
 		return this;
 	}
-	
+
 	@Override
 	public FullVector add(AlgebraVector v) {
 		double[] yData = v.getData();
@@ -103,7 +104,7 @@ public class FullVector implements AlgebraVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public FullVector subtract(AlgebraVector v) {
 		double[] yData = v.getData();
@@ -112,7 +113,7 @@ public class FullVector implements AlgebraVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public FullVector add(double a, AlgebraVector v) {
 		double[] yData = v.getData();
@@ -147,7 +148,7 @@ public class FullVector implements AlgebraVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public FullVector axmy(double a, AlgebraVector y) {
 		double[] yData = y.getData();
@@ -163,13 +164,13 @@ public class FullVector implements AlgebraVector {
 		for(int i=dim; --i>=0;)
 			rlt += Math.abs(this.data[i]);
 		return rlt;
-	}	
-	
+	}
+
 	@Override
 	public double norm2() {
 		return Math.sqrt(this.dot(this));
 	}
-	
+
 	@Override
 	public double normInf() {
 		Double max = Double.MIN_VALUE;
@@ -187,12 +188,12 @@ public class FullVector implements AlgebraVector {
 		}
 		System.out.println();
 	}
-	
+
 	public class SparseData {
 		public int[] index;
 		public double[] data;
 	}
-	
+
 	public SparseData getSparseData() {
 		int n = 0;
 		for(int i=0;i<this.dim;i++) {
@@ -212,7 +213,7 @@ public class FullVector implements AlgebraVector {
 		}
 		return sd;
 	}
-	
+
 	public SparseVectorHashMap getSparseVector() {
 		SparseVectorHashMap rlt = new SparseVectorHashMap(this.dim);
 		for(int i=dim; --i>=0;)
@@ -228,7 +229,7 @@ public class FullVector implements AlgebraVector {
 		}
 		return rlt;
 	}
-	
+
 	public double get(int index) {
 		return data[index-1];
 	}

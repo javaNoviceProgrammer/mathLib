@@ -4,28 +4,32 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 
 /**
- * Read .node and .ele files from the output of 
+ * Read .node and .ele files from the output of
  * Triangle (see https://www.cs.cmu.edu/~quake/triangle.html)
- * 
- * 
+ *
+ *
  *
  */
 public class MeshReaderForTriangle {
-	
+
 	Mesh mesh = new Mesh();
 	String nodeFile = null;
 	String eleFile = null;
-	
+
 	public boolean debug = false;
-	
+
 	public MeshReaderForTriangle(String nodeFile, String eleFile) {
 		this.nodeFile = nodeFile;
 		this.eleFile = eleFile;
 	}
-	
+
 	public Mesh read2DMesh() {
 		FileInputStream in;
 		try {
@@ -33,7 +37,7 @@ public class MeshReaderForTriangle {
 
 			InputStreamReader reader = new InputStreamReader(in,"UTF-8");
 			BufferedReader br = new BufferedReader(reader);
-	
+
 			String str = null;
 			int nNode = 0;
 			int nElement = 0;
@@ -56,7 +60,7 @@ public class MeshReaderForTriangle {
 			}
 			br.close();
 			in.close();
-			
+
 			in = new FileInputStream(eleFile);
 			reader = new InputStreamReader(in,"UTF-8");
 			br = new BufferedReader(reader);
@@ -88,22 +92,22 @@ public class MeshReaderForTriangle {
 				e.adjustVerticeToCounterClockwise();
 			}
 			return mesh;
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	
+
+
 	public NodeList getNodeList() {
 		return mesh.getNodeList();
 	}
-	
+
 	public ElementList getElementList() {
 		return mesh.getElementList();
 	}
-	
+
 	public static void main(String[] args) {
 		MeshReaderForTriangle r1 = new MeshReaderForTriangle("./iphone/hand1.1.node","./iphone/hand1.1.ele");
 		Mesh m = r1.read2DMesh();

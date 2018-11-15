@@ -4,23 +4,27 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 
 /**
  * Read .grd file generated from Gridgen
  *
  */
 public class MeshReader {
-	
+
 	Mesh mesh = new Mesh();
 	String file = null;
-	
+
 	public boolean debug = false;
-	
+
 	public MeshReader(String fileName) {
 		this.file = fileName;
 	}
-	
+
 	public Mesh read2DMesh() {
 		FileInputStream in;
 		try {
@@ -28,7 +32,7 @@ public class MeshReader {
 
 			InputStreamReader reader = new InputStreamReader(in,"UTF-8");
 			BufferedReader br = new BufferedReader(reader);
-	
+
 			String str = null;
 			int nNode = 0;
 			int nElement = 0;
@@ -79,13 +83,13 @@ public class MeshReader {
 				e.adjustVerticeToCounterClockwise();
 			}
 			return mesh;
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	public Mesh read3DMesh() {
 		FileInputStream in;
 		try {
@@ -93,7 +97,7 @@ public class MeshReader {
 
 			InputStreamReader reader = new InputStreamReader(in,"UTF-8");
 			BufferedReader br = new BufferedReader(reader);
-	
+
 			String str = null;
 			int nNode = 0;
 			int nElement = 0;
@@ -136,14 +140,14 @@ public class MeshReader {
 							list.add(mesh.getNodeList().at(Integer.valueOf(line[9])));
 							list.add(mesh.getNodeList().at(Integer.valueOf(line[10])));
 							Element ele = new Element(list);
-							mesh.addElement(ele);	
+							mesh.addElement(ele);
 						}
 					}
 				}
 			}
 			br.close();
 			in.close();
-			
+
 			//add bufix
 			ElementList nEList = mesh.getElementList();
 			int nE = nEList.size();
@@ -152,22 +156,22 @@ public class MeshReader {
 				e.adjustVerticeToCounterClockwise();
 			}
 			return mesh;
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	
+
 	public NodeList getNodeList() {
 		return mesh.getNodeList();
 	}
-	
+
 	public ElementList getElementList() {
 		return mesh.getElementList();
 	}
-	
+
 	public static void main(String[] args) {
 		//MeshReader r1 = new MeshReader("mixed.grd");
 		MeshReader r1 = new MeshReader("../Futureye/grids/block1.grd");

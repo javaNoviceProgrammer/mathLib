@@ -1,8 +1,6 @@
 package mathLib.ode.special;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.sin;
-import static edu.uta.futureye.function.FMath.x;
+import static mathLib.func.symbolic.FMath.*;
 
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.intf.MathFunc;
@@ -12,7 +10,7 @@ import mathLib.util.MathUtils;
 
 /**
  * solving ordinary differential equation of the form  a(x) y''' + b(x) y'' + c(x) y' + d(x) y = f(x)
- * 
+ *
  *	a(x) cannot be null, but b(x), c(x), d(x) and f(x) can be null.
  *
  *	solution gives y(x), y'(x), and y''(x)
@@ -21,7 +19,7 @@ import mathLib.util.MathUtils;
 public class OdeThirdOrder extends RungeKutta implements DerivnFunction1D {
 
 	MathFunc a, b, c, d, f ;
-	
+
 	public OdeThirdOrder(MathFunc a, MathFunc b, MathFunc c, MathFunc d, MathFunc f) {
 		if(a == null)
 			throw new IllegalArgumentException("First argument cannot be null") ;
@@ -33,20 +31,20 @@ public class OdeThirdOrder extends RungeKutta implements DerivnFunction1D {
 			d = C(0) ;
 		if(f == null)
 			f = C(0) ;
-		
+
 		this.a = a ;
 		this.b = b ;
 		this.c = c ;
 		this.d = d ;
 		this.f = f ;
 	}
-	
+
 	@Override
 	public double[] derivn(double x, double[] yy) {
 		// z = y', w = y'' ==> z' = y'' = w , y''' = w'
 		// y' = g0(x,y,z)
 		// z' = g1(x,y,z)
-		// w' = g2(x,y,z) 
+		// w' = g2(x,y,z)
 		double y = yy[0] ;
 		double z = yy[1] ;
 		double w = yy[2] ;
@@ -56,7 +54,7 @@ public class OdeThirdOrder extends RungeKutta implements DerivnFunction1D {
 		g2 = g2/a.apply(x) ;
 		return new double[] {g0, g1, g2} ;
 	}
-	
+
 	// for test
 	public static void main(String[] args) {
 		// solving y''' = 2x sin(x) on [0,20] with y(0) = 0, y'(0) = 0, y''(0) = 0
@@ -70,7 +68,7 @@ public class OdeThirdOrder extends RungeKutta implements DerivnFunction1D {
 			ode.setFinalValueOfX(xVal[i]);
 			yVal[i] = ode.fourthOrder(ode)[0] ;
 		}
-		
+
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(xVal, yVal, "b");
 		fig.renderPlot();

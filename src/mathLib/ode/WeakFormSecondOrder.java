@@ -5,12 +5,18 @@ import java.util.Map;
 
 import flanagan.interpolation.LinearInterpolation;
 import mathLib.fem.assembler.Assembler;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.element.FELinearLine1D;
 import mathLib.fem.util.MeshGenerator;
+import mathLib.fem.util.Utils;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.symbolic.SingleVarFunc;
 import mathLib.func.symbolic.intf.MathFunc;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.Solver;
 import mathLib.plot.MatlabChart;
 import mathLib.util.Timer;

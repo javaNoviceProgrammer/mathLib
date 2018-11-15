@@ -1,9 +1,6 @@
 package mathLib.ode.special;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.sin;
-import static edu.uta.futureye.function.FMath.x;
-import static edu.uta.futureye.function.FMath.y;
+import static mathLib.func.symbolic.FMath.*;
 
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.intf.MathFunc;

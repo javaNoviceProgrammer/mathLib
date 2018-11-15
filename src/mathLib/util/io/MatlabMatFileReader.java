@@ -11,10 +11,12 @@ import com.jmatio.types.MLUInt8;
 import mathLib.fem.util.FutureyeException;
 import mathLib.matrix.algebra.SpaceVector;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class MatlabMatFileReader {
 	MatFileReader rd = null;
-	
+
 	public MatlabMatFileReader(String fileName) {
 		try {
 			rd = new MatFileReader(fileName);
@@ -24,7 +26,7 @@ public class MatlabMatFileReader {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Vector getVector(String vecName) {
 		Vector rlt = null;
 		MLArray a = rd.getMLArray(vecName);
@@ -51,7 +53,7 @@ public class MatlabMatFileReader {
 		}
 		return rlt;
 	}
-	
+
 	public Matrix getMatrix(String matName) {
 		Matrix rlt = null;
 		MLArray a = rd.getMLArray(matName);
@@ -76,7 +78,7 @@ public class MatlabMatFileReader {
 				for(int j=0;j<n;j++) {
 					rlt.set(i+1, j+1, d[i][j]);
 				}
-			}		
+			}
 		} else {
 			throw new FutureyeException("Unsported array type, name:"+matName+" array:"+a);
 		}
