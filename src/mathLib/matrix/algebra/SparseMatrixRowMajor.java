@@ -6,51 +6,54 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Sequence;
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.MatrixEntry;
 import mathLib.matrix.algebra.intf.SparseMatrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.util.io.MatlabMatFileWriter;
 
 /**
  * Row-major map based storage sparse matrix implementation
  * <p>
- * This implementation provides constant-time performance for the basic operations (get and set), 
+ * This implementation provides constant-time performance for the basic operations (get and set),
  * assuming the background hash function disperses the elements properly among the buckets.
- * 
+ *
  */
 public class SparseMatrixRowMajor implements SparseMatrix {
 	protected int rowDim = 0;
 	protected int colDim = 0;
 	protected double defaultValue = 0.0;
-	
-	protected Map<Integer,Map<Integer,Double>> m = 
+
+	protected Map<Integer,Map<Integer,Double>> m =
 		new HashMap<Integer,Map<Integer,Double>>();
-	
+
 	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
-	
+
 	public SparseMatrixRowMajor() {
 	}
-	
+
 	public SparseMatrixRowMajor(String name) {
 		this.name = name;
 	}
-	
+
 	public SparseMatrixRowMajor(int rowDim, int colDim) {
 		this.rowDim = rowDim;
 		this.colDim = colDim;
 	}
-	
+
 	public SparseMatrixRowMajor(String name, int rowDim, int colDim) {
 		this.name = name;
 		this.rowDim = rowDim;
 		this.colDim = colDim;
 	}
-	
+
 	public SparseMatrixRowMajor(int rowDim, int colDim,double defaultValue) {
 		this.rowDim = rowDim;
 		this.colDim = colDim;
 		this.defaultValue = defaultValue;
 	}
-	
+
 	public SparseMatrixRowMajor(String name,int rowDim, int colDim,double defaultValue) {
 		this.name = name;
 		this.rowDim = rowDim;
@@ -67,17 +70,17 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 	public void setRowDim(int nRowDim) {
 		this.rowDim = nRowDim;
 	}
-	
+
 	@Override
 	public int getRowDim() {
 		return rowDim;
 	}
-	
+
 	@Override
 	public int getColDim() {
 		return colDim;
 	}
-	
+
 	@Override
 	public void set(int row, int col,double value) {
 		if(rowDim != 0) {
@@ -102,7 +105,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 				aRow.put(col, value);
 		}
 	}
-	
+
 	@Override
 	public double get(int row, int col) {
 		if(rowDim != 0) {
@@ -130,7 +133,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 	public void add(int row, int col, double value) {
 		set(row,col,get(row,col)+value);
 	}
-	
+
 	@Override
 	public Map<Integer, Map<Integer, Double>> getAll() {
 		return m;
@@ -160,7 +163,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		}
 		this.m.clear();
 	}
-	
+
 	@Override
 	public void clearData() {
 		for(Entry<Integer,Map<Integer,Double>> row : m.entrySet()) {
@@ -168,7 +171,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		}
 		this.m.clear();
 	}
-	
+
 	@Override
 	public void mult(Vector x, Vector y) {
 		for(Entry<Integer,Map<Integer,Double>> row : m.entrySet()) {
@@ -180,10 +183,10 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 			}
 		}
 	}
-	
+
 	/**
-	 * A=A' 
-	 * 
+	 * A=A'
+	 *
 	 */
 	@Override
 	public SparseMatrixRowMajor trans() {
@@ -201,9 +204,9 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		}
 		return this;
 	}
-	
+
 	/**
-	 * An overriding method can also return a subtype of the type returned by the overridden method. 
+	 * An overriding method can also return a subtype of the type returned by the overridden method.
 	 * This is called a covariant return type.
 	 */
 	@Override
@@ -212,7 +215,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		newM.setAll(0, 0, this.m);
 		return newM;
 	}
-	
+
 	@Override
 	public void print() {
 		for(int i=1;i<=rowDim;i++) {
@@ -223,7 +226,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		}
 		System.out.println();
 	}
-	
+
 	public String toString() {
 		return "SparseMatrix:"+name+"("+
 			this.rowDim+","+this.colDim+
@@ -231,7 +234,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 	}
 
 	////////////////////////////////////////////////////
-	
+
 	public int [][] getColIndex() {
 		int[][] colIndex = new int[m.size()][];
 		//for(int r=0; r<this.rowDim; r++) {
@@ -247,7 +250,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		}
 		return colIndex;
 	}
-	
+
 
 	@Override
 	public String getName() {
@@ -257,12 +260,12 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 	@Override
 	public SparseMatrix setName(String name) {
 		this.name = name;
-		return this; 
+		return this;
 	}
 
 	/**
 	 * Get number of non zero values
-	 * 
+	 *
 	 */
 	public int getNonZeroNumber() {
 		int rlt = 0;
@@ -271,11 +274,11 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * Return the product A[row,:]*B[:,col]
 	 * where <tt>A==this</tt>
-	 * 
+	 *
 	 * @param B
 	 * @param row
 	 * @param col
@@ -302,11 +305,11 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 *Constructs and returns a new <tt>SparseVecotor</tt> view representing the columns of the given row.
 	 *The returned view is backed by this matrix, so changes in the returned view are reflected in this matrix, and vice-versa.
-	 * 
+	 *
 	 * @param row
 	 */
 	public SparseVectorHashMap viewRow(int row) {
@@ -314,10 +317,10 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 				this.m.get(row),false);
 		return rlt;
 	}
-	
+
 	/**
 	 * Swap <tt>row1</tt> and <tt>row2</tt>
-	 * 
+	 *
 	 * @param row1
 	 * @param row2
 	 */
@@ -326,14 +329,14 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		m.put(row1, m.get(row2));
 		m.put(row2, tmp);
 	}
-	
+
 	/**
 	 * Write this matrix to a file with Matlab mat file format.
 	 * The variable name in matlab workspace is specified by <tt>setName()</tt>.
 	 * Default variable name is <tt>"SparseMatrix"+UniqueSequenceNumber</tt>.
 	 * <p>
 	 * If more than one matrix need to be written in a single mat file use <tt>MatlabMatFileWriter</tt> instead.
-	 * 
+	 *
 	 * @param fileName
 	 */
 	public void writeMatFile(String fileName) {
@@ -341,7 +344,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 		w.addSparseMatrix(this);
 		w.writeFile(fileName);
 	}
-	
+
 	public void writeSimpleFile(String fileName) {
 		throw new UnsupportedOperationException();
 	}
@@ -353,7 +356,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 	public Iterator<MatrixEntry> iterator() {
 		return new SMIterator(this.m.entrySet().iterator());
 	}
-	
+
     /**
      * Iterator over this sparse matrix.
      */
@@ -363,7 +366,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
          */
     	Iterator<Entry<Integer, Map<Integer,Double>>> rowIter;
     	Iterator<Entry<Integer, Double>> colIter;
-   
+
     	SMIterator(Iterator<Entry<Integer, Map<Integer,Double>>> iter) {
     		rowIter = iter;
     		while(rowIter.hasNext()) {
@@ -375,14 +378,14 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 	    		}
     		}
     	}
-    	
+
         /**
          * Matrix entry
          */
         final SMEntry entry = new SMEntry();
 
         public boolean hasNext() {
-    		if(colIter!=null && colIter.hasNext()) 
+    		if(colIter!=null && colIter.hasNext())
     			return true;
     		else {
         		while(rowIter.hasNext()) {
@@ -405,7 +408,7 @@ public class SparseMatrixRowMajor implements SparseMatrix {
         	} else if(rowIter.hasNext()) {
         		Entry<Integer, Map<Integer,Double>> nextRow = rowIter.next();
         		entry.row = nextRow;
-        		
+
         		colIter = nextRow.getValue().entrySet().iterator();
         		ele = colIter.next();
         		entry.eleInRow = ele;
@@ -456,5 +459,5 @@ public class SparseMatrixRowMajor implements SparseMatrix {
 	@Override
 	public void update(int row, int col, double value) {
 		this.set(row, col, value);
-	}	
+	}
 }

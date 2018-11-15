@@ -6,41 +6,43 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Sequence;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.intf.VectorEntry;
 import mathLib.util.io.MatlabMatFileWriter;
 
 /**
  * HashMap based storage sparse vector implementation
  * <p>
- * This implementation provides constant-time performance for the basic operations (get and set), 
+ * This implementation provides constant-time performance for the basic operations (get and set),
  * assuming the background hash function disperses the elements properly among the buckets.
- * 
+ *
  *
  */
 public class SparseVectorHashMap implements SparseVector {
 	protected int dim = 0;
 	protected double defaultValue = 0.0;
-	protected Map<Integer,Double> data = 
+	protected Map<Integer,Double> data =
 		new HashMap<Integer,Double>();
 	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
 
 	public SparseVectorHashMap() {
 	}
-	
+
 	public SparseVectorHashMap(int dim) {
 		this.dim = dim;
 	}
-	
+
 	public SparseVectorHashMap(int dim, double defaultValue) {
 		this.dim = dim;
 		this.defaultValue = defaultValue;
 	}
-	
+
 	/**
 	 * Constructs a sparse vector with the given parameters with zero tolerance.
 	 * The dimension of the vector is the same as the number of parameters
-	 * 
+	 *
 	 * @param a
 	 */
 	public SparseVectorHashMap(double ...a) {
@@ -54,12 +56,12 @@ public class SparseVectorHashMap implements SparseVector {
 			}
 		}
 	}
-	
+
 	/**
-	 * Constructs a sparse vector with the given map <tt>data</tt>. 
-	 * If <tt>bCopy==false</tt> the receiver is backed by map <tt>data</tt>, 
+	 * Constructs a sparse vector with the given map <tt>data</tt>.
+	 * If <tt>bCopy==false</tt> the receiver is backed by map <tt>data</tt>,
 	 * so changes in the receiver are reflected in the map <tt>data</tt>, and vice-versa.
-	 * 
+	 *
 	 * @param dim
 	 * @param data
 	 * @param bCopy
@@ -72,7 +74,7 @@ public class SparseVectorHashMap implements SparseVector {
 			this.data = data;
 		}
 	}
-	
+
 	/**
 	 * Reset dimension will cause data loss!
 	 */
@@ -81,7 +83,7 @@ public class SparseVectorHashMap implements SparseVector {
 		this.dim = dim;
 		this.clearData();
 	}
-	
+
 	@Override
 	public int getDim() {
 		return dim;
@@ -94,7 +96,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		data.put(index, value);
 	}
-	
+
 	@Override
 	public SparseVectorHashMap set(Vector v) {
 		this.dim = v.getDim();
@@ -112,7 +114,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public SparseVectorHashMap set(double a, Vector v) {
 		this.dim = v.getDim();
@@ -130,7 +132,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public double get(int index) {
 		if(index>dim) {
@@ -148,7 +150,7 @@ public class SparseVectorHashMap implements SparseVector {
 	public void add(int index,double value) {
 		set(index,get(index)+value);
 	}
-	
+
 	@Override
 	public SparseVectorHashMap add(Vector v) {
 		if(v instanceof SparseVectorHashMap) {
@@ -165,7 +167,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public SparseVectorHashMap add(double a, Vector v) {
 		if(v instanceof SparseVectorHashMap) {
@@ -182,7 +184,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public SparseVectorHashMap ax(double a) {
 		for(Entry<Integer, Double> e : data.entrySet()) {
@@ -191,7 +193,7 @@ public class SparseVectorHashMap implements SparseVector {
 		this.defaultValue *= a;
 		return this;
 	}
-	
+
 	@Override
 	public SparseVectorHashMap axpy(double a, Vector y) {
 		this.scale(a).add(y);
@@ -205,7 +207,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public SparseVectorHashMap axDivy(double a, Vector y) {
 		for(Entry<Integer, Double> e : data.entrySet()) {
@@ -213,7 +215,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public SparseVectorHashMap scale(double a) {
 		for(Entry<Integer, Double> e : data.entrySet()) {
@@ -241,7 +243,7 @@ public class SparseVectorHashMap implements SparseVector {
 	public double norm2() {
 		return Math.sqrt(this.dot(this));
 	}
-	
+
 	@Override
 	public double normInf() {
 		Double max = Double.MIN_VALUE;
@@ -251,7 +253,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return max;
 	}
-	
+
 	@Override
 	public double dot(Vector v2) {
 		double rlt = 0.0;
@@ -268,7 +270,7 @@ public class SparseVectorHashMap implements SparseVector {
 	}
 
 	/**
-	 * An overriding method can also return a subtype of the type returned by the overridden method. 
+	 * An overriding method can also return a subtype of the type returned by the overridden method.
 	 * This is called a covariant return type.
 	 */
 	@Override
@@ -279,18 +281,18 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return r;
 	}
-	
+
 	@Override
 	public void clearData() {
 		this.data.clear();
 	}
-	
+
 	@Override
 	public void clearAll() {
 		this.dim = 0;
 		this.data.clear();
 	}
-	
+
 	@Override
 	public Vector setAll(double value) {
 		for(Entry<Integer, Double> e : this.data.entrySet()) {
@@ -298,7 +300,7 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public void print() {
 		for(int i=1;i<=dim;i++) {
@@ -307,18 +309,18 @@ public class SparseVectorHashMap implements SparseVector {
 		System.out.println();
 		System.out.println();
 	}
-	
+
 	public String toString() {
 		return "SparseVector("+
 			this.dim+
 			"):N0R="+data.size();
 	}
-	
+
 	/////////////////////////////////////////////////
 
 	/**
 	 * Get all non zero values in this vector
-	 * 
+	 *
 	 * @return Integer-double map containing non zero indices and values in this vector
 	 */
 	public Map<Integer,Double> getAll() {
@@ -327,7 +329,7 @@ public class SparseVectorHashMap implements SparseVector {
 
 	/**
 	 * Get number of non zero values
-	 * 
+	 *
 	 */
 	public int getNonZeroNumber() {
 		return this.data.size();
@@ -341,16 +343,16 @@ public class SparseVectorHashMap implements SparseVector {
 	@Override
 	public SparseVectorHashMap setName(String name) {
 		this.name = name;
-		return this; 
+		return this;
 	}
-	
+
 	/**
 	 * Write this vector to a file with Matlab mat file format.
 	 * The variable name in matlab workspace is specified by <tt>setName()</tt>.
 	 * Default variable name is <tt>"SparseVector"+UniqueSequenceNumber</tt>.
 	 * <p>
 	 * If more than one vector need to be written in a single mat file use <tt>MatlabMatFileWriter</tt> instead.
-	 * 
+	 *
 	 * @param fileName
 	 */
 	public void writeMatFile(String fileName) {
@@ -362,9 +364,9 @@ public class SparseVectorHashMap implements SparseVector {
 	@Override
 	public void writeSimpleFile(String fileName) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public SparseVector setAll(int nBase, Map<Integer, Double> dataMap) {
 		for(Entry<Integer, Double> e : dataMap.entrySet()) {
@@ -372,12 +374,12 @@ public class SparseVectorHashMap implements SparseVector {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public Iterator<VectorEntry> iterator() {
 		return new SVIterator(this.data.entrySet().iterator());
 	}
-	
+
     /**
      * Iterator over this sparse vector.
      */
@@ -386,12 +388,12 @@ public class SparseVectorHashMap implements SparseVector {
          * Vector cursor
          */
     	Iterator<Entry<Integer,Double>> iter;
-   
+
         /**
          * Vector entry
          */
         final SVEntry entry = new SVEntry();
-        
+
      	SVIterator(Iterator<Entry<Integer,Double>> iter) {
     		this.iter = iter;
     	}

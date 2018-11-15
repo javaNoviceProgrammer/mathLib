@@ -1,15 +1,12 @@
-/**
- * Copyright (c) 2010, nkliuyueming@gmail.com. All rights reserved.
- * 
- * 
- */
 package mathLib.matrix.algebra.solver;
 
+import mathLib.fem.core.Mesh;
 import mathLib.matrix.algebra.CompressedColMatrix;
 import mathLib.matrix.algebra.CompressedRowMatrix;
 import mathLib.matrix.algebra.FullVector;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.BlockMatrix;
 import mathLib.matrix.algebra.intf.BlockVector;
 import mathLib.matrix.algebra.intf.SparseMatrix;
 import mathLib.matrix.algebra.intf.SparseVector;
@@ -33,18 +30,18 @@ import mathLib.matrix.algebra.solver.external.SolverJBLAS;
  * C' = trans(C)
  *
  * 求：A*x=f
- * 
- * (R + C'*inv(A')*M*inv(A)*C)*p 
+ *
+ * (R + C'*inv(A')*M*inv(A)*C)*p
  *                 = Fq - C'*inv(A')*( Fu - M*inv(A)*Fl )
  *
  * where S = R + C'*inv(A')*M*inv(A)*C, 称为 Schur complement matrix
  *
- *求解Schur补方程，�?求解：
+ *求解Schur补方程，�?求解：
  * A*u    = Fl - C*p
  * A'*lmd = Fu - M*u
- * 
+ *
  * </blockquote></pre>
- * 
+ *
  * @author liuyueming
  *
  */
@@ -52,14 +49,14 @@ public class SchurComplementLagrangianSolver {
 	protected BlockMatrix<SparseMatrix> BM;
 	protected BlockVector<SparseVector> f;
 	protected Mesh mesh;
-	
+
 	public SchurComplementLagrangianSolver(BlockMatrix<SparseMatrix> BM,
 			BlockVector<SparseVector> f, Mesh mesh) {
 		this.BM = BM;
 		this.f = f;
 		this.mesh = mesh;
 	}
-	
+
 	@SuppressWarnings("unused")
 	public SparseBlockVector solve() {
 		SparseMatrix M =  (SparseMatrix)BM.getBlock(1, 1);
@@ -68,36 +65,36 @@ public class SchurComplementLagrangianSolver {
 		SparseMatrix C =  (SparseMatrix)BM.getBlock(2, 3);
 		SparseMatrix CT = (SparseMatrix)BM.getBlock(3, 2);
 		SparseMatrix R =  (SparseMatrix)BM.getBlock(3, 3);
-		
+
 		SparseVector Fu = (SparseVector)f.getBlock(1);
 		SparseVector Fl = (SparseVector)f.getBlock(2);
 		SparseVector Fq = (SparseVector)f.getBlock(3);
-		
+
 		FullVector tmp1 = null;
 		FullVector tmp2 = null;
 		FullVector rhs  = new FullVector(Fu.getDim());
-		
+
 		CompressedRowMatrix MM = new CompressedRowMatrix(M, false);
 		CompressedRowMatrix RR = new CompressedRowMatrix(R, false);
 		CompressedRowMatrix AA = new CompressedRowMatrix(A, false);
 		CompressedRowMatrix AAT = new CompressedRowMatrix(AT, false);
 		CompressedColMatrix CC = new CompressedColMatrix(C, false);
-		CompressedRowMatrix CCT = new CompressedRowMatrix(CT, false);		
-		
+		CompressedRowMatrix CCT = new CompressedRowMatrix(CT, false);
+
 		FullVector FFu = new FullVector(Fu);
 		FullVector FFl = new FullVector(Fl);
 		FullVector FFq = new FullVector(Fq);
-		
-		//Schur complement right hand side: 
+
+		//Schur complement right hand side:
 		//Fq - C'*inv(A')*( Fu - M*inv(A)*Fl )
 		tmp1 = invB_v(AA,FFl);
 		MM.mult(tmp1, rhs);
 		rhs.axpy(-1.0, FFu);
-		
+
 		tmp2 = invB_v(AAT,rhs);
 		CCT.mult(tmp2, rhs);
 		rhs.axpy(-1.0, FFq);
-		
+
 		//S = R + C'*inv(A')*M*inv(A)*C
 		//  = R + C'*inv(A*inv(M)*A')*C
 		CompressedRowMatrix S = new CompressedRowMatrix();
@@ -110,9 +107,9 @@ public class SchurComplementLagrangianSolver {
 		//AA.mult(invB_C(MM,AAT.convertToCompressedCol()),S);
 		//S.mult(CC, S3);
 		//CCT.mult(S3.convertToCompressedCol(), S2);
-		
+
 		S2.axpy(1.0,RR);
-		
+
 //		Solver sov = new Solver();
 //		FullVector p = new FullVector(rhs.getDim(),1.0);
 //		sov.solveCGS(S2, rhs, p);
@@ -121,22 +118,22 @@ public class SchurComplementLagrangianSolver {
 		SparseVector Srhs = rhs.getSparseVector();
 		//this.imposeDirichletCondition(SS2, Srhs, FC.c0);
 		FullVector p = new FullVector(sov.solveDGESV(SS2, Srhs));
-		
-		
+
+
 		//A*u    = Fl - C*p
 		//A'*lmd = Fu - M*u
 		FullVector u   = new FullVector(Fu.getDim(),1.0);
 		FullVector lmd = new FullVector(Fl.getDim(),1.0);
 		CC.getCompressedRowMatrix().mult(p, u);
 		u.axpy(-1.0, FFl);
-		
+
 		u = invB_v(AA,u);
 		//SparseMatrix SAA = AA.getSparseMatrix();
 		//SparseVector Su = u.getSparseVector();
 		////this.imposeDirichletCondition(SAA, Su, FC.c0);
 		//u = new FullVector(sov.solveDGESV(SAA, Su));
 
-		
+
 		MM.mult(u, lmd);
 		lmd.axpy(-1.0, FFu);
 		lmd = invB_v(AAT,lmd);
@@ -144,7 +141,7 @@ public class SchurComplementLagrangianSolver {
 		//SparseVector Sv = v.getSparseVector();
 		////this.imposeDirichletCondition(SAAT, Sv, FC.c0);
 		//v = new FullVector(sov.solveDGESV(SAAT, Sv));
-		
+
 		SparseBlockVector rlt = new SparseBlockVector(3);
 		SparseVector uu = new SparseVectorHashMap(u.getData());
 		SparseVector ll = new SparseVectorHashMap(lmd.getData());
@@ -154,8 +151,8 @@ public class SchurComplementLagrangianSolver {
 		rlt.setBlock(3, pp);
 		return rlt;
 	}
-	
-	
+
+
 	/**
 	 * (M1        |AT1          | 0  )    ( u1 )    ( Fu1 )
 	 * (  M2      |   AT2       | 0  )    ( u2 )    ( Fu2 )
@@ -168,7 +165,7 @@ public class SchurComplementLagrangianSolver {
 	 * (       AN |          0  | CN )    (lmdN)    ( FlN )
 	 *  ---------------------------        ----      ----
 	 * (0 0 ... 0 |CT1 CT2 . CTN| R  )    (  q )    ( Fq  )
-	 * 
+	 *
 	 * Schur complement:
 	 *    S*q = Fq - \sum_{i=1,N}{ CTi*inv(ATi)*( Fui - Mi*inv(Ai)*Fli ) }
 	 *  where
@@ -178,7 +175,7 @@ public class SchurComplementLagrangianSolver {
 	@SuppressWarnings("rawtypes")
 	public BlockVector solveMulti() {
 		int nBlock = BM.getRowBlockDim();
-		int nMeaBlock = (nBlock - 1)/2; //测�?次数
+		int nMeaBlock = (nBlock - 1)/2; //测�?次数
 		SparseMatrix []M = new SparseMatrix[nMeaBlock];
 		SparseMatrix []AT = new SparseMatrix[nMeaBlock];
 		SparseMatrix []A = new SparseMatrix[nMeaBlock];
@@ -187,41 +184,41 @@ public class SchurComplementLagrangianSolver {
 		SparseMatrix R = (SparseMatrix)BM.getBlock(nBlock, nBlock);
 		SparseVector[] Fu = new SparseVector[nMeaBlock];
 		SparseVector[] Fl = new SparseVector[nMeaBlock];
-		SparseVector Fq = (SparseVector)f.getBlock(nBlock);		
-		
+		SparseVector Fq = (SparseVector)f.getBlock(nBlock);
+
 		for(int i=1; i<=nMeaBlock; i++) {
 			M[i-1] = (SparseMatrix) BM.getBlock(i, i);
 			AT[i-1] = (SparseMatrix) BM.getBlock(i, nMeaBlock+i);
 			A[i-1] = (SparseMatrix) BM.getBlock(nMeaBlock+i, i);
 			C[i-1] = (SparseMatrix) BM.getBlock(nMeaBlock+i, nBlock);
 			CT[i-1] = (SparseMatrix) BM.getBlock(nBlock, nMeaBlock+i);
-			
+
 			Fu[i-1] = (SparseVector) f.getBlock(i);
 			Fl[i-1] = (SparseVector) f.getBlock(nMeaBlock+i);
 		}
-		
+
 		CompressedRowMatrix[] MM = new CompressedRowMatrix[nMeaBlock];
 		CompressedRowMatrix[] AAT = new CompressedRowMatrix[nMeaBlock];
 		CompressedRowMatrix[] AA = new CompressedRowMatrix[nMeaBlock];
 		CompressedColMatrix[] CC = new CompressedColMatrix[nMeaBlock];
 		CompressedRowMatrix[] CCT = new CompressedRowMatrix[nMeaBlock];
 		CompressedRowMatrix RR = new CompressedRowMatrix(R, false);
-		
+
 		FullVector[] FFu = new FullVector[nMeaBlock];
 		FullVector[] FFl = new FullVector[nMeaBlock];
 		FullVector FFq = new FullVector(Fq);
-		
+
 		for(int i=0; i<nMeaBlock; i++) {
 			MM[i] = new CompressedRowMatrix(M[i], false);
 			AAT[i] = new CompressedRowMatrix(AT[i], false);
 			AA[i] = new CompressedRowMatrix(A[i], false);
 			CC[i] = new CompressedColMatrix(C[i], false);
-			CCT[i] = new CompressedRowMatrix(CT[i], false);		
+			CCT[i] = new CompressedRowMatrix(CT[i], false);
 			FFu[i] = new FullVector(Fu[i]);
 			FFl[i] = new FullVector(Fl[i]);
 		}
-		
-		//Schur complement right hand side: 
+
+		//Schur complement right hand side:
 		//Fq - \sum_{i=1,N}{ CTi*inv(ATi)*( Fui - Mi*inv(Ai)*Fli ) }
 		FullVector tmp1 = null;
 		FullVector tmpSum = new FullVector(Fq.getDim());
@@ -230,15 +227,15 @@ public class SchurComplementLagrangianSolver {
 			tmp1 = invB_v(AA[i],FFl[i]);
 			MM[i].mult(tmp1, tmpSum);
 			tmpSum.axpy(-1.0, FFu[i]);
-		
+
 			tmp1 = invB_v(AAT[i],tmpSum);
 			CCT[i].mult(tmp1, tmpSum);
-			
+
 			rhs.add(tmpSum);
 		}
 		rhs.axpy(-1.0, FFq);
-		
-		
+
+
 		//S = R + \sum_{i=1,N}{ CTi*inv(ATi)*Mi*inv(Ai)*Ci }
 		CompressedRowMatrix tmpS = new CompressedRowMatrix();
 		CompressedRowMatrix tmpSSum = new CompressedRowMatrix();
@@ -250,7 +247,7 @@ public class SchurComplementLagrangianSolver {
 		}
 		S.axpy(1.0,RR);
 		//S = RR
-		
+
 		//Solver sov = new Solver();
 		//FullVector p = new FullVector(rhs.getDim(),1.0);
 		//sov.solveCGS(S, rhs, p);
@@ -258,16 +255,16 @@ public class SchurComplementLagrangianSolver {
 		SparseMatrix SS2 = S.getSparseMatrix();
 		SparseVector Srhs = rhs.getSparseVector();
 		FullVector p = new FullVector(sov.solveDGESV(SS2, Srhs));
-		
-		
+
+
 		////////////////////////////////////////
-		//\Delta(\Delta(sum)) 数值�?稳定
+		//\Delta(\Delta(sum)) 数值�?稳定
 		//Vector pp = Tools.computeLaplace2D(mesh, new SparseVector(p.getData()));
 		//pp = Tools.computeLaplace2D(mesh, pp);
 		//p = new FullVector(pp);
 		////////////////////////////////////////
-		
-		
+
+
 		//A*ui    = Fli - C*p
 		//A'*lmdi = Fui - M*ui
 		FullVector[] u = new FullVector[nMeaBlock];
@@ -275,16 +272,16 @@ public class SchurComplementLagrangianSolver {
 		for(int i=0; i<nMeaBlock; i++) {
 			u[i] = new FullVector(Fu[i].getDim(),1.0);
 			lmd[i] = new FullVector(Fl[i].getDim(),1.0);
-			
+
 			CC[i].getCompressedRowMatrix().mult(p, u[i]);
 			u[i].axpy(-1.0, FFl[i]);
 			u[i] = invB_v(AA[i],u[i]);
-		
+
 			MM[i].mult(u[i], lmd[i]);
 			lmd[i].axpy(-1.0, FFu[i]);
 			lmd[i] = invB_v(AAT[i],lmd[i]);
 		}
-		
+
 		SparseBlockVector rlt = new SparseBlockVector(nBlock);
 		for(int i=1; i<=nMeaBlock; i++) {
 			rlt.setBlock(i, new SparseVectorHashMap(u[i-1].getData()));
@@ -293,10 +290,10 @@ public class SchurComplementLagrangianSolver {
 		rlt.setBlock(nBlock, new SparseVectorHashMap(p.getData()));
 		return rlt;
 	}
-	
+
 	/**
 	 * inv(B)*v
-	 * 
+	 *
 	 * @param v
 	 * @return
 	 */
@@ -310,7 +307,7 @@ public class SchurComplementLagrangianSolver {
 		sov.solveCGS(B, v, x);
 		return x;
 	}
-	
+
 	/**
 	 * inv(B)*C
 	 * @param B
@@ -322,7 +319,7 @@ public class SchurComplementLagrangianSolver {
 		FullVector v = new FullVector(C.getRowDim());
 		FullVector x = new FullVector(C.getRowDim());
 		x.setRandom(1.0, 0.05);
-		
+
 //		SolverJBLAS sov = new SolverJBLAS();
 //		int colDim = C.getColDim();
 //		for(int c=1; c<=colDim; c++) {
@@ -331,7 +328,7 @@ public class SchurComplementLagrangianSolver {
 //			FullVector.SparseData sd = x.getSparseData();
 //			BC.setCol(c, sd.index, sd.data);
 //		}
-		
+
 		Solver sov = new Solver();
 		sov.epsRelIter = 1e-7;
 		int colDim = C.getColDim();
@@ -344,7 +341,7 @@ public class SchurComplementLagrangianSolver {
 		return BC;
 	}
 
-	
+
 //	protected void setDirichlet(Matrix BM, Vector BV,
 //			int matIndex, double value) {
 //		int row = matIndex;
@@ -363,7 +360,7 @@ public class SchurComplementLagrangianSolver {
 //			}
 //		}
 //	}
-//	
+//
 //	public void imposeDirichletCondition(SparseMatrix BM, SparseVector BV,
 //			Function diri) {
 //		ElementList eList = mesh.getElementList();

@@ -6,9 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Sequence;
 import mathLib.matrix.algebra.intf.BlockMatrix;
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.MatrixEntry;
 import mathLib.matrix.algebra.intf.SparseMatrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Sparse block matrix, row-major sparse storage
@@ -19,7 +22,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 	protected int colBlockDim;
 	protected double defaultValue = 0.0;
 
-	protected Map<Integer,Map<Integer,SparseMatrix>> m = 
+	protected Map<Integer,Map<Integer,SparseMatrix>> m =
 		new LinkedHashMap<Integer,Map<Integer,SparseMatrix>>();
 	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
 
@@ -33,7 +36,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 		this.colBlockDim = colBlockDim;
 
 	}
-	
+
 	/**
 	 * Construct a rowBlockDim*colBlockDim block matrix
 	 * with a default value
@@ -46,8 +49,8 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 		this.rowBlockDim = rowBlockDim;
 		this.colBlockDim = colBlockDim;
 		this.defaultValue = defaultValue;
-	}	
-	
+	}
+
 	@Override
 	public int getRowBlockDim() {
 		return rowBlockDim;
@@ -72,7 +75,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 			}
 		}
 	}
-	
+
 	@Override
 	public void setBlock(int row, int col, SparseMatrix subMat) {
 		Map<Integer,SparseMatrix> arow = m.get(row);
@@ -97,7 +100,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 	public void setRowDim(int nRowDim) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public int getColDim() {
 		int rlt = 0;
@@ -156,7 +159,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 		if(cMat != null)
 			cMat.set(row - rBase, col - cBase, value);
 	}
-	
+
 	@Override
 	public double get(int row, int col) {
 		int rBase = 0;
@@ -196,9 +199,9 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 				ex.printStackTrace();
 				System.exit(-1);
 			}
-		} else 
+		} else
 			return 0.0;
-		
+
 		if(cMat != null)
 			return cMat.get(row - rBase, col - cBase);
 		else
@@ -236,8 +239,8 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 				int nCol = entry.getKey();
 				set(nRowBase+nRow,nColBase+nCol,entry.getValue());
 			}
-		}		
-	}	
+		}
+	}
 
 	@Override
 	public void add(int row, int col, double value) {
@@ -256,7 +259,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 		}
 		System.out.println();
 	}
-	
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SparseBlockMatrix:"+name+"(").
@@ -266,7 +269,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 			append("):N0R=").
 			append(m.size()).
 			append("\n");
-		
+
 		for(int i=1;i<=this.rowBlockDim;i++) {
 			for(int j=1;j<=this.colBlockDim;j++) {
 				sb.append("(").append(i).append(",").append(j).append(")=");
@@ -275,22 +278,22 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 		}
 		return sb.toString();
 	}
-	
+
 	@Override
 	public void mult(Vector x, Vector y) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public SparseMatrix trans() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public SparseMatrix copy() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public void clearAll() {
 		this.rowBlockDim = 0;
@@ -305,7 +308,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 		}
 		this.m.clear();
 	}
-	
+
 	@Override
 	public void clearData() {
 		for(Entry<Integer,Map<Integer,SparseMatrix>> e1 : m.entrySet()) {
@@ -315,7 +318,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 			}
 		}
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -326,7 +329,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 		this.name = name;
 		return this;
 	}
-	
+
 	public int getNonZeroNumber() {
 		int rlt = 0;
 		for(Entry<Integer,Map<Integer,SparseMatrix>> e1 : m.entrySet()) {
@@ -356,10 +359,10 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 	@Override
 	public double apply(int row, int col) {
 		return this.get(row, col);
-	}	
-	
+	}
+
 	@Override
 	public void update(int row, int col, double value) {
 		this.set(row, col, value);
-	}	
+	}
 }

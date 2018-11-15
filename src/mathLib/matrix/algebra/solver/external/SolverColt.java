@@ -10,14 +10,15 @@ import mathLib.matrix.algebra.FullVector;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.intf.MatrixEntry;
 import mathLib.matrix.algebra.intf.SparseMatrix;
+import mathLib.matrix.algebra.solver.LUDecomposition;
 
 /**
  * Colt Interface
- * 
+ *
  *
  */
 public class SolverColt {
-	
+
 	/**
 	 * Solve <tt>A*X = B</tt> with LU Decomposition.
 	 * @param A
@@ -25,26 +26,26 @@ public class SolverColt {
 	 * @return X
 	 */
 	public FullMatrix solve(FullMatrix A,FullMatrix B) {
-		
+
 		DoubleMatrix2D AA = new DenseDoubleMatrix2D(A.getData());
 		DoubleMatrix2D BB = new DenseDoubleMatrix2D(B.getData());
 
 		long begin,end;
 		begin = System.currentTimeMillis();
-		cern.colt.matrix.linalg.LUDecomposition lu = 
+		cern.colt.matrix.linalg.LUDecomposition lu =
 			new cern.colt.matrix.linalg.LUDecomposition(AA);
 		end = System.currentTimeMillis();
 		System.out.println("Colt LU="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		DoubleMatrix2D X = lu.solve(BB);
 		end = System.currentTimeMillis();
 		System.out.println("Colt Solve="+(end-begin)+"ms");
-		
+
 		FullMatrix rlt = new FullMatrix(X.toArray(),true);
 		return rlt;
 	}
-	
+
 	/**
 	 * Solve <tt>A*X = B</tt> with LU Decomposition.
 	 * @param A
@@ -54,28 +55,28 @@ public class SolverColt {
 	public FullMatrix solve(SparseMatrix A,SparseMatrix B) {
 		DoubleMatrix2D AA = new SparseDoubleMatrix2D(A.getRowDim(),A.getColDim());
 		DoubleMatrix2D BB = new SparseDoubleMatrix2D(B.getRowDim(),B.getColDim());
-		for(MatrixEntry e : A) 
+		for(MatrixEntry e : A)
 			AA.setQuick(e.getRow()-1, e.getCol()-1, e.getValue());
-		for(MatrixEntry e : B) 
+		for(MatrixEntry e : B)
 			BB.setQuick(e.getRow()-1, e.getCol()-1, e.getValue());
-		
+
 		long begin,end;
 		begin = System.currentTimeMillis();
-		cern.colt.matrix.linalg.LUDecomposition lu = 
+		cern.colt.matrix.linalg.LUDecomposition lu =
 			new cern.colt.matrix.linalg.LUDecomposition(AA);
 		end = System.currentTimeMillis();
 		System.out.println("Sparse Colt LU="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		DoubleMatrix2D X = lu.solve(BB);
 		end = System.currentTimeMillis();
 		System.out.println("Sparse Colt Solve="+(end-begin)+"ms");
-		
+
 		FullMatrix rlt = new FullMatrix(X.toArray(),true);
 		return rlt;
 	}
-	
-	
+
+
 	/**
 	 * Solve <tt>A*x = b</tt> with LU Decomposition.
 	 * @param A
@@ -83,9 +84,9 @@ public class SolverColt {
 	 * @return
 	 */
 	public FullVector solve(FullMatrix A,FullVector b) {
-		
+
 		DoubleMatrix2D mat = new DenseDoubleMatrix2D(A.getData());
-		cern.colt.matrix.linalg.LUDecomposition lu = 
+		cern.colt.matrix.linalg.LUDecomposition lu =
 			new cern.colt.matrix.linalg.LUDecomposition(mat);
 		double [][]dBM=new double[b.getDim()][1];
 		double[] dB = b.getData();
@@ -93,7 +94,7 @@ public class SolverColt {
 			dBM[i][0] = dB[i];
 		}
 		DoubleMatrix2D X = lu.solve(new DenseDoubleMatrix2D(dBM));
-		
+
 		double[] dR = new double[b.getDim()];
 		for(int i=0;i<b.getDim();i++) {
 			dR[i] = X.get(i, 0);
@@ -101,7 +102,7 @@ public class SolverColt {
 		FullVector rlt = new FullVector(dR,false);
 		return rlt;
 	}
-	
+
 	@SuppressWarnings("unused")
 	public static void test4() {
 		int N = 4024;
@@ -138,7 +139,7 @@ public class SolverColt {
 		FullMatrix fU = new FullMatrix(N,N);
 		FullMatrix fX = new FullMatrix(N,NE);
 		FullMatrix fF = new FullMatrix(dataB,true);
-		
+
 		SparseMatrix P = new SparseMatrixRowMajor(N,N);
 		System.out.println("Begin FuturEye solver...");
 		begin = System.currentTimeMillis();
@@ -146,9 +147,9 @@ public class SolverColt {
 		LUDecomposition.solve(A, fL, fU, P, fX, fF);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye time used: "+(end-begin));
-		
+
 	}
-	
+
 	public static void test3() {
 		double[][] dataA = {{8,2,9},{4,9,4},{6,7,9}};
 		double[][] dataB = {{1,0,0},{0,0,2},{0,1,-1}};
@@ -162,7 +163,7 @@ public class SolverColt {
 		A.mult(X, B);
 		B.print();
 	}
-	
+
 	public static void test2() {
 		double[][] data = {{8,2,9},{4,9,4},{6,7,9}};
 //		double[][] data = {{1,0,0},{0,0,2},{0,1,-1}};
@@ -171,7 +172,7 @@ public class SolverColt {
 		cern.colt.matrix.linalg.LUDecomposition lu = new cern.colt.matrix.linalg.LUDecomposition(mat);
 		System.out.println(lu.getL().toString());
 	}
-	
+
 	public static void test1() {
        // For Colt
        DoubleMatrix2D xmatrix,ymatrix,zmatrix;
@@ -186,7 +187,7 @@ public class SolverColt {
        xmatrix.set(2,0,1);
        xmatrix.set(3,0,1);
        xmatrix.set(4,0,1);
-       xmatrix.set(5,0,1); 
+       xmatrix.set(5,0,1);
        xmatrix.set(6,0,1);
        xmatrix.set(7,0,1);
 
@@ -212,15 +213,15 @@ public class SolverColt {
        zmatrix = myAlgebra.solve(xmatrix,ymatrix);
        System.err.println(xmatrix);
        System.err.println(ymatrix);
-       System.err.println(zmatrix);	
+       System.err.println(zmatrix);
 	}
-	
-	
+
+
 	public static void main(String[] args) {
-//		test1();
+		test1();
 		test2();
-		//test3();
-//		test4();
+		test3();
+		test4();
 	}
-	
+
 }

@@ -11,22 +11,24 @@ import mathLib.matrix.algebra.FullVector;
 import mathLib.matrix.algebra.SparseMatrixColMajor;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.SparseMatrix;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class LUDecomposition {
 	public static double eps = 1E-50;
 
 	/**
 	 * A=L*U  without permutation of L (this function is just for test only)
-	 * 
+	 *
 	 * @param A (Input)
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
 	 */
 	public static void LU(Matrix A, Matrix L, Matrix U) {
 		int N = A.getRowDim();
-		
+
 		for(int n=1; n<=N; n++) {
 			for(int j=n; j<=N; j++) {
 				double sum1 = 0.0;
@@ -47,10 +49,10 @@ public class LUDecomposition {
 			L.set(n, n, 1.0);
 		}
 	}
-	
+
 	/**
 	 * LU Decomposition without pivot
-	 * 
+	 *
 	 * @param A
 	 * @param L
 	 * @param U
@@ -60,7 +62,7 @@ public class LUDecomposition {
 		double[][] dA = A.getData();
 		double[][] dL = L.getData();
 		double[][] dU = U.getData();
-		
+
 		for(int n=0; n<=N-1; n++) {
 			for(int j=n; j<N; j++) {
 				double sum1 = 0.0;
@@ -81,10 +83,10 @@ public class LUDecomposition {
 			dL[n][n] = 1.0;
 		}
 	}
-	
+
 	/**
 	 * A=P*L*U
-	 * 
+	 *
 	 * @param A
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
@@ -142,17 +144,17 @@ public class LUDecomposition {
 			}
 			L.set(n, n, 1.0);
 		}
-		
+
 		//P
 		for(int i=1;i<=N;i++) {
 			P.set(i, VP[i], 1.0);
 		}
 	}
-	
+
 	/**
 	 * A=P*L*U
 	 * Sparse LU decomposition (dev version)
-	 * 
+	 *
 	 * @param A (Input) Sparse coefficient matrix
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
@@ -161,20 +163,20 @@ public class LUDecomposition {
 	public static void LU2(SparseMatrixRowMajor A, SparseMatrixRowMajor L, SparseMatrix U, SparseMatrix P) {
 		SparseMatrixRowMajor AA = A.copy();
 		SparseMatrixColMajor UU = new SparseMatrixColMajor(U.getRowDim(),U.getColDim());
-		
+
 		int N = AA.getRowDim();
 		int[] VP = new int[N+1];
 		//for(int n=1; n<=N; n++) {
 		for(int n=N+1; --n>=1;) {
 			VP[n] = n;
 		}
-		
+
 		long time1=0,time2=0,time3=0;
 		long begin,end;
 		int swap = 0;
 		double[] cache = new double[N];
 		for(int i=N; --i>=0;) cache[i] = 0.0;
-		
+
 		for(int n=1; n<=N; n++) {
 			begin = System.currentTimeMillis();
 			for(int nn=n; nn<=N; nn++) {
@@ -194,7 +196,7 @@ public class LUDecomposition {
 			}
 			end = System.currentTimeMillis();
 			time1 += end-begin;
-			
+
 			begin = System.currentTimeMillis();
 			if(n>1) {
 				Map<Integer, Double> LnLast = L.getAll().get(n-1);
@@ -208,7 +210,7 @@ public class LUDecomposition {
 			for(Entry<Integer,Double> e : Ln.entrySet())
 				cache[e.getKey()-1] = e.getValue();
 			}
-			
+
 			for(int j=n; j<=N; j++) {
 				//double sum1 = L.mult(UU, n, j);
 				double sum1 = UU.multColumn(cache, j);
@@ -217,7 +219,7 @@ public class LUDecomposition {
 			}
 			end = System.currentTimeMillis();
 			time2 += end-begin;
-			
+
 			begin = System.currentTimeMillis();
 			double Unn = UU.get(n, n);
 			for(int i=n+1; i<=N; i++) {
@@ -230,19 +232,19 @@ public class LUDecomposition {
 			}
 			end = System.currentTimeMillis();
 			time3 += end-begin;
-			
+
 			L.set(n, n, 1.0);
 		}
-		
+
 		System.out.println("Sparse LU time1="+time1 + " swap="+swap);
 		System.out.println("Sparse LU time2="+time2);
 		System.out.println("Sparse LU time3="+time3);
-		
+
 		//P
 		for(int i=1;i<=N;i++) {
 			P.set(i, VP[i], 1.0);
 		}
-		
+
 		//U
 		Map<Integer, Map<Integer, Double>> dataU = UU.getAll();
 		for(Entry<Integer, Map<Integer, Double>> e1 : dataU.entrySet()) {
@@ -253,13 +255,13 @@ public class LUDecomposition {
 				U.set(nRow, nCol, e2.getValue());
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * A=P*L*U
 	 * Sparse LU decomposition
-	 * 
+	 *
 	 * @param A (Input) Sparse coefficient matrix
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
@@ -268,21 +270,21 @@ public class LUDecomposition {
 	public static void LU(SparseMatrixRowMajor A, SparseMatrixRowMajor L, SparseMatrix U, SparseMatrix P) {
 		SparseMatrixRowMajor AA = A.copy();
 		SparseMatrixColMajor UU = new SparseMatrixColMajor(U.getRowDim(),U.getColDim());
-		
+
 		int N = AA.getRowDim();
 		int[] VP = new int[N+1];
 		//for(int n=1; n<=N; n++) {
 		for(int n=N+1; --n>=1;) {
 			VP[n] = n;
 		}
-		
+
 		long time1=0,time2=0,time3=0;
 		long begin,end;
 		int swap = 0;
 		double[] cache = new double[N];
 		for(int i=N; --i>=0;) cache[i] = 0.0;
 		List<Integer> nonzeroIndex = new ArrayList<Integer>();
-		
+
 		for(int n=1; n<=N; n++) {
 			begin = System.currentTimeMillis();
 			for(int nn=n; nn<=N; nn++) {
@@ -302,7 +304,7 @@ public class LUDecomposition {
 			}
 			end = System.currentTimeMillis();
 			time1 += end-begin;
-			
+
 			begin = System.currentTimeMillis();
 			nonzeroIndex.clear();
 			for(int j=1; j<n; j++) {
@@ -316,7 +318,7 @@ public class LUDecomposition {
 			}
 			end = System.currentTimeMillis();
 			time3 += end-begin;
-			
+
 			begin = System.currentTimeMillis();
 			for(int j=n; j<=N; j++) {
 				double sum1 = UU.multColumn(cache,nonzeroIndex, j);
@@ -325,19 +327,19 @@ public class LUDecomposition {
 			}
 			end = System.currentTimeMillis();
 			time2 += end-begin;
-			
+
 			L.set(n, n, 1.0);
 		}
-		
+
 		System.out.println("FuturEye Sparse LU time1/3="+time1 + " swap="+swap);
 		System.out.println("FuturEye Sparse LU time2/3="+time2);
 		System.out.println("FuturEye Sparse LU time3/3="+time3);
-		
+
 		//P
 		for(int i=1;i<=N;i++) {
 			P.set(i, VP[i], 1.0);
 		}
-		
+
 		//U
 		Map<Integer, Map<Integer, Double>> dataU = UU.getAll();
 		for(Entry<Integer, Map<Integer, Double>> e1 : dataU.entrySet()) {
@@ -348,13 +350,13 @@ public class LUDecomposition {
 				U.set(nRow, nCol, e2.getValue());
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * A=P*L*U
 	 * Full matrix LU decomposition with pivot
-	 * 
+	 *
 	 * @param A (Input) Full coefficient matrix
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
@@ -376,7 +378,7 @@ public class LUDecomposition {
 				dUT[j][i] = dU[i][j];
 			}
 		}
-		
+
 		//long begin=0,end=0;
 		//long time1=0,time2=0,time3=0;
 		for(int n=0; n<N; n++) {
@@ -391,7 +393,7 @@ public class LUDecomposition {
 				}
 				//end = System.currentTimeMillis();
 				//time1 += end-begin;
-				
+
 				//begin = System.currentTimeMillis();
 				double ann = dA[nn][n];
 				if(Math.abs(ann-sum1) > eps) {
@@ -415,13 +417,13 @@ public class LUDecomposition {
 					bFind = true;
 					break;
 				}
-				
+
 				//end = System.currentTimeMillis();
 				//time3 += end-begin;
 			}
 			if(!bFind)
 				throw new FutureyeException("Matrix is singular!");
-			
+
 			double[] _dAn = dA[n];
 			double[] _dLn = dL[n];
 			//begin = System.currentTimeMillis();
@@ -451,7 +453,7 @@ public class LUDecomposition {
 		//System.out.println("Time1="+time1);
 		//System.out.println("Time2="+time2);
 		//System.out.println("Time3="+time3);
-		
+
 		for(int i=0;i<N;i++) {
 			for(int j=0;j<N;j++) {
 				dU[i][j] = dUT[j][i];
@@ -462,12 +464,12 @@ public class LUDecomposition {
 			P.set(i, VP[i-1]+1, 1.0);
 		}
 	}
-	
+
 	/**
 	 * Solve U*x=f
-	 * 
+	 *
 	 * @param U (Input) Upper triangular matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 */
 	public static Vector solveUx(Matrix U, Vector x, Vector f) {
@@ -482,12 +484,12 @@ public class LUDecomposition {
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Solve U*x=f
-	 * 
+	 *
 	 * @param U (Input) Upper triangular matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 */
 	public static FullVector solveUx(FullMatrix U, FullVector x, FullVector f) {
@@ -506,12 +508,12 @@ public class LUDecomposition {
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Solve U*x=f
-	 * 
+	 *
 	 * @param U (Input) Upper triangular matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 */
 	public static FullMatrix solveUx(FullMatrix U, FullMatrix X, FullMatrix F) {
@@ -538,13 +540,13 @@ public class LUDecomposition {
 			}
 		}
 		return X;
-	}	
-	
+	}
+
 	/**
 	 * Solve U*x=f
-	 * 
+	 *
 	 * @param U (Input) Upper triangular matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 */
 	public static SparseMatrix solveUx(SparseMatrixRowMajor U, SparseMatrix X, SparseMatrix F) {
@@ -568,13 +570,13 @@ public class LUDecomposition {
 			}
 		}
 		return X;
-	}	
+	}
 
 	/**
 	 * Solve U*x=f
-	 * 
+	 *
 	 * @param U (Input) Upper triangular matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 */
 	public static FullMatrix solveUx(SparseMatrixRowMajor U, FullMatrix X, FullMatrix F) {
@@ -600,12 +602,12 @@ public class LUDecomposition {
 				}
 			}
 			double Uii = U.get(i+1, i+1);
-			
+
 			if(size>0) {
-				for(int k=0;k<nFCol;k++) 
+				for(int k=0;k<nFCol;k++)
 					sums[k] = row[0]*dX[index[0]][k];
 				for(int s=1;s<size;s++)
-					for(int k=0;k<nFCol;k++) 
+					for(int k=0;k<nFCol;k++)
 						sums[k] += row[s]*dX[index[s]][k];
 				for(int k=0;k<nFCol;k++) {
 					dX[i][k] = (dF[i][k]-sums[k])/Uii;
@@ -614,8 +616,8 @@ public class LUDecomposition {
 				for(int k=0;k<nFCol;k++)
 					dX[i][k] = dF[i][k]/Uii;
 			}
-			
-			
+
+
 //			for(int k=0;k<nFCol;k++) {//å¾ªçŽ¯--å�³ç«¯é¡¹åˆ—æ•°
 //				double sum = 0.0;
 //				for(int s=0;s<size;s++)
@@ -624,13 +626,13 @@ public class LUDecomposition {
 //			}
 		}
 		return X;
-	}	
-	
+	}
+
 	/**
 	 * Solve L*x = f
-	 * 
+	 *
 	 * @param L (Input) Lower triangular matrix with ones on its diagonal
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -644,14 +646,14 @@ public class LUDecomposition {
 			double xi = f.get(i) - sum;
 			x.set(i, xi);
 		}
-		return x;		
+		return x;
 	}
 
 	/**
 	 * Solve L*x = f
-	 * 
+	 *
 	 * @param L (Input) Lower triangular matrix with ones on its diagonal
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -671,12 +673,12 @@ public class LUDecomposition {
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Solve L*x = f
-	 * 
+	 *
 	 * @param L (Input) Lower triangular matrix with ones on its diagonal
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -686,18 +688,18 @@ public class LUDecomposition {
 		SparseMatrixColMajor XX = new SparseMatrixColMajor(X.getRowDim(),X.getColDim());
 //		long time1=0,time2=0;
 //		long begin,end;
-		
+
 //		Map<Integer, Map<Integer, Double>> dL= L.getAll();
 //		for(Entry<Integer, Map<Integer, Double>> e:dL.entrySet())
 //			System.out.println(e.getValue().size());
-		
+
 		for(int i=1;i<=N;i++) {
 			for(int k=1;k<=nFCol;k++) {
 				//begin = System.currentTimeMillis();
 				double sum = L.mult(XX, i, k);
 				//end = System.currentTimeMillis();
 				//time1+=end-begin;
-				
+
 				//begin = System.currentTimeMillis();
 				double v = F.get(i, k)-sum;
 				XX.set(i, k, v);
@@ -708,7 +710,7 @@ public class LUDecomposition {
 		//System.out.println("solveLx s1="+(end-begin)+"ms");
 		//System.out.println("solveLx s11="+time1+"ms");
 		//System.out.println("solveLx s12="+time2+"ms");
-		
+
 		//X
 		Map<Integer, Map<Integer, Double>> dataU = XX.getAll();
 		for(Entry<Integer, Map<Integer, Double>> e1 : dataU.entrySet()) {
@@ -719,14 +721,14 @@ public class LUDecomposition {
 				X.set(nRow, nCol, e2.getValue());
 			}
 		}
-		return X;	
+		return X;
 	}
-	
+
 	/**
 	 * Solve L*x = f
-	 * 
+	 *
 	 * @param L (Input) Lower triangular matrix with ones on its diagonal
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -753,14 +755,14 @@ public class LUDecomposition {
 				_dXi[k] = _dFi[k] - sum[k];
 			}
 		}
-		return X;	
+		return X;
 	}
-	
+
 	/**
 	 * Solve L*x = f
-	 * 
+	 *
 	 * @param L (Input) Lower triangular matrix with ones on its diagonal
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -785,19 +787,19 @@ public class LUDecomposition {
 				}
 			}
 			if(size>0) {
-				for(int k=0;k<nFCol;k++) 
+				for(int k=0;k<nFCol;k++)
 					sums[k] = row[0]*dX[index[0]][k];
 				for(int s=1;s<size;s++)
-					for(int k=0;k<nFCol;k++) 
+					for(int k=0;k<nFCol;k++)
 						sums[k] += row[s]*dX[index[s]][k];
 				for(int k=0;k<nFCol;k++)
 					dX[i][k] = dF[i][k]-sums[k];
 			} else {
 				for(int k=0;k<nFCol;k++) {
 					dX[i][k] = dF[i][k];
-				}				
+				}
 			}
-			
+
 //			for(int k=0;k<nFCol;k++) {
 //				double sum = 0.0;
 //				for(int s=0;s<size;s++)
@@ -805,14 +807,14 @@ public class LUDecomposition {
 //				dX[i][k] = dF[i][k]-sum;
 //			}
 		}
-		return X;	
+		return X;
 	}
-	
+
 	/**
 	 * Solve P*x = f
-	 * 
+	 *
 	 * @param P (Output) Permutation matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -827,12 +829,12 @@ public class LUDecomposition {
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Solve P*x = f
-	 * 
+	 *
 	 * @param P (Output) Permutation matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -849,12 +851,12 @@ public class LUDecomposition {
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Solve P*x = f
-	 * 
+	 *
 	 * @param P (Output) Permutation matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -874,12 +876,12 @@ public class LUDecomposition {
 		}
 		return X;
 	}
-	
+
 	/**
 	 * Solve P*x = f
-	 * 
+	 *
 	 * @param P (Output) Permutation matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -898,16 +900,16 @@ public class LUDecomposition {
 		}
 		return X;
 	}
-	
+
 	/**
-	 * Solve A*X=F with LU decomposition, 
+	 * Solve A*X=F with LU decomposition,
 	 * where A can be any class that implements interface <tt>Matrix</tt>
-	 * 
+	 *
 	 * @param A (Input) Coefficient matrix
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
 	 * @param P (Output) Permutation matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -920,16 +922,16 @@ public class LUDecomposition {
 		solveUx(U,x,x2);
 		return x;
 	}
-	
+
 	/**
 	 * Vector RHS
 	 * Solve A*x=f with LU decomposition, where A is full matrix
-	 * 
+	 *
 	 * @param A (Input) Coefficient matrix
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
 	 * @param P (Output) Permutation matrix
-	 * @param x (Input) Unknown vector 
+	 * @param x (Input) Unknown vector
 	 * @param f (Input) Right hand side
 	 * @return
 	 */
@@ -940,29 +942,29 @@ public class LUDecomposition {
 		LU(A, L, U, P);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full LU="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		solvePx(P,x,f);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full SolvePx="+(end-begin));
 		FullVector x2 = x.copy();
-		
+
 		begin = System.currentTimeMillis();
 		solveLx(L,x2,x);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full SolveLx="+(end-begin));
-		
+
 		begin = System.currentTimeMillis();
 		solveUx(U,x,x2);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full SolveUx="+(end-begin));
 		return x;
 	}
-	
+
 	/**
 	 * Matrix RHS
 	 * Solve A*X=F with LU decomposition, where A is full matrix
-	 * 
+	 *
 	 * @param A (Input) Coefficient matrix
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
@@ -971,7 +973,7 @@ public class LUDecomposition {
 	 * @param F (Input) Right hand sides in matrix form
 	 * @return
 	 */
-	public static FullMatrix solve(FullMatrix A, 
+	public static FullMatrix solve(FullMatrix A,
 			FullMatrix L, FullMatrix U, SparseMatrix P,
 			FullMatrix X, FullMatrix F) {
 		long begin,end;
@@ -979,29 +981,29 @@ public class LUDecomposition {
 		LU(A, L, U, P);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full LU="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		solvePx(P,X,F);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full SolvePx="+(end-begin)+"ms");
-		
+
 		FullMatrix X2 = X.copy();
 		begin = System.currentTimeMillis();
 		solveLx(L,X2,X);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full SolveLx="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		solveUx(U,X,X2);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Full SolveUx="+(end-begin)+"ms");
-		
+
 		return X;
 	}
-	
+
 	/**
 	 * Solve A*X=F with LU decomposition, where A is sparse matrix
-	 * 
+	 *
 	 * @param A (Input) Coefficient matrix
 	 * @param L (Output) Lower triangular matrix with ones on its diagonal
 	 * @param U (Output) Upper triangular matrix
@@ -1010,7 +1012,7 @@ public class LUDecomposition {
 	 * @param F (Input) Right hand sides in matrix form (column based)
 	 * @return
 	 */
-	public static SparseMatrix solve(SparseMatrixRowMajor A, 
+	public static SparseMatrix solve(SparseMatrixRowMajor A,
 			SparseMatrixRowMajor L, SparseMatrixRowMajor U, SparseMatrix P,
 			SparseMatrix X, SparseMatrix F) {
 		long begin,end;
@@ -1018,33 +1020,33 @@ public class LUDecomposition {
 		LU(A, L, U, P);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Sparse LU="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		solvePx(P,X,F);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Sparse SolvePx="+(end-begin)+"ms");
-		
+
 		SparseMatrix X2 = new SparseMatrixRowMajor(X.getRowDim(),X.getColDim());
 		begin = System.currentTimeMillis();
 		solveLx(L,X2,X);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Sparse SolveLx="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		X.clearData();
 		solveUx(U,X,X2);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Sparse SolveUx="+(end-begin)+"ms");
-		
+
 		return X;
 	}
-	
+
 	/**
 	 * Solve (P*L*U)*X=F with full matrix back substitution,
 	 * combined with sparse LU decomposition (A=P*L*U)
 	 * this can be faster than any other <tt>solve(...)</tt> function
 	 * defined in this class.
-	 * 
+	 *
 	 * @param L (Input) Lower triangular matrix with ones on its diagonal from LU decomposition
 	 * @param U (Input) Upper triangular matrix from LU decomposition
 	 * @param P (Input) Permutation matrix from LU decomposition
@@ -1055,33 +1057,33 @@ public class LUDecomposition {
 	public static FullMatrix backSubstitution(SparseMatrixRowMajor L, SparseMatrixRowMajor U, SparseMatrix P,
 			FullMatrix X, FullMatrix F) {
 		long begin,end;
-		
+
 		begin = System.currentTimeMillis();
 		solvePx(P,X,F);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Sparse2 Solve Px="+(end-begin)+"ms");
-		
+
 		FullMatrix X2 = X.copy();
 		begin = System.currentTimeMillis();
 		solveLx(L,X2,X);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Sparse2 Solve Lx="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		solveUx(U,X,X2);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye Sparse2 Solve Ux="+(end-begin)+"ms");
-		
+
 		return X;
 	}
-	
-	
+
+
 	public static void test1() {
 		SparseMatrix A = new SparseMatrixRowMajor(3,3);
 		SparseMatrix L = new SparseMatrixRowMajor(3,3);
 		SparseMatrix U = new SparseMatrixRowMajor(3,3);
 		SparseMatrix P = new SparseMatrixRowMajor(3,3);
-		
+
 		//double[][] data = {{8,2,9},{4,9,4},{6,7,9}};
 		double[][] data = {{1,0,0},{0,0,2},{0,1,-1}};
 		for(int i=0;i<data.length;i++) {
@@ -1099,18 +1101,18 @@ public class LUDecomposition {
 		SparseVector f = new SparseVectorHashMap(3,1.0);
 		solve(A,L,U,P,x,f);
 		x.print();
-		
+
 		SparseVector y = new SparseVectorHashMap(3);
 		A.mult(x, y);
-		y.print();		
+		y.print();
 	}
-	
+
 	public static void test2() {
 		SparseMatrix A = new SparseMatrixRowMajor(3,3);
 		SparseMatrix L = new SparseMatrixRowMajor(3,3);
 		SparseMatrix U = new SparseMatrixRowMajor(3,3);
 		SparseMatrix P = new SparseMatrixRowMajor(3,3);
-		
+
 		//double[][] data = {{8,2,9},{4,9,4},{6,7,9}};
 		double[][] data = {{1,0,0},{0,0,2},{0,1,-1}};
 		for(int i=0;i<data.length;i++) {
@@ -1118,7 +1120,7 @@ public class LUDecomposition {
 				A.set(i+1, j+1, data[i][j]);
 		}
 		A.print();
-		
+
 		FullMatrix fA = new FullMatrix(A);
 		FullMatrix fL = new FullMatrix(L);
 		FullMatrix fU = new FullMatrix(U);
@@ -1132,18 +1134,18 @@ public class LUDecomposition {
 		FullVector f = new FullVector(3,1.0);
 		solve(fA,fL,fU,P,x,f);
 		x.print();
-		
+
 		SparseVector y = new SparseVectorHashMap(3);
 		A.mult(x.getSparseVector(), y);
 		y.print();
 	}
-	
+
 	public static void test3() {
 		SparseMatrix A = new SparseMatrixRowMajor(3,3);
 		SparseMatrixRowMajor L = new SparseMatrixRowMajor(3,3);
 		SparseMatrixRowMajor U = new SparseMatrixRowMajor(3,3);
 		SparseMatrix P = new SparseMatrixRowMajor(3,3);
-		
+
 		//double[][] data = {{8,2,9},{4,9,4},{6,7,9}};
 		double[][] data = {{1,0,0},{0,0,2},{0,1,-1}};
 		for(int i=0;i<data.length;i++) {
@@ -1151,7 +1153,7 @@ public class LUDecomposition {
 				A.set(i+1, j+1, data[i][j]);
 		}
 		A.print();
-		
+
 		//LU(A,L,U,P);
 		SparseMatrix X = new SparseMatrixRowMajor(3,1);
 		SparseMatrix F = new SparseMatrixRowMajor(3,1);
@@ -1168,11 +1170,11 @@ public class LUDecomposition {
 		U.print();
 		P.print();
 		XX.print();
-		
-		
+
+
 //		SparseMatrix Y = new SparseMatrix(3,1);
 //		A.mult(X, Y);
-//		Y.print();		
+//		Y.print();
 
 	}
 	/**

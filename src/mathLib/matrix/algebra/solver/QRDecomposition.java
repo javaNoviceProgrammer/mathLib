@@ -1,15 +1,11 @@
-/**
- * Copyright (c) 2010, nkliuyueming@gmail.com. All rights reserved.
- * 
- * 
- */
 package mathLib.matrix.algebra.solver;
 
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.SparseMatrix;
 
 public class QRDecomposition {
-	
+
 	private static double getColumnNorm(Matrix A, int col) {
 		int N = A.getRowDim();
 		double norm = 0.0;
@@ -23,7 +19,7 @@ public class QRDecomposition {
 	/**
 	 * A=Q*R using the Gram-Schmidt process
 	 * where Q'Q=I
-	 *  
+	 *
 	 * @param A
 	 * @param Q
 	 * @param R
@@ -49,15 +45,15 @@ public class QRDecomposition {
 					double Q2R22ij = Q.get(j, n)*R.get(n, i);
 					AA.add(j, i, -Q2R22ij);
 				}
-			}	
+			}
 		}
 	}
-	
+
 	public static void test1() {
 		SparseMatrix A = new SparseMatrixRowMajor(3,2);
 		SparseMatrix Q = new SparseMatrixRowMajor(3,2);
 		SparseMatrix R = new SparseMatrixRowMajor(2,2);
-		
+
 		double[][] data = {{3,-6},{4,-8},{0,1}};
 		for(int i=0;i<data.length;i++) {
 			for(int j=0;j<data[i].length;j++)
@@ -67,14 +63,14 @@ public class QRDecomposition {
 		QR(A,Q,R);
 		A.print();
 		Q.print();
-		R.print();		
+		R.print();
 	}
-	
+
 	public static void test2() {
 		SparseMatrix A = new SparseMatrixRowMajor(4,3);
 		SparseMatrix Q = new SparseMatrixRowMajor(4,3);
 		SparseMatrix R = new SparseMatrixRowMajor(3,3);
-		
+
 		double[][] data = {{9,0,26},{12,0,-7},{0,4,4},{0,-3,-3}};
 		for(int i=0;i<data.length;i++) {
 			for(int j=0;j<data[i].length;j++)
@@ -84,16 +80,16 @@ public class QRDecomposition {
 		QR(A,Q,R);
 		A.print();
 		Q.print();
-		R.print();		
-	}	
-	
+		R.print();
+	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		//test1();
 		test2();
-		
+
 	}
 
 }

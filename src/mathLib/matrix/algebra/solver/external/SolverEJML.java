@@ -7,9 +7,10 @@ import org.ejml.data.DenseMatrix64F;
 import mathLib.matrix.algebra.FullMatrix;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.intf.SparseMatrix;
+import mathLib.matrix.algebra.solver.LUDecomposition;
 
 public class SolverEJML {
-	
+
 	/**
 	 * Solve <tt>A*X = B</tt> with LU Decomposition.
 	 * @param A
@@ -19,25 +20,25 @@ public class SolverEJML {
 	public FullMatrix solve(FullMatrix A,FullMatrix B) {
 		DenseMatrix64F AA = new DenseMatrix64F(A.getData());
 		DenseMatrix64F BB = new DenseMatrix64F(B.getData());
-		
+
 		long begin,end;
 		begin = System.currentTimeMillis();
 		LUDecompositionAlt_D64 lu = new LUDecompositionAlt_D64();
 		lu.decompose(AA);
 		end = System.currentTimeMillis();
 		System.out.println("EJML LU="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		LinearSolverLu_D64 solver = new LinearSolverLu_D64(lu);
 		DenseMatrix64F XX = new DenseMatrix64F(BB.numRows,BB.numCols);
 		solver.solve(BB, XX);
 		end = System.currentTimeMillis();
 		System.out.println("EJML Solve="+(end-begin)+"ms");
-		
+
 		FullMatrix rlt = new FullMatrix(BB.numRows,BB.numCols,XX.getData());
 		return rlt;
 	}
-	
+
 	@SuppressWarnings("unused")
 	public static void test() {
 		int N = 4024;
@@ -74,17 +75,17 @@ public class SolverEJML {
 		FullMatrix fU = new FullMatrix(N,N);
 		FullMatrix fX = new FullMatrix(N,NE);
 		FullMatrix fF = new FullMatrix(dataB,true);
-		
+
 		SparseMatrix P = new SparseMatrixRowMajor(N,N);
 		System.out.println("Begin FuturEye solver...");
 		begin = System.currentTimeMillis();
-		
+
 		LUDecomposition.solve(A, fL, fU, P, fX, fF);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye time used: "+(end-begin));
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		test();
 	}

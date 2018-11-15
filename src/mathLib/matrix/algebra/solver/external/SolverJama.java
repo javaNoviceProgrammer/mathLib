@@ -3,14 +3,15 @@ package mathLib.matrix.algebra.solver.external;
 import mathLib.matrix.algebra.FullMatrix;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.intf.SparseMatrix;
+import mathLib.matrix.algebra.solver.LUDecomposition;
 
 /**
- * Jama Interface 
- * 
+ * Jama Interface
+ *
  *
  */
 public class SolverJama {
-	
+
 	/**
 	 * Solve <tt>A*X = B</tt> with LU Decomposition.
 	 * @param A
@@ -18,25 +19,25 @@ public class SolverJama {
 	 * @return X
 	 */
 	public FullMatrix solve(FullMatrix A,FullMatrix B) {
-		
+
 		Jama.Matrix JA = new Jama.Matrix(A.getData());
 		Jama.Matrix JB = new Jama.Matrix(B.getData());
-		
+
 		long begin,end;
 		begin = System.currentTimeMillis();
 		Jama.LUDecomposition lu = JA.lu();
 		end = System.currentTimeMillis();
 		System.out.println("Jama LU="+(end-begin)+"ms");
-		
+
 		begin = System.currentTimeMillis();
 		Jama.Matrix JX = lu.solve(JB);
 		end = System.currentTimeMillis();
 		System.out.println("Jama Solve="+(end-begin)+"ms");
-		
+
 		FullMatrix rlt = new FullMatrix(JX.getArray(),false);
 		return rlt;
 	}
-	
+
 	@SuppressWarnings("unused")
 	public static void test() {
 		int N = 4024;
@@ -73,7 +74,7 @@ public class SolverJama {
 		FullMatrix fU = new FullMatrix(N,N);
 		FullMatrix fX = new FullMatrix(N,NE);
 		FullMatrix fF = new FullMatrix(dataB,true);
-		
+
 		SparseMatrix P = new SparseMatrixRowMajor(N,N);
 		System.out.println("Begin FuturEye solver...");
 		begin = System.currentTimeMillis();
@@ -81,9 +82,9 @@ public class SolverJama {
 		LUDecomposition.solve(A, fL, fU, P, fX, fF);
 		end = System.currentTimeMillis();
 		System.out.println("FuturEye time used: "+(end-begin));
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		test();
 	}

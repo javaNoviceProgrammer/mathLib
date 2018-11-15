@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import mathLib.fem.util.Constant;
 import mathLib.matrix.algebra.intf.AlgebraMatrix;
 import mathLib.matrix.algebra.intf.AlgebraVector;
 import mathLib.matrix.algebra.intf.MatrixEntry;
@@ -14,24 +15,24 @@ import mathLib.matrix.algebra.intf.SparseMatrix;
 
 /**
  * Compressed row matrix
- * 
+ *
  */
 public class CompressedRowMatrix implements AlgebraMatrix {
-	
+
 	/**
 	 * Column indices of non-zero values. These are kept sorted within each row.
 	 */
 	protected int[][] colIndex = null;
 
 	protected double[][] data = null;
-	
+
 	protected int rowDim;
 	protected int colDim;
 
 	public CompressedRowMatrix() {
-		
+
 	}
-	
+
 	public CompressedRowMatrix(int nRow, int nCol) {
 		this.colDim = nCol;
 		this.rowDim = nRow;
@@ -42,7 +43,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 			this.data[r] = new double[0];
 		}
 	}
-	
+
 	public void setRow(int row,int[] colIndex, double []data) {
 		int r = row - 1;
 		this.colIndex[r] = new int[colIndex.length];
@@ -50,11 +51,11 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		System.arraycopy(colIndex, 0, this.colIndex[r], 0, colIndex.length);
 		System.arraycopy(data, 0, this.data[r], 0, colIndex.length);
 	}
-	
+
 	public CompressedRowMatrix(SparseMatrix sMat, boolean clearSparseMatrix) {
 		this.rowDim = sMat.getRowDim();
 		this.colDim = sMat.getColDim();
-		
+
 //		Map<Integer, Map<Integer, Double>> m = sMat.getAll();
 //		this.colIndex = new int[this.rowDim][];
 //		this.data = new double[this.rowDim][];
@@ -75,7 +76,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 //			if(clearSparseMatrix) if(row!=null) row.clear();
 //		}
 //		if(clearSparseMatrix) m.clear();
-		
+
 		class IVPair {
 			int index;
 			double value;
@@ -84,7 +85,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 				this.value = value;
 			}
 		}
-		
+
 		//by column
 		@SuppressWarnings("unchecked")
 		ArrayList<IVPair>[] rows = new ArrayList[this.rowDim];
@@ -97,9 +98,9 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 			double v = e.getValue();
 			rows[r-1].add(new IVPair(c-1,v));
 		}
-		
+
 		if(clearSparseMatrix) sMat.clearAll();
-		
+
 		this.colIndex = new int[this.colDim][];
 		this.data = new double[this.colDim][];
 		for(int r=this.rowDim; --r>=0;) {
@@ -114,20 +115,20 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 					else return -1;
 				}
 			});
-			
+
 			for(int c=cDim; --c>=0;) {
 				IVPair pair = rows[r].get(c);
 				this.colIndex[r][c] = pair.index;
 				this.data[r][c] = pair.value;
 			}
 			rows[r].clear();
-		}		
+		}
 	}
-	
+
 	public CompressedRowMatrix(SparseBlockMatrix sMat, boolean clearSparseMatrix) {
 		this.rowDim = sMat.getRowDim();
 		this.colDim = sMat.getColDim();
-		
+
 		Map<Integer, Map<Integer, Double>> m = sMat.getAll();
 		this.colIndex = new int[this.rowDim][];
 		this.data = new double[this.rowDim][];
@@ -149,7 +150,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		}
 		if(clearSparseMatrix) m.clear();
 	}
-	
+
 	@Override
 	public int getColDim() {
 		return this.colDim;
@@ -179,43 +180,43 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		for(int row=0; row<this.rowDim; row++) {
 			int nCol = colIndex[row].length;
 			for(int c=0; c<nCol; c++) {
-				System.out.print(String.format("%8.4f(%dc)    ", 
+				System.out.print(String.format("%8.4f(%dc)    ",
 						this.data[row][c],this.colIndex[row][c]+1));
 			}
 			System.out.println();
 		}
 		System.out.println();
 	}
-	
+
 
 	@Override
 	public void mult(AlgebraMatrix B, AlgebraMatrix C) {
 		if(B instanceof CompressedColMatrix && C instanceof CompressedRowMatrix) {
-			double[] tmpData = new double[this.colDim]; 
-			int[] tmpFlag = new int[this.colDim]; 
+			double[] tmpData = new double[this.colDim];
+			int[] tmpFlag = new int[this.colDim];
 			for(int j=0;j<this.colDim;j++) tmpData[j] = 0.0;
 			for(int j=0;j<this.colDim;j++) tmpFlag[j] = -1;
-			
+
 			CompressedColMatrix BB = (CompressedColMatrix)B;
 			CompressedRowMatrix CC = (CompressedRowMatrix)C;
 			CC.rowDim = this.rowDim;
 			CC.colDim = BB.colDim;
 			CC.colIndex = new int[CC.rowDim][];
 			CC.data = new double[CC.rowDim][];
-	
+
 			int[] cColIndex= new int[BB.colDim];
 			double[] cColData = new double[BB.colDim];
 			for(int row=0; row<this.rowDim; row++) {
-				
+
 				int nCol = this.colIndex[row].length;
 				for(int c=0; c<nCol; c++) {
 					int ci = this.colIndex[row][c];
-					tmpData[ci] = this.data[row][c]; 
-					tmpFlag[ci] = row; 
+					tmpData[ci] = this.data[row][c];
+					tmpFlag[ci] = row;
 				}
-				int total = 0; 
+				int total = 0;
 				for(int col=0; col<BB.colDim; col++) {
-					double v = 0.0;	
+					double v = 0.0;
 					int nRow = BB.rowIndex[col].length;
 					double[] pCol = BB.data[col];
 					int[] pColIdx = BB.rowIndex[col];
@@ -242,17 +243,17 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 			CC.colDim = BB.colDim;
 			CC.colIndex = new int[CC.rowDim][];
 			CC.data = new double[CC.rowDim][];
-			
+
 			double[] cColData = new double[BB.colDim];
 			int[] cColIndex = new int[BB.colDim];
-			
+
 			for(int row=0; row<this.rowDim; row++) {
 				int nCol = this.colIndex[row].length;
 				double[] pRow = this.data[row];
 				int[] pRowIdx = this.colIndex[row];
 				int total = 0;
 				for(int col=0; col<BB.colDim; col++) {
-					double v = 0.0;	
+					double v = 0.0;
 					for(int c=0; c<nCol; c++) {
 						int ci = pRowIdx[c];
 						v += pRow[c]*BB.data[ci][col];
@@ -278,10 +279,10 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		CompressedColMatrix T = new CompressedColMatrix();
 		T.rowDim = this.colDim;
 		T.colDim = this.rowDim;
-		
+
 		T.rowIndex = new int[T.colDim][];
 		T.data = new double[T.colDim][];
-		
+
 		for(int r=0; r<this.rowDim; r++) {
 			T.rowIndex[r] = new int[this.colIndex[r].length];
 			T.data[r] = new double[this.colIndex[r].length];
@@ -290,14 +291,14 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 				T.data[r][c] = this.data[r][c];
 			}
 		}
-		return T;		
+		return T;
 	}
 
 	/**
 	 * <p>
-	 * The values are copied. So subsequent changes in this matrix 
+	 * The values are copied. So subsequent changes in this matrix
 	 * are not reflected in the returned matrix, and vice-versa.
-	 * 
+	 *
 	 * @return A new object of class CompressedRowMatrix, data are copied.
 	 */
 	@SuppressWarnings("unchecked")
@@ -305,7 +306,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		CompressedColMatrix C = new CompressedColMatrix();
 		C.colDim = this.colDim;
 		C.rowDim = this.rowDim;
-		
+
 		//by column
 		ArrayList<Integer>[] indexList = new ArrayList[C.colDim];
 		ArrayList<Double>[] dataList = new ArrayList[C.colDim];
@@ -313,14 +314,14 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 			indexList[i] = new ArrayList<Integer>();
 			dataList[i] = new ArrayList<Double>();
 		}
-		
+
 		for(int r=0; r<this.rowDim; r++) {
 			for(int c=0; c<this.colIndex[r].length; c++) {
 				indexList[this.colIndex[r][c]].add(r);
 				dataList[this.colIndex[r][c]].add(this.data[r][c]);
 			}
 		}
-		
+
 		C.rowIndex = new int[C.colDim][];
 		C.data = new double[C.colDim][];
 		for(int c=0; c<C.colDim; c++) {
@@ -334,7 +335,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		}
 		return C;
 	}
-	
+
 	public void getRowVector(int row, FullVector vec) {
 		for(int r=0;r<this.colDim;r++)
 			vec.data[r] = 0.0;
@@ -344,7 +345,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		for(int c=0; c<idx.length; c++)
 			vec.data[idx[c]] = dat[c];
 	}
-	
+
 	/**
 	 * A = a*A+B
 	 * @param a
@@ -356,11 +357,11 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		int[] tmpFlag = new int[this.colDim];
 		for(int j=0;j<this.colDim;j++) tmpData[j] = 0.0;
 		for(int j=0;j<this.colDim;j++) tmpFlag[j] = -1;
-		
+
 		Map<Integer, Double> mapRow = new HashMap<Integer, Double>();
 		for(int row=0; row<this.rowDim; row++) {
 			mapRow.clear();
-			
+
 			int nCol = this.colIndex[row].length;
 			for(int c=0; c<nCol; c++) {
 				int ci = this.colIndex[row][c];
@@ -371,7 +372,7 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 					mapRow.put(ci, v + a*this.data[row][c]);
 				}
 			}
-			
+
 			nCol = B.colIndex[row].length;
 			for(int c=0; c<nCol; c++) {
 				int ci = B.colIndex[row][c];
@@ -393,8 +394,8 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		}
 		return this;
 	}
-	
-	
+
+
 	public CompressedRowMatrix ax(double a) {
 		for(int row=0; row<this.rowDim; row++) {
 			for(int c=0; c<this.colIndex[row].length; c++)
@@ -402,13 +403,13 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		}
 		return this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * <p>
-	 * The values are copied. So subsequent changes in this matrix 
+	 * The values are copied. So subsequent changes in this matrix
 	 * are not reflected in the returned matrix, and vice-versa.
-	 * 
+	 *
 	 * @return
 	 */
 	public SparseMatrix getSparseMatrix() {
@@ -421,11 +422,11 @@ public class CompressedRowMatrix implements AlgebraMatrix {
 		}
 		return rlt;
 	}
-	
+
 	public int[][] getColIndex() {
 		return this.colIndex;
 	}
-	
+
 	public double[][] getData() {
 		return this.data;
 	}
