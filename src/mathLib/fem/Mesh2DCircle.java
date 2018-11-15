@@ -3,6 +3,7 @@ package mathLib.fem;
 import java.util.ArrayList;
 import java.util.List;
 
+import mathLib.fem.core.Mesh;
 import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;
@@ -13,7 +14,7 @@ import mathLib.util.MathUtils;
 import mathLib.util.Timer;
 
 public class Mesh2DCircle {
-	
+
 	double centerX, centerY, radius ;
 	int numRadius, numAngle ;
 	Mesh mesh ;
@@ -26,13 +27,13 @@ public class Mesh2DCircle {
 		this.centerX = centerX ;
 		this.centerY = centerY ;
 		this.radius = radius ;
-		
+
 		numRadius = 10 ;
 		numAngle = 50 ;
-		
+
 		createMesh();
 	}
-	
+
 	public Mesh2DCircle(
 			Point center,
 			double radius
@@ -40,30 +41,30 @@ public class Mesh2DCircle {
 		this.centerX = center.getX() ;
 		this.centerY = center.getY() ;
 		this.radius = radius ;
-		
+
 		numRadius = 10 ;
 		numAngle = 50 ;
-		
+
 		createMesh();
 	}
-	
+
 	public void setCenter(double x, double y) {
 		this.centerX = x ;
 		this.centerY = y ;
 	}
-	
+
 	public void setRadius(double radius) {
 		this.radius = radius ;
 	}
-	
+
 	public void setNumberofPoints(int numRadius, int numAngle) {
 		this.numRadius = numRadius ;
 		this.numAngle = numAngle ;
 	}
-	
+
 	public void createMesh() {
 		mesh = new Mesh() ;
-		
+
 		double[] r = MathUtils.linspace(0.05*radius, radius, numRadius) ;
 		double[] theta = MathUtils.linspace(0, 2*Math.PI, numAngle) ;
 
@@ -76,20 +77,20 @@ public class Mesh2DCircle {
 				pointSet.add(new Vector2D(x, y)) ;
 			}
 		pointSet.add(new Vector2D(0, 0)) ;
-		
+
 		Timer timer = new Timer() ;
 		timer.start();
-		
+
 		DelaunayTriangulator triangles = new DelaunayTriangulator(pointSet) ;
 		try {
 			triangles.triangulate();
 		} catch (NotEnoughPointsException e) {
 			e.printStackTrace();
 		}
-		
+
 		timer.stop();
 		System.out.println(timer);
-		
+
 		// need to create nodes
 		int numNodes = pointSet.size() ;
 		for(int i=0; i<numNodes; i++) {
@@ -103,7 +104,7 @@ public class Mesh2DCircle {
 			// ????
 		}
 	}
-	
+
 	public void plotNodes() {
 		MatlabChart fig = new MatlabChart() ;
 		int nodeSize = mesh.getNodeList().size() ;
@@ -118,19 +119,19 @@ public class Mesh2DCircle {
 		fig.markerON();
 		fig.setFigLineWidth(0, 0f);
 		fig.run(true);
-		
+
 	}
-	
+
 	public Mesh getMesh() {
 		return mesh ;
 	}
-	
-	
+
+
 	// for test
 	public static void main(String[] args) {
 		Mesh2DCircle mesh1 = new Mesh2DCircle(0, 0, 5) ;
 		System.out.println(mesh1.getMesh().getNodeList());
 		mesh1.plotNodes();
 	}
-	
+
 }

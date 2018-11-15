@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.bcel.Constants;
+import org.objectweb.asm.Opcodes;
 
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import com.sun.org.apache.bcel.internal.generic.ALOAD;
@@ -41,11 +42,11 @@ import mathLib.func.symbolic.operator.FMul;
 import mathLib.func.symbolic.operator.FSub;
 import mathLib.util.CompiledFunc;
 
-public abstract class MathFuncBase implements MathFunc, Cloneable { 
-	
+public abstract class MathFuncBase implements MathFunc, Cloneable {
+
 	@Override
 	public abstract double apply(double ...args);
-	
+
 	@Override
 	public double apply(AssembleParam ap, double... args) {
 		return apply(args);
@@ -58,32 +59,32 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 		Node n = new Node(v.getIndex());
 		return apply(new AssembleParam(v.getElement(),-1,-1), v.getVarValues());
 	}
-	
+
 	@Deprecated
 	@Override
 	public double apply(Variable v, Map<Object,Object> cache) {
 		//Ignore cache
 		return apply(v);
 	}
-	
+
 	@Deprecated
 	@Override
 	public double[] applyAll(VariableArray v, Map<Object,Object> cache) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public MathFunc diff(String varName) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public MathFunc compose(final Map<String,MathFunc> fInners) {
 		boolean find = false;
 		for(String key : fInners.keySet()) {
 			if(getVarNames().contains(key)) find = true;
 		}
-		if(!find) 
+		if(!find)
 			return this; //No compose
 		else {
 			MathFunc ret = new FComposite(this, fInners);
@@ -95,9 +96,9 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 			return ret;
 		}
 	}
-	
+
 	////////////////////////Basic Math Operations/////////////////////////////
-	
+
 	@Override
 	public MathFunc A(MathFunc g) {
 		final MathFunc f1 = this;
@@ -116,7 +117,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	public MathFunc A(double g) {
 		return A(FC.c(g));
 	}
-	
+
 	@Override
 	public MathFunc S(MathFunc g) {
 		final MathFunc f1 = this;
@@ -132,8 +133,8 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	@Override
 	public MathFunc S(double g) {
 		return S(FC.c(g));
-	}	
-	
+	}
+
 	@Override
 	public MathFunc M(MathFunc f) {
 		final MathFunc f1 = this;
@@ -153,8 +154,8 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	@Override
 	public MathFunc M(double g) {
 		return M(FC.c(g));
-	}	
-	
+	}
+
 	@Override
 	public MathFunc D(MathFunc f) {
 		final MathFunc f1 = this;
@@ -176,17 +177,17 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	public MathFunc D(double g) {
 		return D(FC.c(g));
 	}
-	
+
 	///////////////////////////Compilation///////////////////////////////
-	
+
 	/**
-	 * This implementation calls the 'apply(...)' method in referenced function by default 
+	 * This implementation calls the 'apply(...)' method in referenced function by default
 	 * in the case of that a generated sub-class does not override this method (bytecodeGen)
 	 */
 	@Override
-	public InstructionHandle bytecodeGen(String clsName, MethodGen mg, 
-			ConstantPoolGen cp, InstructionFactory factory, 
-			InstructionList il, Map<String, Integer> argsMap, 
+	public InstructionHandle bytecodeGen(String clsName, MethodGen mg,
+			ConstantPoolGen cp, InstructionFactory factory,
+			InstructionList il, Map<String, Integer> argsMap,
 			int argsStartPos, Map<MathFunc, Integer> funcRefsMap) {
 //		throw new UnsupportedOperationException();
 		FieldGen fg = new FieldGen(ACC_PUBLIC, new ArrayType(Type.getType(MathFunc.class), 1), "funcRefs", cp);
@@ -203,7 +204,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 				Type.DOUBLE, new Type[] {
 					Type.getType(AssembleParam.class),
 					new ArrayType(Type.DOUBLE, 1)
-				}, 
+				},
 				Constants.INVOKEINTERFACE));
 	}
 
@@ -212,35 +213,35 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 			int argsStartPos, Map<MathFunc, Integer> funcRefsMap,
 			String clsName) {
 		mv.visitVarInsn(org.objectweb.asm.Opcodes.ALOAD, 0);
-		mv.visitFieldInsn(Opcodes.GETFIELD, ClassGenerator.getASMName(CompiledFunc.class), "funcRefs", 
+		mv.visitFieldInsn(Opcodes.GETFIELD, ClassGenerator.getASMName(CompiledFunc.class), "funcRefs",
 				org.objectweb.asm.Type.getType(MathFunc[].class).getDescriptor());
 		mv.visitLdcInsn(funcRefsMap.get(this));
 		mv.visitInsn(org.objectweb.asm.Opcodes.AALOAD);
 		mv.visitVarInsn(org.objectweb.asm.Opcodes.ALOAD, BytecodeConst.assembleParamIdx+1);
 		mv.visitVarInsn(org.objectweb.asm.Opcodes.ALOAD, BytecodeConst.argIdx+1);
-		mv.visitMethodInsn(org.objectweb.asm.Opcodes.INVOKEINTERFACE, 
+		mv.visitMethodInsn(org.objectweb.asm.Opcodes.INVOKEINTERFACE,
 				ClassGenerator.getASMName(MathFunc.class), "apply", "("+
 						org.objectweb.asm.Type.getType(AssembleParam.class).getDescriptor()+
 						org.objectweb.asm.Type.getType(double[].class).getDescriptor()+
 						")D", true);
 	}
-	
+
 	@Override
 	public CompiledFunc compile(String ...varNames) {
 		String clsName = getName();
 		if(clsName == null || clsName.length() == 0)
 			clsName = this.getClass().getSimpleName();
 		clsName = clsName + java.util.UUID.randomUUID().toString().replaceAll("-", "");
-		
+
 		FuncClassLoader<CompiledFunc> fcl = new FuncClassLoader<CompiledFunc>(CompiledFunc.class.getClassLoader());
 		ClassGen genClass = BytecodeUtils.genClass(this, varNames, clsName, true, false);
 		CompiledFunc func = fcl.newInstance(genClass);
-		
+
 		// Set funcRefs field in CompiledFunc
 		List<MathFunc> list = new ArrayList<MathFunc>();
 		BytecodeUtils.postOrder(this, list);
 		func.setFuncRefs(list.toArray(new MathFunc[0]));
-		
+
 		return func;
 	}
 
@@ -299,7 +300,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 			}
 
 			Map<MathFunc, Integer> refsMap = BytecodeUtils.getFuncRefsMap(this);
-			
+
 			if (this.compileToStaticField) {
 				this.bytecodeGen(mv, argsMap, 2, refsMap, genClassName); //2 for args: double apply(Element e, Node n, double ...args);
 				staticFieldName = "var_" + this.getName();
@@ -309,16 +310,16 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 				mv.visitInsn(Opcodes.DUP2);
 				mv.visitFieldInsn(Opcodes.PUTSTATIC, cgen.getClassName(),
 						staticFieldName, "D");
-				
+
 				//no need to do this here:
 				//this.compileToStaticField = false; //set to false to indicate that it is already compiled
-				
+
 				this.isCompiledToStaticFiled = true;
 			} else {
 				this.bytecodeGen(mv, argsMap, 2, refsMap, genClassName); //2 for args: double apply(Element e, Node n, double ...args);
 			}
 			mv.visitInsn(retType.getOpcode(Opcodes.IRETURN));
-			
+
 			mv.visitLocalVariable("this", "L" + genClassName + ";", null, startMatchesLabel, endMatchesLabel, 0);
 			mv.visitLocalVariable("ap", param1.getDescriptor(),     null, startMatchesLabel, endMatchesLabel, 1);
 			mv.visitLocalVariable("args", param2.getDescriptor(),   null, startMatchesLabel, endMatchesLabel, 2);
@@ -363,7 +364,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	protected boolean isCompiledToStaticFiled = false;
 	protected String genClassName;
 	protected String staticFieldName;
-	
+
 	@Override
 	public void compileToStaticField(boolean flag) {
 		this.compileToStaticField = flag;
@@ -399,20 +400,20 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	}
 	public MathFunc addRev(long other) {
 		return this.A(other);
-	}	
+	}
 	public MathFunc add(float other) {
 		return this.A(other);
 	}
 	public MathFunc addRev(float other) {
 		return this.A(other);
-	}	
+	}
 	public MathFunc add(double other) {
 		return this.A(other);
 	}
 	public MathFunc addRev(double other) {
 		return this.A(other);
 	}
-	
+
 	public MathFunc subtract(MathFunc other) {
 		return this.S(other);
 	}
@@ -427,7 +428,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	}
 	public MathFunc subtractRev(long other) {
 		return new FC(other).S(this);
-	}	
+	}
 	public MathFunc subtract(float other) {
 		return this.S(other);
 	}
@@ -440,7 +441,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	public MathFunc subtractRev(double other) {
 		return new FC(other).S(this);
 	}
-	
+
 	public MathFunc multiply(MathFunc other) {
 		return this.M(other);
 	}
@@ -468,10 +469,10 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	public MathFunc multiplyRev(double other) {
 		return this.M(other);
 	}
-	
+
 	public MathFunc divide(MathFunc other) {
 		return this.D(other);
-	}	
+	}
 	public MathFunc divide(int other) {
 		return this.D(other);
 	}
@@ -496,22 +497,22 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	public MathFunc divideRev(double other) {
 		return new FC(other).D(this);
 	}
-	
+
 	public MathFunc negate() {
 		return new FSub(FMath.C0, this);
 	};
-	
+
 	/////////////////////////////////////////////////////////////
 	@Override
 	public String getName() {
 		throw new RuntimeException("Please override 'String getName()' for the class "+this.getClass().getName());
 	}
-	
+
 	@Override
 	public String getExpr() {
 		throw new RuntimeException("Please override 'String getExpr()' for the class "+this.getClass().getName());
 	}
-	
+
 	@Override
 	public int getOpOrder() {
 		return OP_ORDER0;
@@ -521,7 +522,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 	public void setOpOrder(int order) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public String toString() {
 		List<String> vars = this.getVarNames();
@@ -544,7 +545,7 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 				return getName() + sb.toString() + " = " + getExpr();
 		}
 	}
-	
+
 	@Override
 	public MathFunc copy() {
 		try {
@@ -554,32 +555,32 @@ public abstract class MathFuncBase implements MathFunc, Cloneable {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public MathFunc setActiveVarByNames(List<String> varNames) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public List<String> getActiveVarNames() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public MathFunc setOuterVarActive() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public MathFunc setInnerVarActive() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public boolean isOuterVarActive() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public boolean isInnerVarActive() {
 		throw new UnsupportedOperationException();

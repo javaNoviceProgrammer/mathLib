@@ -1,12 +1,14 @@
 package mathLib.fem.core.intf;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
 import mathLib.func.symbolic.intf.MathFunc;
 
 /**
  * Finite element interface which provides the information about
- * the degree of freedoms, shape functions, local-to-global index and 
+ * the degree of freedoms, shape functions, local-to-global index and
  * boundary elements.
- * 
+ *
  * A user defined finite element should implements the declared
  * functions in this interface.
  *
@@ -54,7 +56,7 @@ public interface FiniteElement {
 	 * @return
 	 */
 	FiniteElement getBoundaryFE();
-	
+
 	/**
 	 * Return the coordinate transformation object used in this finite element
 	 * @return

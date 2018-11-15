@@ -10,18 +10,18 @@ import mathLib.fem.util.FutureyeException;
  * <P>Object list container</P>
  * <B>Notes:</B>
  * <P>Object index starts from 1.</P>
- * <P><tt>null</tt> element is not allowed.</P> 
+ * <P><tt>null</tt> element is not allowed.</P>
  * <P>Auto size increment is supported.</P>
- * 
+ *
  *
  * @param <T>
  */
 public class ObjList<T> implements Iterable<T> {
 	protected List<T> objs = new ArrayList<T>();
-	
+
 	public ObjList() {
 	}
-	
+
 	@SafeVarargs
 	public ObjList(T ...es) {
 		for(T e : es) this.add(e);
@@ -41,11 +41,11 @@ public class ObjList<T> implements Iterable<T> {
 		this.objs.add(e);
 		return this;
 	}
-	
+
 	/**
-     * Replaces the element at the specified position in this ObjList with 
+     * Replaces the element at the specified position in this ObjList with
      * the specified element <tt>e</tt>.
-     * 
+     *
 	 * @param index
 	 * @param e
 	 * @return the whole new ObjList
@@ -56,50 +56,50 @@ public class ObjList<T> implements Iterable<T> {
 		this.objs.set(index-1, e);
 		return this;
 	}
-	
+
 	public ObjList<T> addAll(ObjList<T> list) {
 		if(list == null) return this;
 		this.objs.addAll(list.objs);
 		return this;
 	}
-	
+
 	public int size() {
 		return objs.size();
 	}
-	
+
 	public void clear() {
 		objs.clear();
 	}
-	
+
 	public T remove(int index) {
 		return objs.remove(index-1);
 	}
-	
+
 	public boolean remove(T e) {
 		return objs.remove(e);
 	}
-	
+
 	public ObjList<T> subList(int begin,int end) {
 		ObjList<T> rlt = new ObjList<T>();
 		for(int i=begin;i<=end;i++)
 			rlt.add(this.at(i));
 		return rlt;
 	}
-	
+
 	public ObjList<T> subList(int begin,int end,int step) {
 		ObjList<T> rlt = new ObjList<T>();
 		for(int i=begin;i<=end;i+=step)
 			rlt.add(this.at(i));
 		return rlt;
 	}
-	
+
 	public ObjList<T> subList(List<Integer> set) {
 		ObjList<T> rlt = new ObjList<T>();
 		for(Integer i : set)
 			rlt.add(this.at(i));
 		return rlt;
 	}
-	
+
 	public List<T> toList() {
 		return objs;
 	}
@@ -109,7 +109,7 @@ public class ObjList<T> implements Iterable<T> {
 	public <T2> T2[] toArray(T2[] a) {
 		return objs.toArray(a);
 	}
-	
+
 	public ObjList<T> fromList(List<T> list) {
 		objs.clear();
 		objs.addAll(list);
@@ -121,7 +121,7 @@ public class ObjList<T> implements Iterable<T> {
 			objs.add((T)array[i]);
 		return this;
 	}
-	
+
 	public String toString() {
 		return objs.toString();
 	}
@@ -130,7 +130,7 @@ public class ObjList<T> implements Iterable<T> {
 	public Iterator<T> iterator() {
 		return objs.iterator();
 	}
-	
+
 	public boolean contains(T o) {
 		return objs.contains(o);
 	}

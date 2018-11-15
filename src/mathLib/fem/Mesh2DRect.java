@@ -1,15 +1,19 @@
 package mathLib.fem;
 
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
+import mathLib.fem.util.container.NodeList;
 import mathLib.geometry.algebra.Point;
 import mathLib.plot.util.MeshGrid;
 import mathLib.util.MathUtils;
 
 public class Mesh2DRect {
-	
+
 	int nx, ny ;
 	Mesh mesh ;
 	Point pLL, pLR, pUR, pUL ;
-	
+
 	public Mesh2DRect(Point pLL, Point pUR, int nx, int ny) {
 		this.pLL = pLL ;
 		this.pUR = pUR ;
@@ -19,7 +23,7 @@ public class Mesh2DRect {
 		this.ny = ny ;
 		createMesh();
 	}
-	
+
 	private void createMesh() {
 		this.mesh = new Mesh();
 		double x0 = pLL.getX() ;
@@ -28,7 +32,7 @@ public class Mesh2DRect {
 		double y1 = pUR.getY() ;
 		double stepx = (x1 - x0) / (nx-1);
 		double stepy = (y1 - y0) / (ny-1);
-		
+
 		int n1;
 		for (int i = 0; i < ny; ++i) {
 			double y = y0 + i * stepy;
@@ -67,36 +71,36 @@ public class Mesh2DRect {
 			}
 		}
 	}
-	
+
 	public Mesh getMesh() {
 		return mesh ;
 	}
-	
+
 	public int getNumberOfNodes() {
 		return mesh.getNodeList().size() ;
 	}
-	
+
 	public int getNumberOfElements() {
 		return mesh.getElementList().size() ;
 	}
-	
+
 	public void refine() {
 		nx = 2*nx ;
 		ny = 2*ny ;
 		createMesh();
 	}
-	
+
 	public Mesh2DRect getRefined() {
 		// double the density of nodes
 		return new Mesh2DRect(pLL, pUR, 2*nx, 2*ny) ;
 	}
-	
+
 	public MeshGrid getGrid() {
 		double[] x = MathUtils.linspace(pLL.getX(), pUR.getX(), nx) ;
 		double[] y = MathUtils.linspace(pLL.getY(), pUR.getY(), ny) ;
 		return new MeshGrid(x, y) ;
 	}
-	
+
 	// for test
 	public static void main(String[] args) {
 		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(1, 1), 10, 10) ;

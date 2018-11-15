@@ -1,6 +1,6 @@
 package mathLib.func;
 
-import static edu.uta.futureye.function.FMath.x;
+import static mathLib.func.symbolic.FMath.*;
 import static java.lang.Math.cosh;
 import static java.lang.Math.exp;
 import static java.lang.Math.sinh;
@@ -9,7 +9,7 @@ import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.util.MathUtils;
 
 public class SphericalBesselFunc {
-	
+
 	// first kind
 
 	public static double in(int n, double x) {
@@ -33,7 +33,7 @@ public class SphericalBesselFunc {
 
 		return gn(n-2, x)-(2*n-1)/x * gn(n-1, x) ;
 	}
-	
+
 	public static MathFunc in(int n) {
 		if(n<0)
 			return in(-n)*MathUtils.minusOnePower(n) ;
@@ -44,7 +44,7 @@ public class SphericalBesselFunc {
 
 		return gn(n)*sinh(x) + gn(-(n+1))*cosh(x) ;
 	}
-	
+
 	private static MathFunc gn(int n) {
 		if(n==0)
 			return 1.0/x ;
@@ -55,17 +55,17 @@ public class SphericalBesselFunc {
 
 		return gn(n-2)-(2*n-1)/x * gn(n-1) ;
 	}
-	
-	
-	
+
+
+
 	// second kind
-	
+
 	public static double kn(int n, double x) {
 		if(n==0)
 			return exp(-x)/x ;
 		if(n==1)
 			return exp(-x)*(x+1)/(x*x) ;
-		
+
 		return fn(n, x) * Math.exp(-x) ;
 	}
 
@@ -79,16 +79,16 @@ public class SphericalBesselFunc {
 
 		return fn(n-2, x) + (2*n-1)/x * fn(n-1, x)  ;
 	}
-	
+
 	public static MathFunc kn(int n) {
 		if(n==0)
 			return exp(-x)/x ;
 		if(n==1)
 			return exp(-x)*(x+1)/(x*x) ;
-		
+
 		return fn(n) * exp(-x) ;
 	}
-	
+
 	private static MathFunc fn(int n) {
 		if(n==0)
 			return 1.0/x ;

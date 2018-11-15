@@ -1,5 +1,7 @@
 package mathLib.fem.util.container;
 
+import mathLib.fem.core.Edge;
+
 /**
  * Edge List Class
  *

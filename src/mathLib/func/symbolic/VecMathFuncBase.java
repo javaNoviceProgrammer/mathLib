@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2010, nkliuyueming@gmail.com. All rights reserved.
- * 
- * 
- */
 package mathLib.func.symbolic;
 
 import java.util.LinkedList;
@@ -10,45 +5,46 @@ import java.util.List;
 import java.util.Map;
 
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
 import mathLib.matrix.algebra.SpaceVector;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Abstract vector function implementation.
  * <p>
- * Notice: Some member functions such as algebra operations will return 
+ * Notice: Some member functions such as algebra operations will return
  * an instance of SpaceVectorFunction which extends from AbstractVectorFunction
- * 
- * @author liuyueming
+ *
  *
  */
 public abstract class VecMathFuncBase implements VecMathFunc {
 	protected int dim = 0;
 	protected List<String> varNames = new LinkedList<String>();
 	protected String fName = null;
-	
+
 	public VecMathFuncBase() {
 	}
-	
+
 	public VecMathFuncBase(int dim) {
 		this.dim = dim;
 	}
-	
+
 	public VecMathFuncBase(int dim, List<String> varNames) {
 		this.dim = dim;
 		this.varNames = varNames;
 	}
-	
+
 	public VecMathFuncBase(int dim, String varName, String ...aryVarNames) {
 		this.dim = dim;
 		varNames.add(varName);
 		for(String s : aryVarNames)
 			varNames.add(s);
 	}
-	
+
 	@Override
 	public Vector value(Variable v) {
 		Vector rlt = new SpaceVector(dim);
@@ -56,7 +52,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 			rlt.set(i, this.get(i).apply(v));
 		return rlt;
 	}
-	
+
 	@Override
 	public Vector[] valueArray(VariableArray valAry, Map<Object,Object> cache) {
 		int len = valAry.length();
@@ -70,17 +66,17 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return rlt;
 	}
-	
+
 	@Override
 	public int getDim() {
 		return this.dim;
 	}
-	
+
 	@Override
 	public void setDim(int dim) {
 		this.dim = dim;
 	}
-	
+
 	@Override
 	public void setVarNames(List<String> varNames) {
 		this.varNames = varNames;
@@ -90,20 +86,20 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 	public List<String> varNames() {
 		return this.varNames;
 	}
-	
+
 	@Override
 	public VecMathFunc compose(Map<String,MathFunc> fInners) {
 		for(int i=1; i<=dim; i++)
 			this.set(i,this.get(i).compose(fInners));
 		return this;
 	}
-	
+
 	/////////////////////////////////////////////
 	@Override
 	public MathFunc get(int index) {
 		throw new FutureyeException("Component of AbstractVectorFunction is not define!");
 	}
-	
+
 	@Override
 	public VecMathFunc set(VecMathFunc v) {
 		for(int i=1; i<=dim; i++)
@@ -111,7 +107,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		this.setVarNames(v.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc set(double a, VecMathFunc v) {
 		for(int i=1; i<=dim; i++) {
@@ -120,7 +116,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		this.setVarNames(v.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc inc(VecMathFunc g) {
 		for(int i=1; i<=dim; i++) {
@@ -129,7 +125,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		varNames = Utils.mergeList(varNames, g.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc inc(double a, VecMathFunc g) {
 		for(int i=1; i<=dim; i++) {
@@ -138,7 +134,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		varNames = Utils.mergeList(varNames, g.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc scale(double a) {
 		for(int i=1; i<=dim; i++) {
@@ -146,7 +142,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc ax(double a) {
 		for(int i=1; i<=dim; i++) {
@@ -154,7 +150,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public VecMathFunc axpy(double a, VecMathFunc g) {
 		for(int i=1; i<=dim; i++) {
@@ -163,7 +159,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		varNames = Utils.mergeList(varNames, g.varNames());
 		return this;
 	}
-	
+
 	@Override
 	public MathFunc dot(VecMathFunc b) {
 		if(dim != b.getDim()) {
@@ -186,9 +182,9 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return rlt;
 	}
-	
+
 	/////////////////////////////////////////////
-	
+
 	@Override
 	public VecMathFunc A(VecMathFunc g) {
 		SpaceVectorFunction svf = new SpaceVectorFunction(dim);
@@ -197,7 +193,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return svf;
 	}
-	
+
 	@Override
 	public VecMathFunc A(Vector g) {
 		SpaceVectorFunction svf = new SpaceVectorFunction(dim);
@@ -206,7 +202,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return svf;
 	}
-	
+
 	@Override
 	public VecMathFunc S(VecMathFunc g) {
 		SpaceVectorFunction svf = new SpaceVectorFunction(dim);
@@ -215,7 +211,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return svf;
 	}
-	
+
 	@Override
 	public VecMathFunc S(Vector g) {
 		SpaceVectorFunction svf = new SpaceVectorFunction(dim);
@@ -224,7 +220,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return svf;
 	}
-	
+
 
 	@Override
 	public VecMathFunc M(VecMathFunc g) {
@@ -240,9 +236,9 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		for(int i=1; i<=dim; i++) {
 			svf.set(i, this.get(i).M(g.get(i)));
 		}
-		return svf;		
+		return svf;
 	}
-	
+
 
 	@Override
 	public VecMathFunc D(VecMathFunc g) {
@@ -250,7 +246,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		for(int i=1; i<=dim; i++) {
 			svf.set(i, this.get(i).D(g.get(i)));
 		}
-		return svf;		
+		return svf;
 	}
 	@Override
 	public VecMathFunc D(Vector g) {
@@ -258,11 +254,11 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		for(int i=1; i<=dim; i++) {
 			svf.set(i, this.get(i).D(g.get(i)));
 		}
-		return svf;		
+		return svf;
 	}
-	
+
 	///////////////////////////////////////////////////
-	
+
 	@Override
 	public VecMathFunc copy() {
 		throw new UnsupportedOperationException();
@@ -279,23 +275,23 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 		}
 		return rlt+"]";
 	}
-	
+
 	@Override
 	public String getFName() {
 		return this.fName;
 	}
-	
+
 	@Override
 	public VecMathFunc setFName(String name) {
 		this.fName = name;
 		return this;
 	}
-	
+
 	@Override
 	public String toString() {
 		if(getFName() == null) {
 			return getExpression();
-		} else 
+		} else
 			return getFName();
 	}
 	//////////////Operator overloading support through Java-OO//////////////////
@@ -335,20 +331,20 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 	}
 	public VecMathFunc addRev(long other) {
 		return this.A(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
-	}	
+	}
 	public VecMathFunc add(float other) {
 		return this.A(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
 	}
 	public VecMathFunc addRev(float other) {
 		return this.A(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
-	}	
+	}
 	public VecMathFunc add(double other) {
 		return this.A(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
 	}
 	public VecMathFunc addRev(double other) {
 		return this.A(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
 	}
-	
+
 	public VecMathFunc subtract(VecMathFunc other) {
 		return this.S(other);
 	}
@@ -363,7 +359,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 	}
 	public VecMathFunc subtractRev(long other) {
 		return new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)).S(this);
-	}	
+	}
 	public VecMathFunc subtract(float other) {
 		return this.S(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
 	}
@@ -376,7 +372,7 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 	public VecMathFunc subtractRev(double other) {
 		return new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)).S(this);
 	}
-	
+
 	public VecMathFunc multiply(VecMathFunc other) {
 		return this.M(other);
 	}
@@ -404,10 +400,10 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 	public VecMathFunc multiplyRev(double other) {
 		return this.M(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
 	}
-	
+
 	public VecMathFunc divide(VecMathFunc other) {
 		return this.D(other);
-	}	
+	}
 	public VecMathFunc divide(int other) {
 		return this.D(new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)));
 	}
@@ -432,11 +428,11 @@ public abstract class VecMathFuncBase implements VecMathFunc {
 	public VecMathFunc divideRev(double other) {
 		return new SpaceVectorFunction(new SpaceVector(this.dim).setAll(other)).D(this);
 	}
-	
+
 	public VecMathFunc negate() {
 		return new SpaceVectorFunction(new SpaceVector(this.dim).setAll(0)).S(this);
 	};
-	
+
 	/////////////////////////////////////////////////////////////
-		
+
 }

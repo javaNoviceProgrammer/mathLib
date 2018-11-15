@@ -10,27 +10,29 @@ import com.jmatio.types.MLArray;
 import com.jmatio.types.MLDouble;
 import com.jmatio.types.MLSparse;
 
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.MatrixEntry;
 import mathLib.matrix.algebra.intf.SparseMatrix;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * An interface to Matlab mat file format using JMatIO package.
  * <p>
  * With this class, matrices and vectors in FuturEye can be stored as mat file format of Matlab.
  * Use command <tt>load(fileName)</tt> in matlab to load these objects into matlab workspace for further processes.
- * 
+ *
  *
  */
 public class MatlabMatFileWriter {
 	protected ArrayList<MLArray> list = new ArrayList<MLArray>();
-	
+
 	public MatlabMatFileWriter() {
 	}
-	
+
 	/**
 	 * Add a matrix to the writer, the matrix will be a full matrix in matlab workspace
-	 * 
+	 *
 	 * @param mat
 	 */
 	public void addMatrix(Matrix mat) {
@@ -39,15 +41,15 @@ public class MatlabMatFileWriter {
 		dims[1] = mat.getColDim();
 		MLDouble  md = new MLDouble(mat.getName(),dims);
 		for(int i=1;i<=dims[0];i++)
-			for(int j=1;j<=dims[1];j++) 
+			for(int j=1;j<=dims[1];j++)
 				md.setReal(mat.get(i, j), i-1, j-1);
 		list.add(md);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * Add a vector to the writer, the vector will be a full row-vector in matlab workspace
-	 * 
+	 *
 	 * @param vec
 	 */
 	public void addVector(Vector vec) {
@@ -58,10 +60,10 @@ public class MatlabMatFileWriter {
 		MLDouble  md = new MLDouble(vec.getName(),data,1);
 		list.add(md);
 	}
-	
+
 	/**
 	 * Add a sparse matrix to the writer, the matrix will also be a sparse matrix in matlab workspace
-	 * 
+	 *
 	 * @param mat
 	 */
 	public void addSparseMatrix(SparseMatrix mat) {
@@ -74,10 +76,10 @@ public class MatlabMatFileWriter {
 		}
 		list.add(sparse);
 	}
-	
+
 	/**
 	 * Add a sparse vector to the writer, the vector will also be a sparse row-vector in matlab workspace
-	 * 
+	 *
 	 * @param mat
 	 */
 	public void addSparseVector(SparseVector vec) {
@@ -93,10 +95,10 @@ public class MatlabMatFileWriter {
 		}
 		list.add(sparse);
 	}
-	
+
 	/**
 	 * Write all the matrices and vectors to the *.mat file named by <tt>fineName</tt>
-	 * 
+	 *
 	 * @param fileName Matlab *.mat File name. If <tt>fileName</tt> is not ended with '.mat' a postfix '.mat' will be added.
 	 */
 	public void writeFile(String fileName) {
@@ -108,5 +110,5 @@ public class MatlabMatFileWriter {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

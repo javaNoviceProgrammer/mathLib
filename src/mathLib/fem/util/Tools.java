@@ -10,20 +10,27 @@ import java.util.Map;
 
 import mathLib.fem.assembler.AssemblerScalar;
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeRefined;
 import mathLib.fem.shapefun.SFBilinearLocal2D;
 import mathLib.fem.shapefun.SFLinearLocal2D;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.weakform.WeakFormDerivative;
 import mathLib.fem.weakform.WeakFormL22D;
 import mathLib.func.symbolic.FMath;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FXY;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;
 import mathLib.matrix.algebra.SpaceVector;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.external.SolverJBLAS;
 import mathLib.util.io.MatlabMatFileReader;
 import mathLib.util.io.MeshWriter;
@@ -31,37 +38,37 @@ import mathLib.util.io.MeshWriter;
 public class Tools {
 	public static Vector computeDerivative(Mesh mesh, Vector U, String varName) {
 		return computeDerivative(mesh, U, varName, 0.0);
-		
+
 		//return computeDerivativeFast(mesh, U, varName);
-		
+
 	}
-	
+
 	public static Vector computeDerivative(Mesh mesh, Vector U, String varName, double stableFactor) {
-		
+
 		WeakFormDerivative weakForm = new WeakFormDerivative(varName);
 		//stabilize
 		weakForm.setParam(new Vector2MathFunc(U),stableFactor);
-		
+
 		AssemblerScalar assembler = new AssemblerScalar(mesh, weakForm);
 		assembler.assemble();
 		Matrix stiff = assembler.getStiffnessMatrix();
 		Vector load = assembler.getLoadVector();
-		
+
 		//Solver solver = new Solver();
 		//Vector w = solver.solveCGS(stiff, load);
-		
+
 		SolverJBLAS solver = new SolverJBLAS();
 		Vector w = solver.solveDGESV(stiff, load);
 
 		return w;
 	}
-	
+
 	public static Vector computeDerivativeFast(Mesh mesh, Vector U, String varName) {
 		Map<Integer, Double[]> map = new HashMap<Integer, Double[]>();
 		ElementList eList = mesh.getElementList();
 		Vector rltVector = U.copy();
 		rltVector.setAll(0.0);
-		
+
 		MathFunc fU = new Vector2MathFunc(U);
 		for(int i=1;i<=eList.size();i++) {
 			Element e = eList.at(i);
@@ -75,14 +82,14 @@ public class Tools {
 			double[] a = Utils.computeBilinearFunctionCoef(
 					e.nodes.toArray(new Point[0]), f);
 			Double[] aa = new Double[N];
-			for(int j=0;j<N;j++) 
+			for(int j=0;j<N;j++)
 				aa[j] = a[j];
 			if(map.get(e.globalIndex) != null) {
 				throw new FutureyeException("Duplicate element in mesh: i="+i+", e.globalIndex="+e.globalIndex);
 			}
 			map.put(e.globalIndex, aa);
 		}
-		
+
 		NodeList nodes = mesh.getNodeList();
 		for(int i=1;i<=nodes.size();i++) {
 			Node node = nodes.at(i);
@@ -120,7 +127,7 @@ public class Tools {
 			dv /= nTotal;
 			rltVector.set(node.globalIndex,dv);
 		}
-		
+
 		for(int i=1;i<=nodes.size();i++) {
 			Node node = nodes.at(i);
 			if(node instanceof NodeRefined) {
@@ -134,7 +141,7 @@ public class Tools {
 		}
 		return rltVector;
 	}
-	
+
 	public static Vector computeLaplace2D(Mesh mesh, Vector U) {
 		Vector ux = Tools.computeDerivative(mesh,U,"x");
 		Vector uy = Tools.computeDerivative(mesh,U,"y");
@@ -143,7 +150,7 @@ public class Tools {
 		Vector LpU = FMath.axpy(1.0, uxx, uyy);
 		return LpU;
 	}
-	
+
 	public static void plotVector(Mesh mesh, String outputFolder, String fileName, Vector v, Vector ...vs) {
 	    MeshWriter writer = new MeshWriter(mesh);
 	    if(!outputFolder.isEmpty()) {
@@ -164,12 +171,12 @@ public class Tools {
 				vs[i] = Tools.function2vector(mesh, funs[i]);
 			}
 		    plotVector(mesh,outputFolder,fileName,v,vs);
-			
+
 		} else {
 			plotVector(mesh,outputFolder,fileName,v);
 		}
 	}
-	
+
 	public static Vector extendData(Mesh meshFrom, Mesh meshTo, Vector u, double deaultValue) {
 		NodeList nodeTo = meshTo.getNodeList();
 		int dimTo = nodeTo.size();
@@ -184,9 +191,9 @@ public class Tools {
 			}
 		}
 		return rlt;
-	}	
+	}
 	/**
-	 * 
+	 *
 	 * @param mesh1
 	 * @param mesh2
 	 * @param u
@@ -204,13 +211,13 @@ public class Tools {
 			}
 		}
 		return rlt;
-	}	
-	
+	}
+
 	/**
 	 * Solve the L2 problem for a(x)
-	 * 
+	 *
 	 * (k*\nabla{U},\phi) + (a(x)*U,\phi) = f
-	 * 
+	 *
 	 * @param mesh
 	 * @param U
 	 * @param f
@@ -222,18 +229,18 @@ public class Tools {
 		mapNTF2.put(NodeType.Dirichlet, null);
 		mesh.clearBorderNodeMark();
 		mesh.markBorderNode(mapNTF2);
-		
+
 		//Weak form
 		WeakFormL22D weakFormL2 = new WeakFormL22D();
 		//Right hand side
 		weakFormL2.setF(f);
-		
-		
+
+
 		//Parameters
 		weakFormL2.setParam(
 				k, new Vector2MathFunc(U)
 			);
-		
+
 		AssemblerScalar assembler = new AssemblerScalar(mesh, weakFormL2);
 		//System.out.println("Begin Assemble...solveParamInverse");
 		assembler.printInfo(false);
@@ -242,14 +249,14 @@ public class Tools {
 		Vector load = assembler.getLoadVector();
 		assembler.imposeDirichletCondition(diri);
 		//System.out.println("Assemble done!");
-		
+
 		//Tools.plotVector(mesh, "", "load2.dat", load);
-		
+
 		SolverJBLAS solver = new SolverJBLAS();
 		Vector u = solver.solveDGESV(stiff, load);
 		return u;
 	}
-	
+
 	public static Vector function2vector(Mesh mesh, MathFunc f) {
 		NodeList nodes = mesh.getNodeList();
 		Vector v = new SparseVectorHashMap(nodes.size());
@@ -258,14 +265,14 @@ public class Tools {
 		}
 		return v;
 	}
-	
+
 	public static ElementList computeRefineElement(Mesh mesh, Vector v, double persent) {
 	    Vector v_smooth = Utils.gaussSmooth(mesh, v, 1, 0.5);
 
 	    mesh.computeNodeBelongsToElements();
 	    mesh.computeGlobalEdge();
 	    mesh.computeNeighborElements();
-	    
+
 		ElementList eList = mesh.getElementList();
 		ElementList eToRefine = new ElementList();
 
@@ -290,7 +297,7 @@ public class Tools {
 		for(int i=1;i<=nThreshold;i++) {
 			eToRefine.add(eList.at(list.get(i).i));
 		}
-		
+
 		for(int i=1;i<=eList.size();i++) {
 			Element e = eList.at(i);
 			ElementList eNeighbors = e.neighbors;
@@ -316,17 +323,17 @@ public class Tools {
 					eToRefine.add(e);
 			}
 		}
-		
+
 		return eToRefine;
-	}	
-	
-	public static ElementList computeRefineElementMax(Mesh mesh, 
+	}
+
+	public static ElementList computeRefineElementMax(Mesh mesh,
 			Vector indicator, double persent) {
 
 	    mesh.computeNodeBelongsToElements();
 	    mesh.computeGlobalEdge();
 	    mesh.computeNeighborElements();
-	    
+
 		ElementList eList = mesh.getElementList();
 		ElementList eToRefine = new ElementList();
 
@@ -350,7 +357,7 @@ public class Tools {
 		for(int i=1;i<=nThreshold;i++) {
 			eToRefine.add(eList.at(list.get(i).i));
 		}
-		
+
 		for(int i=1;i<=eList.size();i++) {
 			Element e = eList.at(i);
 			ElementList eNeighbors = e.neighbors;
@@ -376,16 +383,16 @@ public class Tools {
 					eToRefine.add(e);
 			}
 		}
-		
+
 		return eToRefine;
-	}	
-	
+	}
+
 	public static void assignLinearShapFunction(Mesh mesh) {
 		ScalarShapeFunction[] shapeFun = null;
 		ScalarShapeFunction[] shapeFunHalf = null;
 		ScalarShapeFunction[] shapeFunRect = null;
 		ScalarShapeFunction[] shapeFunRectHalf = null;
-		
+
 		//Assign degree of freedom to element
 		shapeFun = new SFLinearLocal2D[3];
 		shapeFunHalf = new SFLinearLocal2D[3];
@@ -393,14 +400,14 @@ public class Tools {
 			shapeFun[i] = new SFLinearLocal2D(i+1);
 			shapeFunHalf[i] = new SFLinearLocal2D(i+1,0.5);
 		}
-		
+
 		shapeFunRect = new SFBilinearLocal2D[4];
 		shapeFunRectHalf = new SFBilinearLocal2D[4];
 		for(int i=0;i<4;i++) {
 			shapeFunRect[i] = new SFBilinearLocal2D(i+1);
 			shapeFunRectHalf[i] = new SFBilinearLocal2D(i+1,0.5);
 		}
-		
+
 		//Assign shape function to DOF
 		for(int i=1;i<=mesh.getElementList().size();i++) {
 			Element e = mesh.getElementList().at(i);
@@ -421,7 +428,7 @@ public class Tools {
 							e.addNodeDOF(j, dof2);
 						} else {
 							DOF dof = new DOF(++nDofLocalIndexCounter,e.nodes.at(j).globalIndex,shapeFunRect[j-1]);
-							e.addNodeDOF(j, dof);				
+							e.addNodeDOF(j, dof);
 						}
 					} else {
 						DOF dof = new DOF(++nDofLocalIndexCounter,e.nodes.at(j).globalIndex,shapeFunRect[j-1]);
@@ -443,14 +450,14 @@ public class Tools {
 							e.addNodeDOF(j, dof2);
 						} else {
 							DOF dof = new DOF(++nDofLocalIndexCounter,e.nodes.at(j).globalIndex,shapeFun[j-1]);
-							e.addNodeDOF(j, dof);				
+							e.addNodeDOF(j, dof);
 						}
 					} else {
 						DOF dof = new DOF(++nDofLocalIndexCounter,e.nodes.at(j).globalIndex,shapeFun[j-1]);
 						e.addNodeDOF(j, dof);
 					}
 				}
-				
+
 			} else {
 				System.out.println("Error: e.nodes.size()="+e.nodes.size());
 			}
@@ -470,7 +477,7 @@ public class Tools {
 		}
 		return rlt;
 	}
-	
+
 	public static void constrainHangingNodes(Mesh mesh, Vector v) {
 		NodeList nodes = mesh.getNodeList();
 		for(int i=1;i<=nodes.size();i++) {
@@ -485,16 +492,16 @@ public class Tools {
 			}
 		}
 	}
-	
+
 	/**
 	 * Read values of f(x,y), where (x,y) defined on <tt>mesh</tt>,
-	 * return a vector defined on <tt>mesh</tt> containing the values. 
-	 * 
+	 * return a vector defined on <tt>mesh</tt> containing the values.
+	 *
 	 * @param matFile
 	 * @param mesh
 	 * @param xName x: 2D matlab matrix
 	 * @param yName y: 2D matlab matrix
-	 * @param vName f(x,y): 2D matlab matrix 
+	 * @param vName f(x,y): 2D matlab matrix
 	 * @return
 	 */
 	public static Vector read2DFunctionValues(Mesh mesh, String matFile, String xName, String yName, String vName) {
@@ -518,9 +525,9 @@ public class Tools {
 		}
 		return rlt;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param mesh
 	 * @param x
 	 * @param sortAsc
@@ -547,9 +554,9 @@ public class Tools {
 		});
 		return rlt;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param mesh
 	 * @param y
 	 * @param sortAsc: sort by x
@@ -576,10 +583,10 @@ public class Tools {
 		});
 		return rlt;
 	}
-	
+
 	/**
 	 * Scale the vectors <code>vs</code> according the maximum and minimum values
-	 * of the first parameter <code>first</code> 
+	 * of the first parameter <code>first</code>
 	 * @param first
 	 * @param vs
 	 */
@@ -595,6 +602,6 @@ public class Tools {
 			vs[i].shift(mn);
 		}
 	}
-	
-	
+
+
 }

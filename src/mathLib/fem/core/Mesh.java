@@ -7,15 +7,21 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.MultiKey;
+import mathLib.fem.util.Tools;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.EdgeList;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.util.container.FaceList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.util.container.ObjList;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class Mesh {
 	//Mesh name
@@ -23,33 +29,33 @@ public class Mesh {
 
 	//Global node list
 	protected NodeList nodeList = new NodeList();
-	
+
 	//Global element list
 	protected ElementList eleList = new ElementList();
-	
+
 	//Global edge list
 	protected EdgeList edgeList = null;
-	
+
 	//Global face list
 	protected FaceList faceList = null;
-	
+
 	//Total number of vertices on a mesh
 	public int nVertex = 0;
-	
+
 	//Boundary types on nodes are defined through functions
 	//A function indicates which node belongs to the corresponding NodeType
 	//by its coordinates
 	protected Map<NodeType, MathFunc> mapNTF;
-	
+
 	public boolean debug = false;
-	
+
 	public EdgeList getEdgeList() {
 		return edgeList;
 	}
 	public void setEdgeList(EdgeList edgeList) {
 		this.edgeList = edgeList;
 	}
-	
+
 	public FaceList getFacelist() {
 		return faceList;
 	}
@@ -59,7 +65,7 @@ public class Mesh {
 
 	//Global volume list
 	//??? protected VolumeList volumeList = null;
-	
+
 	/**
 	 * Get a list of all the nodes in the mesh
 	 * @return
@@ -67,7 +73,7 @@ public class Mesh {
 	public NodeList getNodeList() {
 		return nodeList;
 	}
-	
+
 	/**
 	 * Get a list of all the elements in the mesh
 	 * @return
@@ -75,7 +81,7 @@ public class Mesh {
 	public ElementList getElementList() {
 		return eleList;
 	}
-	
+
 	/**
 	 * Get a list of boundary nodes in the mesh
 	 * @return
@@ -88,18 +94,18 @@ public class Mesh {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * Add a node to the mesh
 	 * @param n
 	 */
 	public void addNode(Node n) {
 		nodeList.add(n);
-	}	
+	}
 	/**
 	 * Add element <code>e</code> to the mesh, the e.globalIndex will be
 	 * assigned automatically
-	 *  
+	 *
 	 * @param e
 	 */
 	public void addElement(Element e) {
@@ -110,7 +116,7 @@ public class Mesh {
 		nodeList.clear();
 		eleList.clear();
 	}
-	
+
 	public void computeNodeBelongsToElements() {
 		if(debug)
 			System.out.println("computeNodesBelongToElement...");
@@ -128,7 +134,7 @@ public class Mesh {
 		if(debug)
 			System.out.println("computeNodesBelongToElement done!");
 	}
-	
+
 	public void deleteIsolatedNode() {
 		computeNodeBelongsToElements();
 		Iterator<Node> node = nodeList.iterator();
@@ -145,30 +151,30 @@ public class Mesh {
 			index++;
 		}
 	}
-	
+
 	public void addBorderType(NodeType nodeType, MathFunc fun) {
-		
+
 	}
-	
+
 	public void addBorderType(NodeType nodeType, Node node) {
-		
+
 	}
-	
+
 	/**
 	 * Mark border node type according to mapNTF
-	 * 
+	 *
 	 * If the function return a positive value, then the boundary is marked as type indicated in the key of the map
 	 * else the boundary is not marked as the type in the key of the map
-	 * 
+	 *
 	 * @param mapNTF
 	 */
 	public void markBorderNode(Map<NodeType,MathFunc> mapNTF) {
 		markBorderNode(1,mapNTF);
 	}
-	
+
 	/**
 	 * Mark border node type for component <tt>nVVFComponent</tt> of vector valued unknowns.
-	 * 
+	 *
 	 * @param nVVFComponent
 	 * @param mapNTF
 	 */
@@ -187,11 +193,11 @@ public class Mesh {
 				throw new FutureyeException("ERROR: Call computeNodesBelongToElement() first!");
 			} else if(node instanceof NodeRefined && ((NodeRefined) node).isHangingNode()) {
 
-				node.setNodeType(nVVFComponent, NodeType.Inner); 
+				node.setNodeType(nVVFComponent, NodeType.Inner);
 			} else {
 				if(node.isInnerNode()) {
-					node.setNodeType(nVVFComponent, NodeType.Inner); 
-				} else { 
+					node.setNodeType(nVVFComponent, NodeType.Inner);
+				} else {
 					//System.out.println("Border Node:"+node.globalIndex);
 					for(Entry<NodeType,MathFunc> entry : mapNTF.entrySet()) {
 						NodeType nodeType = entry.getKey();
@@ -214,10 +220,10 @@ public class Mesh {
 		if(debug)
 			System.out.println("markBorderNode done!");
 	}
-	
+
 	/**
 	 * Mark border node type for components <tt>setVVFComponent</tt> of vector valued unknowns.
-	 * 
+	 *
 	 * @param setVVFComponent components indices set
 	 * @param mapNTF
 	 */
@@ -225,15 +231,15 @@ public class Mesh {
 		for(int i:setVVFComponent)
 			markBorderNode(i,mapNTF);
 	}
-	
+
 	public Map<NodeType, MathFunc> getMarkBorderMap() {
 		return this.mapNTF;
 	}
-	
+
 	public void clearBorderNodeMark() {
 		clearBorderNodeMark(1);
 	}
-	
+
 	public void clearBorderNodeMark(int nVVFComponent) {
 		for(int i=1;i<=nodeList.size();i++) {
 			Node node = nodeList.at(i);
@@ -245,12 +251,12 @@ public class Mesh {
 		for(int i:set)
 			clearBorderNodeMark(i);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Find a node in the mesh that has the same coordination as the given parameter
-	 * 
+	 *
 	 * @param node
 	 * @return the node object in the mesh if success, null if no matches
 	 */
@@ -264,16 +270,16 @@ public class Mesh {
 					break;
 				}
 			}
-			if(same) 
+			if(same)
 				return nodeList.at(i);
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Find a node in the mesh that has the same coordination as the given parameter and 
-	 * threshold of the distance 
-	 * 
+	 * Find a node in the mesh that has the same coordination as the given parameter and
+	 * threshold of the distance
+	 *
 	 * @param coord
 	 * @param threshold
 	 * @return the node object in the mesh if success, null if no matches
@@ -293,7 +299,7 @@ public class Mesh {
 		}
 		return null;
 	}
-	
+
 	public Element getElementByNodes(NodeList nodes) {
 		for(int i=1;i<=this.eleList.size();i++) {
 			Element e = this.eleList.at(i);
@@ -311,7 +317,7 @@ public class Mesh {
 		}
 		return null;
 	}
-	
+
 	public Element getElementByCoord(double[] coord) {
 		Node node = new Node(2);
 		node.set(0, coord);
@@ -322,13 +328,13 @@ public class Mesh {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Compute neighbor nodes of a node
-	 * 
+	 *
 	 * Depends:
 	 *   computeNodesBelongToElement()
-	 * 
+	 *
 	 */
 	public void computeNeighborNodes() {
 		for(int i=1;i<=nodeList.size();i++) {
@@ -347,7 +353,7 @@ public class Mesh {
 					Element e = eList.at(j);
 					for(int k=1;k<=e.nodes.size();k++) {
 						Node nbNode = e.nodes.at(k);
-						if(nbNode.globalIndex != node.globalIndex && 
+						if(nbNode.globalIndex != node.globalIndex &&
 								//2011-11-20 å¢žåŠ æ˜¯å�¦åŒ…å�«è¾¹çš„åˆ¤æ–­ï¼Œå�¯ä»¥æ­£ç¡®å¤„ç�†å››è¾¹å½¢å�•å…ƒã€�å…­é�¢ä½“å�•å…ƒ
 								e.containsEdge(node, nbNode))
 							node.addNeighbors(nbNode);
@@ -356,10 +362,10 @@ public class Mesh {
 			}
 		}
 	}
-	
+
 	/**
 	 * Compute neighbor elements of an element
-	 * 
+	 *
 	 * Depends:
 	 *  computeNodesBelongToElement()
 	 *  computeGlobalEdge() (2D,3D case)
@@ -393,12 +399,12 @@ public class Mesh {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Compute global edges in grid
-	 * 
+	 *
 	 */
 	public void computeGlobalEdge() {
 		Map<MultiKey, Edge> map = new HashMap<MultiKey, Edge>();
@@ -429,10 +435,10 @@ public class Mesh {
 			this.edgeList.add(entry.getValue());
 		}
 	}
-	
+
 	/**
 	 * Compute global faces in grid
-	 * 
+	 *
 	 */
 	public void computeGlobalFace() {
 		Map<Set<Integer>, Face> map = new HashMap<Set<Integer>, Face>();
@@ -466,7 +472,7 @@ public class Mesh {
 			this.faceList.add(entry.getValue());
 		}
 	}
-	
+
 	//2011-02-19
 	public boolean isNeighbor(Element e1, Element e2) {
 		ObjList<EdgeLocal> e1EdgeList = e1.edges();
@@ -475,14 +481,14 @@ public class Mesh {
 			for(int j=1;j<=e2EdgeList.size();j++) {
 				NodeList e1EndNodes = e1EdgeList.at(i).globalEdge.getEndNodes();
 				NodeList e2EndNodes = e2EdgeList.at(j).globalEdge.getEndNodes();
-				if(Utils.isLineOverlap(e1EndNodes.at(1), e1EndNodes.at(2), 
+				if(Utils.isLineOverlap(e1EndNodes.at(1), e1EndNodes.at(2),
 						e2EndNodes.at(1), e2EndNodes.at(2)))
 					return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Copy a mesh
 	 */
@@ -500,10 +506,10 @@ public class Mesh {
 		newMesh.eleList.addAll(eleList);
 		return newMesh;
 	}
-	
+
 	/**
 	 * Shallow copy or reference
-	 * 
+	 *
 	 * @param mesh
 	 */
 	public void ref(Mesh mesh) {
@@ -516,7 +522,7 @@ public class Mesh {
 		this.mapNTF = mesh.mapNTF;
 		this.debug = mesh.debug;
 	}
-	
+
 	/**
 	 * GEI: Global Element Index
 	 * GNI: Global Node Index
@@ -533,7 +539,7 @@ public class Mesh {
 						System.out.println("\t"+nf+" level:"+nf.refineLevel+" HangingNode");
 					else
 						System.out.println("\t"+nf+" level:"+nf.refineLevel);
-						
+
 				} else {
 					System.out.println("\t"+node+" level:"+node.refineLevel);
 				}
@@ -543,7 +549,7 @@ public class Mesh {
 			System.out.println("GNI"+i+" "+this.nodeList.at(i).globalIndex);
 		}
 	}
-	
+
 	/**
 	 * Note:
 	 * Inner Node  =5
@@ -552,8 +558,8 @@ public class Mesh {
 	 * Robin       =3
 	 * Hanging Node=10
 	 * Unknown     =20
-	 * 
-	 * 
+	 *
+	 *
 	 * @param fileName
 	 */
 	public void writeNodesInfo(String fileName) {
@@ -564,7 +570,7 @@ public class Mesh {
 		Vector v = new SparseVectorHashMap(N,20);
 		for(int i=1;i<=N;i++) {
 			Node node = nodeList.at(i);
-			if(node.getNodeType(nVVFComponent) == NodeType.Inner) 
+			if(node.getNodeType(nVVFComponent) == NodeType.Inner)
 				v.set(i, 5.0);
 			else if(node.getNodeType(nVVFComponent) == NodeType.Dirichlet)
 				v.set(i, 1);
@@ -580,13 +586,13 @@ public class Mesh {
 		}
 		Tools.plotVector(this, "", fileName, v);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

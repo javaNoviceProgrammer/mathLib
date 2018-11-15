@@ -38,6 +38,7 @@ import mathLib.func.symbolic.operator.FSinh;
 import mathLib.func.symbolic.operator.FSqrt;
 import mathLib.func.symbolic.operator.FTan;
 import mathLib.func.symbolic.operator.FTanh;
+import mathLib.matrix.algebra.intf.Vector;
 
 public class FMath {
 	//--- Predefined static objects ------------------------
@@ -50,52 +51,52 @@ public class FMath {
 	public final static FC Cm1 = new FC(-1.0);
 	public final static FC PI = new FC(Math.PI);
 	public final static FC E = new FC(Math.E);
-	
-	public final static FX x = new FX(Constant.x); 
-	public final static FX y = new FX(Constant.y); 
-	public final static FX z = new FX(Constant.z); 
-	
-	public final static FX r = new FX(Constant.r); 
-	public final static FX s = new FX(Constant.s); 
-	public final static FX t = new FX(Constant.t); 
-	
+
+	public final static FX x = new FX(Constant.x);
+	public final static FX y = new FX(Constant.y);
+	public final static FX z = new FX(Constant.z);
+
+	public final static FX r = new FX(Constant.r);
+	public final static FX s = new FX(Constant.s);
+	public final static FX t = new FX(Constant.t);
+
 	public static MathFunc C(double v) {
 		return FC.c(v);
 	}
-	
+
 	//--- Basic operations ------------------------
 	public static MathFunc sin(MathFunc f) {
 		return new FSin(f);
 	}
-	
+
 	public static MathFunc cos(MathFunc f) {
 		return new FCos(f);
 	}
-	
+
 	public static MathFunc tan(MathFunc f) {
 		return new FTan(f);
 	}
-	
+
 	public static MathFunc sqrt(final MathFunc f) {
 		return new FSqrt(f);
 	}
-	
+
 	public static MathFunc pow(MathFunc base, double exp) {
 		return new FPow(base, FC.c(exp));
 	}
-	
+
 	public static MathFunc pow(MathFunc base, MathFunc exp) {
 		return new FPow(base, exp);
 	}
-	
+
 	public static MathFunc abs(MathFunc f) {
 		return new FAbs(f);
 	}
-	
+
 	public static MathFunc signum(MathFunc f) {
 		return new FSignum(f);
 	}
-	
+
 	public static MathFunc sinh(MathFunc f) {
 		return new FSinh(f);
 	}
@@ -107,7 +108,7 @@ public class FMath {
 	public static MathFunc tanh(MathFunc f) {
 		return new FTanh(f);
 	}
-	
+
 	public static MathFunc coth(MathFunc f) {
 		return new FCoth(f);
 	}
@@ -139,10 +140,10 @@ public class FMath {
 	public static MathFunc exp(MathFunc f) {
 		return new FExp(f);
 	}
-	
+
 	/**
 	 * \sum{f_i} = f_1 + f_2 + ... + f_N
-	 * 
+	 *
 	 * @param fi
 	 * @return
 	 */
@@ -156,10 +157,10 @@ public class FMath {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * c1*f1 + c2*f2
-	 * 
+	 *
 	 * @param c1
 	 * @param f1
 	 * @param c2
@@ -170,7 +171,7 @@ public class FMath {
 			double c2,MathFunc f2) {
 		return new FC(c1).M(f1).A(new FC(c2).M(f2));
 	}
-	
+
 	static class FLinearCombination extends MultiVarFunc{
 		double []ci;
 		MathFunc []fi;
@@ -187,7 +188,7 @@ public class FMath {
 			this.setVarNames(list);
 			this.setArgIdx(Utils.getIndexMap(list));
 		}
-		
+
 		@Override
 		public double apply(Variable v) {
 			double rlt = 0.0;
@@ -196,7 +197,7 @@ public class FMath {
 			}
 			return rlt;
 		}
-		
+
 		@SuppressWarnings("deprecation")
 		@Override
 		public double apply(Variable v, Map<Object,Object> cache) {
@@ -206,12 +207,12 @@ public class FMath {
 			}
 			return rlt;
 		}
-		
+
 		@Override
 		public double[] applyAll(VariableArray v, Map<Object,Object> cache) {
 			int len = v.length();
 			double[] rlt = fi[0].applyAll(v,cache);
-			for(int j=0;j<len;j++) 
+			for(int j=0;j<len;j++)
 				rlt[j] *= ci[0];
 			for(int i=1;i<fi.length;i++) {
 				double[] vs = fi[i].applyAll(v,cache);
@@ -221,7 +222,7 @@ public class FMath {
 			}
 			return rlt;
 		}
-		
+
 		@Override
 		public MathFunc diff(String varName) {
 			MathFunc[] fdi = new MathFunc[fi.length];
@@ -231,12 +232,12 @@ public class FMath {
 			}
 			return new FLinearCombination(ci,fdi);
 		}
-		
+
 		@Override
 		public int getOpOrder() {
 			return OP_ORDER3;
 		}
-		
+
 		@Override
 		public String getExpr() {
 			StringBuilder sb = new StringBuilder();
@@ -254,7 +255,7 @@ public class FMath {
 			}
 			return sb.toString();
 		}
-		
+
 		@Override
 		public String toString() {
 			return getExpr();
@@ -268,11 +269,11 @@ public class FMath {
 			}
 			return rlt;
 		}
-		
+
 		@Override
 		public InstructionHandle bytecodeGen(String clsName, MethodGen mg,
 				ConstantPoolGen cp, InstructionFactory factory,
-				InstructionList il, Map<String, Integer> argsMap, int argsStartPos, 
+				InstructionList il, Map<String, Integer> argsMap, int argsStartPos,
 				Map<MathFunc, Integer> funcRefsMap) {
 			MathFunc ret = C0;
 			for(int i=0;i<fi.length;i++) {
@@ -283,17 +284,17 @@ public class FMath {
 			ret.setArgIdx(this.getArgIdxMap());
 			return ret.bytecodeGen(clsName, mg, cp, factory, il, argsMap, argsStartPos, funcRefsMap);
 		}
-		
+
 		@Override
 		public MathFunc setArgIdx(Map<String, Integer> argsMap) {
 			super.setArgIdx(argsMap);
 			return this;
-		}				
+		}
 	}
-	
+
 	/**
 	 * \sum{c_i*f_i} = c_1*f_1 + c_2*f_2 + ... + c_N*f_N
-	 * 
+	 *
 	 * @param ci
 	 * @param fi
 	 * @return
@@ -304,7 +305,7 @@ public class FMath {
 		} else if(ci.length != fi.length) {
 			throw new FutureyeException("(ci.length="+ci.length+") != (fi.lenght="+fi.length+")");
 		}
-		
+
 //		Function rlt = new FC(ci[0]).M(fi[0]);
 //		for(int i=1;i<fi.length;i++) {
 //			rlt = rlt.A(new FC(ci[i]).M(fi[i]));
@@ -312,17 +313,17 @@ public class FMath {
 //		return rlt;
 
 		return new FLinearCombination(ci,fi);
-	}	
-	
-	
+	}
+
+
 	public static MathFunc dot(VecMathFunc f, VecMathFunc g) {
 		return f.dot(g);
 	}
-	
-	
+
+
 	/**
 	 * Compute gradient of <code>fun</code>
-	 * 
+	 *
 	 * @param fun
 	 * @return
 	 */
@@ -333,11 +334,11 @@ public class FMath {
 			rlt.set(i+1, fun.diff(names.get(i)));
 		return rlt;
 	}
-	
+
 	/**
 	 * Compute gradient of <code>fun</code> with respect to variables <code>varNames</code>
 	 * in case of composition of functions.
-	 * 
+	 *
 	 * @param vars
 	 * @return
 	 */
@@ -347,11 +348,11 @@ public class FMath {
 			rlt.set(i+1, fun.diff(varNames[i]));
 		return rlt;
 	}
-	
+
 	/**
 	 * Compute gradient of <code>fun</code> with respect to variables <code>varNames</code>
 	 * in case of composition of functions.
-	 * 
+	 *
 	 * @param fun
 	 * @param varNames
 	 * @return
@@ -362,10 +363,10 @@ public class FMath {
 			rlt.set(i, fun.diff(varNames.at(i)));
 		return rlt;
 	}
-	
+
 	/**
 	 * Compute divergence of <code>vFun</code>
-	 * 
+	 *
 	 * @param fun
 	 * @return
 	 */
@@ -382,7 +383,7 @@ public class FMath {
 	/**
 	 * Compute divergence of <code>vFun</code> with respect to variables <code>varNames</code>
 	 * in case of composition of functions.
-	 * 
+	 *
 	 * @param fun
 	 * @param varNames
 	 * @return
@@ -395,11 +396,11 @@ public class FMath {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * Compute divergence of <code>vFun</code> with respect to variables <code>varNames</code>
 	 * in case of composition of functions.
-	 * 
+	 *
 	 * @param fun
 	 * @param varNames
 	 * @return
@@ -412,14 +413,14 @@ public class FMath {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * curl only has meaning in 3D space
-	 * 
+	 *
 	 * @param vFun
 	 * @return
 	 */
-	
+
 	public static VecMathFunc curl(VecMathFunc vFun) {
 		if(vFun.getDim() != 3)
 			throw new FutureyeException("Curl only operates in 3D space.") ;
@@ -435,7 +436,7 @@ public class FMath {
 		MathFunc curlZ = Ay.diff(x) - Ax.diff(y) ;
 		return new SpaceVectorFunction(curlX, curlY, curlZ);
 	}
-	
+
 	public static VecMathFunc curl(VecMathFunc vFun, String ...varNames) {
 		if(varNames.length != 3)
 			throw new FutureyeException("Curl only operates on three variables in 3D space.") ;
@@ -449,19 +450,19 @@ public class FMath {
 		MathFunc curlY = Ax.diff(z) - Az.diff(x) ;
 		MathFunc curlZ = Ay.diff(x) - Ax.diff(y) ;
 		return new SpaceVectorFunction(curlX, curlY, curlZ);
-	}	
-	
+	}
+
 //	public static VecMathFunc curl(VecMathFunc vFun, ObjList<String> varNames) {
 //		//TODO
 //		return null;
 //	}
-	
-	
+
+
 	//--- Vectors operations----------------------------------
-	
+
 	/**
 	 * Vector summation
-	 * 
+	 *
 	 * @param vi Vectors
 	 * @return Vector result = v1 + v2 + ... +vn
 	 */
@@ -475,7 +476,7 @@ public class FMath {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * Sum all the components of a vector
 	 * @param v
@@ -491,7 +492,7 @@ public class FMath {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * Returns the natural logarithm (base e) of each component of vector v
 	 * @param v
@@ -504,7 +505,7 @@ public class FMath {
 		}
 		return v2;
 	}
-	
+
 	/**
 	 * Returns the base 10 logarithm of each component of vector v
 	 * @param v
@@ -515,9 +516,9 @@ public class FMath {
 		for(int i=1;i<=v.getDim();i++) {
 			v2.set(i,Math.log10(v.get(i)));
 		}
-		return v2;		
+		return v2;
 	}
-	
+
 	public static Vector exp(Vector v) {
 		Vector v2 = v.copy();
 		for(int i=1;i<=v.getDim();i++) {
@@ -525,7 +526,7 @@ public class FMath {
 		}
 		return v2;
 	}
-	
+
 	public static Vector abs(Vector v) {
 		Vector v2 = v.copy();
 		for(int i=1;i<=v.getDim();i++) {
@@ -533,7 +534,7 @@ public class FMath {
 		}
 		return v2;
 	}
-	
+
 	public static double max(Vector v) {
 		if(v == null || v.getDim() == 0)
 			throw new FutureyeException("It should be at least one value in vector v!");
@@ -544,7 +545,7 @@ public class FMath {
 		}
 		return max;
 	}
-	
+
 	public static double max(double[] a) {
 		if(a == null || a.length == 0)
 			throw new FutureyeException("It should be at least one value in array a!");
@@ -554,18 +555,18 @@ public class FMath {
 		}
 		return max;
 	}
-	
+
 	public static double min(Vector v) {
 		if(v == null || v.getDim() == 0)
 			throw new FutureyeException("It should be at least one value in vector v!");
 		double min = v.get(1);
 		for(int i=2;i<=v.getDim();i++) {
 			double val = v.get(i);
-			if(val < min) min = val; 
+			if(val < min) min = val;
 		}
 		return min;
 	}
-	
+
 	public static double min(double[] a) {
 		if(a == null || a.length == 0)
 			throw new FutureyeException("It should be at least one value in array a!");
@@ -575,7 +576,7 @@ public class FMath {
 		}
 		return min;
 	}
-	
+
 	/**
 	 * y=a*x
 	 * @param a
@@ -586,7 +587,7 @@ public class FMath {
 		Vector rlt = x.copy();
 		return rlt.ax(a);
 	}
-	
+
 	/**
 	 * z = a*x+y
 	 * @param a
@@ -598,9 +599,9 @@ public class FMath {
 		Vector rlt = x.copy();
 		return rlt.axpy(a, y);
 	}
-	
+
 	/**
-	 * zi = a*xi*yi 
+	 * zi = a*xi*yi
 	 * @param a
 	 * @param x
 	 * @param y
@@ -610,7 +611,7 @@ public class FMath {
 		Vector rlt = x.copy();
 		return rlt.axMuly(a, y);
 	}
-	
+
 	/**
 	 * zi = a*xi/yi
 	 * @param a
@@ -623,10 +624,10 @@ public class FMath {
 		return rlt.axDivy(a, y);
 
 	}
-	
+
 	/**
 	 * xi^exp
-	 * 
+	 *
 	 * @param x
 	 * @param exp
 	 * @return
@@ -638,10 +639,10 @@ public class FMath {
 		}
 		return rlt;
 	}
-	
+
 	/**
 	 * base^xi
-	 * 
+	 *
 	 * @param base
 	 * @param x
 	 * @return
@@ -652,11 +653,11 @@ public class FMath {
 			rlt.set(i,Math.pow(base, x.get(i)));
 		}
 		return rlt;
-		
+
 	}
-	
+
 	//------statistic functions--------------------------------
-	
+
 	public static double mean(Vector v) {
 		double mn = 0.0;
 		for(int i=v.getDim()+1; --i>0;)
@@ -664,7 +665,7 @@ public class FMath {
 		mn /= v.getDim();
 		return mn;
 	}
-	
+
 	public static double variance(Vector v) {
 		double mnv = mean(v);
 		double varv = 0.0, tmp;
@@ -675,7 +676,7 @@ public class FMath {
 		varv /= v.getDim();
 		return varv;
 	}
-	
+
 	/**
 	 * Standard Deviation
 	 * @param v
@@ -684,7 +685,7 @@ public class FMath {
 	public static double SD(Vector v) {
 		return Math.sqrt(variance(v));
 	}
-	
+
 	/**
 	 * Sample Standard Deviation
 	 * @param v
@@ -700,7 +701,7 @@ public class FMath {
 		varv /= v.getDim()-1;
 		return varv;
 	}
-	
+
 	public static double averageAbsoluteDeviation(Vector v) {
 		double mnv = mean(v);
 		double aad = 0.0;

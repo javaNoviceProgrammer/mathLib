@@ -1,7 +1,10 @@
 package mathLib.fem.core;
 
+import mathLib.fem.core.geometry.Point;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjVector;
 
 /**
@@ -10,7 +13,7 @@ import mathLib.fem.util.container.ObjVector;
  */
 public class Node implements Point {
 
-	public int globalIndex = 0;	
+	public int globalIndex = 0;
 	public ElementList belongToElements = null;
 	public NodeList neighbors = null;
 	protected int dim = 0;
@@ -20,11 +23,11 @@ public class Node implements Point {
 
 	public Node() {
 	}
-	
+
 	public Node(int dim) {
 		this.dim = dim;
 	}
-	
+
 	public Node(int globalIndex, double x, double ...coords) {
 		this.globalIndex = globalIndex;
 		this.coords[0] = x;
@@ -36,10 +39,10 @@ public class Node implements Point {
 			this.dim = 1;
 		}
 	}
-	
+
 	/**
 	 * Set node globalIndex and coordinates
-	 * 
+	 *
 	 * @param globalIndex
 	 * @param coords
 	 * @return
@@ -53,22 +56,22 @@ public class Node implements Point {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public int getIndex() {
 		return this.globalIndex;
 	}
-	
+
 	@Override
 	public int dim() {
 		return dim;
 	}
-	
+
 	@Override
 	public double coord(int index) {
 		return coords[index-1];
 	}
-	
+
 	@Override
 	public double[] coords() {
 		double[] rlt;
@@ -80,11 +83,11 @@ public class Node implements Point {
 			rlt = this.coords;
 		return rlt;
 	}
-	
+
 	public void setCoord(int index,double val) {
 		coords[index-1] = val;
 	}
-	
+
 	@Override
 	public boolean coordEquals(Point p) {
 		if(this.dim != p.dim())
@@ -95,25 +98,25 @@ public class Node implements Point {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * <P>Return true if the node is a inner node</P>
-	 * 
+	 *
 	 * <B>Note:</B>
-	 * Function <code>Mesh.computeNodeBelongsToElements()</code> or 
+	 * Function <code>Mesh.computeNodeBelongsToElements()</code> or
 	 * <code>Mesh.markBorderNode()</code> must be called before calling
 	 * this function
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isInnerNode() {
 		if(this.getNodeType() == null) {
-			
+
 			if(belongToElements==null || belongToElements.size()==0)
 				throw new FutureyeException("Call Mesh.computeNodeBelongsToElements() first!");
 			double sum = 0.0;
 			double coef = 0;
-			if(dim==1) { //1D 
+			if(dim==1) { //1D
 				if(belongToElements.size()==2)
 					return true;
 				else
@@ -123,7 +126,7 @@ public class Node implements Point {
 				for(int j=1;j<=belongToElements.size();j++) {
 					sum += belongToElements.at(j).getAngleInElement2D(this);
 				}
-			} else if(dim==3) {//3D 
+			} else if(dim==3) {//3D
 				coef = 4;
 				for(int j=1;j<=belongToElements.size();j++) {
 					sum += belongToElements.at(j).getUnitSphereTriangleArea(this);
@@ -133,8 +136,8 @@ public class Node implements Point {
 				return true;
 			else
 				return false;
-		} else {//Use the result of Mesh.markBorderNode() 
-			
+		} else {//Use the result of Mesh.markBorderNode()
+
 			for(int i=1;i<=this.nodeTypes.size();i++)
 				if(this.nodeTypes.at(i) == null ||
 						this.nodeTypes.at(i) != NodeType.Inner)
@@ -142,50 +145,50 @@ public class Node implements Point {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Get node type for scalar valued function problems
-	 * 
+	 *
 	 * @return
 	 */
 	public NodeType getNodeType() {
-		if(nodeTypes == null) 
+		if(nodeTypes == null)
 			return null;
 		return nodeTypes.at(1);
 	}
-	
+
 	/**
-	 * Get node type at component <tt>nVVFComponent</tt> for vector valued function problems 
-	 * 
+	 * Get node type at component <tt>nVVFComponent</tt> for vector valued function problems
+	 *
 	 * @param nVVFComponent: Component of vector valued functions
 	 * @return
 	 */
 	public NodeType getNodeType(int nVVFComponent) {
-		if(nodeTypes == null) 
+		if(nodeTypes == null)
 			return null;
 		return nodeTypes.at(nVVFComponent);
 	}
-	
+
 	/**
 	 * Set node type for scalar valued function problems
-	 * 
+	 *
 	 * @param nodeType: node type
 	 */
 	public void setNodeType(NodeType nodeType) {
-		if(nodeTypes == null) 
+		if(nodeTypes == null)
 			nodeTypes = new ObjVector<NodeType>();
 		nodeTypes.setSize(1);
 		nodeTypes.set(1,nodeType);
 	}
-	
+
 	/**
 	 * Set node type at component <tt>nVVFComponent<tt> for vector valued function problems
-	 * 
+	 *
 	 * @param nVVFComponent: Component of vector valued function
 	 * @param nodeType: Node type
 	 */
 	public void setNodeType(int nVVFComponent, NodeType nodeType) {
-		if(nodeTypes == null) 
+		if(nodeTypes == null)
 			nodeTypes = new ObjVector<NodeType>();
 		if(nVVFComponent<=0) {
 			throw new FutureyeException("nVVFComponent should be greater than 1!");
@@ -194,12 +197,12 @@ public class Node implements Point {
 			nodeTypes.setSize(nVVFComponent);
 		nodeTypes.set(nVVFComponent,nodeType);
 	}
-	
+
 	/**
-	 * Add a element <code>e</code> which contains this node to 
-	 * <code>this.belongToElements</code> list. 
+	 * Add a element <code>e</code> which contains this node to
+	 * <code>this.belongToElements</code> list.
 	 * Duplicate element will NOT be added.
-	 * 
+	 *
 	 * @param e
 	 */
 	public void addBelongToElements(Element e) {
@@ -214,12 +217,12 @@ public class Node implements Point {
 		}
 		belongToElements.add(e);
 	}
-	
+
 	/**
-	 * Add a <code>node</code> which is the neighbor of this node to 
+	 * Add a <code>node</code> which is the neighbor of this node to
 	 * <code>this.neighbors</code> list.
 	 * Duplicate node will NOT be added.
-	 * 
+	 *
 	 * @param node
 	 */
 	public void addNeighbors(Node node) {
@@ -232,40 +235,40 @@ public class Node implements Point {
 			else if(ni.globalIndex != 0 && ni.globalIndex == node.globalIndex)
 				return;
 		}
-		neighbors.add(node);		
+		neighbors.add(node);
 	}
-	
+
 	public void clearBelongToElements() {
 		if(belongToElements != null)
 			belongToElements.clear();
 	}
-	
+
 	public void clearNeighbors() {
 		if(neighbors != null)
 			neighbors.clear();
 	}
-	
+
 	/**
 	 * Get node level number from refined mesh
-	 * 
+	 *
 	 * @return
 	 */
 	public int getRefineLevel() {
 		return this.refineLevel;
 	}
-	
+
 	/**
 	 * Set node level number when doing mesh refinement
-	 * 
+	 *
 	 * @param level
 	 */
 	public void setRefineLevel(int level) {
 		this.refineLevel = level;
 	}
-	
+
 	/**
 	 * Return node information. Prefix "GN" means "Global Node"
-	 * 
+	 *
 	 */
 	public String toString()  {
 		String s = "GN"+globalIndex+"( ";
@@ -273,7 +276,7 @@ public class Node implements Point {
 			s += String.valueOf(coords[i])+" ";
 		return s+")";
 	}
-	
+
 	@Override
     public boolean equals(Object obj) {
         if(super.equals(obj)) {
@@ -295,13 +298,12 @@ public class Node implements Point {
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
-    	if(globalIndex != 0) 
+    	if(globalIndex != 0)
     		return globalIndex;
-    	else 
+    	else
     		return super.hashCode();
     }
 }
- 

@@ -4,18 +4,20 @@ import org.netlib.lapack.DGESV;
 import org.netlib.util.intW;
 
 import mathLib.fem.util.FutureyeException;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * JBALS Interface
- * 
+ *
  *
  */
 public class SolverJBLAS {
 	static double eps = 1e-15;
-	
+
 	/**
 	 * Java BLAS Interface
-	 * 
+	 *
 	 * @param m
 	 * @param v
 	 */
@@ -25,11 +27,11 @@ public class SolverJBLAS {
 			throw new FutureyeException(
 					"ERROR: Solver.solver() m.dim!=v.dim ");
 		}
-		
+
 	    int N = v.getDim();
 	    int nrhs = 1;
 	    int[]ipiv = new int[N];
-	    
+
 	    double[][]a = new double[N][N];
 	    double[][]b = new double[N][1];
 
@@ -43,12 +45,12 @@ public class SolverJBLAS {
 	    	//System.out.println(b[i][0]);
 	    }
 	    intW info = new intW(0);
-	    
+
        //System.out.println("Begin Solver...");
         DGESV.DGESV(N, nrhs, a, ipiv, b, info);
         if(info.val != 0)
         	System.out.println("Solver info = " + info.val);
-	    
+
     	@SuppressWarnings("unchecked")
 		Vec rv = (Vec) v.copy();
 	    for(int i=0;i<N;i++) {
@@ -58,5 +60,5 @@ public class SolverJBLAS {
 	    return rv;
 
 	}
-	
+
 }

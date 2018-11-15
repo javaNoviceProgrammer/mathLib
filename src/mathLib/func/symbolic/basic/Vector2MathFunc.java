@@ -4,41 +4,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.uta.futureye.util.Tools;
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * <blockquote><pre>
  * Vector to Function
  * Evaluate function values based on vector indices in Variable v
- * 
+ *
  * 2011/6/27
  * + Function _d(String varName)
- * 
+ *
  * 2011/?/?
- * + extends evaluation ability on the inner area of an element by interpolation 
- * 
+ * + extends evaluation ability on the inner area of an element by interpolation
+ *
  * 2011/10/17
  * + defaultFunction
  * </blockquote></pre>
- * 
+ *
  *
  */
 public class Vector2MathFunc extends MultiVarFunc {
 	Vector vec = null;
 	Mesh mesh = null;
-	
+
 	MathFunc defaultFunction = null;
-	
+
 	boolean enableCache = false;
 	Map<Integer, Double> cachedValueMap = null;
-	
+
 	public Vector2MathFunc(Vector u) {
 		this.vec = u;
 	}
-	
+
 	public Vector2MathFunc(Vector u, Mesh mesh,
 			String varName, String ...aryVarNames) {
 		this.vec = u;
@@ -50,7 +57,7 @@ public class Vector2MathFunc extends MultiVarFunc {
 		for(int i=0; i<aryVarNames.length; i++)
 			varNames[i+1] = aryVarNames[i];
 	}
-	
+
 	public Vector2MathFunc(Vector u, Mesh mesh,
 			String []aryVarNames) {
 		this.vec = u;
@@ -59,13 +66,13 @@ public class Vector2MathFunc extends MultiVarFunc {
 			throw new FutureyeException("u.getDim() != mesh.getNodeList().size()");
 		varNames = aryVarNames;
 	}
-	
+
 	public Vector2MathFunc(Vector u, Mesh mesh,
 			List<String> varNames) {
 		this.vec = u;
 		this.mesh = mesh;
 		this.varNames = varNames.toArray(new String[0]);
-	}	
+	}
 
 	public Vector2MathFunc setDefaultFunction(MathFunc fun) {
 		this.defaultFunction = fun;
@@ -74,7 +81,7 @@ public class Vector2MathFunc extends MultiVarFunc {
 	public MathFunc getDefaultFunction() {
 		return this.defaultFunction;
 	}
-	
+
 	public void cacheInterpolateValue(boolean b) {
 		this.enableCache = b;
 		if(b && cachedValueMap == null)
@@ -93,12 +100,12 @@ public class Vector2MathFunc extends MultiVarFunc {
 	public Vector getVector() {
 		return this.vec;
 	}
-	
+
 	@Override
 	public double apply(Variable v) {
 		int index = v.getIndex();
 		int nDim = vec.getDim();
-		if(mesh == null) { 
+		if(mesh == null) {
 			if(index > 0 && index <= nDim)
 				return vec.get(index);
 			else if(index == 0) {
@@ -108,13 +115,13 @@ public class Vector2MathFunc extends MultiVarFunc {
 						"try to use constructor Vector2Function(Vector u, Mesh mesh, String varName, String ...aryVarNames)\n"+
 						"to extends evaluation ability on the inner area of an element by interpolation.",
 						index,nDim));
-		} else { 
+		} else {
 			boolean needInterpolation = false;
 			double[] coord = new double[varNames.length];
 			for(int i=0;i<varNames.length;i++) {
 				coord[i] = v.get(varNames[i]);
 			}
-			
+
 			if(index < 0)
 				throw new FutureyeException(String.format("Error: index(=%d) <0!",index));
 			else if(index==0 || index > nDim)
@@ -127,7 +134,7 @@ public class Vector2MathFunc extends MultiVarFunc {
 				if( ! node.coordEquals(node2) )
 					needInterpolation = true;
 			}
-			
+
 			if(needInterpolation) {
 				if(enableCache && index > 0) {
 					Double cacheValue = cachedValueMap.get(index);
@@ -165,11 +172,11 @@ public class Vector2MathFunc extends MultiVarFunc {
 			}
 		}
 	}
-	
+
 
 	@Override
 	public double apply(AssembleParam ap, double... args) {
-		
+
 		Element e = ap.element;
 		int i1 = e.nodes.at(1).globalIndex;
 		int i2 = e.nodes.at(2).globalIndex;
@@ -179,7 +186,7 @@ public class Vector2MathFunc extends MultiVarFunc {
 		double v3 = this.vec.get(i3);
 		int startIdx = 12;
 		return v1*args[startIdx] + v2*args[startIdx+1] + v3*args[startIdx+2];
-		
+
 	}
 
 	@Override
@@ -187,17 +194,17 @@ public class Vector2MathFunc extends MultiVarFunc {
 		return apply(null, args);
 	}
 
-	
+
 	@Override
 	public MathFunc diff(String varName) {
-		if(mesh == null) 
+		if(mesh == null)
 			throw new FutureyeException(
 					"Please use constructor Vector2Function(Vector u, Mesh mesh, String varName, String ...aryVarNames)");
 		Vector vd = Tools.computeDerivative(mesh, vec, varName);
 		MathFunc fd = new Vector2MathFunc(vd,mesh,this.varNames);
 		return fd;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Vector2Function:"+this.vec.toString();

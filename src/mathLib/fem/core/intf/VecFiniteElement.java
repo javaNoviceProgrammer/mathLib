@@ -1,6 +1,9 @@
 package mathLib.fem.core.intf;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.geometry.GeoEntity;
 import mathLib.func.symbolic.intf.VecMathFunc;
 
@@ -50,7 +53,7 @@ public interface VecFiniteElement {
 	boolean isDOFCoupled(int idx1, int idx2);
 
 	/**
-	 * Return the index of component of the vector valued function by giving 
+	 * Return the index of component of the vector valued function by giving
 	 * a local index of a shape function
 	 * @param localIndex
 	 * @return
@@ -84,7 +87,7 @@ public interface VecFiniteElement {
 	 * @return
 	 */
 	int getNumberOfDOFs(Mesh mesh, int nVVFComponentIndex);
-	
+
 	/**
 	 * Return the coordinate transformation object used in this finite element
 	 * by giving the index of component of the vector finite element

@@ -1,26 +1,29 @@
 package mathLib.fem.core;
 
+import mathLib.fem.core.geometry.Point;
+import mathLib.fem.util.Constant;
+
 public class Vertex implements Point {
 	protected int dim = 0;
 	protected double[] coords = new double[3];
 
 	protected int localIndex;
 	public Element owner = null;
-	
+
 	protected NodeLocal refNodeLocal = null;
-	
+
 	public Node globalNode() {
 		return refNodeLocal.globalNode;
 	}
-	
+
 	public NodeLocal localNode() {
 		return refNodeLocal;
 	}
 
 	public Vertex() {
-		
+
 	}
-	
+
 	public Vertex(int localIndex, double x,double ...coords) {
 		this.localIndex = localIndex;
 		this.coords[0] = x;
@@ -32,11 +35,11 @@ public class Vertex implements Point {
 			this.dim = 1;
 		}
 	}
-	
+
 	public Vertex(int localIndex, NodeLocal localNode) {
 		set(localIndex,localNode);
 	}
-	
+
 	public Vertex set(int localIndex, double ...coords) {
 		this.localIndex = localIndex;
 		if(coords!=null && coords.length > 0) {
@@ -46,7 +49,7 @@ public class Vertex implements Point {
 		}
 		return this;
 	}
-	
+
 	public Vertex set(int localIndex, NodeLocal localNode) {
 		this.localIndex = localIndex;
 		this.dim = localNode.dim();
@@ -55,7 +58,7 @@ public class Vertex implements Point {
 		this.refNodeLocal = localNode;
 		return this;
 	}
-	
+
 	/**
 	 * get local index
 	 */
@@ -63,30 +66,30 @@ public class Vertex implements Point {
 	public int getIndex() {
 		return this.localIndex;
 	}
-	
+
 	public void setLocalIndex(int index) {
 		this.localIndex = index;
 	}
-	
+
 	public void setNodeLocalIndex(int index) {
 		this.refNodeLocal.localIndex = index;
 	}
-	
+
 	public void setAllLocalIndex(int index) {
 		this.localIndex = index;
 		this.refNodeLocal.localIndex = index;
 	}
-	
+
 	@Override
 	public int dim() {
 		return dim;
 	}
-	
+
 	@Override
 	public double coord(int index) {
 		return coords[index-1];
 	}
-	
+
 	@Override
 	public double[] coords() {
 		double[] rlt;
@@ -98,12 +101,12 @@ public class Vertex implements Point {
 			rlt = this.coords;
 		return rlt;
 	}
-	
+
 	@Override
 	public void setCoord(int index, double value) {
 		this.coords[index-1] = value;
 	}
-	
+
 	@Override
 	public boolean coordEquals(Point p) {
 		for(int i=1;i<=this.dim;i++) {
@@ -112,7 +115,7 @@ public class Vertex implements Point {
 		}
 		return true;
 	}
-	
+
 	public String toString() {
 		String s = "V"+this.localIndex;
 		if(this.refNodeLocal != null)
