@@ -1,14 +1,15 @@
 package mathLib.fem.element;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Vertex;
 import mathLib.fem.shapefun.SFLinearLocal3D;
 import mathLib.fem.util.container.VertexList;
 
 /**
  * Linear Tetrahedron element for 3D
- * 3ç»´å››é?¢ä½“çº¿æ€§å?•å…ƒ
  * 
- * @author liuyueming
  *
  */
 public class FELinearTetrahedron implements FiniteElementType {

@@ -1,6 +1,8 @@
 package mathLib.fem.element;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
 import mathLib.fem.shapefun.TrilinearV_ConstantP;
 import mathLib.fem.util.FutureyeException;
 

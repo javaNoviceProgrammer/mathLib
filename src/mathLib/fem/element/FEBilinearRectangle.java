@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2010, nkliuyueming@gmail.com. All rights reserved.
- * 
- * 
- */
 package mathLib.fem.element;
 
 import mathLib.fem.core.Element;

@@ -1,10 +1,12 @@
 package mathLib.fem.element;
 
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.C1;
+import static mathLib.func.symbolic.FMath.*;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
 import mathLib.fem.core.Line2DCoord;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.geometry.GeoEntity;
 import mathLib.fem.core.intf.CoordTrans;
 import mathLib.fem.core.intf.VecFiniteElement;
