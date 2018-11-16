@@ -1,18 +1,22 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.C1;
-import static edu.uta.futureye.function.FMath.x;
-import static edu.uta.futureye.function.FMath.y;
+import static mathLib.func.symbolic.FMath.C0;
+import static mathLib.func.symbolic.FMath.C1;
+import static mathLib.func.symbolic.FMath.x;
+import static mathLib.func.symbolic.FMath.y;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerScalar;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.AssemblerOld;
 import mathLib.fem.element.FELinearTriangleOld;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.weakform.WeakFormLaplace2D;
 import mathLib.func.symbolic.intf.MathFunc;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.external.SolverJBLAS;
 import mathLib.util.io.MeshReader;
 import mathLib.util.io.MeshWriter;
