@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mathLib.fem.core.CoordinateTransform;
+import mathLib.fem.core.Element;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.ObjList;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.VN;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.intf.MathFunc;

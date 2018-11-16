@@ -1,23 +1,26 @@
 package mathLib.fem.shapefun;
 
-import static edu.uta.futureye.function.FMath.C1;
-import static edu.uta.futureye.function.FMath.r;
-import static edu.uta.futureye.function.FMath.s;
+import static mathLib.func.symbolic.FMath.C1;
+import static mathLib.func.symbolic.FMath.r;
+import static mathLib.func.symbolic.FMath.s;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.org.apache.bcel.internal.generic.ConstantPoolGen;
-import com.sun.org.apache.bcel.internal.generic.InstructionFactory;
-import com.sun.org.apache.bcel.internal.generic.InstructionHandle;
-import com.sun.org.apache.bcel.internal.generic.InstructionList;
-import com.sun.org.apache.bcel.internal.generic.MethodGen;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.InstructionHandle;
+import org.apache.bcel.generic.InstructionList;
+import org.apache.bcel.generic.MethodGen;
 
 import mathLib.fem.assembler.AssembleParam;
+import mathLib.fem.core.Element;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.util.container.VertexList;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;

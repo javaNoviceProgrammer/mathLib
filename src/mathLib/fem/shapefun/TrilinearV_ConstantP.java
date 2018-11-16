@@ -2,8 +2,10 @@ package mathLib.fem.shapefun;
 
 import java.util.Map;
 
+import mathLib.fem.core.Element;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ObjList;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.VecMathFuncBase;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
@@ -12,6 +14,7 @@ import mathLib.func.symbolic.intf.ScalarShapeFunction;
 import mathLib.func.symbolic.intf.ShapeFunction;
 import mathLib.func.symbolic.intf.VecMathFunc;
 import mathLib.func.symbolic.intf.VectorShapeFunction;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * 3D T1/P0 Element

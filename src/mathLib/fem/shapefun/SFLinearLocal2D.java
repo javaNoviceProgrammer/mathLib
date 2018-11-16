@@ -1,16 +1,17 @@
 package mathLib.fem.shapefun;
 
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.C1;
-import static edu.uta.futureye.function.FMath.Cm1;
+import static mathLib.func.symbolic.FMath.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import mathLib.fem.core.Element;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.util.container.VertexList;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.intf.MathFunc;

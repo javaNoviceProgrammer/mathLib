@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import mathLib.fem.core.CoordinateTransform;
+import mathLib.fem.core.Edge;
 import mathLib.fem.core.EdgeLocal;
+import mathLib.fem.core.Element;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ObjList;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.VecMathFuncBase;
 import mathLib.func.symbolic.basic.FXY;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
@@ -18,6 +21,7 @@ import mathLib.func.symbolic.intf.ScalarShapeFunction;
 import mathLib.func.symbolic.intf.VecMathFunc;
 import mathLib.func.symbolic.intf.VectorShapeFunction;
 import mathLib.matrix.algebra.SpaceVector;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Raviart-Thomas 2D0 triangle element
@@ -50,7 +54,6 @@ import mathLib.matrix.algebra.SpaceVector;
  *   P1-----P2 
  *       E3
  *       
- * @author liuyueming
  *
  */
 public class RaviartThomas2D0 extends VecMathFuncBase implements VectorShapeFunction {

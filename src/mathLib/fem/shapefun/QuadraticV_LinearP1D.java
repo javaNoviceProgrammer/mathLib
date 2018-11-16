@@ -1,5 +1,6 @@
 package mathLib.fem.shapefun;
 
+import mathLib.fem.core.Element;
 import mathLib.fem.util.container.ObjList;
 import mathLib.func.symbolic.VecMathFuncBase;
 import mathLib.func.symbolic.intf.MathFunc;
