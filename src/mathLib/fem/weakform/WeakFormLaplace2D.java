@@ -1,18 +1,22 @@
 package mathLib.fem.weakform;
 
-import static edu.uta.futureye.function.FMath.*;
+import static mathLib.func.symbolic.FMath.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import mathLib.fem.core.DOF;
 import mathLib.fem.core.DOFOrder;
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.NodeType;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.DOFList;
 import mathLib.fem.util.container.ElementList;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;
 import mathLib.func.symbolic.operator.FOIntegrate;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * <blockquote><pre>

@@ -1,6 +1,7 @@
 package mathLib.fem.weakform;
 
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
+import mathLib.fem.core.Element;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
 

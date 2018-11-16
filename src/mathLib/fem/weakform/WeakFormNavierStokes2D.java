@@ -1,11 +1,16 @@
 package mathLib.fem.weakform;
 
-import static edu.uta.futureye.function.FMath.*;
+import static mathLib.func.symbolic.FMath.*;
 
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
+import mathLib.fem.core.Edge;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Node;
 import mathLib.fem.util.MathEx;
+import mathLib.fem.util.Utils;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * <blockquote><pre>

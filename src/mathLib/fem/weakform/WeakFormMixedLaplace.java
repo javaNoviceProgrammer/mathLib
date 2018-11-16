@@ -1,14 +1,19 @@
 package mathLib.fem.weakform;
 
-import static edu.uta.futureye.function.FMath.*;
+import static mathLib.func.symbolic.FMath.*;
 
 import mathLib.fem.core.DOF;
+import mathLib.fem.core.Element;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.DOFList;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VectorShapeFunction;
 import mathLib.func.symbolic.operator.FOIntegrate;
+import mathLib.matrix.algebra.intf.BlockMatrix;
 import mathLib.matrix.algebra.intf.BlockVector;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Problem:

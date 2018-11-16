@@ -1,10 +1,11 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.*;
+import static mathLib.func.symbolic.FMath.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FAxpb;
 import mathLib.func.symbolic.intf.MathFunc;
 

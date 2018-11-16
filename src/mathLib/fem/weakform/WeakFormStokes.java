@@ -1,10 +1,14 @@
 package mathLib.fem.weakform;
 
-import static edu.uta.futureye.function.FMath.*;
+import static mathLib.func.symbolic.FMath.C;
+import static mathLib.func.symbolic.FMath.grad;
 
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
+import mathLib.fem.core.Edge;
+import mathLib.fem.core.Element;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
+import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * Problem:

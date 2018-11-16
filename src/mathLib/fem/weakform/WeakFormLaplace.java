@@ -1,8 +1,9 @@
 package mathLib.fem.weakform;
 
-import static edu.uta.futureye.function.FMath.*;
+import static mathLib.func.symbolic.FMath.*;
 
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
+import mathLib.fem.core.Element;
+import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.intf.MathFunc;
 
 /**

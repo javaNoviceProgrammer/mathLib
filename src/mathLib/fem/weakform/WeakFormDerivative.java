@@ -2,8 +2,10 @@ package mathLib.fem.weakform;
 
 
 import mathLib.fem.core.DOF;
-import mathLib.fem.core.intf.WeakFormOld.ItemType;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Node;
 import mathLib.fem.util.container.DOFList;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
 import mathLib.func.symbolic.intf.MathFunc;
