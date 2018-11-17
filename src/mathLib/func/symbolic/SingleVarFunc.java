@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2010, nkliuyueming@gmail.com. All rights reserved.
- * 
- * 
- */
 package mathLib.func.symbolic;
 
 import java.util.ArrayList;
@@ -13,14 +8,14 @@ import java.util.Map;
 import mathLib.func.symbolic.intf.MathFunc;
 
 /**
- * Template to implement single variable MathFunc 
+ * Template to implement single variable MathFunc
  *
  */
 public abstract class SingleVarFunc extends MathFuncBase {
 	protected String fName = "";
 	protected String varName;
 	protected int argIdx;
-	
+
 	public SingleVarFunc(String funcName, String varName) {
 		this.fName = funcName;
 		this.varName = varName;
@@ -49,11 +44,11 @@ public abstract class SingleVarFunc extends MathFuncBase {
 		this.varName = varNames.get(0);
 		return this;
 	}
-	
+
 	public String getVarName() {
 		return this.varName;
 	}
-	
+
 	public MathFunc setVarName(String varName) {
 		this.varName = varName;
 		return this;
@@ -64,31 +59,31 @@ public abstract class SingleVarFunc extends MathFuncBase {
 		this.argIdx = argsMap.get(varName);
 		return this;
 	}
-	
+
 	@Override
 	public Map<String, Integer> getArgIdxMap() {
 		Map<String, Integer> ret = new HashMap<String, Integer>();
 		ret.put(varName, argIdx);
 		return ret;
 	}
-	
+
 	@Override
 	public boolean isConstant() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isInteger() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isZero() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isReal() {
 		return false;
-	}	
+	}
 }
