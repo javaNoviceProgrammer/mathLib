@@ -7,18 +7,26 @@ import java.util.List;
 
 import mathLib.fem.assembler.AssemblerVector;
 import mathLib.fem.core.EdgeLocal;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeLocal;
+import mathLib.fem.core.NodeType;
+import mathLib.fem.core.Vertex;
 import mathLib.fem.element.FEBilinearV_ConstantPOld;
 import mathLib.fem.element.FEQuadraticV_ConstantP;
 import mathLib.fem.element.FEQuadraticV_LinearPOld;
 import mathLib.fem.element.FiniteElementType;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.DataReader;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.weakform.WeakFormNavierStokes2D;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
@@ -29,17 +37,18 @@ import mathLib.matrix.algebra.SparseBlockMatrix;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseVectorHashMap;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.SchurComplementStokesSolver;
 import mathLib.util.io.MeshReader;
 
 
 /**
  * Problem: 2D Navier-Stokes, flow around a cylinder
- * 
+ *
  * Ref.
  * 1. Alexander N. BROOKS Streamline Upwind/Petrow-Galerkin Formulations for Convection Dominated
  *    Flows With Particular Emphasis on the Incompressible Navier-Stokes Equations
- *    
+ *
  * 2. M. Schafer and S. Turek Benchmark Computations of Laminar Flow Arond a Cylinder
  * @author liuyueming
  *
@@ -47,10 +56,10 @@ import mathLib.util.io.MeshReader;
 public class T11NavierStokesCylinder {
 	protected String outputFolder = "NavierStokesCylinder";
 	protected String file = null;
-	
+
 	protected Mesh mesh = null;
 	protected Mesh meshOld = null;
-	
+
 	//Navier-Stokes Weak Form (For Picard Iteration)
 	protected WeakFormNavierStokes2D weakForm = new WeakFormNavierStokes2D();
 	//Assembler
@@ -59,21 +68,21 @@ public class T11NavierStokesCylinder {
 	protected VecMathFunc diri = null;
 	//Previous Velocity
 	protected VecMathFunc U = new SpaceVectorFunction(2);
-	
+
 	//delta t
 	protected double dt = 0.02;
 	//viscosity
 	protected double nu = 0.0005; //0.0005
-	
+
 	FiniteElementType fe = null;
-	
+
 	int maxNonlinearIter = 30;
 	double nonlinearError = 1e-2;
 	int maxTimeStep = 1000;
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param testCaseNo
 	 */
 	public void init(int testCaseNo) {
@@ -93,7 +102,7 @@ public class T11NavierStokesCylinder {
 		mesh = reader.read2DMesh();
 		meshOld = reader2.read2DMesh();
 		mesh.nVertex = mesh.getNodeList().size();
-		
+
 		//Add nodes for quadratic element, original mesh stored in meshOld
 		if(testCaseNo==1 || testCaseNo==2) {
 			for(int i=1;i<=mesh.getElementList().size();i++) {
@@ -121,13 +130,13 @@ public class T11NavierStokesCylinder {
 		}
 		//Geometry relationship
 		mesh.computeNodeBelongsToElements();
-		
+
 		ElementList eList = mesh.getElementList();
 //		NodeList nodes = mesh.getNodeList();
 //		for(int i=1;i<=eList.size();i++) {
 //			System.out.println(i+"  " + eList.at(i));
 //		}
-		
+
 		//Mark boundary type of u
 		HashMap<NodeType, MathFunc> mapNTF_u = new HashMap<NodeType, MathFunc>();
 		//Dirichlet boundary of u
@@ -158,7 +167,7 @@ public class T11NavierStokesCylinder {
 		});
 		//Neumann boundary of u
 		mapNTF_u.put(NodeType.Neumann, null);
-		
+
 		//Mark boundary type of p
 		HashMap<NodeType, MathFunc> mapNTF_p = new HashMap<NodeType, MathFunc>();
 		//Dirichlet boundary of p
@@ -180,11 +189,11 @@ public class T11NavierStokesCylinder {
 		});
 		//Neumann boundary of p
 		mapNTF_p.put(NodeType.Neumann, null);
-		
+
 		mesh.markBorderNode(1,mapNTF_u);
 		mesh.markBorderNode(2,mapNTF_u); //v border type same as u
 		mesh.markBorderNode(3,mapNTF_p);
-		
+
 		mesh.writeNodesInfo(String.format("./%s/%s__MeshInfo_u.dat",outputFolder,file), 1);
 		mesh.writeNodesInfo(String.format("./%s/%s__MeshInfo_v.dat",outputFolder,file), 2);
 		mesh.writeNodesInfo(String.format("./%s/%s__MeshInfo_p.dat",outputFolder,file), 3);
@@ -204,11 +213,11 @@ public class T11NavierStokesCylinder {
 
 
 	}
-	
+
 	/**
 	 * u_max=0.3 at left side boundary, other u=v=0
 	 * p=0 at right side boundary
-	 * 
+	 *
 	 * Result Re=40
 	 */
 	public void imposeDirichletCondition1() {
@@ -234,13 +243,13 @@ public class T11NavierStokesCylinder {
 					}
 				});
 		diri.set(2, FMath.C0);
-		diri.set(3, FMath.C0);		
+		diri.set(3, FMath.C0);
 	}
-	
+
 	/**
 	 * u_max=1.5 at left side boundary, other u=v=0
 	 * p=0 at right side boundary
-	 * 
+	 *
 	 * Result Re=100
 	 */
 	public void imposeDirichletCondition2() {
@@ -266,13 +275,13 @@ public class T11NavierStokesCylinder {
 					}
 				});
 		diri.set(2, FMath.C0);
-		diri.set(3, FMath.C0);		
+		diri.set(3, FMath.C0);
 	}
 
 	/**
 	 * u_max=1.5 at left side boundary, u=1 at upside and down side, other u=v=0
 	 * p=0 at right side boundary
-	 * 
+	 *
 	 * Result Re=100
 	 */
 	public void imposeDirichletCondition3() {
@@ -303,16 +312,16 @@ public class T11NavierStokesCylinder {
 		diri.set(2, FMath.C0);
 		diri.set(3, FMath.C0);
 	}
-	
+
 	public SparseBlockVector nonlinearIter(int time, int nIter, SpaceVectorFunction uk) {
 		//Right hand side(RHS): f = (0,0)'
 		if(time==0)
 			weakForm.setF(new SpaceVectorFunction(FMath.C0,FMath.C0));
 		else
 			weakForm.setF(new SpaceVectorFunction(uk.get(1).D(dt),uk.get(2).D(dt)));
-			
+
 		weakForm.setParam(FC.c(nu),U,FC.c(1.0/dt));
-		
+
 		assembler = new AssemblerVector(mesh, weakForm,fe);
 		assembler.assemble();
 		SparseBlockMatrix stiff = assembler.getStiffnessMatrix();
@@ -321,38 +330,38 @@ public class T11NavierStokesCylinder {
 //		Matrix C = stiff.getBlock(3, 3);
 //		for(int i=1;i<=C.getRowDim();i++)
 //			C.set(i, i, 0.000000001);
-		
+
 		assembler.imposeDirichletCondition(diri);
-		
-		SchurComplementStokesSolver solver = 
+
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
 		//solver.setCGInit(0.5);
 		//solver.debug = true;
 		return solver.solve2D();
-		
+
 	}
-	
+
 	public SparseBlockVector nonlinearIterSteady(int nIter, SpaceVectorFunction uk) {
 		weakForm.setF(new SpaceVectorFunction(FMath.C0,FMath.C0));
 		weakForm.setParam(FC.c(nu),U,FMath.C0);
-		
+
 		assembler = new AssemblerVector(mesh, weakForm,fe);
 		assembler.assemble();
 		SparseBlockMatrix stiff = assembler.getStiffnessMatrix();
 		SparseBlockVector load = assembler.getLoadVector();
 		assembler.imposeDirichletCondition(diri);
-		
-		SchurComplementStokesSolver solver = 
+
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
 		//solver.setCGInit(0.5);
 		//solver.debug = true;
 		return solver.solve2D();
-		
+
 	}
-	
+
 	public void run(int startTimeStep, int testCaseNo, boolean bSteady) {
 		init(testCaseNo);
-		
+
 		if(!bSteady && startTimeStep>0) {
 			Vector vecU = DataReader.readVector(String.format("./%s/%s_uv_final_t%02d.dat",
 					outputFolder,file,startTimeStep),3);
@@ -383,26 +392,26 @@ public class T11NavierStokesCylinder {
 					u = nonlinearIterSteady(iter, uk);
 				else
 					u = nonlinearIter(time, iter, uk);
-				
+
 				//Compute norm of delta_u (not delta_v)
 				int dim = u.getBlock(1).getDim();
 				SparseVector delta_u = new SparseVectorHashMap(dim);
 				for(int i=1;i<=dim;i++)
-					delta_u.set(i, 
+					delta_u.set(i,
 							u.getBlock(1).get(i)-
 							U.get(1).apply(new Variable().setIndex(i)));
-				
+
 				U.set(1, new Vector2MathFunc(u.getBlock(1)));
 				U.set(2, new Vector2MathFunc(u.getBlock(2)));
-	
+
 				System.out.println("Iter="+iter+" Error Norm2 (||u1_k+1 - u1_k||) = "+delta_u.norm2());
-				
+
 				if(delta_u.norm2() < this.nonlinearError) {
 					String s = "_t%03d";
 					if(bSteady) s = "_steady";
-					Tools.plotVector(mesh, outputFolder, String.format("%s_uv_final"+s+".dat",file,time), 
+					Tools.plotVector(mesh, outputFolder, String.format("%s_uv_final"+s+".dat",file,time),
 							u.getBlock(1), u.getBlock(2));
-					Tools.plotVector(meshOld, outputFolder, String.format("%s_p_final"+s+".dat",file,time), 
+					Tools.plotVector(meshOld, outputFolder, String.format("%s_p_final"+s+".dat",file,time),
 							Tools.valueOnElement2Node(mesh,u.getBlock(3)));
 					if(bSteady)
 						return;
@@ -410,14 +419,14 @@ public class T11NavierStokesCylinder {
 						break;
 				} else {
 					if(bSteady) {
-						Tools.plotVector(mesh, outputFolder, String.format("%s_uv_steady_%02d.dat",file,time+iter), 
+						Tools.plotVector(mesh, outputFolder, String.format("%s_uv_steady_%02d.dat",file,time+iter),
 								u.getBlock(1), u.getBlock(2));
-						Tools.plotVector(meshOld, outputFolder, String.format("%s_p_steady_%02d.dat",file,time+iter), 
+						Tools.plotVector(meshOld, outputFolder, String.format("%s_p_steady_%02d.dat",file,time+iter),
 								Tools.valueOnElement2Node(mesh,u.getBlock(3)));
 					} else {
-						Tools.plotVector(mesh, outputFolder, String.format("%s_uv%02d_%02d.dat",file,time,iter), 
+						Tools.plotVector(mesh, outputFolder, String.format("%s_uv%02d_%02d.dat",file,time,iter),
 								u.getBlock(1), u.getBlock(2));
-						Tools.plotVector(meshOld, outputFolder, String.format("%s_p%02d_%02d.dat",file,time,iter), 
+						Tools.plotVector(meshOld, outputFolder, String.format("%s_p%02d_%02d.dat",file,time,iter),
 								Tools.valueOnElement2Node(mesh,u.getBlock(3)));
 					}
 				}
@@ -425,7 +434,7 @@ public class T11NavierStokesCylinder {
 			if(bSteady) return;
 		}
 	}
-	
+
 	public void computeKeyValues(int step,Vector vecU, Vector vecV, Vector vecP) {
 		final double[] cylinderCenter = {0.2,0.2};
 		double cylinderRadius = 0.05;
@@ -439,7 +448,7 @@ public class T11NavierStokesCylinder {
 		final SpaceVector v2 = new SpaceVector(2);
 		v1.set(1, frontPoint.coord(1)-cylinderCenter[0]);
 		v1.set(2, frontPoint.coord(2)-cylinderCenter[1]);
-		
+
 		NodeList nodes = mesh.getNodeList();
 		int N = nodes.size();
 		NodeList nodesOnCylinder = new NodeList();
@@ -461,7 +470,7 @@ public class T11NavierStokesCylinder {
 				}
 			}
 		}
-		//排�?结点从frontPoint开始，顺时针排�?
+		//排�?结点从frontPoint开始，顺时针排�?
 		List<Node> l = nodesOnCylinder.toList();
 		Collections.sort(l, new Comparator<Node>() {
 			@Override
@@ -469,11 +478,11 @@ public class T11NavierStokesCylinder {
 				v2.set(1, o1.coord(1)-cylinderCenter[0]);
 				v2.set(2, o1.coord(2)-cylinderCenter[1]);
 				double dot1 = v1.dot(v2);
-				
+
 				v2.set(1, o2.coord(1)-cylinderCenter[0]);
 				v2.set(2, o2.coord(2)-cylinderCenter[1]);
 				double dot2 = v1.dot(v2);
-				
+
 				if(o1.coord(2) >= cylinderCenter[1] && o2.coord(2) >= cylinderCenter[1]) {
 					return (dot1-dot2)>0?-1:1;
 				} else if(o1.coord(2) >= cylinderCenter[1] && o2.coord(2) < cylinderCenter[1]) {
@@ -488,7 +497,7 @@ public class T11NavierStokesCylinder {
 //		for(int i=1;i<=nodesOnCylinder.size();i++) {
 //			System.out.println(nodesOnCylinder.at(i));
 //		}
-		
+
 		//double H = 0.41; //the channel height
 		double U = 1.5; //initial velocity at (0,H/2)
 		double Ubar = 2.0*U/3.0; //the mean velocity
@@ -496,7 +505,7 @@ public class T11NavierStokesCylinder {
 		double mu = 0.001; //kinematic viscosity
 		double D = 0.1; //cylinder diameter
 		//double Re = Ubar*D/mu;
-		
+
 		//double last_vtx=0.0, last_vty=0.0;
 		Node last_node = null;
 		double FD = 0.0;
@@ -507,7 +516,7 @@ public class T11NavierStokesCylinder {
 			Node node = nodesOnCylinder.at(index);
 			v1.set(1, node.coord(1)-cylinderCenter[0]);
 			v1.set(2, node.coord(2)-cylinderCenter[1]);
-			
+
 			//outer normal vector (nx ny)'
 			double nx = v1.get(1)/v1.norm2();
 			double ny = v1.get(2)/v1.norm2();
@@ -520,7 +529,7 @@ public class T11NavierStokesCylinder {
 			double vtLen = u*tx+v*ty;
 			double vtx = vtLen*tx;
 			double vty = vtLen*ty;
-			
+
 			if(i>=2) {
 				double dSx = node.coord(1)-last_node.coord(1);
 				double dSy = node.coord(2)-last_node.coord(2);
@@ -529,7 +538,7 @@ public class T11NavierStokesCylinder {
 //				double dvty = (vty-last_vty)/dSy;
 				double dn=v1.norm2() - cylinderRadius;//
 				double dvtx = vtx/dn;
-				double dvty = vty/dn;		
+				double dvty = vty/dn;
 				double P = vecP.get(node.globalIndex);
 //				double vt_n = dvtx*nx+dvty*ny;
 				double vt_n = Math.sqrt(dvtx*dvtx+dvty*dvty);
@@ -537,22 +546,22 @@ public class T11NavierStokesCylinder {
 				FL += -(rho*mu*vt_n*nx+P*ny)*dS;
 				//System.out.println(FD+" "+FL);
 			}
-			
+
 			//last_vtx = vtx;
 			//last_vty = vty;
 			last_node = node;
 		}
 		double cD = 2*FD/(rho*Ubar*Ubar*D);
 		double cL = 2*FL/(rho*Ubar*Ubar*D);
-		double f = 1.0/(9.0*0.05);//1/(step*dt)通过观察cD或cL�?�得出涡街频率
+		double f = 1.0/(9.0*0.05);//1/(step*dt)通过观察cD或cL�?�得出涡街频率
 		double St = D*f/Ubar;
 		double DeltaP = vecP.get(frontPoint.globalIndex)-vecP.get(endPoint.globalIndex);
-		
+
 		//System.out.println("index cD cL St DeltaP");
 		System.out.println(String.format("%d\t%f\t%f\t%f\t%f", step,cD,cL,St,DeltaP));
-		
+
 	}
-	
+
 	public void computeKeyValues(int step) {
 		Vector vecU = DataReader.readVector(String.format("./%s/%s_uv_final_t%02d.dat",
 				outputFolder,file,step),3);
@@ -562,7 +571,7 @@ public class T11NavierStokesCylinder {
 				outputFolder,file,step));
 		computeKeyValues(step,vecU,vecV,vecP);
 	}
-	
+
 	/**
 	 * args[0]: test case number
 	 * args[1]: is steady
@@ -598,18 +607,18 @@ public class T11NavierStokesCylinder {
 		System.out.println("mu="+NS.nu);
 		System.out.println("maxNonlinearIter="+NS.maxNonlinearIter);
 		System.out.println("nonlinearError="+NS.nonlinearError);
-		
+
 		//NS.imposeDirichletCondition1();
 		//NS.imposeDirichletCondition2();
 		NS.imposeDirichletCondition3();
 		NS.run(startTimeStep,testCaseNo,bSteady);
-		
+
 //		//computeKeyValues
 //		NS.init(3);
 //		System.out.println("index cD cL St DeltaP");
 //		for(int i=1;i<=620;i++)
 //			NS.computeKeyValues(i);
-		
+
 		//31.934158826680363
 	}
 }

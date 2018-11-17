@@ -3,12 +3,17 @@ package mathLib.fem.tutorial;
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerVector;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.element.FEBilinearRectangleVector;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.weakform.WeakFormElasticIsoPlaneStress2D;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.matrix.algebra.SparseBlockMatrix;
@@ -37,7 +42,7 @@ public class T09PlaneElasticHole {
       	public double apply(Variable v) {
       		//double x = v.get("x");
       		double y = v.get("y");
-      		if(Math.abs(y)<Constant.meshEps || 
+      		if(Math.abs(y)<Constant.meshEps ||
       				Math.abs(y-10)<Constant.meshEps)
       			return 1;
       		else
@@ -55,7 +60,7 @@ public class T09PlaneElasticHole {
       	public double apply(Variable v) {
       		double x = v.get("x");
       		double y = v.get("y");
-      		if(Math.abs(x)<Constant.meshEps && 
+      		if(Math.abs(x)<Constant.meshEps &&
       				y<5.2+Constant.meshEps &&
       				y>4.8-Constant.meshEps
       				)
@@ -80,7 +85,7 @@ public class T09PlaneElasticHole {
       		System.out.println(NodeType.Robin+":"+nodes.at(i));
       	if(nodes.at(i).getNodeType()==NodeType.Dirichlet)
       		System.out.println(NodeType.Dirichlet+":"+nodes.at(i));
-     	
+
       }
       for(int i=1;i<=eles.size();i++) {
       	System.out.println(eles.at(i));
@@ -135,7 +140,7 @@ public class T09PlaneElasticHole {
       //6.Solve linear system
       Solver solver = new Solver();
       SparseBlockVector u = solver.solveCGS(stiff, load);
-      
+
       System.out.println("u=");
       for(int i=1;i<=u.getDim();i++)
           System.out.println(String.format("%.3f", u.get(i)));
@@ -143,7 +148,7 @@ public class T09PlaneElasticHole {
       //7.Output results to an Techplot format file
       MeshWriter writer = new MeshWriter(mesh);
       writer.writeTechplot("ElasticHole.dat", u.getBlock(1),
-      		u.getBlock(2));	
+      		u.getBlock(2));
       }
 
 }

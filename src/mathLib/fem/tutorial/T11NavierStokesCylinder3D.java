@@ -3,13 +3,17 @@ package mathLib.fem.tutorial;
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerVector;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.element.FETrilinearV_ConstantP;
 import mathLib.fem.element.FiniteElementType;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.DataReader;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.weakform.WeakFormNavierStokes3D;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
@@ -19,17 +23,18 @@ import mathLib.matrix.algebra.SparseBlockMatrix;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseVectorHashMap;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.SchurComplementStokesSolver;
 import mathLib.util.io.MeshReader;
 
 
 /**
  * Problem: 3D Navier-Stokes, flow around a cylinder
- * 
+ *
  * Ref.
  * 1. Alexander N. BROOKS Streamline Upwind/Petrow-Galerkin Formulations for Convection Dominated
  *    Flows With Particular Emphasis on the Incompressible Navier-Stokes Equations
- *    
+ *
  * 2. M. Schafer and S. Turek Benchmark Computations of Laminar Flow Arond a Cylinder
  * @author liuyueming
  *
@@ -37,10 +42,10 @@ import mathLib.util.io.MeshReader;
 public class T11NavierStokesCylinder3D {
 	protected String outputFolder = "NavierStokesCylinder3D";
 	protected String file = null;
-	
+
 	protected Mesh mesh = null;
 	protected Mesh meshOld = null;
-	
+
 	//Navier-Stokes Weak Form (For Picard Iteration)
 	protected WeakFormNavierStokes3D weakForm = new WeakFormNavierStokes3D();
 	//Assembler
@@ -49,44 +54,44 @@ public class T11NavierStokesCylinder3D {
 	protected VecMathFunc diri = null;
 	//Previous Velocity
 	protected VecMathFunc U = new SpaceVectorFunction(3);
-	
+
 	//delta t
 	protected double dt = 0.02;
 	//viscosity
 	protected double nu = 0.001; //0.0005
-	
+
 	FiniteElementType fe = null;
-	
+
 	int maxNonlinearIter = 30;
 	double nonlinearError = 1e-2;
 	int maxTimeStep = 1000;
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param testCaseNo
 	 */
 	public void init(int testCaseNo) {
 		//Read mesh from input file
 		//file = "benchmark_cylinder3_3D"; //rectangle mesh
 		file = "benchmark_cylinder31_3D"; //rectangle mesh
-		
+
 		MeshReader reader = new MeshReader(file+".grd");
 		MeshReader reader2 = new MeshReader(file+".grd");
 		mesh = reader.read3DMesh();
 		meshOld = reader2.read3DMesh();
 		mesh.nVertex = mesh.getNodeList().size();
-		
+
 		//Geometry relationship
 		mesh.computeNodeBelongsToElements();
 		mesh.computeGlobalEdge();
-		
+
 		ElementList eList = mesh.getElementList();
 //		NodeList nodes = mesh.getNodeList();
 //		for(int i=1;i<=eList.size();i++) {
 //			System.out.println(i+"  " + eList.at(i));
 //		}
-		
+
 		Vector v = new SparseVectorHashMap(mesh.getNodeList().size());
 		Tools.plotVector(mesh, outputFolder, "test.dat", v);
 
@@ -125,7 +130,7 @@ public class T11NavierStokesCylinder3D {
 		});
 		//Neumann boundary of u
 		mapNTF_u.put(NodeType.Neumann, null);
-		
+
 		//Mark boundary type of p
 		HashMap<NodeType, MathFunc> mapNTF_p = new HashMap<NodeType, MathFunc>();
 		//Dirichlet boundary of p
@@ -147,12 +152,12 @@ public class T11NavierStokesCylinder3D {
 		});
 		//Neumann boundary of p
 		mapNTF_p.put(NodeType.Neumann, null);
-		
+
 		mesh.markBorderNode(1,mapNTF_u); //u's boundary type
 		mesh.markBorderNode(2,mapNTF_u); //v's boundary type same as u
 		mesh.markBorderNode(3,mapNTF_u); //w's boundary type same as u
 		mesh.markBorderNode(4,mapNTF_p);
-		
+
 		mesh.writeNodesInfo(String.format("./%s/%s__MeshInfo_u.dat",outputFolder,file), 1);
 		mesh.writeNodesInfo(String.format("./%s/%s__MeshInfo_v.dat",outputFolder,file), 2);
 		mesh.writeNodesInfo(String.format("./%s/%s__MeshInfo_w.dat",outputFolder,file), 3);
@@ -168,11 +173,11 @@ public class T11NavierStokesCylinder3D {
 
 
 	}
-	
+
 	/**
 	 * u_max=0.45 at left side boundary, other u=v=w=0
 	 * p=0 at right side boundary
-	 * 
+	 *
 	 * Result Re=20
 	 */
 	public void imposeDirichletCondition1() {
@@ -201,13 +206,13 @@ public class T11NavierStokesCylinder3D {
 				});
 		diri.set(2, FMath.C0);
 		diri.set(3, FMath.C0);
-		diri.set(4, FMath.C0);		
+		diri.set(4, FMath.C0);
 	}
-	
+
 	/**
 	 * u_max=2.25 at left side boundary, other u=v=w=0
 	 * p=0 at right side boundary
-	 * 
+	 *
 	 * Result Re=100
 	 */
 	public void imposeDirichletCondition2() {
@@ -236,13 +241,13 @@ public class T11NavierStokesCylinder3D {
 				});
 		diri.set(2, FMath.C0);
 		diri.set(3, FMath.C0);
-		diri.set(4, FMath.C0);		
+		diri.set(4, FMath.C0);
 	}
 
 	/**
 	 * u_max=2.25 at left side boundary, u=1 at upside,down,back and front side, other u=v=w=0
 	 * p=0 at right side boundary
-	 * 
+	 *
 	 * Result Re=100
 	 */
 	public void imposeDirichletCondition3() {
@@ -277,9 +282,9 @@ public class T11NavierStokesCylinder3D {
 				});
 		diri.set(2, FMath.C0);
 		diri.set(3, FMath.C0);
-		diri.set(4, FMath.C0);	
+		diri.set(4, FMath.C0);
 	}
-	
+
 	public SparseBlockVector nonlinearIter(int time, int nIter, SpaceVectorFunction uk) {
 		//Right hand side(RHS): f = (0,0)'
 		if(time==0)
@@ -290,28 +295,28 @@ public class T11NavierStokesCylinder3D {
 					uk.get(2).D(dt),
 					uk.get(3).D(dt)
 					));
-			
+
 		weakForm.setParam(FC.c(nu),U,FC.c(1.0/dt));
-		
+
 		assembler = new AssemblerVector(mesh, weakForm,fe);
 		assembler.assemble();
 		SparseBlockMatrix stiff = assembler.getStiffnessMatrix();
 		SparseBlockVector load = assembler.getLoadVector();
 
 		assembler.imposeDirichletCondition(diri);
-		
-		SchurComplementStokesSolver solver = 
+
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
 		//solver.setCGInit(0.5);
 		//solver.debug = true;
 		return solver.solve3D();
-		
+
 	}
-	
+
 	public SparseBlockVector nonlinearIterSteady(int nIter, SpaceVectorFunction uk) {
 		weakForm.setF(new SpaceVectorFunction(FMath.C0,FMath.C0,FMath.C0));
 		weakForm.setParam(FC.c(nu),U,FMath.C0);
-		
+
 		assembler = new AssemblerVector(mesh, weakForm,fe);
 		System.out.println("Begin Assemble...");
 		assembler.assemble();
@@ -323,18 +328,18 @@ public class T11NavierStokesCylinder3D {
 		long end = System.currentTimeMillis();
 		System.out.println((end-begin)+"ms");
 		System.out.println("Assemble done!");
-		
-		SchurComplementStokesSolver solver = 
+
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
 		//solver.setCGInit(0.5);
 		//solver.debug = true;
 		return solver.solve3D();
-		
+
 	}
-	
+
 	public void run(int startTimeStep, int testCaseNo, boolean bSteady) {
 		init(testCaseNo);
-		
+
 		if(!bSteady && startTimeStep>0) {
 			Vector vecU = DataReader.readVector(String.format("./%s/%s_uvw_final_t%02d.dat",
 					outputFolder,file,startTimeStep),3);
@@ -373,27 +378,27 @@ public class T11NavierStokesCylinder3D {
 					u = nonlinearIterSteady(iter, uk);
 				else
 					u = nonlinearIter(time, iter, uk);
-				
+
 				//Compute norm of delta_u (not delta_v)
 				int dim = u.getBlock(1).getDim();
 				SparseVector delta_u = new SparseVectorHashMap(dim);
 				for(int i=1;i<=dim;i++)
-					delta_u.set(i, 
+					delta_u.set(i,
 							u.getBlock(1).get(i)-
 							U.get(1).apply(new Variable().setIndex(i)));
-				
+
 				U.set(1, new Vector2MathFunc(u.getBlock(1)));
 				U.set(2, new Vector2MathFunc(u.getBlock(2)));
 				U.set(3, new Vector2MathFunc(u.getBlock(3)));
-	
+
 				System.out.println("Iter="+iter+" Error Norm2 (||u1_k+1 - u1_k||) = "+delta_u.norm2());
-				
+
 				if(delta_u.norm2() < this.nonlinearError) {
 					String s = "_t%03d";
 					if(bSteady) s = "_steady";
-					Tools.plotVector(mesh, outputFolder, String.format("%s_uvw_final"+s+".dat",file,time), 
+					Tools.plotVector(mesh, outputFolder, String.format("%s_uvw_final"+s+".dat",file,time),
 							u.getBlock(1), u.getBlock(2), u.getBlock(3));
-					Tools.plotVector(meshOld, outputFolder, String.format("%s_p_final"+s+".dat",file,time), 
+					Tools.plotVector(meshOld, outputFolder, String.format("%s_p_final"+s+".dat",file,time),
 							Tools.valueOnElement2Node(mesh,u.getBlock(4)));
 					if(bSteady)
 						return;
@@ -401,14 +406,14 @@ public class T11NavierStokesCylinder3D {
 						break;
 				} else {
 					if(bSteady) {
-						Tools.plotVector(mesh, outputFolder, String.format("%s_uvw_steady_%02d.dat",file,time+iter), 
+						Tools.plotVector(mesh, outputFolder, String.format("%s_uvw_steady_%02d.dat",file,time+iter),
 								u.getBlock(1), u.getBlock(2), u.getBlock(3));
-						Tools.plotVector(meshOld, outputFolder, String.format("%s_p_steady_%02d.dat",file,time+iter), 
+						Tools.plotVector(meshOld, outputFolder, String.format("%s_p_steady_%02d.dat",file,time+iter),
 								Tools.valueOnElement2Node(mesh,u.getBlock(4)));
 					} else {
-						Tools.plotVector(mesh, outputFolder, String.format("%s_uvw%02d_%02d.dat",file,time,iter), 
+						Tools.plotVector(mesh, outputFolder, String.format("%s_uvw%02d_%02d.dat",file,time,iter),
 								u.getBlock(1), u.getBlock(2), u.getBlock(3));
-						Tools.plotVector(meshOld, outputFolder, String.format("%s_p%02d_%02d.dat",file,time,iter), 
+						Tools.plotVector(meshOld, outputFolder, String.format("%s_p%02d_%02d.dat",file,time,iter),
 								Tools.valueOnElement2Node(mesh,u.getBlock(4)));
 					}
 				}
@@ -417,7 +422,7 @@ public class T11NavierStokesCylinder3D {
 		}
 	}
 
-	
+
 	/**
 	 * args[0]: test case number
 	 * args[1]: is steady
@@ -453,7 +458,7 @@ public class T11NavierStokesCylinder3D {
 		System.out.println("mu="+NS.nu);
 		System.out.println("maxNonlinearIter="+NS.maxNonlinearIter);
 		System.out.println("nonlinearError="+NS.nonlinearError);
-		
+
 		//NS.imposeDirichletCondition1();
 		//NS.imposeDirichletCondition2();
 		NS.imposeDirichletCondition3();

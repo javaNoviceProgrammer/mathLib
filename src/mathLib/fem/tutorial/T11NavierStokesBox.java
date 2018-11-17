@@ -1,15 +1,21 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.*;
+import static mathLib.func.symbolic.FMath.C0;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerVector;
 import mathLib.fem.core.EdgeLocal;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeLocal;
+import mathLib.fem.core.NodeType;
+import mathLib.fem.core.Vertex;
 import mathLib.fem.element.FEBilinearV_ConstantPOld;
 import mathLib.fem.element.FEQuadraticV_LinearPOld;
 import mathLib.fem.element.FiniteElementType;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.DataReader;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ElementList;
@@ -17,6 +23,7 @@ import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.weakform.WeakFormNavierStokes2D;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
@@ -26,6 +33,7 @@ import mathLib.matrix.algebra.SparseBlockMatrix;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseVectorHashMap;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.SchurComplementStokesSolver;
 import mathLib.util.io.MeshReader;
 
@@ -35,9 +43,9 @@ import mathLib.util.io.MeshReader;
  *
  * Ref.
  * 1. T.E. Teaduyar Stabilized Finite Element Formulations for Incompressible Flow Computations
- * 
- * 2. Rajiv Sampath and Nicholas Zabaras Design and object-oriented implementation of a 
- *    preconditioned-stabilized incompressible NaiverStokes solver using equal-order-interpolation 
+ *
+ * 2. Rajiv Sampath and Nicholas Zabaras Design and object-oriented implementation of a
+ *    preconditioned-stabilized incompressible NaiverStokes solver using equal-order-interpolation
  *    velocity pressure elements
  *
  * @author liuyueming
@@ -46,10 +54,10 @@ import mathLib.util.io.MeshReader;
 public class T11NavierStokesBox {
 	protected String outputFolder = "NavierStokesBox";
 	protected String file = null;
-	
+
 	protected Mesh mesh = null;
 	protected Mesh meshOld = null;
-	
+
 	//Navier-Stokes Weak Form (For Picard Iteration)
 	protected WeakFormNavierStokes2D weakForm = new WeakFormNavierStokes2D();
 	//Assembler
@@ -58,39 +66,39 @@ public class T11NavierStokesBox {
 	protected VecMathFunc diri = null;
 	//Previous Velocity
 	protected VecMathFunc U = new SpaceVectorFunction(2);
-	
+
 	//delta t
 	protected double dt = 0.02;
 	//viscosity
-	protected double nu = 0.001; 
-	
+	protected double nu = 0.001;
+
 	FiniteElementType fe = null;
-	
+
 	int maxNonlinearIter = 30;
 	double nonlinearError = 1e-2;
 	int maxTimeStep = 1000;
-	
+
 	/**
-	 * 
+	 *
 	 * @param testCaseNo
 	 */
 	public void init(int testCaseNo) {
 		//Read mesh from input file
 		if(testCaseNo == 1)
 			file = "stokes_box";//[-3,3]*[-3,3]
-		else if(testCaseNo == 2) 
+		else if(testCaseNo == 2)
 			file = "stokes_box2";//[0,1]*[0,1] 64*64
-		else if(testCaseNo == 3) 
+		else if(testCaseNo == 3)
 			file = "stokes_box3";//[0,1]*[0,1] 32*32
 		else
 			throw new FutureyeException("testCaseNo should be 1,2");
-		
+
 		MeshReader reader = new MeshReader("grids/"+file+".grd");
 		MeshReader reader2 = new MeshReader("grids/"+file+".grd");
 		mesh = reader.read2DMesh();
 		meshOld = reader2.read2DMesh();
 		mesh.nVertex = mesh.getNodeList().size();
-		
+
 		//Add nodes for quadratic element, original mesh stored in meshOld
 		if(testCaseNo == 1) {
 			for(int i=1;i<=mesh.getElementList().size();i++) {
@@ -118,20 +126,20 @@ public class T11NavierStokesBox {
 		}
 		//Geometry relationship
 		mesh.computeNodeBelongsToElements();
-		
+
 		ElementList eList = mesh.getElementList();
 //		NodeList nodes = mesh.getNodeList();
 //		for(int i=1;i<=eList.size();i++) {
 //			System.out.println(i+"  " + eList.at(i));
 //		}
-		
+
 		//Mark border type
 		HashMap<NodeType, MathFunc> mapNTF_uv = new HashMap<NodeType, MathFunc>();
 		mapNTF_uv.put(NodeType.Dirichlet, null);
-		
+
 		HashMap<NodeType, MathFunc> mapNTF_p = new HashMap<NodeType, MathFunc>();
 		mapNTF_p.put(NodeType.Neumann, null);
-		
+
 		mesh.markBorderNode(new ObjIndex(1,2),mapNTF_uv);
 		mesh.markBorderNode(3,mapNTF_p);
 
@@ -168,37 +176,37 @@ public class T11NavierStokesBox {
 				});
 		diri.set(2, C0);
 		diri.set(3, C0);
-		
+
 	}
-	
+
 	public SparseBlockVector nonlinearIter(int time, int nIter, SpaceVectorFunction uk) {
 		//Right hand side(RHS): f = (0,0)'
 		if(time==0)
 			weakForm.setF(new SpaceVectorFunction(C0,C0));
 		else
 			weakForm.setF(new SpaceVectorFunction(uk.get(1).D(dt),uk.get(2).D(dt)));
-		
+
 		weakForm.setParam(FC.c(nu),U,FC.c(1.0/dt));
-		
+
 		assembler = new AssemblerVector(mesh, weakForm,fe);
 		assembler.assemble();
 		SparseBlockMatrix stiff = assembler.getStiffnessMatrix();
 		SparseBlockVector load = assembler.getLoadVector();
 		assembler.imposeDirichletCondition(diri);
-		
-		SchurComplementStokesSolver solver = 
+
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
 		//solver.setCGInit(0.5);
 		//solver.debug = true;
 		return solver.solve2D();
-		
-	}	
-	
+
+	}
+
 	public SparseBlockVector nonlinearIterSteady(int nIter, SpaceVectorFunction uk) {
 		//Right hand side(RHS): f = (0,0)'
 		weakForm.setF(new SpaceVectorFunction(C0,C0));
 		weakForm.setParam(FC.c(nu),U,C0);
-		
+
 		assembler = new AssemblerVector(mesh, weakForm,fe);
 		assembler.assemble();
 		SparseBlockMatrix stiff = assembler.getStiffnessMatrix();
@@ -208,19 +216,19 @@ public class T11NavierStokesBox {
 		assembler.imposeDirichletCondition(diri);
 		long end = System.currentTimeMillis();
 		System.out.println((end-begin)+"ms");
-		
-		SchurComplementStokesSolver solver = 
+
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
 		//solver.setCGInit(0.5);
 		//solver.debug = true;
 		return solver.solve2D();
-		
-	}	
-	
+
+	}
+
 	public void run(int startTimeStep, int testCaseNo, boolean bSteady) {
 		init(testCaseNo);
 		if(bSteady) startTimeStep=0;
-		
+
 		if(startTimeStep>0) {
 			Vector vecU = DataReader.readVector(String.format("./%s/%s_uv_final_t%03d.dat",
 					outputFolder,file,startTimeStep),3);
@@ -232,8 +240,8 @@ public class T11NavierStokesBox {
 			U.set(1, C0);
 			U.set(2, C0);
 		}
-		
-		
+
+
 		SparseBlockVector u = null;
 		if(bSteady) System.out.println(">>>>>>>>>>>>>>>>>>>steady");
 		SpaceVectorFunction uk = new SpaceVectorFunction(2);
@@ -247,49 +255,49 @@ public class T11NavierStokesBox {
 					u = nonlinearIterSteady(iter, uk);
 				else
 					u = nonlinearIter(time, iter, uk);
-				
+
 				//Compute norm of delta_u (not including delta_v)
 				int dim = u.getBlock(1).getDim();
 				SparseVector delta_u = new SparseVectorHashMap(dim);
 				for(int i=1;i<=dim;i++)
-					delta_u.set(i, 
-							
+					delta_u.set(i,
+
 							u.getBlock(1).get(i)-
 							U.get(1).apply(new Variable().setIndex(i)));
-				
+
 				U.set(1, new Vector2MathFunc(u.getBlock(1)));
 				U.set(2, new Vector2MathFunc(u.getBlock(2)));
-	
+
 				System.out.println("Iter="+iter+" Error Norm2 (||u1_k+1 - u1_k||) = "+delta_u.norm2());
-				
+
 				if(delta_u.norm2() < this.nonlinearError) {
 					String s = "_t%03d";
 					if(bSteady) s = "_steady";
-					Tools.plotVector(mesh, outputFolder, String.format("%s_uv_final"+s+".dat",file,time), 
+					Tools.plotVector(mesh, outputFolder, String.format("%s_uv_final"+s+".dat",file,time),
 							u.getBlock(1), u.getBlock(2));
-					Tools.plotVector(meshOld, outputFolder, String.format("%s_p_final"+s+".dat",file,time), 
+					Tools.plotVector(meshOld, outputFolder, String.format("%s_p_final"+s+".dat",file,time),
 							Tools.valueOnElement2Node(mesh,u.getBlock(3)));
 					if(bSteady)
 						return;
 					else
 						break;
 				} else {
-					Tools.plotVector(mesh, outputFolder, String.format("%s_uv%02d_%02d.dat",file,time,iter), 
+					Tools.plotVector(mesh, outputFolder, String.format("%s_uv%02d_%02d.dat",file,time,iter),
 							u.getBlock(1), u.getBlock(2));
-					Tools.plotVector(meshOld, outputFolder, String.format("%s_p%02d_%02d.dat",file,time,iter), 
+					Tools.plotVector(meshOld, outputFolder, String.format("%s_p%02d_%02d.dat",file,time,iter),
 							Tools.valueOnElement2Node(mesh, u.getBlock(3)));
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * args[0]: test case number
 	 * args[1]: is steady
 	 * args[2]: delta t
 	 * args[3]: start time step
 	 * args[4]: max start time step
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -308,7 +316,7 @@ public class T11NavierStokesBox {
 			startTimeStep = Integer.parseInt(args[3]);
 		if(args.length >= 5)
 			NSB.maxTimeStep = Integer.parseInt(args[4]);
-		
+
 		System.out.println("testCaseNo="+testCaseNo);
 		System.out.println("bSteady="+bSteady);
 		System.out.println("dt="+NSB.dt);
@@ -318,7 +326,7 @@ public class T11NavierStokesBox {
 		System.out.println("mu="+NSB.nu);
 		System.out.println("maxNonlinearIter="+NSB.maxNonlinearIter);
 		System.out.println("nonlinearError="+NSB.nonlinearError);
-		
+
 		NSB.run(startTimeStep,testCaseNo,bSteady);
 	}
 }

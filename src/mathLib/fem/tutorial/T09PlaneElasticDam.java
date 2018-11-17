@@ -3,12 +3,17 @@ package mathLib.fem.tutorial;
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerVector;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.element.FELinearTriangleVector;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.weakform.WeakFormElasticIsoPlaneStress2D;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.matrix.algebra.SparseBlockMatrix;
@@ -75,7 +80,7 @@ public class T09PlaneElasticDam {
       		System.out.println(NodeType.Robin+":"+nodes.at(i));
       	if(nodes.at(i).getNodeType()==NodeType.Dirichlet)
       		System.out.println(NodeType.Dirichlet+":"+nodes.at(i));
-     	
+
       }
       for(int i=1;i<=eles.size();i++) {
       	System.out.println(eles.at(i));
@@ -126,11 +131,11 @@ public class T09PlaneElasticDam {
 
       //6.Solve linear system
       Solver solver = new Solver();
-      
+
       //SparseMatrix stiff2 = new SparseMatrix(stiff.getRowDim(),stiff.getColDim());
       //stiff2.setAll(0, 0, stiff.getAll());
       //Vector u = solver.solveCGS(stiff2, load);
-      
+
       SparseBlockVector u = solver.solveCGS(stiff, load);
       System.out.println("u=");
       for(int i=1;i<=u.getDim();i++)
@@ -139,7 +144,7 @@ public class T09PlaneElasticDam {
       //7.Output results to an Techplot format file
       MeshWriter writer = new MeshWriter(mesh);
       writer.writeTechplot("ElasticDam.dat", u.getBlock(1),
-      		u.getBlock(2));	
+      		u.getBlock(2));
       }
 
 }

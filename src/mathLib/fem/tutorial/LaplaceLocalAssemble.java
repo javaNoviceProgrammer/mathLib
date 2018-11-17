@@ -1,20 +1,25 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.grad;
-import static edu.uta.futureye.function.FMath.x;
-import static edu.uta.futureye.function.FMath.y;
+import static mathLib.func.symbolic.FMath.C0;
+import static mathLib.func.symbolic.FMath.grad;
+import static mathLib.func.symbolic.FMath.x;
+import static mathLib.func.symbolic.FMath.y;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.Assembler;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.element.FELinearTriangle;
+import mathLib.fem.util.Utils;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
 import mathLib.matrix.algebra.intf.SparseMatrix;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.external.SolverJBLAS;
 import mathLib.util.io.MeshReader;
 import mathLib.util.io.MeshWriter;
@@ -23,7 +28,7 @@ import mathLib.util.io.MeshWriter;
  * Use assembleLocal() to get local stiff matrix and local load vector in an
  * element This gives user the ability to assemble their own global stiff matrix
  * and global load vector <blockquote>
- * 
+ *
  * <pre>
  * Problem:
  *   -\Delta{u} = f
@@ -35,7 +40,7 @@ import mathLib.util.io.MeshWriter;
  *   u = (x^2-9)*(y^2-9)
  * </blockquote>
  * </pre>
- * 
+ *
  * @author liuyueming
  */
 
@@ -55,8 +60,8 @@ public class LaplaceLocalAssemble {
 		// 3. Weak form definition
 		FELinearTriangle fe = new FELinearTriangle(); //Linear triangular finite element
 		final MathFunc f = -2 * (x * x + y * y) + 36; //Right hand side (RHS)
-		WeakForm wf = new WeakForm(fe, 
-				(u,v) -> grad(u, "x", "y").dot(grad(v, "x", "y")), 
+		WeakForm wf = new WeakForm(fe,
+				(u,v) -> grad(u, "x", "y").dot(grad(v, "x", "y")),
 				v -> f * v
 			);
 		wf.compile();

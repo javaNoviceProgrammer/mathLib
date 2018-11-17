@@ -1,15 +1,18 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.C1;
-import static edu.uta.futureye.function.FMath.grad;
-import static edu.uta.futureye.function.FMath.x;
-import static edu.uta.futureye.function.FMath.y;
+import static mathLib.func.symbolic.FMath.C;
+import static mathLib.func.symbolic.FMath.C0;
+import static mathLib.func.symbolic.FMath.C1;
+import static mathLib.func.symbolic.FMath.grad;
+import static mathLib.func.symbolic.FMath.x;
+import static mathLib.func.symbolic.FMath.y;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerScalar;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.WeakFormOld;
 import mathLib.fem.element.FEBilinearRectangleRegular;
 import mathLib.fem.element.FELinearTriangleOld;
@@ -18,18 +21,20 @@ import mathLib.fem.weakform.WeakFormBuilder;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.external.SolverJBLAS;
 import mathLib.util.io.MeshReader;
 import mathLib.util.io.MeshWriter;
 
 /**
  * Demo for how to use WeakFormBuilder
- * 
+ *
  * @author liuyueming
  *
  */
 public class T04UseWeakFormBuilder {
-	
+
 	/**
 	 * <blockquote><pre>
 	 * Solve
@@ -40,7 +45,7 @@ public class T04UseWeakFormBuilder {
 	 *   f = -2*(x^2+y^2)+36
 	 * Solution:
 	 *   u = (x^2-9)*(y^2-9)
-	 * </blockquote></pre>   
+	 * </blockquote></pre>
 	 */
 	public static void triangleMesh() {
         //1.Read in a triangle mesh from an input file with
@@ -87,7 +92,7 @@ public class T04UseWeakFormBuilder {
 		};
         //Right hand side(RHS): f = -2*(x^2+y^2)+36
         wfb.addParam("f",x.M(x).A(y.M(y)).M(-2.0).A(36.0));
-		
+
         //5.Assembly process
         AssemblerScalar assembler =
                 new AssemblerScalar(mesh, wfb.getScalarWeakForm());
@@ -108,8 +113,8 @@ public class T04UseWeakFormBuilder {
         MeshWriter writer = new MeshWriter(mesh);
         writer.writeTechplot("UseWeakFormBuilder1.dat", u);
 	}
-	
-	
+
+
 	/**
 	 * <blockquote><pre>
 	 * Solve
@@ -130,7 +135,7 @@ public class T04UseWeakFormBuilder {
 		MeshReader reader = new MeshReader("grids/rectangle.grd");
 		Mesh mesh = reader.read2DMesh();
 		mesh.computeNodeBelongsToElements();
-		
+
         //2.Mark border types
 		HashMap<NodeType, MathFunc> mapNTF = new HashMap<NodeType, MathFunc>();
 		//Robin type on boundary x=3.0 of \Omega
@@ -152,7 +157,7 @@ public class T04UseWeakFormBuilder {
 			}
 		});
 		//Dirichlet type on other boundary of \Omega
-		mapNTF.put(NodeType.Dirichlet, null);		
+		mapNTF.put(NodeType.Dirichlet, null);
 		mesh.markBorderNode(mapNTF);
 		System.out.println(mesh.getElementList());
 
@@ -165,7 +170,7 @@ public class T04UseWeakFormBuilder {
 		FEBilinearRectangleRegular bilinearRectangle = new FEBilinearRectangleRegular();
         for(int i=1;i<=eList.size();i++)
         	bilinearRectangle.assignTo(eList.at(i));
-		
+
         //4.Weak form. We use WeakFormBuilder to define weak form
 		WeakFormBuilder wfb = new WeakFormBuilder() {
 			/**
@@ -175,8 +180,8 @@ public class T04UseWeakFormBuilder {
 			public MathFunc makeExpression(Element e, Type type) {
 				ScalarShapeFunction u = getScalarTrial();
 				ScalarShapeFunction v = getScalarTest();
-				//Call param() to get parameters, do NOT define functions here 
-				//except for constant functions (or class FC). Because functions 
+				//Call param() to get parameters, do NOT define functions here
+				//except for constant functions (or class FC). Because functions
 				//will be transformed to local coordinate system by param()
 				MathFunc fk = getParam("k",e);
 				MathFunc ff = getParam("f",e);
@@ -200,14 +205,14 @@ public class T04UseWeakFormBuilder {
         wfb.addParam("k", C(2.0));
         //Right hand side(RHS): f = -4*(x^2+y^2)+72
         wfb.addParam("f",x.M(x).A(y.M(y)).M(-4.0).A(72.0));
-		
+
 //        WeakFormLaplace weakForm = new WeakFormLaplace();
 //        weakForm.setF(x.M(x).A(y.M(y)).M(-4.0).A(72.0));
 //        weakForm.setParam(C(2.0), C0, C(0.01), C1);
 //        AssemblerScalar assembler =
 //                new AssemblerScalar(mesh, weakForm);
 
-        
+
         //5.Assembly process
         AssemblerScalar assembler =
                 new AssemblerScalar(mesh, wfb.getScalarWeakForm());
@@ -231,14 +236,14 @@ public class T04UseWeakFormBuilder {
         writer.writeTechplot("UseWeakFormBuilder2.dat", u);
 	}
 
-	
+
 	/**
 	 * <blockquote><pre>
 	 * Solve
 	 *   -k*\Delta{u} + c*u = f  in \Omega
 	 *   u(x,y) = u0,     on \Gamma_D
 	 *   d*u + k*u_n = g  on \Gamma_N
-	 *   
+	 *
 	 * where
 	 *   \Omega = [-3,3]*[-3,3]
 	 *   \Gamma = \partial{\Omega} (Boundary of \Omega)
@@ -247,8 +252,8 @@ public class T04UseWeakFormBuilder {
 	 *   c = 1.0
 	 *   d = 1.0
 	 *   g = x^2+y^2
-	 *   
-	 * </blockquote></pre>   
+	 *
+	 * </blockquote></pre>
 	 */
 	public static void testPrarmeters() {
         //1.Read in a triangle mesh from an input file with
@@ -325,7 +330,7 @@ public class T04UseWeakFormBuilder {
         wfBuilder.addParam("d",C1);
         wfBuilder.addParam("g",x.M(x).A(y.M(y)));
 		WeakFormOld weakForm = wfBuilder.getScalarWeakForm();
-		
+
         //5.Assembly process
         AssemblerScalar assembler =
                 new AssemblerScalar(mesh, weakForm);
@@ -351,5 +356,5 @@ public class T04UseWeakFormBuilder {
 		rectangleTest();
 		//testPrarmeters();
 	}
-		
+
 }

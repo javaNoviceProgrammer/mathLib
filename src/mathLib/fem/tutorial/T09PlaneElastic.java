@@ -3,12 +3,17 @@ package mathLib.fem.tutorial;
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerVector;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.element.FEBilinearRectangleVector;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.weakform.WeakFormElasticIsoPlaneStress2D;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.matrix.algebra.SparseBlockMatrix;
@@ -39,7 +44,7 @@ public class T09PlaneElastic {
         	public double apply(Variable v) {
         		double x = v.get("x");
         		double y = v.get("y");
-        		if(Math.abs(x)<Constant.meshEps && 
+        		if(Math.abs(x)<Constant.meshEps &&
         			(y>-Constant.meshEps && y<1.0+Constant.meshEps))
             	//if(Math.abs(x)<Constant.meshEps)
         			return 1;
@@ -71,7 +76,7 @@ public class T09PlaneElastic {
         });
 
 		mesh.markBorderNode(new ObjIndex(1,2),mapNTF);
-		
+
         NodeList nodes = mesh.getNodeList();
         ElementList eles = mesh.getElementList();
         for(int i=1;i<=nodes.size();i++) {

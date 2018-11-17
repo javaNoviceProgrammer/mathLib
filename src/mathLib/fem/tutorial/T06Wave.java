@@ -3,10 +3,13 @@ package mathLib.fem.tutorial;
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssemblerScalar;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.element.FELinearTriangleOld;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.weakform.WeakFormLaplace2D;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
 import mathLib.func.symbolic.intf.MathFunc;
@@ -15,59 +18,60 @@ import mathLib.matrix.algebra.FullVector;
 import mathLib.matrix.algebra.intf.AlgebraMatrix;
 import mathLib.matrix.algebra.intf.SparseMatrix;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.Solver;
 import mathLib.util.io.MeshReader;
 
 /**
  * d2dt(u) - c2*Laplace(u) = 0
- * => 
+ * =>
  * (u_{n+2}-2*u_{n+1}+u_{n})/Dt^2  - c2*Laplace(u) = 0
  * =>
- * -Dt^2*c2*Laplace(u_{n+2}) + u_{n+2} = 2*u_{n+1} - u_{n} 
- *  
+ * -Dt^2*c2*Laplace(u_{n+2}) + u_{n+2} = 2*u_{n+1} - u_{n}
+ *
  *  u(t=0) = u0(x);
  *  u + u_n(x,t) = 0, x on border of \Omega
- * 
+ *
  * @author liuyueming
  *
  */
 public class T06Wave {
 	protected static String outputFolder = "tutorial\\wave";
 	protected Mesh mesh = null;
-	
+
 	//Laplace2D weak form
 	WeakFormLaplace2D weakForm = new WeakFormLaplace2D();
-	
+
 	//Time step size
 	double Dt;
-	
+
 	//Speed^2
 	double c2;
 
 	//2*u_{n+1} - u_{n}
 	MathFunc u_n = null;
 	MathFunc u_n1 = null;
-	
+
 	//u(t=0)=u0(x)
 	MathFunc u0 = null;
-	
+
 	//Function f = null;
-	
+
 	public void readMesh() {
 		//Read a triangle mesh from an input file
 		//[-3,3]x[-3,3]
 		//MeshReader reader = new MeshReader("triangle_refine80x80.grd");
-		
+
 		//[-10,10]x[-100,10]
 		//MeshReader reader = new MeshReader("rectangle_big.grd");
 		//MeshReader reader = new MeshReader("rectangle_big2.grd");
 		//MeshReader reader = new MeshReader("triangle_big.grd");
 		//MeshReader reader = new MeshReader("triangle_big2.grd");
-		
-		//凸型区域[-40,40]x[-30,25]	
+
+		//凸型区域[-40,40]x[-30,25]
 		//MeshReader reader = new MeshReader("two_rectangle.grd");
 		MeshReader reader = new MeshReader("three_rectangle.grd");
-		
+
 		//[-100,100]x[-100,100]
 		//MeshReader reader = new MeshReader("triangle_bigbig.grd");
 		//MeshReader reader = new MeshReader("triangle_bigbig80x80.grd");
@@ -75,13 +79,13 @@ public class T06Wave {
 		//Geometry relationship
 		mesh.computeNodeBelongsToElements();
 	}
-	
+
 	public void initParam() {
 		//Mark border type
 		HashMap<NodeType, MathFunc> mapNTF = new HashMap<NodeType, MathFunc>();
 		mapNTF.put(NodeType.Robin, null);
 		mesh.markBorderNode(mapNTF);
-		
+
 		//Use element library to assign degree of freedom (DOF) to element
 		ElementList eList = mesh.getElementList();
 		FELinearTriangleOld fe = new FELinearTriangleOld();
@@ -89,7 +93,7 @@ public class T06Wave {
 		for(int i=1;i<=eList.size();i++)
 			fe.assignTo(eList.at(i));
 	}
-	
+
 	public Vector solverOneStep(final int step) {
 //		f = new AbstractFunction("x","y") {
 //			@Override
@@ -107,13 +111,13 @@ public class T06Wave {
 //			}
 //		};
 //		System.out.println(f.value(new Variable("x",0).set("y", 0)));
-		
+
 		FC k = new FC(Dt*Dt*c2);
 		//Function ff = this.u_n1.mult(FC.c(2.0)).minus(this.u_n).plus(f.mult(FC.c(Dt*Dt)));
 		MathFunc ff = this.u_n1.M(FC.c(2.0)).S(this.u_n).M(FC.c(1+13*Dt*step));
 		weakForm.setF(ff);
 		weakForm.setParam(k, FC.c(1.0).M(FC.c(1+13*Dt*step)), null, k);
-		
+
 		//Assemble
 		AssemblerScalar assembler = new AssemblerScalar(mesh, weakForm);
 		assembler.assemble();
@@ -121,7 +125,7 @@ public class T06Wave {
 		SparseVector load = assembler.getLoadVector();
 		//Boundary condition
 		//assembler.imposeDirichletCondition(new FC(0.0));
-		
+
 		//CG
 		Solver solver = new Solver();
 		SparseVector u = load.copy();
@@ -138,28 +142,28 @@ public class T06Wave {
 		}
 		//System.out.println("u=");
 		//for(int i=1;i<=u.getDim();i++)
-		//	System.out.println(String.format("%.3f", u.get(i)));	
-	    
+		//	System.out.println(String.format("%.3f", u.get(i)));
+
 		Tools.plotVector(mesh, outputFolder, String.format("u_t%03d.dat",step), u);
-		
+
 		this.u_n = this.u_n1;
 		this.u_n1 = u_n;
 
 	    return u;
-		
+
 	}
-	
+
 	public void run() {
 		readMesh();
 		initParam();
-		
+
 		//Time step size
 		Dt = 0.004;
 		c2 = 500;
-		
+
 		u0 = new MultiVarFunc("x","y") {
-			
-//[-3,3]x[-3,3]			
+
+//[-3,3]x[-3,3]
 //			@Override
 //			public double value(Variable v) {
 //				double x = v.get("x");
@@ -169,8 +173,8 @@ public class T06Wave {
 //				else
 //					return 0.0;
 //			}
-			
-//凸型区域[-40,40]x[-30,25]			
+
+//凸型区域[-40,40]x[-30,25]
 			@Override
 			public double apply(Variable v) {
 				double x = v.get("x");
@@ -194,7 +198,7 @@ public class T06Wave {
 				// TODO Auto-generated method stub
 				return 0;
 			}
-			
+
 //[-100,100]x[-100,100]
 //			@Override
 //			public double value(Variable v) {
@@ -215,7 +219,7 @@ public class T06Wave {
 			u_n1 = new Vector2MathFunc(rlt);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		T06Wave wave = new T06Wave();
 		wave.run();

@@ -1,17 +1,25 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.C1;
-import static edu.uta.futureye.function.FMath.grad;
+import static mathLib.func.symbolic.FMath.C0;
+import static mathLib.func.symbolic.FMath.C1;
+import static mathLib.func.symbolic.FMath.grad;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.fem.assembler.BasicVecAssembler;
+import mathLib.fem.core.Edge;
 import mathLib.fem.core.EdgeLocal;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeLocal;
+import mathLib.fem.core.NodeType;
+import mathLib.fem.core.Vertex;
 import mathLib.fem.core.intf.VecFiniteElement;
 import mathLib.fem.element.FEQuadraticV_LinearP;
+import mathLib.fem.util.Constant;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.ElementList;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.weakform.VecWeakForm;
@@ -24,6 +32,7 @@ import mathLib.matrix.algebra.SparseBlockMatrix;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.SchurComplementStokesSolver;
 import mathLib.util.io.MeshReader;
 
@@ -40,11 +49,11 @@ import mathLib.util.io.MeshReader;
  * The weak form is
  *   find \vec{u} \in H_0^1(div;\Omega), p \in L_2(\Omega)
  *   such that, for all \vec{v} \in H_0^1(div;\Omega), q \in L_2(\Omega)
- *   
- *   (\nabla{\vec{v}},k\nabla{\vec{u}}) - (div~{\vec{v}},p) 
+ *
+ *   (\nabla{\vec{v}},k\nabla{\vec{u}}) - (div~{\vec{v}},p)
  *                   + (q,div~{\vec{u}}) = (\vec{v},\vec{f})
  *   or written explicitly:
- *   (v1_x,k*u1_x) + (v1_y,k*u1_y) + (v2_x,k*u2_x) + (v2_y,k*u2_y) 
+ *   (v1_x,k*u1_x) + (v1_y,k*u1_y) + (v2_x,k*u2_x) + (v2_y,k*u2_y)
  *                 - (v1_x+v2_y,p) + (q,u1_x+u2_y) = (v1*f1+v2*f2)
  * where
  *   \vec{u}=(u1,u2): velocity vector field
@@ -53,16 +62,16 @@ import mathLib.util.io.MeshReader;
  */
 public class Ex10_StokesBoxTriQuad {
 	public static String outputFolder = ".";
-	
+
 	public static void box() {
 		//Read a triangle mesh from an input file
 		//[-3,3]*[-3,3]
 		String file = "grids/stokes_box";
-		
+
 		MeshReader reader = new MeshReader(file+".grd");
 		Mesh mesh = reader.read2DMesh();
 		mesh.nVertex = mesh.getNodeList().size();
-		
+
 		//Add nodes for quadratic element
 		for(Element e : mesh.getElementList()) {
 			e.adjustVerticeToCounterClockwise();
@@ -83,24 +92,24 @@ public class Ex10_StokesBoxTriQuad {
 			}
 			e.applyChange();
 		}
-		
+
 		//Geometry relationship
 		mesh.computeNodeBelongsToElements();
-		
+
 		ElementList eList = mesh.getElementList();
 		//NodeList nodes = mesh.getNodeList();
-		
+
 		for(int i=1;i<=eList.size();i++) {
 			System.out.println(i+"  " + eList.at(i));
 		}
-		
+
 		//Mark border type
 		HashMap<NodeType, MathFunc> mapNTF_uv = new HashMap<NodeType, MathFunc>();
 		mapNTF_uv.put(NodeType.Dirichlet, null);
-		
+
 		HashMap<NodeType, MathFunc> mapNTF_p = new HashMap<NodeType, MathFunc>();
 		mapNTF_p.put(NodeType.Neumann, null);
-		
+
 		mesh.markBorderNode(new ObjIndex(1,2),mapNTF_uv);
 		mesh.markBorderNode(3,mapNTF_p);
 
@@ -115,7 +124,7 @@ public class Ex10_StokesBoxTriQuad {
 		VecMathFunc f = new SpaceVectorFunction(C0, C0);
 		VecWeakForm wf = new VecWeakForm(fe,
 				(u, v) -> k * grad(u[1],"x","y" ).dot(grad(v[1],"x","y")) //   (v1_x,k*u1_x) + (v1_y,k*u1_y)
-						+ k * grad(u[2],"x","y" ).dot(grad(v[2],"x","y")) // + (v2_x,k*u2_x) + (v2_y,k*u2_y) 
+						+ k * grad(u[2],"x","y" ).dot(grad(v[2],"x","y")) // + (v2_x,k*u2_x) + (v2_y,k*u2_y)
 						- (v[1].diff("x")+v[2].diff("y"))*u[3]            // - (v1_x+v2_y,p) //where p=u[3]
 						+ v[3]*(u[1].diff("x")+u[2].diff("y")),           // + (q,u1_x+u2_y) //where q=v[3]
 				(v)-> v[1]*f[1] + v[2]*f[2]);
@@ -167,9 +176,9 @@ public class Ex10_StokesBoxTriQuad {
 
 		BasicVecAssembler assembler = new BasicVecAssembler(mesh, wf);
 		//the block matrix and vector are used as normal matrix and vector
-		assembler.assembleGlobal(stiff, load); 
-		
-		
+		assembler.assembleGlobal(stiff, load);
+
+
 //		// Use BasicAssembler to assemble boundary elements
 //		BasicVecAssembler boundaryAssembler = new BasicVecAssembler(mesh, wfb);
 //		for(Element e : eList) {
@@ -208,7 +217,7 @@ public class Ex10_StokesBoxTriQuad {
 		diri.set(3, C0);
 
 		Utils.imposeDirichletCondition(stiff, load, fe, mesh, diri);
-		
+
 		//print some values for debug purpose
 		int NB = mesh.getNodeList().size()*2+10;
 		int NE = mesh.getNodeList().size()*2+20;
@@ -221,22 +230,22 @@ public class Ex10_StokesBoxTriQuad {
 		for (int i = NB; i <= NE; i++) {
 			System.out.println(load.get(i));
 		}
-//		
+//
 		//TODO how to assemble SparseBlock Matrix and Vector???
-		SchurComplementStokesSolver solver = 
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
-		
+
 		SparseBlockVector u = solver.solve2D();
-		
-		//没有指定压强，�?�?�的求解器�?�能会差一个常数
+
+		//没有指定压强，�?�?�的求解器�?�能会差一个常数
 		System.out.println("u=");
 		for(int i=1;i<=u.getDim();i++) {
 			System.out.println(String.format("%.3f", u.get(i)));
 		}
-		Tools.plotVector(mesh, outputFolder, String.format("%s_uv.dat",file), 
+		Tools.plotVector(mesh, outputFolder, String.format("%s_uv.dat",file),
 				u.getBlock(1), u.getBlock(2));
 	}
-	
+
 	public static void main(String[] args) {
 		box();
 	}

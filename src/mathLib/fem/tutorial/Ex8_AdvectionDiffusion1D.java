@@ -1,56 +1,65 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.C0;
+import static mathLib.func.symbolic.FMath.C0;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.fem.assembler.BasicAssembler;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
+import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.element.FELinearLine1D;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.MathEx;
+import mathLib.fem.util.Utils;
+import mathLib.fem.util.container.NodeList;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.symbolic.SingleVarFunc;
 import mathLib.func.symbolic.UserDefFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.external.SolverJBLAS;
 
 /**
  * <blockquote><pre>
  * One-dimensional advection-diffusion problem:
- * 
+ *
  *   u*c_x = k*c_xx
  *   c=0 at x=0
  *   c=1 at x=L
- *   
+ *
  * where
  *   x in [0,L]
- *   c=c(x): particles or energy(e.g. salt density, Heat...) are transferred inside 
+ *   c=c(x): particles or energy(e.g. salt density, Heat...) are transferred inside
  *                 a physical system due to two processes: diffusion and convection
  *   u: flow velocity
  *   k: diffusivity
- * 
+ *
  * Weak form:
  *   (k*c_x,v_x) + (u*c_x,v) = 0, for all v
- * 
+ *
  * Real solution:
- * 
+ *
  *   c=(1-e^(Pe*x/L))/(1-e^Pe)
  * where
  *   Pe=u*L/k (gobal Peclet number)
- * 
+ *
  * </blockquote></pre>
- * 
+ *
  * @author liuyueming
  *
  */
 public class Ex8_AdvectionDiffusion1D {
-	
+
 	/**
 	 * One dimension mesh [0,L]
 	 * Point spacing h=L/N
-	 * 
+	 *
 	 * @param L: maximum length
 	 * @param N: total element number
 	 * @return
@@ -71,10 +80,10 @@ public class Ex8_AdvectionDiffusion1D {
 			node1 = node2;
 		}
 		return mesh;
-		
+
 	}
-	
-	public static Vector solve(Mesh mesh, 
+
+	public static Vector solve(Mesh mesh,
 			final double L, final int N, double k, double u) {
 		// Mark border types
 		HashMap<NodeType, MathFunc> mapNTF = new HashMap<NodeType, MathFunc>();
@@ -95,7 +104,7 @@ public class Ex8_AdvectionDiffusion1D {
 		Matrix stiff = assembler.getGlobalStiffMatrix();
 		Vector load = assembler.getGlobalLoadVector();
 		// Boundary condition
-		Utils.imposeDirichletCondition(stiff, load, fe, mesh, 
+		Utils.imposeDirichletCondition(stiff, load, fe, mesh,
 			new SingleVarFunc("diri","x") {
 				@Override
 				public double apply(double... args) {
@@ -120,9 +129,9 @@ public class Ex8_AdvectionDiffusion1D {
 
 		return c;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param mesh
 	 * @param L
 	 * @param N
@@ -130,7 +139,7 @@ public class Ex8_AdvectionDiffusion1D {
 	 * @param u flow velocity
 	 * @return
 	 */
-	public static Vector solveUpwind(Mesh mesh, 
+	public static Vector solveUpwind(Mesh mesh,
 			final double L, final int N, double k, double u) {
 		// Mark border types
 		HashMap<NodeType, MathFunc> mapNTF = new HashMap<NodeType, MathFunc>();
@@ -203,8 +212,8 @@ public class Ex8_AdvectionDiffusion1D {
 
 		return c;
 	}
-	
-	public static Vector exactSolution(Mesh mesh, 
+
+	public static Vector exactSolution(Mesh mesh,
 			final double L, final int N, double k, double u) {
 		Vector cReal = new SparseVectorHashMap(N+1);
 		double Pe = u*L/k;
@@ -217,7 +226,7 @@ public class Ex8_AdvectionDiffusion1D {
 			System.out.println((String.format("%.3f", cReal.get(i))));
 		return cReal;
 	}
-	
+
 	/**
 	 * @param args
 	 */

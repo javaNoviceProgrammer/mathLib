@@ -5,13 +5,12 @@ import mathLib.fem.util.Utils;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.VecMathFunc;
 
-@SuppressWarnings("unused")
 public class WeakFormElasticIsoPlaneStress2D extends AbstractVectorWeakForm {
 	double E = 1000; //Young's modulus
 	double gamma = 0.25; //Poisson ratio
 	VecMathFunc g_b; //Body force
 	VecMathFunc g_t; //Distributed external loading on boundary
-	
+
 	@Override
 	public MathFunc leftHandSide(Element e, ItemType itemType) {
 		if(itemType==ItemType.Domain)  {
@@ -27,18 +26,18 @@ public class WeakFormElasticIsoPlaneStress2D extends AbstractVectorWeakForm {
 			MathFunc v1y = v1.diff("y");
 			MathFunc v2x = v2.diff("x");
 			MathFunc v2y = v2.diff("y");
-			
+
 			double coef1 = E/(1-gamma*gamma);
 			double coef2 = (1-gamma)/2.0;
 			MathFunc integrand = null;
-			
-//			integrand = 
+
+//			integrand =
 //			u1x.M(u1x.A(u2y.M(gamma)))  .A(
 //			u2y.M(u1x.M(gamma).A(u2y)) ).A(
-//			u1y.A(u2x).M(u1y.A(u2x)).M(coef2)								 
+//			u1y.A(u2x).M(u1y.A(u2x)).M(coef2)
 //			).M(coef1);
-			
-			//自由度�?�循环的表达规则
+
+			//自由度�?�循环的表达规则
 			//e.g. \vec{u}=(u v)
 			//u_x*u_x = u1x*v1x
 			//u_y*u_y = u1y*v1y
@@ -47,7 +46,7 @@ public class WeakFormElasticIsoPlaneStress2D extends AbstractVectorWeakForm {
 			//u*v = u1*v2 or u2*v1
 			//u_x*v_y = u1x*v2y or u2x*v1y
 			//u_y*v_x = u1y*v2x or u2y*v1x
-			integrand = 
+			integrand =
 			u1x.M(v1x).A(
 			u2y.M(v2y)).A(
 			u1x.M(v2y).M(gamma)
@@ -56,9 +55,9 @@ public class WeakFormElasticIsoPlaneStress2D extends AbstractVectorWeakForm {
 				u2x.M(v2x).A(
 				v1y.M(u2x).M(2)
 				)).M(coef2)
-			).M(coef1); 
+			).M(coef1);
 
-			
+
 			return integrand;
 		}
 		return null;
@@ -86,9 +85,9 @@ public class WeakFormElasticIsoPlaneStress2D extends AbstractVectorWeakForm {
 		this.g_b = b;
 		this.g_t = t;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param E
 	 * @param gamma
 	 */
@@ -96,9 +95,9 @@ public class WeakFormElasticIsoPlaneStress2D extends AbstractVectorWeakForm {
 		this.E = E;
 		this.gamma = gamma;
 	}
-	
+
 	public boolean isVVFComponentCoupled(int nComponent1, int nComponent2) {
 		return true;
 	}
-	
+
 }

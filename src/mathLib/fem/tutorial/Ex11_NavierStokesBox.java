@@ -1,23 +1,32 @@
 package mathLib.fem.tutorial;
 
-import static edu.uta.futureye.function.FMath.C;
-import static edu.uta.futureye.function.FMath.C0;
-import static edu.uta.futureye.function.FMath.grad;
+import static mathLib.func.symbolic.FMath.C;
+import static mathLib.func.symbolic.FMath.C0;
+import static mathLib.func.symbolic.FMath.grad;
 
 import java.util.HashMap;
 
 import mathLib.fem.assembler.AssembleParam;
 import mathLib.fem.assembler.BasicVecAssembler;
+import mathLib.fem.core.Edge;
 import mathLib.fem.core.EdgeLocal;
+import mathLib.fem.core.Element;
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeLocal;
+import mathLib.fem.core.NodeType;
+import mathLib.fem.core.Vertex;
 import mathLib.fem.core.intf.VecFiniteElement;
 import mathLib.fem.element.FEQuadraticV_LinearP;
+import mathLib.fem.util.Constant;
 import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.Utils;
 import mathLib.fem.util.container.ObjIndex;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.weakform.VecWeakForm;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.UserDefFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.SpaceVectorFunction;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
 import mathLib.func.symbolic.intf.MathFunc;
@@ -26,7 +35,9 @@ import mathLib.matrix.algebra.SparseBlockMatrix;
 import mathLib.matrix.algebra.SparseBlockVector;
 import mathLib.matrix.algebra.SparseMatrixRowMajor;
 import mathLib.matrix.algebra.SparseVectorHashMap;
+import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.SparseVector;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.SchurComplementStokesSolver;
 import mathLib.util.io.MeshReader;
 
@@ -37,20 +48,20 @@ import mathLib.util.io.MeshReader;
  * Problem:
  * -\nabla({k\nabla{\vec{u}}})
  * 		+ \vec{U}\cdot\nabla\vec{u}
- * 		+ c\vec{u} 
- * 		+ \nabla{p} 
+ * 		+ c\vec{u}
+ * 		+ \nabla{p}
  * 		= \vec{f}
  * div{\vec{u}} = 0
- * 
+ *
  * Weak form:
  *   find \vec{u} \in H_0^1(div;\Omega), p \in L_2(\Omega)
  *   such that, for all \vec{v} \in H_0^1(div;\Omega), q \in L_2(\Omega)
- *   
+ *
  *   (\nabla\vec{v},k*\nabla\vec{u})
  *   		+ (\vec{U}\cdot\nabla\vec{u},\vec{v})
  *   		+ (c*\vec{u},\vec{v})
  *   		- (div{\vec{v}},p)
- *  		+ (q,div{\vec{u}}) 
+ *  		+ (q,div{\vec{u}})
  *			= (\vec{v},\vec{f})
  *
  *   k* [(v1_x,u1_x) + (v1_y,u1_y) + (v2_x,u2_x) + (v2_y,u2_y) ]
@@ -65,52 +76,52 @@ import mathLib.util.io.MeshReader;
  *   \vec{f}=(f1,f2): body force
  *   \vec{U}=(U1,U2): previous velocity
  * </blockquote></pre>
- * 
+ *
  * Ref.
  * 1. T.E. Teaduyar Stabilized Finite Element Formulations for Incompressible Flow Computations
- * 
- * 2. Rajiv Sampath and Nicholas Zabaras Design and object-oriented implementation of a 
- *    preconditioned-stabilized incompressible NaiverStokes solver using equal-order-interpolation 
+ *
+ * 2. Rajiv Sampath and Nicholas Zabaras Design and object-oriented implementation of a
+ *    preconditioned-stabilized incompressible NaiverStokes solver using equal-order-interpolation
  *    velocity pressure elements
  *
  */
 public class Ex11_NavierStokesBox {
 	protected String outputFolder = "NavierStokesBox";
 	protected String file = null;
-	
+
 	protected Mesh mesh = null;
 	protected Mesh meshOld = null;
-	
+
 	//Dirichlet boundary condition
 	protected VecMathFunc diri = null;
-	
+
 	//viscosity
-	protected double nu = 0.001; 
-	
+	protected double nu = 0.001;
+
 	int maxNonlinearIter = 30;
 	double nonlinearError = 1e-2;
-	
+
 	/**
-	 * 
+	 *
 	 * @param testCaseNo
 	 */
 	public void init(int testCaseNo) {
 		//Read mesh from input file
 		if(testCaseNo == 1)
 			file = "stokes_box";//[-3,3]*[-3,3]
-		else if(testCaseNo == 2) 
+		else if(testCaseNo == 2)
 			file = "stokes_box2";//[0,1]*[0,1] 64*64
-		else if(testCaseNo == 3) 
+		else if(testCaseNo == 3)
 			file = "stokes_box3";//[0,1]*[0,1] 32*32
 		else
 			throw new FutureyeException("testCaseNo should be 1,2");
-		
+
 		MeshReader reader = new MeshReader("grids/"+file+".grd");
 		MeshReader reader2 = new MeshReader("grids/"+file+".grd");
 		mesh = reader.read2DMesh();
 		meshOld = reader2.read2DMesh();
 		mesh.nVertex = mesh.getNodeList().size();
-		
+
 		//Add nodes for quadratic element, original mesh stored in meshOld
 		if(testCaseNo == 1) {
 			for(int i=1;i<=mesh.getElementList().size();i++) {
@@ -138,14 +149,14 @@ public class Ex11_NavierStokesBox {
 		}
 		//Geometry relationship
 		mesh.computeNodeBelongsToElements();
-		
+
 		//Mark border type
 		HashMap<NodeType, MathFunc> mapNTF_uv = new HashMap<NodeType, MathFunc>();
 		mapNTF_uv.put(NodeType.Dirichlet, null);
-		
+
 		HashMap<NodeType, MathFunc> mapNTF_p = new HashMap<NodeType, MathFunc>();
 		mapNTF_p.put(NodeType.Neumann, null);
-		
+
 		mesh.markBorderNode(new ObjIndex(1,2),mapNTF_uv);
 		mesh.markBorderNode(3,mapNTF_p);
 
@@ -177,9 +188,9 @@ public class Ex11_NavierStokesBox {
 	}
 
 	/**
-	 * Solve the steady Navier-Stokes equation iteratively 
+	 * Solve the steady Navier-Stokes equation iteratively
 	 * by passing the previous solution uk as the convection speed.
-	 * 
+	 *
 	 * @param nIter
 	 * @param uk
 	 * @return
@@ -199,7 +210,7 @@ public class Ex11_NavierStokesBox {
 					VecMathFunc grad_v2 = grad(v[2],"x","y");
 					MathFunc div_u = u[1].diff("x")+u[2].diff("y");
 					MathFunc div_v = v[1].diff("x")+v[2].diff("y");
-					
+
 					return k * grad_u1.dot(grad_v1)  //   (v1_x,k*u1_x) + (v1_y,k*u1_y)
 						 + k * grad_u2.dot(grad_v2)  // + (v2_x,k*u2_x) + (v2_y,k*u2_y)
 						 + U.dot(grad_u1)*v[1]      // + (U1*u1_x,v1)+(U2*u1_y,v1)
@@ -239,7 +250,7 @@ public class Ex11_NavierStokesBox {
 				(v)    -> v[3]*(normal[1]*v[1]+normal[2]*v[2])
 				);
 		wfb.compile();
-		
+
 		//Define block stiff matrix and block load vector before assembly
 		int vvfDim = 3;
 		int[] dims = new int[vvfDim];
@@ -257,8 +268,8 @@ public class Ex11_NavierStokesBox {
 
 		BasicVecAssembler assembler = new BasicVecAssembler(mesh, wf);
 		//the block matrix and vector are used as normal matrix and vector
-		assembler.assembleGlobal(stiff, load); 
-		
+		assembler.assembleGlobal(stiff, load);
+
 		// Use BasicAssembler to assemble boundary elements
 		BasicVecAssembler boundaryAssembler = new BasicVecAssembler(mesh, wfb);
 		for(Element e : mesh.getElementList()) {
@@ -275,14 +286,14 @@ public class Ex11_NavierStokesBox {
 				}
 			}
 		}
-		
+
 		Utils.imposeDirichletCondition(stiff, load, fe, mesh, diri);
-		
+
 		Element e = mesh.getElementList().at(1);
 		printData(mesh, fe, e, stiff, load);
-		
-		
-		SchurComplementStokesSolver solver = 
+
+
+		SchurComplementStokesSolver solver =
 			new SchurComplementStokesSolver(stiff,load);
 		//solver.setCGInit(0.5);
 		//solver.debug = true;
@@ -306,30 +317,30 @@ public class Ex11_NavierStokesBox {
 			int dim = u.getBlock(1).getDim();
 			SparseVector delta_u = new SparseVectorHashMap(dim);
 			for(int i=1;i<=dim;i++)
-				delta_u.set(i, 
+				delta_u.set(i,
 						u.getBlock(1).get(i)-uk.get(1).apply(new Variable().setIndex(i)));
 
 //			uk.set(1, new Vector2MathFunc(u.getBlock(1), mesh, "x","y"));
 //			uk.set(2, new Vector2MathFunc(u.getBlock(2), mesh, "x","y"));
 			SparseVector u1 = u.getBlock(1);
 			SparseVector u2 = u.getBlock(2);
-			
+
 			uk.set(1, new Vector2MathFunc(u.getBlock(1)));
 			uk.set(2, new Vector2MathFunc(u.getBlock(2)));
 
 			System.out.println("Iter="+iter+" Error Norm2 (||u1_k+1 - u1_k||) = "+delta_u.norm2());
-			
-			Tools.plotVector(mesh, outputFolder, String.format("%s_uv_%02d.dat",file,iter), 
+
+			Tools.plotVector(mesh, outputFolder, String.format("%s_uv_%02d.dat",file,iter),
 					u.getBlock(1), u.getBlock(2));
-			Tools.plotVector(meshOld, outputFolder, String.format("%s_p_%02d.dat",file,iter), 
+			Tools.plotVector(meshOld, outputFolder, String.format("%s_p_%02d.dat",file,iter),
 					Tools.valueOnElement2Node(mesh, u.getBlock(3)));
 			if(delta_u.norm2() < this.nonlinearError) {
 				break;
 			}
 		}
 	}
-	
-	public void printData(Mesh mesh, VecFiniteElement fe, Element e, 
+
+	public void printData(Mesh mesh, VecFiniteElement fe, Element e,
 			Matrix stiff, Vector load) {
 		for(int i=1; i<=fe.getNumberOfDOFs(); i++) {
 			int gi = fe.getGlobalIndex(mesh, e, i);
@@ -343,9 +354,9 @@ public class Ex11_NavierStokesBox {
 			int gj = fe.getGlobalIndex(mesh, e, j);
 			System.out.println(String.format("%.6f", load.get(gj)));
 		}
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		Ex11_NavierStokesBox NSB = new Ex11_NavierStokesBox();
 		System.out.println("mu="+NSB.nu);
