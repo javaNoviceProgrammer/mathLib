@@ -75,21 +75,24 @@ public class Richardson {
 	}
 
 	private static double extrapolateDeriv(RealFunction func, double x, int n, double h) {
+		int k = 2 ;
 		if(n<0)
 			throw new IllegalArgumentException("n must be greater than or equal to 0") ;
 		if(n==0) {
 			try {
+				k = 2 ;
 				return (func.evaluate(x+h)-func.evaluate(x-h))/(2.0*h) ; // order h^2, symmetric
 			} catch (Exception e) {
 				try {
-					return (func.evaluate(x+h)-func.evaluate(x))/(2.0*h) ; // order h, forward
+					k = 1 ;
+					return (func.evaluate(x+h)-func.evaluate(x))/h ; // order h, forward
 				} catch (Exception e2) {
-					return (func.evaluate(x)-func.evaluate(x-h))/(2.0*h) ; // order h, backward
+					k = 1 ;
+					return (func.evaluate(x)-func.evaluate(x-h))/h ; // order h, backward
 				}
 			}
 		}
-			
-		return (Math.pow(2, n+1) *extrapolateDeriv(func, x, n-1, h/2.0) - extrapolateDeriv(func, x, n-1, h))/(Math.pow(2, n+1)-1) ;
+		return (Math.pow(2, n+k-1) *extrapolateDeriv(func, x, n-1, h/2.0) - extrapolateDeriv(func, x, n-1, h))/(Math.pow(2, n+k-1)-1) ;
 	}
 
 	// for test
