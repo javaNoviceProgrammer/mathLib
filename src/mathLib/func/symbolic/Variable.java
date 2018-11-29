@@ -73,6 +73,7 @@ public class Variable {
 		return valMap.get(name);
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public double apply(VN name) {
 		return valMap.get(name);
 	}
