@@ -1,4 +1,4 @@
-package mathLib.fem;
+package mathLib.fem.mesh;
 
 public class Mesh2DTriangle {
 

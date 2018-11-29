@@ -1,4 +1,4 @@
-package mathLib.fem;
+package mathLib.fem.mesh;
 
 import java.util.ArrayList;
 import java.util.List;

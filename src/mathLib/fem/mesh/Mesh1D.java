@@ -1,4 +1,4 @@
-package mathLib.fem;
+package mathLib.fem.mesh;
 
 import mathLib.fem.core.Mesh;
 import mathLib.fem.core.Node;
