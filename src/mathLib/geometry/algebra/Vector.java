@@ -24,6 +24,10 @@ public class Vector {
 		return dim;
 	}
 	
+	public int size() {
+		return getDim() ;
+	}
+	
 	public static Vector constant(int dim, double a) {
 		double[] d = new double[dim] ;
 		for(int i=0; i<dim; i++)
@@ -69,6 +73,10 @@ public class Vector {
 	}
 	
 	public Matrix asRowMatrix() {
+		return data ;
+	}
+	
+	public double[] asArray() {
 		return data ;
 	}
 
