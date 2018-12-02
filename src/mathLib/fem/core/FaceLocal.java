@@ -112,7 +112,7 @@ public class FaceLocal extends GeoEntity2D<EdgeLocal,NodeLocal> {
 		
 		Element be = new Element(this.buildFace());
 		
-		//赋予 Node DOFs
+		// Node DOFs
 		VertexList beVertices = be.vertices();
 		int localDOFIndex = 1;
 		for(int i=1;i<=beVertices.size();i++) {

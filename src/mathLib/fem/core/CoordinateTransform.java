@@ -71,7 +71,7 @@ public class CoordinateTransform {
 	//-------------------------------------------
 
 	/**
-	 * æž„é€ ä¸€ä¸ªå��æ ‡å�˜æ�¢å¯¹è±¡ï¼š
+	 * 
 	 * e.g.
 	 *  2D (x,y)   -> (r,s)
 	 *  3D (x,y,z) -> (r,s,t)
@@ -125,7 +125,7 @@ public class CoordinateTransform {
 	}
 
 	/**
-	 * ä¸€ç»´çº¿æ€§å��æ ‡å�˜æ�¢
+	 * 
 	 * @param be
 	 * @return
 	 */
@@ -148,9 +148,9 @@ public class CoordinateTransform {
 	}
 
 	/**
-	 * äºŒç»´å�•å…ƒä¸Šçº¿æ€§å��æ ‡å�˜æ�¢
+	 * 
 	 * @param Element e
-	 * @return å��æ ‡å�˜æ�¢æ‰€éœ€çš„ â€œç»“ç‚¹<=>å½¢å‡½æ•°â€�å¯¹
+	 * @return 
 	 */
 	public Map<Vertex,ScalarShapeFunction> getTransformLinear2DShapeFunction(Element e) {
 		VertexList vl = e.vertices();
@@ -159,9 +159,7 @@ public class CoordinateTransform {
 			if(sf2d1 == null) sf2d1 = new SFLinearLocal2D(1);
 			if(sf2d2 == null) sf2d2 = new SFLinearLocal2D(2);
 			if(sf2d3 == null) sf2d3 = new SFLinearLocal2D(3);
-//			sf2d1.asignElement(e);
-//			sf2d2.asignElement(e);
-//			sf2d3.asignElement(e);
+
 			mapVS.put(vl.at(1), sf2d1);
 			mapVS.put(vl.at(2), sf2d2);
 			mapVS.put(vl.at(3), sf2d3);
@@ -170,16 +168,13 @@ public class CoordinateTransform {
 			if(sfb2d2 == null) sfb2d2 = new SFBilinearLocal2D(2);
 			if(sfb2d3 == null) sfb2d3 = new SFBilinearLocal2D(3);
 			if(sfb2d4 == null) sfb2d4 = new SFBilinearLocal2D(4);
-//			sfb2d1.asignElement(e);
-//			sfb2d2.asignElement(e);
-//			sfb2d3.asignElement(e);
-//			sfb2d4.asignElement(e);
+
 			mapVS.put(vl.at(1), sfb2d1);
 			mapVS.put(vl.at(2), sfb2d2);
 			mapVS.put(vl.at(3), sfb2d3);
 			mapVS.put(vl.at(4), sfb2d4);
 		} else if(vl.size() == 5) {
-			//TODO
+
 			throw new FutureyeException(
 					"ERROR: getTransformLinear2DShapeFunction() vl.size() == "+vl.size());
 		} else {
@@ -189,17 +184,10 @@ public class CoordinateTransform {
 		return mapVS;
 	}
 
-	/**
-	 * ä¸‰ç»´å�•å…ƒä¸Šçº¿æ€§å��æ ‡å�˜æ�¢
-	 * @param Element e
-	 * @return å��æ ‡å�˜æ�¢æ‰€éœ€çš„ â€œç»“ç‚¹<=>å½¢å‡½æ•°â€�å¯¹
-	 */
 	public Map<Vertex,ScalarShapeFunction> getTransformLinear3DShapeFunction(Element e) {
 		VertexList vl = e.vertices();
 		Map<Vertex, ScalarShapeFunction> mapVS = new LinkedHashMap<Vertex, ScalarShapeFunction>();
 		if(vl.size() == 4) {
-			//å��æ ‡å�˜æ�¢çš„å½¢å‡½æ•°ç”¨æ�¥è®¡ç®—Jacobianï¼Œç”¨åˆ°N_r,N_s,N_tï¼Œä¸�ä¼šç”¨åˆ°N_x,N_y,N_zï¼Œå› æ­¤ä¸�éœ€è¦�èµ‹äºˆå�•å…ƒ
-			//ä¼˜åŒ–è¿‡çš„ä»£ç �(2011-11-21)ï¼Œå¦‚æžœåœ¨è¿™é‡Œè°ƒç”¨asignElementä¼šå½¢æˆ�é€’å½’è°ƒç”¨ï¼Œå¯¼è‡´å †æ ˆæº¢å‡º
 			for(int i=1;i<=4;i++)
 				mapVS.put(vl.at(i), new SFLinearLocal3D(i));
 		} else if(vl.size() == 8) {
@@ -211,16 +199,10 @@ public class CoordinateTransform {
 		return mapVS;
 	}
 
-	/**
-	 * åˆ©ç”¨å�•å…ƒä¸Šçš„å½¢å‡½æ•°è¿›è¡Œå��æ ‡å�˜æ�¢
-	 * @param e
-	 * @return
-	 */
 	public Map<Vertex,ScalarShapeFunction> getTransformShapeFunctionByElement(Element e) {
 		Map<Vertex, ScalarShapeFunction> mapVS = new LinkedHashMap<Vertex, ScalarShapeFunction>();
 		VertexList vertices = e.vertices();
 		for(int i=1;i<=vertices.size();i++) {
-			//TODO ç”¨é¡¶ç‚¹ç»“ç‚¹ä¸Šçš„ç¬¬ä¸€ä¸ªè‡ªç”±åº¦è¿›è¡Œå��æ ‡å�˜æ�¢
 			mapVS.put(
 					vertices.at(i),
 					e.getNodeDOFList(i).at(1).getSSF()
@@ -230,32 +212,32 @@ public class CoordinateTransform {
 	}
 
 	/**
-	 * ç”±ç»“ç‚¹ã€�å½¢å‡½æ•°å¯¹æž„é€ å��æ ‡å�˜æ�¢å‡½æ•°ï¼š
+	 * 
 	 * 2D: (x,y)=(x(r,s), y(r,s))
 	 * 3D: (x,y,z)=(x(r,s,t), y(r,s,t), z(r,s,t))
 	 *
-	 * e.g. äºŒç»´ç¬›å�¡å°”å��æ ‡(x,y) -> ä¸‰è§’å½¢é�¢ç§¯ï¼ˆé‡�å¿ƒï¼‰å��æ ‡(r,s,t)
-	 * (xi,yi), i=1,2,3 ä¸‰è§’å½¢ä¸‰ä¸ªé¡¶ç‚¹
+	 * 
+	 * 
 	 * x = x(r,s,t) = x1*sf1 + x2*sf2 + x3*sf3 = x1*r + x2*s + x3*t
 	 * y = y(r,s,t) = y1*sf1 + y2*sf2 + y3*sf3 = y1*r + y2*s + y3*t
 	 * where r,s are free variables and t=1-r-s
-	 * TODO åˆ©ç”¨å�Žé�¢çš„ç­‰å¼�ï¼Œå�¯ä»¥ç®€åŒ–è¿�ç®—
+	 * 
 	 *
-	 * e.g. ä¸‰ç»´ç¬›å�¡å°”å��æ ‡(x,y,z) -> å››é�¢ä½“ä½“ç§¯ï¼ˆé‡�å¿ƒï¼‰å��æ ‡(r,s,t,u)
-	 * (xi,yi), i=1,2,3,4 å››é�¢ä½“å››ä¸ªé¡¶ç‚¹
+	 * 
+	 * 
 	 * x = x(r,s,t,u) = x1*sf1 + x2*sf2 + x3*sf3 * x4*sf4 = x1*r + x2*s + x3*t * x4*u
 	 * y = y(r,s,t,u) = y1*sf1 + y2*sf2 + y3*sf3 * y4*sf4 = y1*r + y2*s + y3*t * y4*u
 	 * z = z(r,s,t,u) = z1*sf1 + z2*sf2 + z3*sf3 * z4*sf4 = z1*r + z2*s + z3*t * z4*u
 	 * where r,s,t are free variables and u=1-r-s-t
-	 * TODO åˆ©ç”¨å�Žé�¢çš„ç­‰å¼�ï¼Œå�¯ä»¥ç®€åŒ–è¿�ç®—
+	 * 
 	 *
-	 * e.g. ä¸‰ç»´ç¬›å�¡å°”å��æ ‡(x,y,z) ->	 å…­é�¢ä½“å±€éƒ¨å��æ ‡(r,s,t)
+	 * 
 	 * x = x(r,s,t) = sum_{i=1}^{8}{xi*sfi}
 	 * y = y(r,s,t) = sum_{i=1}^{8}{yi*sfi}
 	 * z = z(r,s,t) = sum_{i=1}^{8}{zi*sfi}
 	 *
 	 * @param mapVS
-	 * @return å��æ ‡å�˜æ�¢å‡½æ•°åˆ—è¡¨: 2D:[x,y]; 3D:[x,y,z]
+	 * @return 2D:[x,y]; 3D:[x,y,z]
 	 */
 	public List<MathFunc> getTransformFunction(Map<Vertex,ScalarShapeFunction> mapVS) {
 		List<MathFunc> r = new LinkedList<MathFunc>();
@@ -310,7 +292,7 @@ public class CoordinateTransform {
 	 *
 	 */
 	public void computeJacobianMatrix() {
-		//å¤šçº¿ç¨‹éœ€è¦�æž·é”�
+		
 		if(this.JacobianMatrix == null) {
 			if(transFuns == null)
 				throw new FutureyeException("Call setTransformFunction() first!");
@@ -371,7 +353,7 @@ public class CoordinateTransform {
 	 */
 	public void computeJacobian2D() {
 		/*
-		 * ä¸‰è§’å½¢é�¢ç§¯å��æ ‡
+		 * 
 		 * x = x(r,s,t) = x1*sf1 + x2*sf2 + x3*sf3 = x1*r + x2*s + x3*t
 		 * y = y(r,s,t) = y1*sf1 + y2*sf2 + y3*sf3 = y1*r + y2*s + y3*t
 		 * where r,s are free variables and t=1-r-s
@@ -380,7 +362,7 @@ public class CoordinateTransform {
 		MathFunc[] funs = this.JacobianMatrix;
 		if(funs.length == 4) {
 			/*
-			 * è¦�æ±‚ç»“ç‚¹ç¼–å�·ä¸ºé€†æ—¶é’ˆï¼šfuns[0:3]
+			 * 
 			 *            |f0 f1|
 			 *  det(Jac)= |f2 f3| = f0*f3-f1*f2
 			 */
@@ -388,7 +370,7 @@ public class CoordinateTransform {
 			this.Jacobian = new Jacobian2D(funs);
 		} else if(funs.length == 6) {
 			/*
-			 * ä¸‰ç»´å�•å…ƒçš„äºŒç»´é�¢
+			 * 
 			 *
 			 *       |f0 f1 f2|
 			 * Jac = |f3 f4 f5|
@@ -450,7 +432,7 @@ public class CoordinateTransform {
 				J[0][1] = funs[1].applyAll(v,cache);
 				J[1][0] = funs[2].applyAll(v,cache);
 				J[1][1] = funs[3].applyAll(v,cache);
-				//@see ./doc_ex/invA22.png
+				
 				detJ = Utils.determinant(J);
 				if(cache != null) {
 					cache.put(1, detJ);
@@ -496,12 +478,6 @@ public class CoordinateTransform {
 		}
 	}
 
-	/**
-	 * ä¸‰ç»´å�•å…ƒçš„äºŒç»´é�¢
-	 *
-	 * @author liuyueming
-	 *
-	 */
 	public static class Jacobian2DFrom3D extends MultiVarFunc {
 		MathFunc[] funs = null;
 		public Jacobian2DFrom3D(MathFunc[] funs) {
@@ -555,7 +531,7 @@ public class CoordinateTransform {
 				J[1][0] = funs[3].applyAll(v,cache);
 				J[1][1] = funs[4].applyAll(v,cache);
 				J[1][2] = funs[5].applyAll(v,cache);
-				//@see ./doc_ex/invA22.png
+				
 				detJ = Utils.determinant23(J);
 				if(cache != null) {
 					cache.put(1, detJ);
@@ -595,35 +571,20 @@ public class CoordinateTransform {
 	 */
 	public void computeJacobian3D() {
 		/*
-		 * å››é�¢ä½“
+		 * 
 		 * x = x(r,s,t,u) = x1*sf1 + x2*sf2 + x3*sf3 * x4*sf4 = x1*r + x2*s + x3*t * x4*u
 		 * y = y(r,s,t,u) = y1*sf1 + y2*sf2 + y3*sf3 * y4*sf4 = y1*r + y2*s + y3*t * y4*u
 		 * z = z(r,s,t,u) = z1*sf1 + z2*sf2 + z3*sf3 * z4*sf4 = z1*r + z2*s + z3*t * z4*u
 		 * where r,s,t are free variable, u=1-r-s-t
 		 *
-		 * å…­é�¢ä½“
+		 * 
 		 * x = x(r,s,t) = sum_{i=1}^{8}{xi*sfi}
 		 * y = y(r,s,t) = sum_{i=1}^{8}{yi*sfi}
 		 * z = z(r,s,t) = sum_{i=1}^{8}{zi*sfi}
 		 */
 
-//11/26/2011 é‡�æ–°å®šä¹‰ä¸€ä¸ªå‡½æ•°Jacobian3Dï¼Œä»£æ›¿ä¸‹é�¢æ³¨é‡ŠæŽ‰çš„ä»£ç �ï¼Œå�¯ä»¥æ��é«˜è®¡ç®—é€Ÿåº¦1/3
 		MathFunc[] funs = this.JacobianMatrix;
-//		/*
-//		 * è¦�æ±‚ç»“ç‚¹ç¼–å�·ä¸ºé€†æ—¶é’ˆ ï¼šfuns[0:8]
-//		 *            |f0 f1 f2|
-//		 *  det(Jac)= |f3 f4 f5|
-//		 *            |f6 f7 f8|
-//		 */
-//		Function det4875 = funs[4].M(funs[8]) .S (funs[7].M(funs[5]));
-//		Function det6538 = funs[6].M(funs[5]) .S (funs[3].M(funs[8]));
-//		Function det3764 = funs[3].M(funs[7]) .S (funs[6].M(funs[4]));
-//
-//		return FMath.sum(
-//				funs[0].M(det4875),
-//			    funs[1].M(det6538),
-//			    funs[2].M(det3764)
-//			    );
+
 		this.Jacobian = new Jacobian3D(funs);
 	}
 
@@ -660,7 +621,7 @@ public class CoordinateTransform {
 				J[2][0] = funs[6].apply(v);
 				J[2][1] = funs[7].apply(v);
 				J[2][2] = funs[8].apply(v);
-				//@see ./doc_ex/invA33.png
+				
 				detJ = Utils.determinant(J);
 				if(cache != null) {
 					cache.put(1, detJ);
@@ -688,7 +649,7 @@ public class CoordinateTransform {
 				J[2][0] = funs[6].applyAll(v,cache);
 				J[2][1] = funs[7].applyAll(v,cache);
 				J[2][2] = funs[8].applyAll(v,cache);
-				//@see ./doc/invA33.png
+				
 				detJ = Utils.determinant(J);
 				if(cache != null) {
 					cache.put(1, detJ);
@@ -767,7 +728,7 @@ public class CoordinateTransform {
 		items[8] = z3 - z4;
 
 		/*
-		 * è¦�æ±‚ç»“ç‚¹ç¼–å�·ä¸ºé€†æ—¶é’ˆ ï¼šitems[0:8]
+		 * 
 		 *            |i0 i1 i2|
 		 *  det(Jac)= |i3 i4 i5|
 		 *            |i6 i7 i8|

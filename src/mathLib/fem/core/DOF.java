@@ -19,7 +19,6 @@ import mathLib.func.symbolic.intf.VectorShapeFunction;
  * w     => base function constructed by combining
  *          shape functions on neighboring elements
  * 
- * @author liuyueming
  *
  */
 public class DOF {

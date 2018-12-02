@@ -50,9 +50,6 @@ public class Edge extends GeoEntity1D<NodeLocal> {
 
 	/**
 	 * For vector valued problems, return boundary type of component <tt>nVVFComponent</tt>
-	 * <p>
-	 * 对于�?��?值问题，�?个分�?在�?�一边界上的类型�?一定相�?�，
-	 * 该函数返回分�?<tt>nVVFComponent</tt>对应的边界类型
 	 *
 	 * @param nVVFComponent
 	 * @return
@@ -83,11 +80,6 @@ public class Edge extends GeoEntity1D<NodeLocal> {
 //		return false;
 	}
 
-	/**
-	 * 判断�?个�??标点是�?�在edge上
-	 * @param coord
-	 * @return
-	 */
 	public boolean isCoordOnEdge(double coords[]) {
 		return Utils.isPointOnLineSegment(
 				this.vertices.at(1),
@@ -118,6 +110,7 @@ public class Edge extends GeoEntity1D<NodeLocal> {
 		return rlt;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public boolean containsNode(Node node) {
 		if(this.beginNode().equals(node))
 			return true;
@@ -152,7 +145,7 @@ public class Edge extends GeoEntity1D<NodeLocal> {
         		if( globalIndex == ed2.globalIndex &&
         			beginNode().equals(ed2.beginNode()) &&
         			endNode().equals(ed2.endNode())) {
-        			//全局索引相�?�，两端结点相�?�
+        			
         			return true;
         		}
         	}
