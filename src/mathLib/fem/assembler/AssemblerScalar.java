@@ -89,10 +89,7 @@ public class AssemblerScalar implements AssemblerOld {
 		int nProgressPrint = 0;
 		for(int i=1; i<=nEle; i++) {
 			eList.at(i).adjustVerticeToCounterClockwise();
-			//TODO
-//			if(eList.at(i).adjustVerticeToCounterClockwise()) {
-//				throw new FutureyeException("adjustVerticeToCounterClockwise");
-//			}
+
 			assembleGlobal(eList.at(i),	globalStiff,globalLoad);
 			if(printInfo) {
 				if(i%nPS==0) {
@@ -134,30 +131,6 @@ public class AssemblerScalar implements AssemblerOld {
 		}
 	}
 	
-//	@Override
-//	public void imposeDirichletCondition(Function diri) {
-//		status = 2;
-//		NodeList nList = mesh.getNodeList();
-//		for(int i=1;i<=nList.size();i++) {
-//			Node n = nList.at(i);
-//			if(n.getNodeType() == NodeType.Dirichlet) {
-//				Variable v = Variable.createFrom(diri, n, n.globalIndex);
-//				this.globalStiff.set(n.globalIndex, n.globalIndex, 1.0);
-//				double val = diri.value(v);
-//				this.globalLoad.set(n.globalIndex, val);
-//				for(int j=1;j<=this.globalStiff.getRowDim();j++) {
-//					if(j!=n.globalIndex) {
-//						//TODO è¡Œåˆ—éƒ½éœ€è¦�ç½®é›¶
-//						this.globalLoad.add(j, -this.globalStiff.get(j, n.globalIndex)*val);
-//						this.globalStiff.set(j, n.globalIndex, 0.0);
-//						this.globalStiff.set(n.globalIndex, j, 0.0);
-//					}
-//				}
-//			}
-//		}
-//	}
-	
-	//2011/11/28 modified according to vector valued case
 	@SuppressWarnings({ "rawtypes" })
 	@Override
 	public void imposeDirichletCondition(MathFunc diri) {
@@ -171,25 +144,19 @@ public class AssemblerScalar implements AssemblerOld {
 				if(ge instanceof Node) {
 					Node n = (Node)ge;
 					if(n.getNodeType() == NodeType.Dirichlet) {
-						Variable v = Variable.createFrom(diri, n, n.globalIndex); //bugfix 11/27/2013 Variable.createFrom(diri, n, 0);
+						Variable v = Variable.createFrom(diri, n, n.globalIndex); 
 						setDirichlet(dof.getGlobalIndex(),diri.apply(v));
 					}
 				} else if(ge instanceof EdgeLocal) {
-					//2Då�•å…ƒï¼ˆé�¢ï¼‰å…¶ä¸­çš„å±€éƒ¨è¾¹ä¸Šçš„è‡ªç”±åº¦
 					EdgeLocal edge = (EdgeLocal)ge;
 					if(edge.getBorderType() == NodeType.Dirichlet) {
-						//TODO ä»¥è¾¹çš„é‚£ä¸ªé¡¶ç‚¹å�–å€¼ï¼Ÿä¸­ç‚¹ï¼Ÿ
-						//Variable v = Variable.createFrom(fdiri, ?, 0);
 					}
 					
 				} else if(ge instanceof FaceLocal) {
-					//3Då�•å…ƒï¼ˆä½“ï¼‰å…¶ä¸­çš„å±€éƒ¨é�¢ä¸Šçš„è‡ªç”±åº¦
 					FaceLocal face = (FaceLocal)ge;
 					if(face.getBorderType() == NodeType.Dirichlet) {
-						//TODO
 					}
 				} else if(ge instanceof Edge) {
-					//1Då�•å…ƒï¼ˆçº¿æ®µï¼‰ä¸Šçš„è‡ªç”±åº¦ï¼Œå…¶Dirichletè¾¹ç•Œç”¨ç»“ç‚¹æ�¥è®¡ç®—æŽ¨å‡ºï¼Œè€Œä¸�éœ€è¦�ä¸“é—¨æ ‡è®°å�•å…ƒ
 					VertexList vs = ((GeoEntity2D) ge).getVertices();
 					for(int k=1;k<=vs.size();k++) {
 						Node n = vs.at(k).globalNode();
@@ -199,7 +166,6 @@ public class AssemblerScalar implements AssemblerOld {
 						}
 					}
 				} else if(ge instanceof Face) {
-					//2Då�•å…ƒï¼ˆé�¢ï¼‰ä¸Šçš„è‡ªç”±åº¦ï¼Œå…¶Dirichletè¾¹ç•Œç”¨ç»“ç‚¹æ�¥è®¡ç®—æŽ¨å‡ºï¼Œè€Œä¸�éœ€è¦�ä¸“é—¨æ ‡è®°å�•å…ƒ
 					
 					VertexList vs = ((GeoEntity2D) ge).getVertices();
 					for(int k=1;k<=vs.size();k++) {
@@ -210,7 +176,6 @@ public class AssemblerScalar implements AssemblerOld {
 						}
 					}
 				} else if(ge instanceof Volume) {
-					//3Då�•å…ƒï¼ˆä½“ï¼‰ä¸Šçš„è‡ªç”±åº¦ï¼Œå…¶Dirichletè¾¹ç•Œç”¨ç»“ç‚¹æ�¥è®¡ç®—æŽ¨å‡ºï¼Œè€Œä¸�éœ€è¦�ä¸“é—¨æ ‡è®°å�•å…ƒ
 					VertexList vs = ((GeoEntity3D) ge).getVertices();
 					for(int k=1;k<=vs.size();k++) {
 						Node n = vs.at(k).globalNode();
@@ -224,12 +189,6 @@ public class AssemblerScalar implements AssemblerOld {
 		}
 	}
 	
-	/**
-	 * ä»Žå�•å…ƒeå�ˆæˆ�å…¨å±€çŸ©é˜µå’Œå�‘é‡�
-	 * @param e
-	 * @param stiff
-	 * @param load
-	 */
 	public void assembleGlobal(Element e, Matrix stiff, Vector load) {
 		status = 3;
 		DOFList DOFs = e.getAllDOFList(DOFOrder.NEFV);
@@ -237,24 +196,20 @@ public class AssemblerScalar implements AssemblerOld {
 		
 		//Update Jacobin on e
 		e.updateJacobin();
-		//System.out.println(e.getJacobin().value(new Variable("r",0).set("s", 0)));
 		
-		//å½¢å‡½æ•°è®¡ç®—éœ€è¦�å’Œå�•å…ƒå…³è�”
 		for(int i=1;i<=nDOFs;i++) {
 			DOFs.at(i).getSSF().assignElement(e);
 		}
 		
 		weakForm.preProcess(e);
 		
-		//æ‰€æœ‰è‡ªç”±åº¦å�Œå¾ªçŽ¯
 		for(int i=1;i<=nDOFs;i++) {
 			DOF dofI = DOFs.at(i);
 			int nGlobalRow = dofI.getGlobalIndex();
 			for(int j=1;j<=nDOFs;j++) {
 				DOF dofJ = DOFs.at(j);
 				int nGlobalCol = dofJ.getGlobalIndex();
-				//Local stiff matrix
-				//æ³¨æ„�é¡ºåº�ï¼Œå†…å¾ªçŽ¯teståŸºå‡½æ•°ä¸�å�˜ï¼ŒtrialåŸºå‡½æ•°å¾ªçŽ¯
+
 				weakForm.setDOF(dofJ, dofI); 
 				MathFunc lhs = weakForm.leftHandSide(e, ItemType.Domain);
 				double lhsVal = weakForm.integrate(e, lhs);
@@ -280,12 +235,10 @@ public class AssemblerScalar implements AssemblerOld {
 					DOFList beDOFs = be.getAllDOFList(DOFOrder.NEFV);
 					int nBeDOF = beDOFs.size();
 
-					//å½¢å‡½æ•°è®¡ç®—éœ€è¦�å’Œå�•å…ƒå…³è�”
 					for(int i=1;i<=nBeDOF;i++) {
 						beDOFs.at(i).getSSF().assignElement(be);
 					}
 
-					//æ‰€æœ‰è‡ªç”±åº¦å�Œå¾ªçŽ¯
 					for(int i=1;i<=nBeDOF;i++) {
 						DOF dofI = beDOFs.at(i);
 						int nGlobalRow = dofI.getGlobalIndex();
@@ -293,7 +246,7 @@ public class AssemblerScalar implements AssemblerOld {
 							DOF dofJ = beDOFs.at(j);
 							int nGlobalCol = dofJ.getGlobalIndex();
 							//Local stiff matrix for border
-							//æ³¨æ„�é¡ºåº�ï¼Œå†…å¾ªçŽ¯testå‡½æ•°ä¸�å�˜ï¼Œtrialå‡½æ•°å¾ªçŽ¯
+
 							weakForm.setDOF(dofJ, dofI);
 							MathFunc lhsBr = weakForm.leftHandSide(be, ItemType.Border);
 							double lhsBrVal = weakForm.integrate(be, lhsBr);
@@ -311,7 +264,6 @@ public class AssemblerScalar implements AssemblerOld {
 	}
 	
 	/**
-  	 * ä»Žå�•å…ƒeå�ˆæˆ�å±€éƒ¨çŸ©é˜µå’Œå�‘é‡�
   	 * @param e
 	 * @param localStiff (I/O): 
 	 *   local stiff matrix corresponds to the integration part
@@ -342,12 +294,10 @@ public class AssemblerScalar implements AssemblerOld {
 		//Update Jacobin on e
 		e.updateJacobin();
 		
-		//å½¢å‡½æ•°è®¡ç®—éœ€è¦�å’Œå�•å…ƒå…³è�”
 		for(int i=1;i<=nDOFs;i++) {
 			DOFs.at(i).getSSF().assignElement(e);
 		}
 		
-		//æ‰€æœ‰è‡ªç”±åº¦å�Œå¾ªçŽ¯
 		for(int i=1;i<=nDOFs;i++) {
 			DOF dofI = DOFs.at(i);
 			int nLocalRow = dofI.getLocalIndex();
@@ -355,7 +305,6 @@ public class AssemblerScalar implements AssemblerOld {
 				DOF dofJ = DOFs.at(j);
 				int nLocalCol = dofJ.getLocalIndex();
 				//Local stiff matrix
-				//æ³¨æ„�é¡ºåº�ï¼Œå†…å¾ªçŽ¯testå‡½æ•°ä¸�å�˜ï¼Œtrialå‡½æ•°å¾ªçŽ¯
 				weakForm.setDOF(dofJ, dofI);
 				MathFunc lhs = weakForm.leftHandSide(e, WeakFormOld.ItemType.Domain);
 				double lhsVal = weakForm.integrate(e, lhs);
@@ -381,12 +330,10 @@ public class AssemblerScalar implements AssemblerOld {
 					
 					localStiffBorder.setRowDim(nDOFs);
 					localStiffBorder.setColDim(nDOFs);
-					//å½¢å‡½æ•°è®¡ç®—éœ€è¦�å’Œå�•å…ƒå…³è�”
 					for(int i=1;i<=nBeDOF;i++) {
 						beDOFs.at(i).getSSF().assignElement(e);
 					}
 					
-					//æ‰€æœ‰è‡ªç”±åº¦å�Œå¾ªçŽ¯
 					for(int i=1;i<=nBeDOF;i++) {
 						DOF dofI = beDOFs.at(i);
 						int nLocalRow = dofI.getLocalIndex();
@@ -394,7 +341,6 @@ public class AssemblerScalar implements AssemblerOld {
 							DOF dofJ = beDOFs.at(j);
 							int nLocalCol = dofJ.getLocalIndex();
 							//Local stiff matrix for border
-							//æ³¨æ„�é¡ºåº�ï¼Œå†…å¾ªçŽ¯testå‡½æ•°ä¸�å�˜ï¼Œtrialå‡½æ•°å¾ªçŽ¯
 							weakForm.setDOF(dofJ, dofI);
 							MathFunc lhsBr = weakForm.leftHandSide(be, WeakFormOld.ItemType.Border);
 							double lhsBrVal = weakForm.integrate(be, lhsBr);
@@ -411,9 +357,6 @@ public class AssemblerScalar implements AssemblerOld {
 		}
 	}
 	
-	//äºŒç»´ï¼šåˆšåº¦çŸ©é˜µå¢žåŠ hanging nodeçº¦æ�Ÿç³»æ•°
-	// nh - 0.5*n1 - 0.5*n2 = 0
-	//ä¸�èƒ½åŽ»æŽ‰ï¼Œ hanging node è‡ªå·±åœ¨åˆšåº¦çŸ©é˜µå�ˆæˆ�çš„æ—¶å€™æ²¡æœ‰ç³»æ•°ï¼Œå› æ­¤éœ€è¦�ä¸ºè‡ªå·±è®¾ç½®ç³»æ•°
 	public void procHangingNode(Mesh mesh) {
 		status = 5;
 		for(int i=1;i<=mesh.getNodeList().size();i++) {
@@ -448,9 +391,7 @@ public class AssemblerScalar implements AssemblerOld {
 				int nCol = ec.getKey();
 				double val = ec.getValue();
 				int ngCol = e.local2GlobalDOFIndex(nCol);
-//				System.out.println(
-//						"Local("+nRow+","+nCol+") -> Global("+ngRow+","+ngCol+")"
-//						);
+
 				this.globalStiff.add(ngRow, ngCol, val);
 			}
 		}

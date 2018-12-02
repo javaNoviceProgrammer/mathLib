@@ -70,7 +70,6 @@ public class AssemblerScalarFast implements AssemblerOld{
 				this.globalLoad.set(n.globalIndex, val);
 				for(int j=1;j<=this.globalStiff.getRowDim();j++) {
 					if(j!=n.globalIndex) {
-						//TODO è¡Œåˆ—éƒ½éœ€è¦�ç½®é›¶
 						this.globalLoad.add(j, -this.globalStiff.get(j, n.globalIndex)*val);
 						this.globalStiff.set(j, n.globalIndex, 0.0);
 						this.globalStiff.set(n.globalIndex, j, 0.0);
@@ -80,7 +79,6 @@ public class AssemblerScalarFast implements AssemblerOld{
 		}
 	}
 	
-	//äºŒç»´ï¼šåˆšåº¦çŸ©é˜µå¢žåŠ hanging nodeçº¦æ�Ÿç³»æ•°
 	// nh - 0.5*n1 - 0.5*n2 = 0
 	public void procHangingNode(Mesh mesh) {
 		
