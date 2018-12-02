@@ -3,6 +3,8 @@ package mathLib.fem.mesh.mesh2d;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYLineAnnotation;
@@ -13,11 +15,16 @@ import mathLib.fem.triangulation.Triangle2D;
 import mathLib.fem.triangulation.Vector2D;
 import mathLib.plot.MatlabChart;
 
+/*
+ * how to handle mesh priority to remove overlaps?
+ */
+
 public class Mesher2D {
 	
 	ArrayList<Vector2D> nodes ;
 	ArrayList<Triangle2D> elems ;
 	ArrayList<AbstractMesh2DElement> mesh2dElements ;
+	Map<String, ArrayList<AbstractMesh2DElement>> meshPriorities ;
 	
 	MatlabChart fig = null ; // canvas for drawing
 	
@@ -25,6 +32,7 @@ public class Mesher2D {
 		nodes = new ArrayList<>() ;
 		elems = new ArrayList<>() ;
 		mesh2dElements = new ArrayList<>() ;
+		meshPriorities = new HashMap<>() ;
 	}
 	
 	public void addElement(AbstractMesh2DElement element) {
@@ -32,15 +40,18 @@ public class Mesher2D {
 	}
 	
 	public void triangulate() {
-		for(AbstractMesh2DElement e : mesh2dElements)
+		
+		for(AbstractMesh2DElement e : mesh2dElements) {
 			nodes.addAll(e.getNodes()) ;
-		DelaunayTriangulator triangulator = new DelaunayTriangulator(nodes) ;
-		try {
-			triangulator.triangulate();
-		} catch (NotEnoughPointsException e1) {
-			e1.printStackTrace();
+			DelaunayTriangulator triangulator = new DelaunayTriangulator(e.getNodes()) ;
+			try {
+				triangulator.triangulate();
+			} catch (NotEnoughPointsException e1) {
+				e1.printStackTrace();
+			}
+			elems.addAll(triangulator.getTriangles()) ;
 		}
-		elems = (ArrayList<Triangle2D>) triangulator.getTriangles() ;
+		
 		
 		// updating canvas
 		updateCanvas();
@@ -81,10 +92,15 @@ public class Mesher2D {
 	// for test
 	public static void main(String[] args) {
 		Mesh2DTriangleElement triangleElement1 = new Mesh2DTriangleElement("tri1", 0, 1, 5, 0, 2, 5) ;
+		Mesh2DTriangleElement triangleElement2 = new Mesh2DTriangleElement("tri2", 1, 1, -1, 0, 2, 5) ;
 		triangleElement1.refine(4);
+		triangleElement2.refine(4);
 		Mesher2D mesher = new Mesher2D() ;
 		mesher.addElement(triangleElement1);
+		mesher.addElement(triangleElement2);
 		mesher.triangulate();
 		mesher.getCanvas().run(true);
+		
+		System.out.println(triangleElement1.isInside(new Vector2D(-2, 2)));
 	}
 }

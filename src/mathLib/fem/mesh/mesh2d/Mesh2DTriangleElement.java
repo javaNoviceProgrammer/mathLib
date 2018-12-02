@@ -35,19 +35,37 @@ public class Mesh2DTriangleElement extends AbstractMesh2DElement {
 		this.annotations = new ArrayList<>();
 		createMeshElement();
 		createAnnotations();
+		
+		// default priority
+		meshPriority = "0" ;
+	}
+	
+	public void setMeshPriority(String priority) {
+		this.meshPriority = priority ;
+	}
+
+	@Override
+	public boolean isInside(Vector2D point) {
+		double x = point.x ;
+		double y = point.y ;
+		double lambda1 = ((y2-y3)*(x-x3) + (x3-x2)*(y-y3))/((y2-y3)*(x1-x3) + (x3-x2)*(y1-y3)) ;
+		double lambda2 = ((y3-y1)*(x-x3) + (x1-x3)*(y-y3))/((y2-y3)*(x1-x3) + (x3-x2)*(y1-y3)) ; 
+		double lambda3 = 1 - lambda1 - lambda2 ;
+		if(0<=lambda1 && lambda1 <= 1 && 0<=lambda2 && lambda2<=1 && 0<=lambda3 && lambda3<=1)
+			return true ;
+		else
+			return false ;
 	}
 
 	private void createMeshElement() {
+
 		ArrayList<Point> rstVal = new ArrayList<>();
 		double[] r = MathUtils.linspace(0, 1, defaultDensity);
 		double[] s = MathUtils.linspace(0, 1, defaultDensity);
-		double[] t = MathUtils.linspace(0, 1, defaultDensity);
 		for (int i = 0; i < r.length; i++) {
 			for (int j = 0; j < s.length; j++) {
-				for (int k = 0; k < t.length; k++) {
-					if (r[i] + s[j] + t[k] == 1)
-						rstVal.add(Point.getInstance(r[i], s[j], t[k]));
-				}
+					if (r[i] + s[j] <= 1)
+						rstVal.add(Point.getInstance(r[i], s[j], 1-r[i]-s[j]));
 			}
 		}
 
