@@ -10,7 +10,7 @@ import mathLib.fem.core.Mesh;
 import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.element.FELinearTriangle;
-import mathLib.fem.mesh.Mesh2DRect;
+import mathLib.fem.mesh.mesh2d.Mesh2DRect;
 import mathLib.fem.util.Utils;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.symbolic.MultiVarFunc;
