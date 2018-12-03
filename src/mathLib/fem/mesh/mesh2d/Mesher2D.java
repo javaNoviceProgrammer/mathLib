@@ -91,15 +91,15 @@ public class Mesher2D {
 	
 	// for test
 	public static void main(String[] args) {
-//		Mesh2DTriangleElement triangleElement1 = new Mesh2DTriangleElement("tri1", 0, 1, 5, 0, 2, 5) ;
+		Mesh2DTriangleElement triangleElement1 = new Mesh2DTriangleElement("tri1", 0, 1, 5, 0, 2, 5) ;
 //		Mesh2DTriangleElement triangleElement2 = new Mesh2DTriangleElement("tri2", 1, 1, -1, 0, 2, 5) ;
-//		triangleElement1.refine(4);
+		triangleElement1.refine(4);
 //		triangleElement2.refine(4);
 		
 		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 1, 1, 5, 6) ;
 		rect1.refine(3);
 		Mesher2D mesher = new Mesher2D() ;
-//		mesher.addElement(triangleElement1);
+		mesher.addElement(triangleElement1);
 //		mesher.addElement(triangleElement2);
 		mesher.addElement(rect1);
 		mesher.triangulate();
