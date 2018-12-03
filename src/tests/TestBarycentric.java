@@ -1,4 +1,4 @@
-package mathLib.fem.mesh.mesh2d;
+package tests;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

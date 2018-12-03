@@ -1,4 +1,4 @@
-package mathLib.fem.mesh.mesh2d;
+package mathLib.fem.mesh;
 
 public class Mesh2DPolygon {
 
