@@ -4,7 +4,6 @@ package mathLib.fem.triangulation;
  * Edge distance pack class implementation used to describe the distance to a
  * given edge.
  * 
- * @author Johannes Diemke
  */
 public class EdgeDistancePack implements Comparable<EdgeDistancePack> {
 

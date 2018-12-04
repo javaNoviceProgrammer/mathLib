@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * A Java implementation of an incremental 2D Delaunay triangulation algorithm.
  * 
- * @author Johannes Diemke
  */
 public class DelaunayTriangulator {
 

@@ -5,7 +5,6 @@ import java.util.Arrays;
 /**
  * 2D triangle class implementation.
  * 
- * @author Johannes Diemke
  */
 public class Triangle2D {
 

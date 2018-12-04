@@ -3,7 +3,6 @@ package mathLib.fem.triangulation;
 /**
  * 2D edge class implementation.
  * 
- * @author Johannes Diemke
  */
 public class Edge2D {
 
