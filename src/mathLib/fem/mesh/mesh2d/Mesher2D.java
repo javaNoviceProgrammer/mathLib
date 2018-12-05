@@ -9,6 +9,8 @@ import java.util.Map;
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYLineAnnotation;
 
+import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;
@@ -25,6 +27,8 @@ public class Mesher2D {
 	ArrayList<Triangle2D> elems ;
 	ArrayList<AbstractMesh2DElement> mesh2dElements ;
 	Map<String, ArrayList<AbstractMesh2DElement>> meshPriorities ;
+	
+	Mesh mesh ;
 	
 	MatlabChart fig = null ; // canvas for drawing
 	
@@ -43,18 +47,33 @@ public class Mesher2D {
 		
 		for(AbstractMesh2DElement e : mesh2dElements) {
 			nodes.addAll(e.getNodes()) ;
-			DelaunayTriangulator triangulator = new DelaunayTriangulator(e.getNodes()) ;
+		}
+			DelaunayTriangulator triangulator = new DelaunayTriangulator(nodes) ;
 			try {
 				triangulator.triangulate();
 			} catch (NotEnoughPointsException e1) {
 				e1.printStackTrace();
 			}
 			elems.addAll(triangulator.getTriangles()) ;
-		}
-		
 		
 		// updating canvas
 		updateCanvas();
+	}
+	
+	public Mesh getMesh() {
+		mesh = new Mesh() ;
+		for(int i=0; i<nodes.size(); i++) {
+			Node node = new Node(i, nodes.get(i).x, nodes.get(i).y) ;
+			mesh.addNode(node);
+		}
+		
+//		for(Triangle2D tri : elems) {
+//			NodeList nodes = new NodeList() ;
+//			nodes.add(new Node(globalIndex, x, coords)) ??
+//			Element e = new Element(nodes) ;
+//		}
+		
+		return mesh ;
 	}
 	
 	public void updateCanvas() {
@@ -96,12 +115,16 @@ public class Mesher2D {
 //		triangleElement1.refine(4);
 //		triangleElement2.refine(4);
 		
-		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 1, 1, 5, 6) ;
-//		rect1.refine(6);
+		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", -2, -2, 2, 2) ;
+		Mesh2DRectangleElement rect2 = new Mesh2DRectangleElement("rect2", -0.5, -0.5, 0.7, 0.7) ;
+//		Mesh2DRectangleElement rect3 = new Mesh2DRectangleElement("rect3", -0.5, -0.5, 0.7, 0.7) ;
+		rect1.refine(3);
+		rect2.refine(2);
 		Mesher2D mesher = new Mesher2D() ;
 //		mesher.addElement(triangleElement1);
 //		mesher.addElement(triangleElement2);
 		mesher.addElement(rect1);
+		mesher.addElement(rect2);
 		mesher.triangulate();
 //		mesher.getCanvas().markerON();
 		mesher.getCanvas().run(true);
@@ -109,5 +132,7 @@ public class Mesher2D {
 //		System.out.println(triangleElement1.isInside(new Vector2D(-2, 2)));
 		System.out.println(rect1.isInside(new Vector2D(0, 0)));
 		System.out.println(rect1.isInside(new Vector2D(2, 3)));
+		
+		System.out.println(mesher.getMesh().getNodeList().size());
 	}
 }
