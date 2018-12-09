@@ -40,13 +40,14 @@ public class EulerCauchy {
 	public void solve() {
 		// step 1: test auxiliary equation
 		double delta = (a-1)*(a-1) - 4*b ;
-		if(delta > 0) {
+		double eps = 1e-12 ;
+		if(delta > eps) {
 			double m1 = (-(a-1) + Math.sqrt(delta))/2.0 ;
 			sol1 = pow(x, m1) ;
 			double m2 = (-(a-1) - Math.sqrt(delta))/2.0 ;
 			sol2 = pow(x, m2) ;
 		}
-		else if(delta < 0) {
+		else if(delta < -eps) {
 			double real = -(a-1)/2.0 ;
 			double imag = Math.sqrt(-delta)/2.0 ;
 			sol1 = pow(x, real) * cos(imag*log(x)) ;
@@ -85,7 +86,7 @@ public class EulerCauchy {
 		fig.run(true);
 	}
 
-	public MathFunc getTotalSol(double x0, double y0, double yPrime0) {
+	public MathFunc getGeneralSol(double x0, double y0, double yPrime0) {
 		double y1 = sol1.apply(x0) ;
 		double y1Prime = sol1.diff("x").apply(x0) ;
 		double y2 = sol2.apply(x0) ;
@@ -104,20 +105,52 @@ public class EulerCauchy {
 		fig.run(true);
 	}
 
+	public String generalSol() {
+		return "c1 " + sol1.getExpr() + " + c2 " + sol2.getExpr() ;
+	}
+
+	@Override
+	public String toString() {
+		String s1 = "x^2 y'' " ;
+		String s2 = "" ;
+		if(getSigned(a) != "")
+			s2 = getSigned(a) + " x y' " ;
+		String s3 = "" ;
+		if(getSigned(b) != "")
+			s3 = getSigned(b) + " y" ;
+
+		return s1+s2+s3+" = 0" ;
+	}
+
+	private String getSigned(double t) {
+		if(t>0)
+			return "+ " + String.format("%.4f", Math.abs(t)) ;
+		else if(t<0)
+			return "- " + String.format("%.4f", Math.abs(t)) ;
+		else
+			return "" ;
+	}
+
 	// for test
 	public static void main(String[] args) {
-		double a = 0.6 ;
-		double b = 16.04 ;
+		double a = -3 ;
+		double b = 10 ;
 		EulerCauchy ec = new EulerCauchy(a, b) ;
+		System.out.println(ec);
 		ec.solve();
+
 		System.out.println(ec.getFirstSol());
 		System.out.println(ec.getSecondSol());
-		MathFunc sol = ec.getTotalSol(1.0, 0, 1) ;
-		System.out.println(sol);
 
-		System.out.println(sol.apply(1));
-		System.out.println(sol.diff("x").apply(1));
-		ec.plotSol(sol, 0.05, 2);
+		System.out.println(ec.generalSol());
+
+//		MathFunc sol = ec.getGeneralSol(1.0, 0, 1) ;
+//		System.out.println(sol);
+//
+//		System.out.println(sol.apply(1));
+//		System.out.println(sol.diff("x").apply(1));
+//		ec.plotSol(sol, 0.05, 2);
+
 	}
 
 }
