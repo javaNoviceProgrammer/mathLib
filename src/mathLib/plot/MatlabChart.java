@@ -822,5 +822,14 @@ public class MatlabChart implements Serializable {
         chartSwingNode.setContent(getChartPanel(width, height));
         return chartSwingNode ;
     }
+    
+    
+    // static method for quick plotting
+    public static void fastPlot(double[] x, double[] y, boolean systemExit) {
+    	MatlabChart fig = new MatlabChart() ;
+    	fig.plot(x, y);
+    	fig.renderPlot();
+    	fig.run(true);
+    }
 
 }
