@@ -14,7 +14,7 @@ public class ComplexMatrix {
     Complex[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
-    private ComplexMatrix(int M, int N) {
+    public ComplexMatrix(int M, int N) {
         this.M = M;
         this.N = N;
         data = new Complex[M][N];
@@ -367,7 +367,7 @@ public class ComplexMatrix {
         }
         return C;
     }
-    
+
     public Complex trace() {
     	if (M != N)
     		throw new IllegalArgumentException("must be a square matrix!") ;
@@ -376,7 +376,7 @@ public class ComplexMatrix {
     		sum = sum + data[i][i] ;
     	return sum ;
     }
-    
+
     /**
      * sub-Blocks of the matrix
      */
@@ -398,7 +398,7 @@ public class ComplexMatrix {
     	}
     	return new ComplexMatrix(selectedColumn) ;
     }
-    
+
     public static PowerIterationMatrix toPowerIterationMatrix(ComplexMatrix A){
     	return new PowerIterationMatrix(A.data) ;
     }
@@ -686,7 +686,7 @@ public class ComplexMatrix {
  		Complex[][] d = new Complex[][] {{1, 1}, {-5+j, -j+1}} ;
  		ComplexMatrix A = new ComplexMatrix(d) ;
 		A.show();
-		
+
 		System.out.println(A.trace());
 
 //		// operator overloading
@@ -705,12 +705,12 @@ public class ComplexMatrix {
 
 //		(E*A).show();
 //		(A*E).show() ;
-		
+
 //		E.getColumn(0).show();
 //		E.getColumn(1).show();
-//		E.getRow(0).show(); 
+//		E.getRow(0).show();
 //		E.getRow(1).show();
-		
+
 		(A*E.getRow(0).transpose()).show();
 
 	}
