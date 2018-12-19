@@ -1,7 +1,6 @@
 package tests;
 
 import static java.lang.Math.*;
-import static mathLib.func.symbolic.FMath.* ;
 
 import static mathLib.func.GammaFunc.*;
 
@@ -9,8 +8,10 @@ import flanagan.integration.RungeKutta;
 import flanagan.roots.RealRoot;
 import flanagan.roots.RealRootFunction;
 import mathLib.func.ArrayFunc;
+import mathLib.ode.intf.DerivFunction1D;
 import mathLib.ode.intf.DerivnFunction1D;
 import mathLib.plot.MatlabChart;
+import mathLib.util.ArrayUtils;
 import mathLib.util.MathUtils;
 
 public class Bend90deg {
@@ -38,7 +39,7 @@ public class Bend90deg {
 					double y = yy[0] ;
 					double z = yy[1] ;
 					double yprime = z ;
-					double zprime = A * Math.pow(1+z, xi) ;
+					double zprime = A * Math.pow(1+z*z, xi) ;
 					return new double[] {yprime, zprime};
 				}
 			};
@@ -57,7 +58,8 @@ public class Bend90deg {
 		fig.run(true);
 		fig.markerON();
 		
-		// solving for x0
+		//********************* solving for x0
+		
 		RealRootFunction funcX0 = new RealRootFunction() {
 			
 			@Override
@@ -73,7 +75,7 @@ public class Bend90deg {
 						double y = yy[0] ;
 						double z = yy[1] ;
 						double yprime = z ;
-						double zprime = A * Math.pow(1+z, xi) ;
+						double zprime = A * Math.pow(1+z*z, xi) ;
 						return new double[] {yprime, zprime};
 					}
 				};
@@ -91,8 +93,12 @@ public class Bend90deg {
 		double x0 = root.bisect(funcX0, 0, R0) ;
 		System.out.println(x0);
 		
+		
+		//************ now calculating the bend
+		
 		double A = (a1-a2)/(R0 - x0) ;
-		double[] xx = MathUtils.linspace(x0, R0, 100) ;
+		double[] xx = MathUtils.linspace(x0, R0*0.995, 100) ;
+		xx = ArrayUtils.concat(xx, MathUtils.linspace(0.995*R0, R0, 200)) ;
 		double[] yy = new double[xx.length] ;
 		double[] yyprime = new double[xx.length] ;
 		
@@ -107,7 +113,7 @@ public class Bend90deg {
 					double y = yy[0] ;
 					double z = yy[1] ;
 					double yprime = z ;
-					double zprime = A * Math.pow(1+z, xi) ;
+					double zprime = A * Math.pow(1+z*z, xi) ;
 					return new double[] {yprime, zprime};
 				}
 			};
@@ -126,10 +132,20 @@ public class Bend90deg {
 		fig1.renderPlot();
 		fig1.run(true);
 		
+		
 		MatlabChart fig2 = new MatlabChart() ;
 		fig2.plot(xx, yyprime, "k");
 		fig2.renderPlot();
 		fig2.run(true);
+		
+		//************* calculating the curvature
+		double[] C = ArrayFunc.apply(t -> A/Math.pow(1+t*t, 1/(2*b)), yyprime) ;
+		double[] R = ArrayFunc.apply(t -> 1/t, C) ;
+		
+		MatlabChart fig3 = new MatlabChart() ;
+		fig3.plot(xx, R, "g");
+		fig3.renderPlot();
+		fig3.run(true);
 		
 	}
 	
