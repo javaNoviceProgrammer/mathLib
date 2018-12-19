@@ -7,7 +7,10 @@ import static mathLib.func.GammaFunc.*;
 import flanagan.integration.RungeKutta;
 import flanagan.roots.RealRoot;
 import flanagan.roots.RealRootFunction;
+import mathLib.fitting.interpol.LinearInterpolation1D;
 import mathLib.func.ArrayFunc;
+import mathLib.func.intf.RealFunction;
+import mathLib.ode.Richardson;
 import mathLib.ode.intf.DerivFunction1D;
 import mathLib.ode.intf.DerivnFunction1D;
 import mathLib.plot.MatlabChart;
@@ -138,14 +141,34 @@ public class Bend90deg {
 		fig2.renderPlot();
 		fig2.run(true);
 		
+		//************* finding the other half of y(x)
+		double[] ytilde = ArrayFunc.apply(t -> R0 - t, xx) ;
+		double[] xtilde = ArrayFunc.apply(t -> R0 - t, yy) ;
+		
+		double[] xtot = ArrayUtils.concat(xtilde, xx) ;
+		double[] ytot = ArrayUtils.concat(ytilde, yy) ;
+		
+		MatlabChart fig3 = new MatlabChart() ;
+		fig3.plot(xtot, ytot, "m");
+		fig3.renderPlot();
+		fig3.run(true);
+		fig3.markerON();
+		
 		//************* calculating the curvature
 		double[] C = ArrayFunc.apply(t -> A/Math.pow(1+t*t, 1/(2*b)), yyprime) ;
 		double[] R = ArrayFunc.apply(t -> 1/t, C) ;
 		
-		MatlabChart fig3 = new MatlabChart() ;
-		fig3.plot(xx, R, "g");
-		fig3.renderPlot();
-		fig3.run(true);
+		MatlabChart fig4 = new MatlabChart() ;
+		fig4.plot(xx, C, "g");
+		fig4.renderPlot();
+		fig4.run(true);
+		
+		//************* calculating the complete curve
+		LinearInterpolation1D interpolateY = new LinearInterpolation1D(xtot, ytot) ;
+		RealFunction yprime = t -> Richardson.deriv(z -> interpolateY.interpolate(z), t) ;
+		RealFunction ydoubleprime = t -> Richardson.deriv2(z -> interpolateY.interpolate(z), t) ;
+		
+		RealFunction radius = t -> Math.pow(1+yprime.evaluate(t)*yprime.evaluate(t), 1.5)/Math.abs(ydoubleprime.evaluate(t)) ;
 		
 	}
 	
