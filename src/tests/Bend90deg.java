@@ -94,12 +94,13 @@ public class Bend90deg {
 		
 		RealRoot root = new RealRoot() ;
 		double x0 = root.bisect(funcX0, 0, R0) ;
-		System.out.println(x0);
+		System.out.println("x0 = " + x0);
 		
 		
 		//************ now calculating the bend
 		
 		double A = (a1-a2)/(R0 - x0) ;
+		System.out.println("A = " + A);
 		double[] xx = MathUtils.linspace(x0, R0*0.995, 100) ;
 		xx = ArrayUtils.concat(xx, MathUtils.linspace(0.995*R0, R0, 200)) ;
 		double[] yy = new double[xx.length] ;
@@ -169,6 +170,12 @@ public class Bend90deg {
 		RealFunction ydoubleprime = t -> Richardson.deriv2(z -> interpolateY.interpolate(z), t) ;
 		
 		RealFunction radius = t -> Math.pow(1+yprime.evaluate(t)*yprime.evaluate(t), 1.5)/Math.abs(ydoubleprime.evaluate(t)) ;
+		
+//		MatlabChart fig5 = new MatlabChart() ;
+//		fig5.plot(xtot, ArrayFunc.apply(t -> yprime.evaluate(t), xtot), "g");
+//		fig5.plot(xtot, ArrayFunc.apply(t -> ydoubleprime.evaluate(t), xtot), "r");
+//		fig5.renderPlot();
+//		fig5.run(true);
 		
 	}
 	
