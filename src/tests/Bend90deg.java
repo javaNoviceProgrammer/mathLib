@@ -21,7 +21,7 @@ public class Bend90deg {
 	public static void main(String[] args) {
 		double b = 2.49 ;
 		double xi = (3.0*b-1.0)/(2.0*b) ;
-		double R0 = 5 ;
+		double R0 = 4 ;
 		double a1 = sqrt(Math.PI)/2.0 * gamma(xi-0.5)/gamma(xi) ;
 		double a2 = 0.73669 ;
 		System.out.println(a1-a2);
@@ -160,7 +160,7 @@ public class Bend90deg {
 		double[] R = ArrayFunc.apply(t -> 1/t, C) ;
 		
 		MatlabChart fig4 = new MatlabChart() ;
-		fig4.plot(xx, C, "g");
+		fig4.plot(xx, R, "g");
 		fig4.renderPlot();
 		fig4.run(true);
 		
