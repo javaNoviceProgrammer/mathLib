@@ -48,13 +48,15 @@ public class HyperGeometric2F1 {
 //		fig.plot(x, y);
 //		fig.RenderPlot();
 //		fig.run(true);
-		
-		double x = 100.0 ;
-		System.out.println(x * hg.getValue(-x*x));
-		
+
+//		double x = 100.0 ;
+//		System.out.println(x * hg.getValue(-x*x));
+
+		System.out.println(hg.getValue(-10));
+
 //		double[] b = MathUtils.linspace(1.1, 10, 10) ;
 //		RealFunction func = new RealFunction() {
-//			
+//
 //			@Override
 //			public double evaluate(double b) {
 //				HyperGeometric2F1 hg = new HyperGeometric2F1(0.5, (3*b-1)/(2*b), 1.5) ;
@@ -69,5 +71,6 @@ public class HyperGeometric2F1 {
 //		fig.RenderPlot();
 //		fig.run(true);
 	}
+
 
 }
