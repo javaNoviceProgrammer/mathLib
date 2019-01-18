@@ -60,6 +60,7 @@ public class PilossGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PilossGUI() {
+		setResizable(false);
 		setTitle("PiLoss Switch");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
