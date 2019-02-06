@@ -377,9 +377,10 @@ public class SFG {
 		int from = nodesName.indexOf(nodeFrom) + 1 ;
 		int to = nodesName.indexOf(nodeTo) + 1 ;
 		double eps = 1e-8 ;
-		if(gain.abs() > eps){
-			graph[--from].add(new Edge(--to, gain));
-		}
+		if(gain != null)
+			if(gain.abs() > eps){
+				graph[--from].add(new Edge(--to, gain));
+			}
 	}
 
 	public void addArrow(String nodeFrom, String nodeTo, double gain){
