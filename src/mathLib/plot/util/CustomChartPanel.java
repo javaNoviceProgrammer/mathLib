@@ -54,6 +54,11 @@ public class CustomChartPanel extends ChartPanel {
 		exportToMATLAB.setActionCommand("exportToMATLAB");
 		exportToMATLAB.addActionListener(this);
 		getPopupMenu().add(exportToMATLAB);
+		// for exporting to Text file
+//		JMenuItem exportToTXT = new JMenuItem("Export to Text File");
+//		exportToTXT.setActionCommand("exportToTXT");
+//		exportToTXT.addActionListener(this);
+//		getPopupMenu().add(exportToTXT);
 
 		Border padding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		setBorder(padding);
@@ -105,7 +110,27 @@ public class CustomChartPanel extends ChartPanel {
 			} catch (Exception e) {
 			}
 
-		} else
+		} 
+//		else if (ae.getActionCommand().equals("exportToTXT")) {
+//			// get all XY data
+//			// check linewidths and colors
+//			int N = getChart().getXYPlot().getDataset().getSeriesCount();
+//			// get custom jfilechooser and set the path
+//			try {
+//				CustomJFileChooser fc = new CustomJFileChooser();
+//				fc.saveFile();
+//				FileOutput fo = new FileOutput(fc.getSelectedFile().getAbsolutePath() + ".txt");
+//				// print matlab commands to the m file
+//				for (int i = 0; i < N; i++) {
+//					exportSeries(i, fo);
+//				}
+//				fo.close();
+//				System.gc();
+//			} catch (Exception e) {
+//			}
+//
+//		} 
+		else
 			super.actionPerformed(ae);
 	}
 
