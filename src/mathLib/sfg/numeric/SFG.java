@@ -212,7 +212,7 @@ public class SFG {
 				}
 			}
 			level++;
-			output.append("====================================");
+			output.append("====================================\n");
 		}
 		return output.toString();
 	}
