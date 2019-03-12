@@ -50,7 +50,6 @@ public class SFG {
 			visited = new boolean[nodes];
 			nodesName = new ArrayList<>();
 		}
-
 	}
 
 	public ArrayList<String> getNodes(){
@@ -129,7 +128,6 @@ public class SFG {
 		if (allLoops == null) {
 			constructLoops();
 		}
-
 		int level = 1;
 		StringBuilder output = new StringBuilder();
 		for (ArrayList<Integer> loop : allLoops) {
@@ -159,7 +157,6 @@ public class SFG {
 		if (allLoops == null) {
 			constructLoops();
 		}
-
 		int level = 1;
 		StringBuilder output = new StringBuilder();
 		for (ArrayList<Integer> loop : allLoops) {
@@ -286,7 +283,6 @@ public class SFG {
 		for (String a : remove) {
 			orignal.put(a, true);
 		}
-
 		int levels = allLoops.size();
 		if(!supressOutputs){
 			System.out.println("Delta "+(num+1));
@@ -491,7 +487,6 @@ public class SFG {
 		int PREV = prev;
 		Stack<Integer> removeList = new Stack<>(); // repeated paths to be
 													// removed
-
 		for (; prev < forwardPaths.size(); prev++) {
 
 			String[] recentPath = (recent = forwardPaths.get(prev)).getPath()
