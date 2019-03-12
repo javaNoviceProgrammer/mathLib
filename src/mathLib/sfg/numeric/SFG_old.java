@@ -9,7 +9,7 @@ import java.util.Stack;
 import mathLib.numbers.Complex;
 
 
-public class SFG {
+public class SFG_old {
 
 	private ArrayList<Edge>[] graph;
 	private ArrayList<Path> forwardPaths, individualLoops;
@@ -21,7 +21,7 @@ public class SFG {
 	private boolean supressOutputs = true ;
 
 	@SuppressWarnings("unchecked")
-	public SFG(int nodes, ArrayList<String> names) {
+	public SFG_old(int nodes, ArrayList<String> names) {
 		graph = new ArrayList[nodes];
 		for (int i = 0; i < nodes; i++) {
 			graph[i] = new ArrayList<>();
@@ -31,7 +31,7 @@ public class SFG {
 	}
 
 	@SuppressWarnings("unchecked")
-	public SFG(ArrayList<String> names) {
+	public SFG_old(ArrayList<String> names) {
 		if(names != null){
 			int nodes = names.size() ;
 			graph = new ArrayList[nodes];
@@ -62,7 +62,7 @@ public class SFG {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void append(SFG sfg){
+	public void append(SFG_old sfg){
 		int M = nodesName.size() ;
 		int N = sfg.getNodes().size() ;
 		nodesName.addAll(sfg.getNodes()) ;
@@ -89,13 +89,13 @@ public class SFG {
 		this.deltaM = null ;
 	}
 
-	public SFG combine(SFG sfg){
+	public SFG_old combine(SFG_old sfg){
 		ArrayList<String> newNodes = new ArrayList<>() ;
 		newNodes.addAll(nodesName) ;
 		newNodes.addAll(sfg.getNodes()) ;
 		int M = nodesName.size() ;
 		int N = sfg.getNodes().size() ;
-		SFG newSFG = new SFG(newNodes) ;
+		SFG_old newSFG = new SFG_old(newNodes) ;
 		for(int i=0; i<M; i++){
 			for(int j=0; j<graph[i].size(); j++){
 				newSFG.addArrow(i+1, graph[i].get(j).getTo()+1, graph[i].get(j).getGain());
