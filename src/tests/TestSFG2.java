@@ -1,23 +1,23 @@
 package tests;
 
-import static mathLib.func.symbolic.FMath.*;
-
-import mathLib.sfg.symbolic.SFG;
+import mathLib.sfg.numeric.SFG;
 import mathLib.util.StringUtils;
+import static mathLib.numbers.Complex.*;
 
-public class TestSFG {
+public class TestSFG2 {
 	public static void main(String[] args) {
 
 
 		String[] nodes = {"I", "A", "B", "C", "D", "O"} ;
 		SFG sfg = new SFG(StringUtils.toArrayList(nodes)) ;
-		sfg.addArrow("I", "A", C(1));
-		sfg.addArrow("A", "B", s);
-		sfg.addArrow("B", "C", s);
-		sfg.addArrow("C", "A", C(-1));
-		sfg.addArrow("A", "D", C(2));
-		sfg.addArrow("D", "C", s);
-		sfg.addArrow("C", "O", C(1));
+		sfg.supressAll(false);
+		sfg.addArrow("I", "A", 1);
+		sfg.addArrow("A", "B", j);
+		sfg.addArrow("B", "C", 2+j);
+		sfg.addArrow("C", "A", -1);
+		sfg.addArrow("A", "D", 2);
+		sfg.addArrow("D", "C", null);
+		sfg.addArrow("C", "O", 1);
 		sfg.buildForwardPaths("I", "O");
 
 		System.out.println(sfg.getGain());

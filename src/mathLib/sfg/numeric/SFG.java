@@ -145,7 +145,7 @@ public class SFG {
 						output.append(" , ").append(individualLoops.get(loop.get(i + j)).getPath());
 						gain = gain.times(individualLoops.get(loop.get(i+j)).getGain()) ;
 					}
-					output.append(" (And its/their total Gain = ").append(gain);
+					output.append(" (total Gain = ").append(gain);
 					output.append(")\n");
 				}
 			}
@@ -212,12 +212,12 @@ public class SFG {
 				}
 			}
 			level++;
-			output.append("====================================\n");
+			output.append("====================================");
 		}
 		return output.toString();
 	}
 
-	public Complex computeGain(int src, int dest) {
+	public Complex computeForwardGain(int src, int dest) {
 		if (deltaM == null) {
 			deltaM = new Complex[forwardPaths.size()+1];
 			int path = 0;
@@ -288,9 +288,10 @@ public class SFG {
 		}
 
 		int levels = allLoops.size();
-		if(!supressOutputs){System.out.println("Delta "+(num+1));}
+		if(!supressOutputs){
+			System.out.println("Delta "+(num+1));
+			}
 		for (int level = 0; level < levels; level++) {
-
 			ArrayList<Integer> cur = allLoops.get(level);
 			Complex brackerGain = Complex.ZERO ;
 			for (int i = 0; i < cur.size(); i += (level + 1)) {
@@ -301,7 +302,9 @@ public class SFG {
 						termGain = Complex.ZERO;
 						break;
 					}else{
-						if(!supressOutputs){System.out.println("UnTouched : "+individualLoops.get(cur.get(i+j)).getPath());}
+						if(!supressOutputs){
+							System.out.println("UnTouched : "+individualLoops.get(cur.get(i+j)).getPath());
+							}
 					}
 					termGain = termGain.times(individualLoops.get(cur.get(i + j)).getGain()) ;
 				}
@@ -413,20 +416,6 @@ public class SFG {
 		return output.toString();
 	}
 
-//	public String printForwardPaths(String nodeSrc, String nodeDest) {
-//		int src = nodesName.indexOf(nodeSrc) + 1 ;
-//		int dest = nodesName.indexOf(nodeDest) + 1 ;
-//		if (forwardPaths == null)
-//			buildForwardPaths(src, dest);
-//		int i = 1;
-//		StringBuilder output = new StringBuilder();
-//		for (Path path : forwardPaths) {
-//			output.append("Forward Path #").append(i++).append(": ").append(path.getPath());
-//			output.append(" AND Gain = ").append(path.getGain()).append("\n");
-//		}
-//		return output.toString();
-//	}
-
 	public String printForwardPaths() {
 		int i = 1;
 		StringBuilder output = new StringBuilder();
@@ -444,7 +433,54 @@ public class SFG {
 			output.append("Forward Path #").append(i++).append(": ").append(path.getPath());
 			output.append("\n");
 		}
+		output.append("====================================");
 		return output.toString();
+	}
+
+	public String printCofactors() {
+		StringBuilder sb = new StringBuilder() ;
+		for(int num=0; num<deltaM.length-1; num++){
+			int sign = -1;
+			Complex delta = Complex.ONE ;
+
+			if(allLoops==null){
+				printAllLoops();
+			}
+
+			orignal = new Hashtable<>(); // remove list
+			String[] remove = forwardPaths.get(num).getPath().split(" ");
+
+			for (String a : remove) {
+				orignal.put(a, true);
+			}
+
+			int levels = allLoops.size();
+			for (int level = 0; level < levels; level++) {
+				ArrayList<Integer> cur = allLoops.get(level);
+				Complex brackerGain = Complex.ZERO ;
+				for (int i = 0; i < cur.size(); i += (level + 1)) {
+					Complex termGain = Complex.ONE ;
+					for (int j = 0; j <= level; j++) {
+						if (isTouched(individualLoops.get(cur.get(i + j)).getPath()
+								.split(" "))) {
+							termGain = Complex.ZERO;
+							sb.append("Delta "+(num+1) +": " + 1+"\n") ;
+							break;
+						}else{
+							sb.append("Delta "+(num+1) +": " + individualLoops.get(cur.get(i+j)).getPath()+"\n") ;
+						}
+						termGain = termGain.times(individualLoops.get(cur.get(i + j)).getGain()) ;
+					}
+
+					brackerGain = brackerGain.plus(termGain) ;
+
+				}
+				delta = delta.plus(brackerGain.times(sign)) ;
+				sign *= -1;
+			}
+		}
+		sb.append("====================================");
+		return sb ;
 	}
 
 	public void buildForwardPaths(int src, int dest) {
