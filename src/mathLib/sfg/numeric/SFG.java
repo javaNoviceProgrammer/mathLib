@@ -160,7 +160,6 @@ public class SFG {
 		int level = 1;
 		StringBuilder output = new StringBuilder();
 		for (ArrayList<Integer> loop : allLoops) {
-
 			output.append("Level " + level).append(" Untouched Loops:\n");
 			if (!loop.isEmpty()) {
 				int cnt=1;
@@ -212,6 +211,46 @@ public class SFG {
 			output.append("====================================\n");
 		}
 		return output.toString();
+	}
+
+	private String getSign(int x) {
+		if(x%2 ==0)
+			return "+" ;
+		else
+			return "-" ;
+	}
+
+	public String printDelta_compactForm() {
+		if (allLoops == null) {
+			constructLoops();
+		}
+		Map<String, String> map = new HashMap<>() ;
+		int level = 1;
+		StringBuilder delta = new StringBuilder();
+		delta.append("Delta = 1") ;
+		for (ArrayList<Integer> loop : allLoops) {
+			if (!loop.isEmpty()) {
+				int cnt=1;
+				for (int i = 0; i < loop.size(); i += level) {
+					if(level==1){
+						delta.append(getSign(level)+"L").append(cnt);
+						map.put(individualLoops.get(loop.get(i)).getPath(), "L"+cnt) ;
+					}
+					else{
+						delta.append(getSign(level)+map.get(individualLoops.get(loop.get(i)).getPath())) ;
+						for (int j = 1; j < level; j++) {
+							delta.append("*");
+							delta.append(map.get(individualLoops.get(loop.get(i + j)).getPath()));
+
+						}
+					}
+					cnt++ ;
+				}
+			}
+			level++;
+		}
+		delta.append("\n====================================");
+		return delta ;
 	}
 
 	public Complex computeForwardGain(int src, int dest) {
