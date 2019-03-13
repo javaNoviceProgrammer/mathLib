@@ -23,6 +23,7 @@ public class TestSFG {
 		System.out.println(sfg.getGain());
 
 		System.out.println(sfg.printAllLoops_compactForm());
+
 	}
 
 }

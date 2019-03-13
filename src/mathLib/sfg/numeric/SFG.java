@@ -308,17 +308,14 @@ public class SFG {
 		return gain ;
 	}
 
-	private Complex computeDelta(int num) {
+	private Complex computeDelta(int num) { // this calculates all the co-factors
 		int sign = -1;
 		Complex delta = Complex.ONE ;
-
 		if(allLoops==null){
 			printAllLoops();
 		}
-
 		orignal = new Hashtable<>(); // remove list
 		String[] remove = forwardPaths.get(num).getPath().split(" ");
-
 		for (String a : remove) {
 			orignal.put(a, true);
 		}
@@ -343,9 +340,7 @@ public class SFG {
 					}
 					termGain = termGain.times(individualLoops.get(cur.get(i + j)).getGain()) ;
 				}
-
 				brackerGain = brackerGain.plus(termGain) ;
-
 			}
 			delta = delta.plus(brackerGain.times(sign)) ;
 			sign *= -1;
@@ -356,28 +351,22 @@ public class SFG {
 
 	public Complex computeDelta() {
 		constructLoops();
-
 		int sign = -1;
 		Complex delta = Complex.ONE ;
 		int levels = allLoops.size();
 		for (int level = 0; level < levels; level++) {
-
 			ArrayList<Integer> cur = allLoops.get(level);
-
 			Complex bracketGain = Complex.ZERO ;
 			for (int i = 0; i < cur.size(); i += (level + 1)) {
 				Complex termGain = individualLoops.get(cur.get(i)).getGain();
 				for (int j = 1; j <= level; j++) {
 					termGain = termGain.times(individualLoops.get(cur.get(i + j)).getGain()) ;
 				}
-
 				bracketGain = bracketGain.plus(termGain) ;
 			}
-
 			delta = delta.plus(bracketGain.times(sign)) ;
 			sign *= -1;
 		}
-
 		return deltaM[0]=delta;
 	}
 
@@ -637,7 +626,6 @@ public class SFG {
 						nextLevel.add(currentLevel.get(i + j));
 					}
 					nextLevel.add(zeroLevel.get(k));
-
 				}
 			}
 		}
