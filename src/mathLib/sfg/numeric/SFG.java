@@ -358,7 +358,7 @@ public class SFG {
 		Map<String, String> map = new HashMap<>() ;
 		int level = 1;
 		StringBuilder delta = new StringBuilder();
-		delta.append("Delta " + (num+1) + " = 1") ;
+		delta.append("Delta #" + (num+1) + " = 1") ;
 		for (ArrayList<Integer> loop : allLoops) {
 			if (!loop.isEmpty()) {
 				int cnt=1;
@@ -368,7 +368,7 @@ public class SFG {
 						if (isTouched(individualLoops.get(loop.get(i)).getPath().split(" "))) {
 							break;
 						}else{
-							delta.append(getSign(level)+"L").append(i);
+							delta.append(getSign(level)+"L").append(cnt);
 						}
 					}
 					else{
