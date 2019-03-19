@@ -28,8 +28,8 @@ public class TestSFG2 {
 
 		System.out.print(sfg.printAllLoops_compactForm());
 		System.out.println(sfg.printDelta_compactForm());
-		String[] st = sfg.printAllLoops_compactForm().split("\n") ;
-		System.out.println(st.length);
+		System.out.println(sfg.printForwardPaths_noGains());
+		System.out.println(sfg.printCofactors());
 	}
 
 }

@@ -50,7 +50,6 @@ public class SFG_old {
 			visited = new boolean[nodes];
 			nodesName = new ArrayList<>();
 		}
-
 	}
 
 	public ArrayList<String> getNodes(){
@@ -129,7 +128,6 @@ public class SFG_old {
 		if (allLoops == null) {
 			constructLoops();
 		}
-
 		int level = 1;
 		StringBuilder output = new StringBuilder();
 		for (ArrayList<Integer> loop : allLoops) {
@@ -159,11 +157,9 @@ public class SFG_old {
 		if (allLoops == null) {
 			constructLoops();
 		}
-
 		int level = 1;
 		StringBuilder output = new StringBuilder();
 		for (ArrayList<Integer> loop : allLoops) {
-
 			output.append("Level " + level).append(" Untouched Loops:\n");
 			if (!loop.isEmpty()) {
 				int cnt=1;
@@ -215,6 +211,46 @@ public class SFG_old {
 			output.append("====================================\n");
 		}
 		return output.toString();
+	}
+
+	private String getSign(int x) {
+		if(x%2 ==0)
+			return "+" ;
+		else
+			return "-" ;
+	}
+
+	public String printDelta_compactForm() {
+		if (allLoops == null) {
+			constructLoops();
+		}
+		Map<String, String> map = new HashMap<>() ;
+		int level = 1;
+		StringBuilder delta = new StringBuilder();
+		delta.append("Delta = 1") ;
+		for (ArrayList<Integer> loop : allLoops) {
+			if (!loop.isEmpty()) {
+				int cnt=1;
+				for (int i = 0; i < loop.size(); i += level) {
+					if(level==1){
+						delta.append(getSign(level)+"L").append(cnt);
+						map.put(individualLoops.get(loop.get(i)).getPath(), "L"+cnt) ;
+					}
+					else{
+						delta.append(getSign(level)+map.get(individualLoops.get(loop.get(i)).getPath())) ;
+						for (int j = 1; j < level; j++) {
+							delta.append("*");
+							delta.append(map.get(individualLoops.get(loop.get(i + j)).getPath()));
+
+						}
+					}
+					cnt++ ;
+				}
+			}
+			level++;
+		}
+		delta.append("\n====================================");
+		return delta ;
 	}
 
 	public Complex computeForwardGain(int src, int dest) {
@@ -272,21 +308,17 @@ public class SFG_old {
 		return gain ;
 	}
 
-	private Complex computeDelta(int num) {
+	private Complex computeDelta(int num) { // this calculates all the co-factors
 		int sign = -1;
 		Complex delta = Complex.ONE ;
-
 		if(allLoops==null){
 			printAllLoops();
 		}
-
 		orignal = new Hashtable<>(); // remove list
 		String[] remove = forwardPaths.get(num).getPath().split(" ");
-
 		for (String a : remove) {
 			orignal.put(a, true);
 		}
-
 		int levels = allLoops.size();
 		if(!supressOutputs){
 			System.out.println("Delta "+(num+1));
@@ -308,9 +340,7 @@ public class SFG_old {
 					}
 					termGain = termGain.times(individualLoops.get(cur.get(i + j)).getGain()) ;
 				}
-
 				brackerGain = brackerGain.plus(termGain) ;
-
 			}
 			delta = delta.plus(brackerGain.times(sign)) ;
 			sign *= -1;
@@ -321,28 +351,22 @@ public class SFG_old {
 
 	public Complex computeDelta() {
 		constructLoops();
-
 		int sign = -1;
 		Complex delta = Complex.ONE ;
 		int levels = allLoops.size();
 		for (int level = 0; level < levels; level++) {
-
 			ArrayList<Integer> cur = allLoops.get(level);
-
 			Complex bracketGain = Complex.ZERO ;
 			for (int i = 0; i < cur.size(); i += (level + 1)) {
 				Complex termGain = individualLoops.get(cur.get(i)).getGain();
 				for (int j = 1; j <= level; j++) {
 					termGain = termGain.times(individualLoops.get(cur.get(i + j)).getGain()) ;
 				}
-
 				bracketGain = bracketGain.plus(termGain) ;
 			}
-
 			delta = delta.plus(bracketGain.times(sign)) ;
 			sign *= -1;
 		}
-
 		return deltaM[0]=delta;
 	}
 
@@ -491,7 +515,6 @@ public class SFG_old {
 		int PREV = prev;
 		Stack<Integer> removeList = new Stack<>(); // repeated paths to be
 													// removed
-
 		for (; prev < forwardPaths.size(); prev++) {
 
 			String[] recentPath = (recent = forwardPaths.get(prev)).getPath()
@@ -603,7 +626,6 @@ public class SFG_old {
 						nextLevel.add(currentLevel.get(i + j));
 					}
 					nextLevel.add(zeroLevel.get(k));
-
 				}
 			}
 		}

@@ -308,7 +308,7 @@ public class SFG {
 		return gain ;
 	}
 
-	private Complex computeDelta(int num) { // this calculates all the co-factors
+	private Complex computeDelta(int num) { // this calculates all the co-factors (starts from 0: delta_1)
 		int sign = -1;
 		Complex delta = Complex.ONE ;
 		if(allLoops==null){
@@ -347,6 +347,57 @@ public class SFG {
 		}
 		if(!supressOutputs){System.out.println("Delta "+(num+1)+" = "+delta);}
 		return delta;
+	}
+	
+	private String printDelta(int num) { // this calculates all the co-factors (starts from 0: delta_1)
+		orignal = new Hashtable<>(); // remove list
+		String[] remove = forwardPaths.get(num).getPath().split(" ");
+		for (String a : remove) {
+			orignal.put(a, true);
+		}
+		Map<String, String> map = new HashMap<>() ;
+		int level = 1;
+		StringBuilder delta = new StringBuilder();
+		delta.append("Delta " + (num+1) + " = 1") ;
+		for (ArrayList<Integer> loop : allLoops) {
+			if (!loop.isEmpty()) {
+				int cnt=1;
+				for (int i = 0; i < loop.size(); i += level) {
+					if(level==1){
+						map.put(individualLoops.get(loop.get(i)).getPath(), "L"+cnt) ;
+						if (isTouched(individualLoops.get(loop.get(i)).getPath().split(" "))) {
+							break;
+						}else{
+							delta.append(getSign(level)+"L").append(i);
+						}
+					}
+					else{
+						for (int j = 1; j < level; j++) {
+							if (isTouched(individualLoops.get(loop.get(i + j)).getPath().split(" "))) {
+								break;
+							}else{
+								delta.append(getSign(level)+map.get(individualLoops.get(loop.get(i)).getPath())) ;
+								delta.append("*");
+								delta.append(map.get(individualLoops.get(loop.get(i + j)).getPath()));
+							}
+						}
+					}
+					cnt++ ;
+				}
+				
+			}
+			level++;
+		}
+
+		return delta ;
+	}
+	
+	public String printCofactors() {
+		StringBuilder sb = new StringBuilder() ;
+		for(int i=0; i<forwardPaths.size(); i++)
+			sb.append(printDelta(i)+"\n") ;
+		sb.append("====================================");
+		return sb ;
 	}
 
 	public Complex computeDelta() {
