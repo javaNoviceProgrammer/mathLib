@@ -187,8 +187,8 @@ public class SFG {
 		int level = 1;
 		StringBuilder output = new StringBuilder();
 		for (ArrayList<Integer> loop : allLoops) {
-			output.append("Level " + level).append(" Untouched Loops:\n");
 			if (!loop.isEmpty()) {
+				output.append("Level " + level).append(" Untouched Loops:\n");
 				int cnt=1;
 				for (int i = 0; i < loop.size(); i += level) {
 					if(level==1){
@@ -208,7 +208,8 @@ public class SFG {
 				}
 			}
 			level++;
-			output.append("====================================\n");
+			if (!loop.isEmpty())
+				output.append("====================================\n");
 		}
 		return output.toString();
 	}
