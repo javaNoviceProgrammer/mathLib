@@ -350,7 +350,7 @@ public class SFG {
 		return delta;
 	}
 	
-	private String printDelta(int num) { // this calculates all the co-factors (starts from 0: delta_1)
+	public String printDelta(int num) { // this calculates all the co-factors (starts from 0: delta_1)
 		orignal = new Hashtable<>(); // remove list
 		String[] remove = forwardPaths.get(num).getPath().split(" ");
 		for (String a : remove) {
@@ -360,30 +360,26 @@ public class SFG {
 		int level = 1;
 		StringBuilder delta = new StringBuilder();
 		delta.append("Delta #" + (num+1) + " = 1") ;
+		for(int i=0; i<individualLoops.size(); i++) {
+			map.put(individualLoops.get(i).getPath(), "L"+(i+1)) ;
+		}
 		for (ArrayList<Integer> loop : allLoops) {
 			if (!loop.isEmpty()) {
-				int cnt=1;
 				for (int i = 0; i < loop.size(); i += level) {
 					if(level==1){
-						map.put(individualLoops.get(loop.get(i)).getPath(), "L"+cnt) ;
-						if (isTouched(individualLoops.get(loop.get(i)).getPath().split(" "))) {
-							break;
-						}else{
-							delta.append(getSign(level)+"L").append(cnt);
+						if (!isTouched(individualLoops.get(loop.get(i)).getPath().split(" "))) {
+							delta.append(getSign(level)+"L").append(i+1);
 						}
 					}
 					else{
 						for (int j = 1; j < level; j++) {
-							if (isTouched(individualLoops.get(loop.get(i + j)).getPath().split(" "))) {
-								break;
-							}else{
+							if (!isTouched(individualLoops.get(loop.get(i + j)).getPath().split(" "))) {
 								delta.append(getSign(level)+map.get(individualLoops.get(loop.get(i)).getPath())) ;
 								delta.append("*");
 								delta.append(map.get(individualLoops.get(loop.get(i + j)).getPath()));
 							}
 						}
 					}
-					cnt++ ;
 				}
 				
 			}
