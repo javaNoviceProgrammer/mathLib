@@ -15,6 +15,7 @@ import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 
 import mathLib.func.symbolic.intf.MathFunc;
 
+@SuppressWarnings("deprecation")
 public class FMin extends FBinaryOp {
 	/**
 	 * Construct function: min(f(x), g(y))

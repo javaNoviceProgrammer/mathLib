@@ -16,6 +16,7 @@ import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 import mathLib.func.symbolic.FMath;
 import mathLib.func.symbolic.intf.MathFunc;
 
+@SuppressWarnings("deprecation")
 public class FAcos extends FUniaryOp {
 	/**
 	 * Construct function : acos(g(x))

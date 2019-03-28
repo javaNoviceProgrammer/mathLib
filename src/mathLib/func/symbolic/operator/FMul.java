@@ -16,6 +16,7 @@ import mathLib.fem.assembler.AssembleParam;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.intf.MathFunc;
 
+@SuppressWarnings("deprecation")
 public class FMul extends FBinaryOp {
 	public FMul(MathFunc left, MathFunc right) {
 		super(left, right);

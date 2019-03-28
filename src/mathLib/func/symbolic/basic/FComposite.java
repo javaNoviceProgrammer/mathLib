@@ -58,6 +58,7 @@ import mathLib.util.CompiledFunc;
  * The active variable of the composite function is the variables
  * of the inner functions by default.
  */
+@SuppressWarnings("deprecation")
 public class FComposite extends MultiVarFunc {
 	public MathFunc fOuter;
 	public Map<String,MathFunc> fInners;
@@ -122,7 +123,6 @@ public class FComposite extends MultiVarFunc {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public double apply(Variable v, Map<Object,Object> cache) {
 		
@@ -130,10 +130,10 @@ public class FComposite extends MultiVarFunc {
 		//	throw new FutureyeException("\nERROR:\n fOuter varNames list is empty!");
 		//}
 		
-		//bugfix 增加或�?�件 
+		//bugfix 增加或�?�件 
 		//bugfix 3/19/12
-		//bug?3/20/12  v=[r], fOuter.varNames()=[s,t], 但fOuter的表达�?�?�有r, 这�?情况下会进入else分支，
-		//一般�?�说是�?会有这�?情况的，如果确实有这�?情况，需�?在函数类增加activeVarNames
+		//bug?3/20/12  v=[r], fOuter.varNames()=[s,t], 但fOuter的表达�?�?�有r, 这�?情况下会进入else分支，
+		//一般�?�说是�?会有这�?情况的，如果确实有这�?情况，需�?在函数类增加activeVarNames
 		//if(fOuter.varNames().containsAll(v.getValues().keySet()) ||
 		//		v.getValues().keySet().containsAll(fOuter.varNames())) {
 		if(v.getNameValuePairs().keySet().containsAll(fOuter.getVarNames())) {
@@ -160,7 +160,7 @@ public class FComposite extends MultiVarFunc {
 
 	@Override
 	public double[] applyAll(VariableArray v, Map<Object,Object> cache) {
-		//bugfix 增加或�?�件
+		//bugfix 增加或�?�件
 		if(v.getValues().keySet().containsAll(fOuter.getVarNames())) {
 			return fOuter.applyAll(v,cache);
 		} else {

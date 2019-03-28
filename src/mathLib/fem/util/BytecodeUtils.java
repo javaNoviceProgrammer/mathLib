@@ -24,6 +24,7 @@ import mathLib.func.symbolic.basic.FComposite;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.operator.FBinaryOp;
 
+@SuppressWarnings("deprecation")
 public class BytecodeUtils {
 	public static void postOrder(MathFunc func, List<MathFunc> list) {
 		if(func instanceof FBinaryOp) {

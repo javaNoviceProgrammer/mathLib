@@ -16,6 +16,7 @@ import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 import mathLib.func.symbolic.basic.FC;
 import mathLib.func.symbolic.intf.MathFunc;
 
+@SuppressWarnings("deprecation")
 public class FSqrt extends FUniaryOp {
 	/**
 	 * Construct function : sqrt(g(x))

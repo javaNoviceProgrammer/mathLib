@@ -16,6 +16,7 @@ import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 
 import mathLib.func.symbolic.intf.MathFunc;
 
+@SuppressWarnings("deprecation")
 public class FPow extends FBinaryOp {
 	/**
 	 * Construct function: pow(base(x), exp(y))

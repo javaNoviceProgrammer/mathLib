@@ -91,6 +91,7 @@ public class FX extends MathFuncBase {
 		return varName;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public InstructionHandle bytecodeGen(String clsName, MethodGen mg,
 			ConstantPoolGen cp, InstructionFactory factory,

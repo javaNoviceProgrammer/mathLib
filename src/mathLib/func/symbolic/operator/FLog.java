@@ -20,6 +20,7 @@ import mathLib.func.symbolic.intf.MathFunc;
  * The natural logarithm (base e) of an instance of MathFunc
  *
  */
+@SuppressWarnings("deprecation")
 public class FLog extends FUniaryOp {
 	/**
 	 * Construct function: log(g(x))

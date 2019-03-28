@@ -44,6 +44,7 @@ import mathLib.func.symbolic.operator.FMul;
 import mathLib.func.symbolic.operator.FSub;
 import mathLib.util.CompiledFunc;
 
+@SuppressWarnings("deprecation")
 public abstract class MathFuncBase implements MathFunc, Cloneable {
 
 	@Override

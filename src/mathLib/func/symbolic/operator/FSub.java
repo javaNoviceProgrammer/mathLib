@@ -17,6 +17,7 @@ import mathLib.fem.util.Constant;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.intf.MathFunc;
 
+@SuppressWarnings("deprecation")
 public class FSub extends FBinaryOp {
 	public FSub(MathFunc left, MathFunc right) {
 		super(left, right);

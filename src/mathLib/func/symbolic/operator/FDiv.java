@@ -16,6 +16,7 @@ import mathLib.fem.assembler.AssembleParam;
 import mathLib.func.symbolic.VariableArray;
 import mathLib.func.symbolic.intf.MathFunc;
 
+@SuppressWarnings("deprecation")
 public class FDiv extends FBinaryOp {
 	public FDiv(MathFunc left, MathFunc right) {
 		super(left, right);
