@@ -33,7 +33,7 @@ public class TriggerConversionGUI extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	public JPanel contentPane;
 	private JTextField triggerTextField;
 	private JTextField start;
 	private JTextField end;
