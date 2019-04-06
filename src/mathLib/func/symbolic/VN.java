@@ -3,6 +3,7 @@ package mathLib.func.symbolic;
 // VN: variable names
 
 public enum VN {
+
 	x{ public int getID() {return 0;} },
 	y{ public int getID() {return 1;} },
 	z{ public int getID() {return 2;} },
@@ -12,11 +13,11 @@ public enum VN {
 	u{ public int getID() {return 6;} },
 	v{ public int getID() {return 7;} },
 	w{ public int getID() {return 8;} };
-	
+
 	public static String[] names = {"x","y","z","r","s","t","u","v","w"};
-	
+
 	public abstract int getID();
-	
+
 	public static int getID(String ss) {
 		if("x".equals(ss)) return 0;
 		if("y".equals(ss)) return 1;
@@ -29,5 +30,5 @@ public enum VN {
 		if("w".equals(ss)) return 8;
 		return -1;
 	}
-	
+
 }
