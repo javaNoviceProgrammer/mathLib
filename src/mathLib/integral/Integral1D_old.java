@@ -13,7 +13,7 @@ import flanagan.integration.IntegralFunction;
 import flanagan.integration.Integration;
 import mathLib.util.MathUtils;
 
-public class Integral1D {
+public class Integral1D_old {
 
 	int numIntervals = 10 ; // the entire integral region is divided into this number of subintervals
 	int numPoints = 5 ; // each sub interval is divided into this number of pieces
@@ -39,7 +39,8 @@ public class Integral1D {
 		this.maxNumIterations = maxNumIterations ;
 	}
 
-	public Integral1D(
+	// constructor with integral function and start and end of integral
+	public Integral1D_old(
 			IntegralFunction func,
 			double x_start,
 			double x_end
@@ -49,6 +50,7 @@ public class Integral1D {
 		this.x_end = x_end ;
 	}
 
+	// we set the integration adaptive by setting an upper bound on the error
 	public double getIntegral(){
 		double result_final = 0 ;
 		double result_temp = getFirstGuess() ;
@@ -85,6 +87,12 @@ public class Integral1D {
 
 		return intervalIntegral.gaussQuad(numPoints) ;
 	}
+
+//	private double getInvervalIntegral(double x_start, double x_end){
+//
+//		GaussLobattoQuadrature intervalIntegral = new GaussLobattoQuadrature(func, x_start, x_end) ;
+//		return intervalIntegral.getIntegral() ;
+//	}
 
 	public int getNumberOfIterations(){
 		return numIterations ;
