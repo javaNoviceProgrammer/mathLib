@@ -1,18 +1,20 @@
 package mathLib.integral;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import flanagan.integration.IntegralFunction;
 import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 import mathLib.util.Timer;
 
-import static java.lang.Math.*;
-
 public class Integral1DArray {
 	
-	IntegralFunction1D func ;
+	IntegralFunction func ;
 	double start ;
 	Map<Integer, Double> cache ;
 	
@@ -23,7 +25,7 @@ public class Integral1DArray {
 	 */
 	
 	public Integral1DArray(
-			IntegralFunction1D func,
+			IntegralFunction func,
 			double start
 			) {
 		this.func = func ;
