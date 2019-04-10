@@ -16,28 +16,28 @@ import mathLib.util.MathUtils;
 import mathLib.util.Timer;
 
 public class FourierSeries {
-	
+
 	IntegralFunction1D func ;
 	double start, end, period ;
-	
+
 	// caching vastly improves the speed in certain cases
 	Map<Integer, Double> cacheAn = new HashMap<>() ;
 	Map<Integer, Double> cacheBn = new HashMap<>() ;
-	
+
 	public FourierSeries(RealFunction func, double periodStart, double periodEnd) {
 		this.start = periodStart ;
 		this.end = periodEnd ;
 		this.period = end-start ;
 		this.func = x -> func.evaluate(x*period) ;
 	}
-	
+
 	public FourierSeries(MathFunc func, double periodStart, double periodEnd) {
 		this.start = periodStart ;
 		this.end = periodEnd ;
 		this.period = end-start ;
 		this.func = x -> func.apply(x*period) ;
 	}
-	
+
 	public FourierSeries(String func, double periodStart, double periodEnd) {
 		this.start = periodStart ;
 		this.end = periodEnd ;
@@ -51,7 +51,7 @@ public class FourierSeries {
 			}
 		} ;
 	}
-	
+
 	public double An(int n) {
 		if(!cacheAn.isEmpty() && cacheAn.containsKey(n))
 			return cacheAn.get(n) ;
@@ -66,13 +66,13 @@ public class FourierSeries {
 			cacheAn.put(n, An(-n)) ;
 			return An(-n) ;
 		}
-		
+
 		funcFourier = x -> 2*func.function(x)*Math.cos(2*Math.PI*n*x) ;
 		double an = (new Integral1D(funcFourier, start/period, end/period)).getIntegral() ;
 		cacheAn.put(n, an) ;
-		return an ;	
+		return an ;
 	}
-	
+
 	public double Bn(int n) {
 		if(!cacheBn.isEmpty() && cacheBn.containsKey(n))
 			return cacheBn.get(n) ;
@@ -89,31 +89,31 @@ public class FourierSeries {
 		funcFourier = x -> 2*func.function(x)*Math.sin(2*Math.PI*n*x) ;
 		double bn = (new Integral1D(funcFourier, start/period, end/period)).getIntegral() ;
 		cacheBn.put(n, bn) ;
-		return bn ;	
+		return bn ;
 	}
-	
+
 	public Complex Cn(int n) {
 		if(n==0)
 			return An(0)-j*0 ;
-		
+
 		return (An(n)-j*Bn(n))/2.0 ;
 	}
-	
+
 	public RealFunction getTerm(int n) {
-		
-		RealFunction func = new RealFunction() {	
+
+		RealFunction func = new RealFunction() {
 			@Override
 			public double evaluate(double t) {
 				return An(n)*Math.cos(2*Math.PI/period*n*t) + Bn(n)*Math.sin(2*Math.PI/period*n*t);
 			}
 		};
-		
+
 		return func ;
 	}
-	
+
 	public RealFunction getSeries(int n) {
-		
-		RealFunction func = new RealFunction() {	
+
+		RealFunction func = new RealFunction() {
 			@Override
 			public double evaluate(double t) {
 				double sum = 0 ;
@@ -122,28 +122,28 @@ public class FourierSeries {
 				return sum ;
 			}
 		};
-		
+
 		return func ;
 	}
-	
-	
+
+
 	// for test
 	public static void main(String[] args) {
-		double start = -1.0 ;
-		double end = 1.0 ;
-		
+		double start = -3 ;
+		double end = 3 ;
+
 		RealFunction func = new RealFunction() {
 			@Override
 			public double evaluate(double x) {
-				if(x>= -0.5 && x <= 0.5)
-					return x*x ;
+				if(x>= -2 && x <= 2)
+					return x*Math.sin(x) ;
 				else
 					return 0.0 ;
 			}
 		};
-		
+
 		FourierSeries series = new FourierSeries(func, start, end) ;
-	
+
 		System.out.println(series.Cn(0));
 		System.out.println(series.Cn(1));
 		System.out.println(series.Cn(2));
@@ -153,25 +153,25 @@ public class FourierSeries {
 		System.out.println(series.Cn(6));
 		System.out.println(series.Cn(7));
 		System.out.println(series.Cn(8));
-		System.out.println(series.Cn(9));
-		
+		System.out.println(series.Cn(500));
+
 		Timer timer = new Timer() ;
 		timer.start();
-		
-		double[] x = MathUtils.linspace(start, end, 1000) ;
+
+		double[] x = MathUtils.linspace(start, end, 2000) ;
 		double[] y1 = ArrayFunc.apply(series.getSeries(200), x) ;
 		double[] y2 = ArrayFunc.apply(func, x) ;
-		
-		timer.stop(); 
+
+		timer.stop();
 		System.out.println(timer);
-		
+
 		MatlabChart fig = new MatlabChart() ;
 		fig.plot(x, y2, "r", 2f, "Exact");
 		fig.plot(x, y1, "b", 2f, "Series");
 		fig.renderPlot();
 		fig.run(true);
-		
+
 	}
-	
+
 
 }
