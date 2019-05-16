@@ -110,6 +110,7 @@ public class Edge extends GeoEntity1D<NodeLocal> {
 		return rlt;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public boolean containsNode(Node node) {
 		if(this.beginNode().equals(node))
 			return true;
