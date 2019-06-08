@@ -10,11 +10,11 @@ import mathLib.fem.core.intf.VecFiniteElement;
  */
 public class AssembleParam {
 	public VecFiniteElement fe;
-	public Element element; //current element which is being assemble
+	public Element element; //current element which is being assembled
 	public int trialDOFIdx; //local trial function index
 	public int testDOFIdx;  //local test function index
 
-	public Node node; //In some case, node is used instead of array of coordinates
+	public Node node; //In some cases, node is used instead of array of coordinates
 
 	public AssembleParam(Element e, int i, int j) {
 		this.element = e;
