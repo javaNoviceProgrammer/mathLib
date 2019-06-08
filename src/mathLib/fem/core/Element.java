@@ -34,7 +34,7 @@ import mathLib.matrix.algebra.intf.Vector;
 
 /**
  * <blockquote><pre>
- * Element of a triangulation
+ * Element of a mesh
  * </blockquote></pre>
  *
  */

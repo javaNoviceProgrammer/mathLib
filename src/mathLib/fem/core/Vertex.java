@@ -4,6 +4,7 @@ import mathLib.fem.core.geometry.Point;
 import mathLib.fem.util.Constant;
 
 public class Vertex implements Point {
+
 	protected int dim = 0;
 	protected double[] coords = new double[3];
 
@@ -24,27 +25,27 @@ public class Vertex implements Point {
 
 	}
 
-	public Vertex(int localIndex, double x,double ...coords) {
+	public Vertex(int localIndex, double x, double... coords) {
 		this.localIndex = localIndex;
 		this.coords[0] = x;
-		if(coords!=null && coords.length > 0) {
-			this.dim = 1+coords.length;
-			for(int i=0;i<coords.length;i++)
-				this.coords[1+i] = coords[i];
+		if (coords != null && coords.length > 0) {
+			this.dim = 1 + coords.length;
+			for (int i = 0; i < coords.length; i++)
+				this.coords[1 + i] = coords[i];
 		} else {
 			this.dim = 1;
 		}
 	}
 
 	public Vertex(int localIndex, NodeLocal localNode) {
-		set(localIndex,localNode);
+		set(localIndex, localNode);
 	}
 
-	public Vertex set(int localIndex, double ...coords) {
+	public Vertex set(int localIndex, double... coords) {
 		this.localIndex = localIndex;
-		if(coords!=null && coords.length > 0) {
+		if (coords != null && coords.length > 0) {
 			this.dim = coords.length;
-			for(int i=0;i<dim;i++)
+			for (int i = 0; i < dim; i++)
 				this.coords[i] = coords[i];
 		}
 		return this;
@@ -53,8 +54,8 @@ public class Vertex implements Point {
 	public Vertex set(int localIndex, NodeLocal localNode) {
 		this.localIndex = localIndex;
 		this.dim = localNode.dim();
-		for(int i=0;i<dim;i++)
-			coords[i] = localNode.coord(i+1);
+		for (int i = 0; i < dim; i++)
+			coords[i] = localNode.coord(i + 1);
 		this.refNodeLocal = localNode;
 		return this;
 	}
@@ -62,6 +63,7 @@ public class Vertex implements Point {
 	/**
 	 * get local index
 	 */
+
 	@Override
 	public int getIndex() {
 		return this.localIndex;
@@ -87,15 +89,15 @@ public class Vertex implements Point {
 
 	@Override
 	public double coord(int index) {
-		return coords[index-1];
+		return coords[index - 1];
 	}
 
 	@Override
 	public double[] coords() {
 		double[] rlt;
-		if(this.dim < 3) {
+		if (this.dim < 3) {
 			rlt = new double[dim];
-			for(int i=0;i<dim;i++)
+			for (int i = 0; i < dim; i++)
 				rlt[i] = this.coords[i];
 		} else
 			rlt = this.coords;
@@ -104,25 +106,25 @@ public class Vertex implements Point {
 
 	@Override
 	public void setCoord(int index, double value) {
-		this.coords[index-1] = value;
+		this.coords[index - 1] = value;
 	}
 
 	@Override
 	public boolean coordEquals(Point p) {
-		for(int i=1;i<=this.dim;i++) {
-			if(Math.abs(this.coord(i)-p.coord(i)) > Constant.eps)
+		for (int i = 1; i <= this.dim; i++) {
+			if (Math.abs(this.coord(i) - p.coord(i)) > Constant.eps)
 				return false;
 		}
 		return true;
 	}
 
 	public String toString() {
-		String s = "V"+this.localIndex;
-		if(this.refNodeLocal != null)
-			s += "<=>GN"+refNodeLocal.globalNode.globalIndex;
+		String s = "V" + this.localIndex;
+		if (this.refNodeLocal != null)
+			s += "<=>GN" + refNodeLocal.globalNode.globalIndex;
 		s += "( ";
-		for(int i=0;i<dim;i++)
-			s += String.valueOf(coords[i])+" ";
-		return s+")";
+		for (int i = 0; i < dim; i++)
+			s += String.valueOf(coords[i]) + " ";
+		return s + ")";
 	}
 }

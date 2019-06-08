@@ -42,6 +42,7 @@ Example:
 
  */
 public class CoordinateTransform {
+	
 	protected List<String> fromVarNames = null;
 	protected List<String> toVarNames = null;
 
@@ -383,7 +384,9 @@ public class CoordinateTransform {
 	}
 
 	public static class Jacobian2D extends MultiVarFunc {
+		
 		MathFunc[] funs = null;
+		
 		public Jacobian2D(MathFunc[] funs) {
 			this.funs = funs;
 			List<String> list = new ArrayList<String>();

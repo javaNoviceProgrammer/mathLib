@@ -8,6 +8,7 @@ import mathLib.fem.util.container.VertexList;
  *
  */
 public class GeoEntity0D implements GeoEntity {
+	
 	protected VertexList vertices = new VertexList();
 
 	public void addVertex(Vertex vertex) {

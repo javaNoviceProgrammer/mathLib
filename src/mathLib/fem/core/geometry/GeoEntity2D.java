@@ -5,10 +5,8 @@ import mathLib.fem.core.geometry.topology.Topology2D;
 import mathLib.fem.util.container.ObjList;
 import mathLib.fem.util.container.VertexList;
 
-public class GeoEntity2D<
-						TEdge extends GeoEntity1D<TNode>,
-						TNode extends Point
-						> extends GeoEntity0D {
+public class GeoEntity2D<TEdge extends GeoEntity1D<TNode>, TNode extends Point> extends GeoEntity0D {
+	
 	protected Topology2D topology = null;
 	protected ObjList<TEdge> edges = new ObjList<TEdge>();
 	protected ObjList<TNode> faceNodes = null;
@@ -31,24 +29,24 @@ public class GeoEntity2D<
 	}
 
 	public boolean containsEdge(TNode n1, TNode n2) {
-		for(TEdge edge : edges) {
+		for (TEdge edge : edges) {
 			VertexList vs = edge.getVertices();
 			Vertex v1 = vs.at(1);
 			Vertex v2 = vs.at(2);
-			if(v1.coordEquals(n1) && v2.coordEquals(n2))
+			if (v1.coordEquals(n1) && v2.coordEquals(n2))
 				return true;
 		}
 		return false;
 	}
 
 	public void addFaceNode(TNode node) {
-		if(this.faceNodes == null)
+		if (this.faceNodes == null)
 			this.faceNodes = new ObjList<TNode>();
 		this.faceNodes.add(node);
 	}
 
 	public void addAllFaceNodes(ObjList<TNode> faceNodes) {
-		if(this.faceNodes == null)
+		if (this.faceNodes == null)
 			this.faceNodes = new ObjList<TNode>();
 		this.faceNodes.clear();
 		this.faceNodes.addAll(faceNodes);
@@ -59,13 +57,13 @@ public class GeoEntity2D<
 	}
 
 	public void clearFaceNodes() {
-		if(this.faceNodes != null)
+		if (this.faceNodes != null)
 			this.faceNodes.clear();
 	}
 
 	public void clearAll() {
 		this.edges.clear();
-		if(this.faceNodes != null)
+		if (this.faceNodes != null)
 			this.faceNodes.clear();
 	}
 
@@ -78,6 +76,6 @@ public class GeoEntity2D<
 	}
 
 	public String toString() {
-		return "GeoEntity2D:"+this.vertices.toString();
+		return "GeoEntity2D:" + this.vertices.toString();
 	}
 }

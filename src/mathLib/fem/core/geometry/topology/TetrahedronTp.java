@@ -1,18 +1,11 @@
-/**
- * Copyright (c) 2010, nkliuyueming@gmail.com. All rights reserved.
- * 
- * 
- */
 package mathLib.fem.core.geometry.topology;
 
-/**
- * 四�?�体拓扑结构
- * @author liuyueming
- *
- */
 public class TetrahedronTp implements Topology3D {
+	
 	public static int[] vertices = {1,2,3,4};
+	
 	public static int[][] edges = {{1,2},{2,3},{3,1},{1,4},{2,4},{3,4}};
+	
 	public static int[][] faces = {{1,2,3},{1,2,4},{2,3,4},{3,1,4}};
 	
 	@Override

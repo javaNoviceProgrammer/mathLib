@@ -8,6 +8,7 @@ import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.Vector;
 
 public interface WeakFormOld {
+	
 	static enum ItemType {Domain, Border};
 
 	//--- Common approach providing weak form interfaces to assembler-----

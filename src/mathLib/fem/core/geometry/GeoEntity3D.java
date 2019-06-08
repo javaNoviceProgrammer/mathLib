@@ -10,6 +10,7 @@ public class GeoEntity3D<
 						TEdge extends GeoEntity1D<TNode>,
 						TNode extends Point
 						> extends GeoEntity0D {
+	
 	protected Topology3D topology = null;
 
 	protected ObjList<TFace> faces = new ObjList<TFace>();

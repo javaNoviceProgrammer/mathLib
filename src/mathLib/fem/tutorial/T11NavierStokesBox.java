@@ -48,7 +48,6 @@ import mathLib.util.io.MeshReader;
  *    preconditioned-stabilized incompressible NaiverStokes solver using equal-order-interpolation
  *    velocity pressure elements
  *
- * @author liuyueming
  *
  */
 public class T11NavierStokesBox {

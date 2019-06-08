@@ -1,21 +1,14 @@
-/**
- * Copyright (c) 2010, nkliuyueming@gmail.com. All rights reserved.
- * 
- * 
- */
 package mathLib.fem.core.geometry.topology;
 
-/**
- * 六�?�体拓扑结构
- * @author liuyueming
- *
- */
 public class HexahedronTp implements Topology3D {
+	
 	public static int[] vertices = {1,2,3,4,5,6,7,8};
+	
 	public static int[][] edges = {
 		{1,2},{2,3},{3,4},{4,1},
 		{5,6},{6,7},{7,8},{8,5},
 		{1,5},{2,6},{3,7},{4,8}};
+	
 	public static int[][] faces = {
 		{1,2,3,4},{8,7,6,5},
 		{2,1,5,6},{3,2,6,7},{4,3,7,8},{1,4,8,5}};
@@ -36,8 +29,8 @@ public class HexahedronTp implements Topology3D {
 	}
 	
 	@Override
-	public boolean edgeOnface(int[] face,int[] edge) {
-		for(int i=0;i<face.length;i++) {
+	public boolean edgeOnface(int[] face, int[] edge) {
+		for(int i=0; i<face.length; i++) {
 			if(edge[0] == face[i] && edge[1] == face[(i+1)%4])
 				return true;
 		}

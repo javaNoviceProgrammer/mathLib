@@ -18,6 +18,7 @@ import mathLib.fem.triangulation.Triangle2D;
 import mathLib.fem.triangulation.Vector2D;
 
 public class Test1 extends Application {
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

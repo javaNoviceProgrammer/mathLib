@@ -10,6 +10,7 @@ import mathLib.matrix.algebra.intf.Vector;
  *
  */
 public class Edge extends GeoEntity1D<NodeLocal> {
+	
 	protected int globalIndex;
 	private Vector globalUnitNormVector;
 
