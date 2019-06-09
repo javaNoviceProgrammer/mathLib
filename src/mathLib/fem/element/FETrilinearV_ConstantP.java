@@ -9,7 +9,7 @@ import mathLib.fem.util.FutureyeException;
 public class FETrilinearV_ConstantP implements FiniteElementType {
 	protected static TrilinearV_ConstantP[] shapeFun = new TrilinearV_ConstantP[25];
 	protected int nTotalNodes = -1;
-	//p自由度计数器
+
 	protected int nDOF_p = -1;
 	
 	public int getVectorShapeFunctionDim() {
@@ -38,7 +38,7 @@ public class FETrilinearV_ConstantP implements FiniteElementType {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		//�?�元结点数
+
 		int nNode = e.nodes.size();
 		//Assign shape function to DOF
 		for(int j=1;j<=nNode;j++) {
