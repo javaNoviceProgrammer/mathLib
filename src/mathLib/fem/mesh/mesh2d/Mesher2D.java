@@ -63,7 +63,7 @@ public class Mesher2D {
 	public Mesh getMesh() {
 		mesh = new Mesh() ;
 		for(int i=0; i<nodes.size(); i++) {
-			Node node = new Node(i, nodes.get(i).x, nodes.get(i).y) ;
+			Node node = new Node(i+1, nodes.get(i).x, nodes.get(i).y) ;
 			mesh.addNode(node);
 		}
 		
