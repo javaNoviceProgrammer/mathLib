@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * Triangle soup class implementation.
  * 
- * @author Johannes Diemke
  */
 class TriangleSoup {
 

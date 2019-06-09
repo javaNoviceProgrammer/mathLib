@@ -4,7 +4,6 @@ package mathLib.fem.triangulation;
  * Exception thrown by the Delaunay triangulator when it is initialized with
  * less than three points.
  * 
- * @author Johannes Diemke
  */
 public class NotEnoughPointsException extends Exception {
 

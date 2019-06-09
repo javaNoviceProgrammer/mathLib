@@ -19,7 +19,7 @@ import mathLib.matrix.algebra.intf.Vector;
  * -Piecewise constant pressure
  * 
  * * Velocity: Quadratic shape function: SFQuadraticLocal2DFast
- * * 速度：三角形局部�??标，二次函数
+ * 
  * 
  * 3
  * | \
@@ -38,11 +38,11 @@ import mathLib.matrix.algebra.intf.Vector;
  * NV6 = 4*r*t
  * 
  * * Pressure: Piecewise constant shape function: SFConstant1
- * * 压强：分片常数型函数
+ * 
  * NP=1
  * 
  * * 2D vector valued shape functions
- * * 二维�?�元上的形函数，速度压强共13个自由度：
+ * 
  * Ni = (v1,v2,p)', i=1,...,13
  * 
  * N1  =  (NV1, 0, 0)'
@@ -59,7 +59,6 @@ import mathLib.matrix.algebra.intf.Vector;
  * N12 =  (0, NV6, 0)'
  * N13 =  (0, 0, NP)'
  *
- * @author liuyueming
  */
 public class QuadraticV_ConstantP extends VecMathFuncBase 
 								implements VectorShapeFunction {
@@ -115,7 +114,7 @@ public class QuadraticV_ConstantP extends VecMathFuncBase
 		return innerVarNames;
 	}
 
-	QuadraticV_ConstantP1D []sf1D = null;
+	QuadraticV_ConstantP1D[] sf1D = null;
 	/**
 	 * Restrict to boundary edge:
 	 * * Velocity:
@@ -152,13 +151,7 @@ public class QuadraticV_ConstantP extends VecMathFuncBase
 		}
 		return sf1D[funIndex-1];
 	}
-	
-	/**
-	 * 需�?定义边界�?�元，因为二维情况，�?��?值形函数dim=3，如果直接使用一维的，dim=2
-	 * 
-	 * @author liuyueming
-	 *
-	 */
+
 	public class QuadraticV_ConstantP1D extends VecMathFuncBase 
 						implements VectorShapeFunction {
 		//(u1,u2,p)

@@ -3,7 +3,6 @@ package mathLib.fem.triangulation;
 /**
  * 2D vector class implementation.
  * 
- * @author Johannes Diemke
  */
 public class Vector2D {
 

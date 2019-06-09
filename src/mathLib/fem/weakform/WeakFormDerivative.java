@@ -12,7 +12,7 @@ import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.func.symbolic.intf.ScalarShapeFunction;
 
 /**
- * 用有�?元方法求导数
+ * 
  * Solve: (w, v) = (U_x, v)
  * 
  * 
@@ -25,7 +25,6 @@ import mathLib.func.symbolic.intf.ScalarShapeFunction;
  *   U_x is the piecewise derivative on the mesh
  *   w is an approximation of U_x
  *   
- * @author liuyueming
  */
 public class WeakFormDerivative extends AbstractScalarWeakForm {
 	protected Vector2MathFunc g_U = null;
@@ -65,7 +64,7 @@ public class WeakFormDerivative extends AbstractScalarWeakForm {
 					Variable var = Variable.createFrom(g_U, (Node)dofI.getOwner(), dofI.getGlobalIndex());
 					MathFunc PValue = new FC(g_U.apply(var));
 					ScalarShapeFunction shape = dofI.getSSF();
-					//以�?版本需�?调用shapeFun.asignElement(e)，现在版本�?需�?调用了
+					
 					rlt = rlt.A(PValue.M(shape.diff(varName)));
 				}
 			}
