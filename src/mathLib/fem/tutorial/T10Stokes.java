@@ -110,7 +110,7 @@ public class T10Stokes {
 
 		//Mark border type
 		HashMap<NodeType, MathFunc> mapNTF_uv = new HashMap<NodeType, MathFunc>();
-		//指定边界
+
 		//mapNTF.put(NodeType.Dirichlet,null);
 		mapNTF_uv.put(NodeType.Dirichlet, new MultiVarFunc("x","y") {
 			@Override
@@ -189,7 +189,7 @@ public class T10Stokes {
 				return 0;
 			}
 		});
-		//p其他边界
+
 		mapNTF_p.put(NodeType.Neumann, null);
 
 		mesh.markBorderNode(new ObjIndex(1,2),mapNTF_uv);
