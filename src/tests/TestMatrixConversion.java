@@ -7,7 +7,7 @@ public class TestMatrixConversion {
 
 	public static void main(String[] args) {
 
-		double[][] ent = new double[][] { { 1, -1.2, 3 }, { 2, 0, 7.2 }, { -1.3, 10.2, 0.5 } };
+		double[][] ent = { { 1, -1.2, 3 }, { 2, 0, 7.2 }, { -1.3, 10.2, 0.5 } };
 		Matrix A = new Matrix(ent);
 		A.show();
 		EigenvalueDecomposition eigen = new EigenvalueDecomposition(Matrix.toJamaMatrix(A)) ;
