@@ -1,9 +1,12 @@
 package mathLib.fem.laplace;
 
 
+import static mathLib.func.symbolic.FMath.x;
+import static mathLib.func.symbolic.FMath.y;
+
 import java.util.HashMap;
 import java.util.Map;
-import static mathLib.func.symbolic.FMath.*;
+
 import mathLib.fem.FEMUtils;
 import mathLib.fem.assembler.Assembler;
 import mathLib.fem.core.Mesh;
@@ -65,9 +68,9 @@ public class Laplace2DRect {
 				if(Math.abs(y)<eps)
 					return 0.0 ;
 				else if(Math.abs(y-1)<eps)
-					return Math.sin(Math.PI/1.0 * x) ;
+					return Math.sin(Math.PI/2.0 * x) ;
 				else if(Math.abs(x)<eps)
-					return 0.0 ;
+					return Math.sin(Math.PI/2.0 * y) ;
 				else
 					return 0.0;
 			}
