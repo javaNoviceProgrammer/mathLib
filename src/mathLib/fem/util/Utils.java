@@ -109,9 +109,6 @@ public class Utils {
 		return t1.equals(t2); //
 	}
 
-	/**
-	 * TODO å�¯ä»¥ä¿®æ”¹ä¸º2D,3Déƒ½å�¯ä»¥è®¡ç®—
-	 */
 	public static double computeAngle2D(Point a1,Point a2,Point b1,Point b2) {
 		Vector v1 = new SpaceVector(2);
 		v1.set(1, a2.coord(1)-a1.coord(1));
@@ -255,7 +252,7 @@ public class Utils {
 		    for(int i=1;i<=nNode;i++) {
 		    	NodeList nbList = new NodeList();
 		    	Node node = list.at(i);
-		    	//TODO è‡ªé€‚åº”ç½‘æ ¼èŠ‚ç‚¹éœ€è¦�æ³¨æ„�
+
 		    	if(node instanceof NodeRefined) {
 		    		if(((NodeRefined) node).isHangingNode()) {
 		    			NodeList cns = ((NodeRefined) node).constrainNodes;
@@ -323,12 +320,6 @@ public class Utils {
 	    return su;
 	}
 
-	/**
-	 * æ¯�ä¸ªç»“ç‚¹çš„å€¼å�–ä¸ºå‘¨å›´ç»“ç‚¹çš„æœ€å¤§å€¼
-	 * @param mesh
-	 * @param u
-	 * @return
-	 */
 	public static Vector gaussMax(Mesh mesh, Vector u) {
 		NodeList list = mesh.getNodeList();
 		int nNode = list.size();
@@ -995,7 +986,7 @@ public class Utils {
 
 					EdgeLocal edge = (EdgeLocal)ge;
 					if(edge.getBorderType() == NodeType.Dirichlet) {
-						//TODO ä»¥è¾¹çš„é‚£ä¸ªé¡¶ç‚¹å�–å€¼ï¼Ÿä¸­ç‚¹ï¼Ÿ
+						//TODO 
 						//Variable v = Variable.createFrom(fdiri, ?, 0);
 					}
 
