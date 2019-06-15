@@ -41,7 +41,6 @@ import mathLib.util.io.MeshWriter;
  * </blockquote>
  * </pre>
  *
- * @author liuyueming
  */
 
 public class LaplaceLocalAssemble {
