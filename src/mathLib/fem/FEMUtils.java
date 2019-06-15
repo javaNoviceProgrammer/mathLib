@@ -1,5 +1,6 @@
 package mathLib.fem;
 
+import mathLib.fem.core.Mesh;
 import mathLib.fitting.interpol.BilinearInterpolation2D;
 import mathLib.func.ArrayFunc;
 import mathLib.matrix.algebra.intf.Vector;
@@ -67,5 +68,6 @@ public class FEMUtils {
 		ColorMapPlot fig = new ColorMapPlot(gridDense, solDense) ;
 		fig.run(true);
 	}
+	
 
 }

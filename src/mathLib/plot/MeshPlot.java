@@ -23,26 +23,29 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 
 import mathLib.fem.core.Mesh;
+import mathLib.fem.util.container.NodeList;
+import mathLib.matrix.algebra.intf.Vector;
 import mathLib.plot.util.ColorMap;
 import mathLib.plot.util.ColorMap.ColorMapName;
+import mathLib.util.MathUtils;
 
 
 public class MeshPlot {
 
 	JFreeChart chart ;
 	Mesh mesh ;
-	double[][] func ;
+	Vector func ;
 	float dx, dy ;
 	ColorMapName colorMapName ;
 
-    public MeshPlot(Mesh mesh, double[][] func) {
+    public MeshPlot(Mesh mesh, Vector func) {
     	this.mesh = mesh ;
     	this.func = func ;
         chart = createChart(createDataset()) ;
         this.colorMapName = ColorMapName.Rainbow ;
     }
     
-    public MeshPlot(Mesh mesh, double[][] func, ColorMapName colorMapName) {
+    public MeshPlot(Mesh mesh, Vector func, ColorMapName colorMapName) {
     	this.mesh = mesh ;
     	this.func = func ;
     	this.colorMapName = colorMapName ;
@@ -81,24 +84,44 @@ public class MeshPlot {
     }
 
     private JFreeChart createChart(XYDataset dataset) {
+    	NodeList nodes = mesh.getNodeList() ;
+    	int m = nodes.size() ;
+    	double[] x = new double[m] ;
+    	double[] y = new double[m] ;
+    	for(int i=0; i<m; i++) {
+    		x[i] = nodes.at(i+1).coord(1) ;
+    		y[i] = nodes.at(i+1).coord(2) ;
+    	}
+    
+    	
+    	double xmin = MathUtils.Arrays.FindMinimum.getValue(x) ;
+    	double xmax = MathUtils.Arrays.FindMaximum.getValue(x) ;
+    	double ymin = MathUtils.Arrays.FindMinimum.getValue(y) ;
+    	double ymax = MathUtils.Arrays.FindMaximum.getValue(y) ;
+    	
         NumberAxis xAxis = new NumberAxis("x Axis");
         NumberAxis yAxis = new NumberAxis("y Axis");
         xAxis.setAutoRangeIncludesZero(false);
-//        xAxis.setLowerBound(mesh.getX(0, 0));
-//        xAxis.setUpperBound(mesh.getX(mesh.getXDim()-1, 0));
-//        yAxis.setAutoRangeIncludesZero(false);
-//        yAxis.setLowerBound(mesh.getY(0, 0));
-//        yAxis.setUpperBound(mesh.getY(0, mesh.getYDim()-1));
+        
+        xAxis.setLowerBound(xmin);
+        xAxis.setUpperBound(xmax);
+        yAxis.setAutoRangeIncludesZero(false);
+        yAxis.setLowerBound(ymin);
+        yAxis.setUpperBound(ymax);
+        
         XYPlot plot = new XYPlot(dataset, xAxis, yAxis, null);
         XYBlockRenderer r = new XYBlockRenderer();
         double[] range = getFuncMinMax() ;
         SpectrumPaintScale ps = new SpectrumPaintScale(range[0], range[1]);
         r.setPaintScale(ps);
+        
+        dx = 0.05f ; 
+        dy = 0.05f ;
         r.setBlockHeight(dy);
         r.setBlockWidth(dx);
+        
         plot.setRenderer(r);
-        JFreeChart chart = new JFreeChart("",
-            JFreeChart.DEFAULT_TITLE_FONT, plot, false);
+        JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
         NumberAxis scaleAxis = new NumberAxis("Scale");
         scaleAxis.setAxisLinePaint(Color.white);
         scaleAxis.setTickMarkPaint(Color.white);
@@ -114,34 +137,31 @@ public class MeshPlot {
         chart.setBackgroundPaint(Color.white);
         return chart;
     }
-
+    
     private XYZDataset createDataset() {
-//    	dx = (float) (mesh.getX(1, 0) - mesh.getX(0, 0)) ;
-//    	dy = (float) (mesh.getY(0, 1) - mesh.getY(0, 0)) ;
-        DefaultXYZDataset dataset = new DefaultXYZDataset();
-//        for (int i = 0; i < mesh.getXDim(); i++) {
-//            double[][] data = new double[3][mesh.getYDim()];
-//            for (int j = 0; j < mesh.getYDim(); j++) {
-//                data[0][j] = mesh.getX(i, j);
-//                data[1][j] = mesh.getY(i, j);
-//                data[2][j] = func[i][j];
-//            }
-//            dataset.addSeries("Series" + i, data);
-//        }
+    	NodeList nodes = mesh.getNodeList() ;
+    	int m = nodes.size() ;
+    	double[] x = new double[m] ;
+    	double[] y = new double[m] ;
+    	double[] funcVals = new double[m] ;
+    	DefaultXYZDataset dataset = new DefaultXYZDataset();
+    	for(int i=0; i<m; i++) {
+    		x[i] = nodes.at(i+1).coord(1) ;
+    		y[i] = nodes.at(i+1).coord(2) ;
+    		funcVals[i] = func.get(i+1) ;
+    		dataset.addSeries("series"+i, new double[][] {{x[i]}, {y[i]}, {funcVals[i]}} );
+    	}
+    	
         return dataset;
     }
 
     private double[] getFuncMinMax(){
-    	int rows = func.length ;
-    	int columns = func[0].length ;
-    	double min = Double.MAX_VALUE ;
-    	double max = Double.MIN_VALUE ;
-    	for(int i=0; i<rows; i++) {
-    		for(int j=0; j<columns; j++){
-    			if(min>func[i][j]) min = func[i][j] ;
-    			if(max<func[i][j]) max = func[i][j] ;
-    		}
-    	}
+    	int m = func.getDim() ;
+    	double[] vals = new double[m] ;
+    	for(int i=0; i<m; i++)
+    		vals[i] = func.get(i+1) ;
+    	double min = MathUtils.Arrays.FindMinimum.getValue(vals) ;
+    	double max = MathUtils.Arrays.FindMaximum.getValue(vals) ;
     	return new double[] {min, max} ;
     }
 

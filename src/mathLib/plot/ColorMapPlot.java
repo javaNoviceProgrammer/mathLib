@@ -97,8 +97,7 @@ public class ColorMapPlot {
         r.setBlockHeight(dy);
         r.setBlockWidth(dx);
         plot.setRenderer(r);
-        JFreeChart chart = new JFreeChart("",
-            JFreeChart.DEFAULT_TITLE_FONT, plot, false);
+        JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
         NumberAxis scaleAxis = new NumberAxis("Scale");
         scaleAxis.setAxisLinePaint(Color.white);
         scaleAxis.setTickMarkPaint(Color.white);
