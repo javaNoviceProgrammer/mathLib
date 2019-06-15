@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYLineAnnotation;
 
+import mathLib.fem.core.Node;
 import mathLib.fem.triangulation.Vector2D;
 import mathLib.geometry.algebra.Point;
 import mathLib.util.MathUtils;
@@ -91,8 +92,11 @@ public class Mesh2DTriangleElement extends AbstractMesh2DElement {
 	@Override
 	public ArrayList<Vector2D> getNodes() {
 		ArrayList<Vector2D> vecs = new ArrayList<>();
-		for (Point p : points)
-			vecs.add(new Vector2D(p.getX(), p.getY()));
+		for(int i=0; i<points.size(); i++)
+			vecs.add(new Node(i+1, points.get(i).getX(), points.get(i).getY())) ;
+		
+//		for (Point p : points)
+//			vecs.add(new Vector2D(p.getX(), p.getY()));
 		return vecs ;
 	}
 

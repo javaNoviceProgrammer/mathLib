@@ -16,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import mathLib.fem.core.Node;
 import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;
@@ -40,9 +41,9 @@ public class Test3 extends Application {
 			for(int j=0; j<theta.length; j++) {
 				x = r[i]*Math.cos(theta[j]) ;
 				y = r[i]*Math.sin(theta[j]) ;
-				pointSet.add(new Vector2D(x, y)) ;
+				pointSet.add(new Node((j+1)+i*r.length, x, y)) ;
 			}
-		pointSet.add(new Vector2D(0, 0)) ;
+		pointSet.add(new Node(r.length*theta.length+1, 0, 0)) ;
 
 		Timer timer = new Timer() ;
 		timer.start();
@@ -58,8 +59,8 @@ public class Test3 extends Application {
 		System.out.println(timer);
 		
 		List<Triangle2D> triangles = mesh.getTriangles() ;
-//		for(int i=0; i<triangles.size(); i++)
-//			System.out.println(triangles.get(i));
+		for(int i=0; i<triangles.size(); i++)
+			System.out.println(triangles.get(i));
 
 		double offset = 1000 ;
 		

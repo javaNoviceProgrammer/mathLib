@@ -1,6 +1,7 @@
 package mathLib.fem.core;
 
 import mathLib.fem.core.geometry.Point;
+import mathLib.fem.triangulation.Vector2D;
 import mathLib.fem.util.Constant;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.container.ElementList;
@@ -11,7 +12,7 @@ import mathLib.fem.util.container.ObjVector;
  * Global finite element node class
  *
  */
-public class Node implements Point {
+public class Node extends Vector2D implements Point {
 
 	public int globalIndex = 0;
 	public ElementList belongToElements = null;
@@ -22,9 +23,11 @@ public class Node implements Point {
 	protected int refineLevel = 1;
 
 	public Node() {
+		super(0.0, 0.0) ;
 	}
 
 	public Node(int dim) {
+		super(0.0, 0.0) ;
 		this.dim = dim;
 	}
 
@@ -37,6 +40,11 @@ public class Node implements Point {
 				this.coords[1+i] = coords[i];
 		} else {
 			this.dim = 1;
+		}
+		
+		if(this.dim == 2) {
+			this.x = x ;
+			this.y = coords[0] ;
 		}
 	}
 
@@ -54,6 +62,12 @@ public class Node implements Point {
 			for(int i=0;i<dim;i++)
 				this.coords[i] = coords[i];
 		}
+		
+		if(this.dim == 2) {
+			this.x = coords[0] ;
+			this.y = coords[1] ;
+		}
+		
 		return this;
 	}
 

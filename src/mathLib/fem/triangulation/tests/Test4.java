@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,9 +17,9 @@ import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;
 import mathLib.fem.triangulation.Vector2D;
-import mathLib.util.MathUtils;
 
-public class Test2 extends Application {
+public class Test4 extends Application {
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -28,14 +27,17 @@ public class Test2 extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		double[] x = MathUtils.linspace(0, 500, 20) ;
-		double[] y = MathUtils.linspace(0, 500, 20) ;
-
+		Node p1 = new Node(1, 5, 5) ;
+		Node p2 = new Node(2, 0, 0) ;
+		Node p3 = new Node(3, 10, 0) ;
+		Node p4 = new Node(4, 1, 2) ;
+		Node p5 = new Node(5, 1, -4) ;
 		List<Vector2D> pointSet = new ArrayList<>() ;
-		for(int i=0; i<x.length; i++)
-			for(int j=0; j<y.length; j++)
-				pointSet.add(new Node((j+1)+i*y.length, x[i], y[j])) ;
-
+		pointSet.add(p1) ;
+		pointSet.add(p2) ;
+		pointSet.add(p3) ;
+		pointSet.add(p4) ;
+		pointSet.add(p5) ;
 		DelaunayTriangulator mesh = new DelaunayTriangulator(pointSet) ;
 		try {
 			mesh.triangulate();
@@ -44,8 +46,13 @@ public class Test2 extends Application {
 		}
 		
 		List<Triangle2D> triangles = mesh.getTriangles() ;
-		for(int i=0; i<triangles.size(); i++)
+		for(int i=0; i<triangles.size(); i++) {
 			System.out.println(triangles.get(i));
+			System.out.println(((Node)triangles.get(i).a).globalIndex);
+			System.out.println(((Node)triangles.get(i).b).globalIndex);
+			System.out.println(((Node)triangles.get(i).c).globalIndex);
+		}
+			
 
 				
 		Set<Line> edges = new HashSet<>() ;
@@ -72,12 +79,10 @@ public class Test2 extends Application {
 		}
 		
 		
-		
 		AnchorPane pane = new AnchorPane() ;
 		pane.getChildren().addAll(points) ;
 		pane.getChildren().addAll(edges) ;
-		ScrollPane pane1 = new ScrollPane(pane) ;
-		Scene scene = new Scene(pane1, 600, 400) ;
+		Scene scene = new Scene(pane, 600, 400) ;
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		

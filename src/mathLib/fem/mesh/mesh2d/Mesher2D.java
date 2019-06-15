@@ -4,17 +4,22 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYLineAnnotation;
+import org.jfree.chart.annotations.XYTextAnnotation;
 
+import mathLib.fem.core.Element;
 import mathLib.fem.core.Mesh;
 import mathLib.fem.core.Node;
 import mathLib.fem.triangulation.DelaunayTriangulator;
 import mathLib.fem.triangulation.NotEnoughPointsException;
 import mathLib.fem.triangulation.Triangle2D;
 import mathLib.fem.triangulation.Vector2D;
+import mathLib.fem.util.container.NodeList;
 import mathLib.plot.MatlabChart;
 
 /*
@@ -62,16 +67,25 @@ public class Mesher2D {
 	
 	public Mesh getMesh() {
 		mesh = new Mesh() ;
+		Set<Node> nodeSet = new HashSet<>() ;
 		for(int i=0; i<nodes.size(); i++) {
-			Node node = new Node(i+1, nodes.get(i).x, nodes.get(i).y) ;
-			mesh.addNode(node);
+//			Node node = new Node(i+1, nodes.get(i).x, nodes.get(i).y) ;
+//			mesh.addNode(node);
+			nodeSet.add((Node)nodes.get(i)) ;
 		}
 		
-//		for(Triangle2D tri : elems) {
-//			NodeList nodes = new NodeList() ;
-//			nodes.add(new Node(globalIndex, x, coords)) ??
-//			Element e = new Element(nodes) ;
-//		}
+		for(Node nd: nodeSet) {
+			mesh.addNode(nd);
+		}
+		
+		for(Triangle2D tri : elems) {
+			NodeList nodes = new NodeList() ;
+			nodes.add((Node)tri.a) ;
+			nodes.add((Node)tri.b) ;
+			nodes.add((Node)tri.c) ;
+			Element e = new Element(nodes) ;
+			mesh.addElement(e);
+		}
 		
 		return mesh ;
 	}
@@ -100,6 +114,23 @@ public class Mesher2D {
 			fig.getRawXYPlot().addAnnotation(ann1);
 			fig.getRawXYPlot().addAnnotation(ann2);
 			fig.getRawXYPlot().addAnnotation(ann3);
+			
+		}
+		
+
+	}
+	
+	public void showNodeNumbers() {
+		for(Vector2D nd: nodes) {
+			XYAnnotation ann = new XYTextAnnotation(((Node)nd).globalIndex+"", nd.x, nd.y) ;
+			fig.getRawXYPlot().addAnnotation(ann);
+		}
+	}
+	
+	public void showNodeNumbers(double dx, double dy) {
+		for(Vector2D nd: nodes) {
+			XYAnnotation ann = new XYTextAnnotation(((Node)nd).globalIndex+"", nd.x+dx, nd.y+dy) ;
+			fig.getRawXYPlot().addAnnotation(ann);
 		}
 	}
 	
@@ -128,11 +159,12 @@ public class Mesher2D {
 		mesher.triangulate();
 //		mesher.getCanvas().markerON();
 		mesher.getCanvas().run(true);
+		mesher.showNodeNumbers(1e-2, 1e-2);
 		
 //		System.out.println(triangleElement1.isInside(new Vector2D(-2, 2)));
 		System.out.println(rect1.isInside(new Vector2D(0, 0)));
 		System.out.println(rect1.isInside(new Vector2D(2, 3)));
 		
-		System.out.println(mesher.getMesh().getNodeList().size());
+		
 	}
 }

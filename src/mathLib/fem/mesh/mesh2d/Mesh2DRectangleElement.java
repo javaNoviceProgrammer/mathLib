@@ -3,10 +3,13 @@ package mathLib.fem.mesh.mesh2d;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYLineAnnotation;
 
+import mathLib.fem.core.Node;
 import mathLib.fem.triangulation.Vector2D;
 import mathLib.geometry.algebra.Point;
 import mathLib.util.MathUtils;
@@ -100,9 +103,15 @@ public class Mesh2DRectangleElement extends AbstractMesh2DElement {
 
 	@Override
 	public ArrayList<Vector2D> getNodes() {
+		Set<Vector2D> vecSet = new HashSet<>() ;
 		ArrayList<Vector2D> vecs = new ArrayList<>();
-		for (Point p : points)
-			vecs.add(new Vector2D(p.getX(), p.getY()));
+		
+		for(int i=0; i<points.size(); i++)
+			vecSet.add(new Node(i+1, points.get(i).getX(), points.get(i).getY())) ;
+		
+		for (Vector2D p : vecSet)
+			vecs.add(p) ;
+		
 		return vecs ;
 	}
 

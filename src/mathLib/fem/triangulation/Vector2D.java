@@ -21,6 +21,11 @@ public class Vector2D {
         this.x = x;
         this.y = y;
     }
+    
+    public Vector2D() {
+    	this.x = 0.0 ;
+    	this.y = 0.0 ;
+    }
 
     /**
      * Subtracts the given vector from this.
