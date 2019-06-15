@@ -27,29 +27,29 @@ import mathLib.plot.MatlabChart;
  */
 
 public class Mesher2D {
-	
+
 	ArrayList<Vector2D> nodes ;
 	ArrayList<Triangle2D> elems ;
 	ArrayList<AbstractMesh2DElement> mesh2dElements ;
 	Map<String, ArrayList<AbstractMesh2DElement>> meshPriorities ;
-	
+
 	Mesh mesh ;
-	
+
 	MatlabChart fig = null ; // canvas for drawing
-	
+
 	public Mesher2D() {
 		nodes = new ArrayList<>() ;
 		elems = new ArrayList<>() ;
 		mesh2dElements = new ArrayList<>() ;
 		meshPriorities = new HashMap<>() ;
 	}
-	
+
 	public void addElement(AbstractMesh2DElement element) {
 		mesh2dElements.add(element) ;
 	}
-	
+
 	public void triangulate() {
-		
+
 		for(AbstractMesh2DElement e : mesh2dElements) {
 			nodes.addAll(e.getNodes()) ;
 		}
@@ -60,11 +60,11 @@ public class Mesher2D {
 				e1.printStackTrace();
 			}
 			elems.addAll(triangulator.getTriangles()) ;
-		
+
 		// updating canvas
 		updateCanvas();
 	}
-	
+
 	public Mesh getMesh() {
 		mesh = new Mesh() ;
 		Set<Node> nodeSet = new HashSet<>() ;
@@ -73,11 +73,11 @@ public class Mesher2D {
 //			mesh.addNode(node);
 			nodeSet.add((Node)nodes.get(i)) ;
 		}
-		
+
 		for(Node nd: nodeSet) {
 			mesh.addNode(nd);
 		}
-		
+
 		for(Triangle2D tri : elems) {
 			NodeList nodes = new NodeList() ;
 			nodes.add((Node)tri.a) ;
@@ -86,10 +86,10 @@ public class Mesher2D {
 			Element e = new Element(nodes) ;
 			mesh.addElement(e);
 		}
-		
+
 		return mesh ;
 	}
-	
+
 	public void updateCanvas() {
 		fig = new MatlabChart() ;
 		fig.plot(new double[] {}, new double[] {});
@@ -114,38 +114,38 @@ public class Mesher2D {
 			fig.getRawXYPlot().addAnnotation(ann1);
 			fig.getRawXYPlot().addAnnotation(ann2);
 			fig.getRawXYPlot().addAnnotation(ann3);
-			
+
 		}
-		
+
 
 	}
-	
+
 	public void showNodeNumbers() {
 		for(Vector2D nd: nodes) {
 			XYAnnotation ann = new XYTextAnnotation(((Node)nd).globalIndex+"", nd.x, nd.y) ;
 			fig.getRawXYPlot().addAnnotation(ann);
 		}
 	}
-	
+
 	public void showNodeNumbers(double dx, double dy) {
 		for(Vector2D nd: nodes) {
 			XYAnnotation ann = new XYTextAnnotation(((Node)nd).globalIndex+"", nd.x+dx, nd.y+dy) ;
 			fig.getRawXYPlot().addAnnotation(ann);
 		}
 	}
-	
+
 	public MatlabChart getCanvas() {
 		return fig ;
 	}
-	
-	
+
+
 	// for test
 	public static void main(String[] args) {
 //		Mesh2DTriangleElement triangleElement1 = new Mesh2DTriangleElement("tri1", 0, 1, 5, 0, 2, 5) ;
 //		Mesh2DTriangleElement triangleElement2 = new Mesh2DTriangleElement("tri2", 1, 1, -1, 0, 2, 5) ;
 //		triangleElement1.refine(4);
 //		triangleElement2.refine(4);
-		
+
 		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", -2, -2, 2, 2) ;
 		Mesh2DRectangleElement rect2 = new Mesh2DRectangleElement("rect2", -0.5, -0.5, 0.7, 0.7) ;
 //		Mesh2DRectangleElement rect3 = new Mesh2DRectangleElement("rect3", -0.5, -0.5, 0.7, 0.7) ;
@@ -159,12 +159,12 @@ public class Mesher2D {
 		mesher.triangulate();
 //		mesher.getCanvas().markerON();
 		mesher.getCanvas().run(true);
-		mesher.showNodeNumbers(1e-2, 1e-2);
-		
+//		mesher.showNodeNumbers(1e-2, 1e-2);
+
 //		System.out.println(triangleElement1.isInside(new Vector2D(-2, 2)));
 		System.out.println(rect1.isInside(new Vector2D(0, 0)));
 		System.out.println(rect1.isInside(new Vector2D(2, 3)));
-		
-		
+
+
 	}
 }

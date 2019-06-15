@@ -7,17 +7,18 @@ import java.util.Map;
 import mathLib.fem.FEMUtils;
 import mathLib.fem.assembler.Assembler;
 import mathLib.fem.core.Mesh;
+import mathLib.fem.core.Node;
 import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
 import mathLib.fem.element.FELinearTriangle;
-import mathLib.fem.mesh.Mesh2DRect;
+import mathLib.fem.mesh.mesh2d.Mesh2DRectangleElement;
+import mathLib.fem.mesh.mesh2d.Mesher2D;
 import mathLib.fem.util.Utils;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.ArrayFunc;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.basic.FX;
 import mathLib.func.symbolic.intf.MathFunc;
-import mathLib.geometry.algebra.Point;
 import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.Solver;
@@ -35,28 +36,28 @@ public class Laplace2DRect {
 
 	public static void main(String[] args) {
 
-		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(1, 1), 50, 50) ;
-		Mesh mesh = mesh2d.getMesh() ;
-		
-//		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, 1.0, 1.0) ;
-//		Mesher2D mesher2d = new Mesher2D() ;
-//		mesher2d.addElement(rect1);
-//		mesher2d.triangulate();
-//		mesher2d.getCanvas().run(true);
-//		mesher2d.showNodeNumbers(1e-2, 1e-2);
-//		Mesh mesh = mesher2d.getMesh() ;
-//		
-//		System.out.println(mesh.getNodeList().size());
-//
-//		System.out.println(mesh.getNodeList().at(51));
-//		System.out.println(mesh.getNodeList().at(52));
-//		
-//		Node node51 = mesh.getNodeList().at(51) ;
-//		Node node52 = mesh.getNodeList().at(52) ;
-//		Node node = new Node(52, node51.coord(1), node51.coord(2)) ;
-//		System.out.println(node51.equals(node52));
-		
-		
+//		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(1, 1), 50, 50) ;
+//		Mesh mesh = mesh2d.getMesh() ;
+
+		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, 1.0, 2.0) ;
+		Mesher2D mesher2d = new Mesher2D() ;
+		mesher2d.addElement(rect1);
+		mesher2d.triangulate();
+		mesher2d.getCanvas().run(true);
+		mesher2d.showNodeNumbers(1e-2, 1e-2);
+		Mesh mesh = mesher2d.getMesh() ;
+
+		System.out.println(mesh.getNodeList().size());
+
+		System.out.println(mesh.getNodeList().at(51));
+		System.out.println(mesh.getNodeList().at(52));
+
+		Node node51 = mesh.getNodeList().at(51) ;
+		Node node52 = mesh.getNodeList().at(52) ;
+		Node node = new Node(52, node51.coord(1), node51.coord(2)) ;
+		System.out.println(node51.equals(node52));
+
+
 		// Compute geometry relationship between nodes and elements
 		mesh.computeNodeBelongsToElements();
 		// 2.Mark boundary type(s)
@@ -114,21 +115,21 @@ public class Laplace2DRect {
 		System.out.println(timer);
 
 		// 6. Output the result to a MATLAB chart
-//		double[] x = MathUtils.linspace(0.0, 1.0, 100) ;
-//		double[] y = MathUtils.linspace(0.0, 1.0, 100) ;
-//		MeshGrid grid = new MeshGrid(x, y) ;
-		
+		double[] x = MathUtils.linspace(0.0, 1.0, 100) ;
+		double[] y = MathUtils.linspace(0.0, 2.0, 100) ;
+		MeshGrid grid = new MeshGrid(x, y) ;
+
 //		MeshGrid grid = mesh2d.getGrid() ;
-//
+
 //		FEMUtils.plotResult(grid, u);
-//		FEMUtils.plotResultDense(grid, u, 5, 5);
+		FEMUtils.plotResultDense(grid, u, 5, 5);
+
+		double[][] solExact = ArrayFunc.apply((a,b)-> Math.sin(Math.PI*a)*Math.sinh(Math.PI*b)/Math.sinh(Math.PI) , grid) ;
+		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
+		figExact.run(true);
 //
-//		double[][] solExact = ArrayFunc.apply((a,b)-> Math.sin(Math.PI*a)*Math.sinh(Math.PI*b)/Math.sinh(Math.PI) , grid) ;
-//		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
-//		figExact.run(true);
-//  
- 
- 
+
+
 
 	}
 

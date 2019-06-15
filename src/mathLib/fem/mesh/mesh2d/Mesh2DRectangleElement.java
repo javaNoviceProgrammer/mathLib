@@ -21,7 +21,7 @@ public class Mesh2DRectangleElement extends AbstractMesh2DElement {
 	 * |		|
 	 * p1-------p4
 	 */
-	
+
 	int defaultDensity = 10;
 	double x1, y1, x2, y2, x3, y3, x4, y4  ;
 	Point p1, p2, p3, p4;
@@ -47,11 +47,11 @@ public class Mesh2DRectangleElement extends AbstractMesh2DElement {
 		this.annotations = new ArrayList<>();
 		createMeshElement();
 		createAnnotations();
-		
+
 		// default priority
 		meshPriority = "0" ;
 	}
-	
+
 	public void setMeshPriority(String priority) {
 		this.meshPriority = priority ;
 	}
@@ -69,18 +69,12 @@ public class Mesh2DRectangleElement extends AbstractMesh2DElement {
 	private void createMeshElement() {
 		double[] r = MathUtils.linspace(0, 1, defaultDensity);
 		double[] s = MathUtils.linspace(0, 1, defaultDensity);
+		Point p = p4-p1 ;
+		Point q = p2-p1 ;
 		for (int i = 0; i < r.length; i++) {
 			for (int j = 0; j < s.length; j++) {
-					if (r[i] + s[j] < 1) {
-						Point q1 = r[i] * p1 + s[j] * p3 + (1-r[i]-s[j]) * p2 ;
-						Point q2 = r[i] * p1 + s[j] * p3 + (1-r[i]-s[j]) * p4 ;
-							points.add(q1) ;
-							points.add(q2) ;
-					}
-					else if (r[i] + s[j] == 1) {
-						Point q1 = r[i] * p1 + s[j] * p3 + (1-r[i]-s[j]) * p2 ;
-						points.add(q1) ;
-					}
+				Point prs = r[i]*p + s[j]*q + p1 ;
+				points.add(prs) ;
 			}
 		}
 
@@ -105,13 +99,13 @@ public class Mesh2DRectangleElement extends AbstractMesh2DElement {
 	public ArrayList<Vector2D> getNodes() {
 		Set<Vector2D> vecSet = new HashSet<>() ;
 		ArrayList<Vector2D> vecs = new ArrayList<>();
-		
+
 		for(int i=0; i<points.size(); i++)
 			vecSet.add(new Node(i+1, points.get(i).getX(), points.get(i).getY())) ;
-		
+
 		for (Vector2D p : vecSet)
 			vecs.add(p) ;
-		
+
 		return vecs ;
 	}
 
