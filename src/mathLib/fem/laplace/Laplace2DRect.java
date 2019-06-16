@@ -71,7 +71,7 @@ public class Laplace2DRect {
 //		Mesh mesh = mesh2d.getMesh() ;
 
 		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b) ;
-//		rect1.refine(5);
+		rect1.refine(2);
 		Mesher2D mesher2d = new Mesher2D() ;
 		mesher2d.addElement(rect1);
 		mesher2d.triangulate();
@@ -148,19 +148,29 @@ public class Laplace2DRect {
 //			System.out.println(vals1d[i]);
 		}
 		
-		double[] x = MathUtils.linspace(0.0, a, 1000) ;
-		double[] y = MathUtils.linspace(0.0, b, 1000) ;
+		double[] x = MathUtils.linspace(0.0, a, 200) ;
+		double[] y = MathUtils.linspace(0.0, b, 200) ;
+		double[][] interp = new double[x.length][y.length] ;
 		MeshGrid grid = new MeshGrid(x, y) ;
 		
 		Vector2MathFunc func = new Vector2MathFunc(u, mesh, "x", "y") ;
-		Variable v = new Variable().set("x", 0.5).set("y", 0.5) ;
-		System.out.println(func.apply(v));
-		
+		func.cacheInterpolateValue(true);
+		Variable v = new Variable().set("x", 0).set("y", 0) ;
+		for(int i=0; i<x.length; i++) {
+			for(int j=0; j<y.length; j++) {
+				v.set("x", x[i]).set("y", y[j]) ;
+				interp[i][j] = func.apply(v) ;
+			}
+		}
+
 
 		// 6. Output the result to a MATLAB chart
 		
 		MeshPlot plot = new MeshPlot(mesh, u) ;
 		plot.run(true);
+		
+		ColorMapPlot interpPlot = new ColorMapPlot(grid, interp) ;
+		interpPlot.run(true);
 
 //		MeshGrid grid = mesh2d.getGrid() ;
 

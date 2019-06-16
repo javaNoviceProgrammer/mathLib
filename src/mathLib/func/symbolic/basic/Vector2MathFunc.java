@@ -12,6 +12,7 @@ import mathLib.fem.core.geometry.Point;
 import mathLib.fem.util.FutureyeException;
 import mathLib.fem.util.Tools;
 import mathLib.fem.util.Utils;
+import mathLib.fem.util.container.NodeList;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.intf.MathFunc;
@@ -158,7 +159,8 @@ public class Vector2MathFunc extends MultiVarFunc {
 				for(int i=1;i<=e.nodes.size();i++) {
 					f[i-1] = vec.get(e.nodes.at(i).globalIndex);
 				}
-
+				
+				// bilinear interpolation over a rectangular element
 				if(e.vertices().size() == 4 && coord.length==2) {
 					double[] coef = Utils.computeBilinearFunctionCoef(e.nodes.toArray(new Point[0]), f);
 					//f(x,y) = a1 + a2*x + a3*y + a4*x*y
@@ -168,13 +170,39 @@ public class Vector2MathFunc extends MultiVarFunc {
 					if(enableCache && index > 0) {
 						cachedValueMap.put(index, interpValue);
 					}
+				}
+				
+				// linear interpolation over a triangular element
+				if(e.vertices().size() == 3 && coord.length==2) {
+					NodeList nodes = e.nodes ;
+					double[] x = {v.get("x"), nodes.at(1).coord(1), nodes.at(2).coord(1), nodes.at(3).coord(1) } ;
+					double[] y = {v.get("y"), nodes.at(1).coord(2), nodes.at(2).coord(2), nodes.at(3).coord(2) } ;
+					
+					double lambda1 = (y[2]-y[3])*(x[0]-x[3])+(x[3]-x[2])*(y[0]-y[3]) ;
+					lambda1 /= ((y[2]-y[3])*(x[1]-x[3]) + (x[3]-x[2])*(y[1]-y[3])) ;
+					
+					double lambda2 = (y[3]-y[1])*(x[0]-x[3])+(x[1]-x[3])*(y[0]-y[3]) ;
+					lambda2 /= ((y[2]-y[3])*(x[1]-x[3]) + (x[3]-x[2])*(y[1]-y[3])) ;
+					
+					double lambda3 = 1-lambda1-lambda2 ;
+					
+					double val1 = vec.get(nodes.at(1).globalIndex) ;
+					double val2 = vec.get(nodes.at(2).globalIndex) ;
+					double val3 = vec.get(nodes.at(3).globalIndex) ;
+					double interpValue = lambda1*val1 + lambda2*val2 + lambda3*val3 ;
+					if(enableCache && index > 0) {
+						cachedValueMap.put(index, interpValue);
+					}
+						
 					return interpValue;
 				}
 				throw new FutureyeException("Error: Unsupported element type:"+e.toString());
-			} else {
+			} 
+			else {
 				return vec.get(index);
 			}
 		}
+		
 	}
 
 
