@@ -44,13 +44,13 @@ public class Laplace2DRect {
 	public static void main(String[] args) {
 
 		double a = 1.0 ;
-		double b = 1.0 ; 
+		double b = 2.0 ; 
 		
 //		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(a, b), 50, 50) ;
 //		Mesh mesh = mesh2d.getMesh() ;
 
 		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b) ;
-		rect1.refine(6);
+		rect1.refine(2);
 		Mesher2D mesher2d = new Mesher2D() ;
 		mesher2d.addElement(rect1);
 		mesher2d.triangulate();
@@ -139,12 +139,12 @@ public class Laplace2DRect {
 //		FEMUtils.plotResult(grid, u);
 //		FEMUtils.plotResultDense(grid, u, 5, 5);
 		
-		double[] x = MathUtils.linspace(0.0, a, 1000) ;
-		double[] y = MathUtils.linspace(0.0, b, 1000) ;
-		MeshGrid grid = new MeshGrid(x, y) ;
-		double[][] solExact = ArrayFunc.apply((r,s)-> Math.sin(Math.PI*r)*Math.sinh(Math.PI*s)/Math.sinh(Math.PI) , grid) ;
-		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
-		figExact.run(true);
+//		double[] x = MathUtils.linspace(0.0, a, 1000) ;
+//		double[] y = MathUtils.linspace(0.0, b, 1000) ;
+//		MeshGrid grid = new MeshGrid(x, y) ;
+//		double[][] solExact = ArrayFunc.apply((r,s)-> Math.sin(Math.PI*r)*Math.sinh(Math.PI*s)/Math.sinh(Math.PI) , grid) ;
+//		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
+//		figExact.run(true);
 
 		
 
