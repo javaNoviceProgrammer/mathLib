@@ -1,27 +1,45 @@
 package mathLib.fem.laplace;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JViewport;
+import javax.swing.event.ListDataEvent;
+
 import com.sun.swing.internal.plaf.basic.resources.basic;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import mathLib.fem.FEMUtils;
 import mathLib.fem.assembler.Assembler;
+import mathLib.fem.core.Element;
 import mathLib.fem.core.Mesh;
 import mathLib.fem.core.Node;
+import mathLib.fem.core.NodeRefined;
 import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
+import mathLib.fem.element.FEBilinearRectangle;
+import mathLib.fem.element.FELinearLine2D;
 import mathLib.fem.element.FELinearTriangle;
 import mathLib.fem.mesh.Mesh2DRect;
 import mathLib.fem.mesh.mesh2d.Mesh2DRectangleElement;
 import mathLib.fem.mesh.mesh2d.Mesher2D;
+import mathLib.fem.util.FutureyeException;
+import mathLib.fem.util.MeshGenerator;
+import mathLib.fem.util.PairDoubleInteger;
 import mathLib.fem.util.Utils;
+import mathLib.fem.util.container.ElementList;
+import mathLib.fem.util.container.NodeList;
+import mathLib.fem.util.container.ObjList;
 import mathLib.fem.weakform.WeakForm;
 import mathLib.func.ArrayFunc;
 import mathLib.func.symbolic.MultiVarFunc;
+import mathLib.func.symbolic.Variable;
 import mathLib.func.symbolic.basic.DiscreteIndexFunction;
 import mathLib.func.symbolic.basic.FX;
+import mathLib.func.symbolic.basic.FXY;
+import mathLib.func.symbolic.basic.Vector2MathFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.geometry.algebra.Point;
 import mathLib.matrix.algebra.intf.Matrix;
@@ -49,17 +67,17 @@ public class Laplace2DRect {
 		Timer timer = new Timer() ;
 		timer.start();
 		
-		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(a, b), 50, 50) ;
-		Mesh mesh = mesh2d.getMesh() ;
+//		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(a, b), 50, 50) ;
+//		Mesh mesh = mesh2d.getMesh() ;
 
-//		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b, 50) ;
-////		rect1.refine(5);
-//		Mesher2D mesher2d = new Mesher2D() ;
-//		mesher2d.addElement(rect1);
-//		mesher2d.triangulate();
-////		mesher2d.getCanvas().run(true);
-////		mesher2d.showNodeNumbers(1e-2, 1e-2);
-//		Mesh mesh = mesher2d.getMesh() ;
+		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b) ;
+//		rect1.refine(5);
+		Mesher2D mesher2d = new Mesher2D() ;
+		mesher2d.addElement(rect1);
+		mesher2d.triangulate();
+		mesher2d.getCanvas().run(true);
+		mesher2d.showNodeNumbers(1e-2, 1e-2);
+		Mesh mesh = mesher2d.getMesh() ;
 		
 		
 		timer.stop();
@@ -129,9 +147,14 @@ public class Laplace2DRect {
 			vals1d[i] = u.get(i+1) ;
 //			System.out.println(vals1d[i]);
 		}
-			
-
-
+		
+		double[] x = MathUtils.linspace(0.0, a, 1000) ;
+		double[] y = MathUtils.linspace(0.0, b, 1000) ;
+		MeshGrid grid = new MeshGrid(x, y) ;
+		
+		Vector2MathFunc func = new Vector2MathFunc(u, mesh, "x", "y") ;
+		Variable v = new Variable().set("x", 0.5).set("y", 0.5) ;
+		System.out.println(func.apply(v));
 		
 
 		// 6. Output the result to a MATLAB chart
@@ -144,15 +167,12 @@ public class Laplace2DRect {
 //		FEMUtils.plotResult(grid, u);
 //		FEMUtils.plotResultDense(grid, u, 5, 5);
 		
-//		double[] x = MathUtils.linspace(0.0, a, 1000) ;
-//		double[] y = MathUtils.linspace(0.0, b, 1000) ;
-//		MeshGrid grid = new MeshGrid(x, y) ;
-//		double[][] solExact = ArrayFunc.apply((r,s)-> Math.sin(Math.PI*r)*Math.sinh(Math.PI*s)/Math.sinh(Math.PI) , grid) ;
-//		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
-//		figExact.run(true);
 
-		
+		double[][] solExact = ArrayFunc.apply((r,s)-> Math.sin(Math.PI*r)*Math.sinh(Math.PI*s)/Math.sinh(Math.PI) , grid) ;
+		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
+		figExact.run(true);
 
 	}
+
 
 }

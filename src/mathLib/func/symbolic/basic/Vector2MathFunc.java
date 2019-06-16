@@ -79,6 +79,7 @@ public class Vector2MathFunc extends MultiVarFunc {
 		this.defaultFunction = fun;
 		return this;
 	}
+	
 	public MathFunc getDefaultFunction() {
 		return this.defaultFunction;
 	}
@@ -95,9 +96,11 @@ public class Vector2MathFunc extends MultiVarFunc {
 		if(cachedValueMap != null)
 			cachedValueMap.clear();
 	}
+	
 	public Mesh getMesh() {
 		return this.mesh;
 	}
+	
 	public Vector getVector() {
 		return this.vec;
 	}
@@ -167,7 +170,7 @@ public class Vector2MathFunc extends MultiVarFunc {
 					}
 					return interpValue;
 				}
-				throw new FutureyeException("Error: Unsported element type:"+e.toString());
+				throw new FutureyeException("Error: Unsupported element type:"+e.toString());
 			} else {
 				return vec.get(index);
 			}
