@@ -46,19 +46,26 @@ public class Laplace2DRect {
 		double a = 1.0 ;
 		double b = 2.0 ; 
 		
-//		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(a, b), 50, 50) ;
-//		Mesh mesh = mesh2d.getMesh() ;
+		Timer timer = new Timer() ;
+		timer.start();
+		
+		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(a, b), 50, 50) ;
+		Mesh mesh = mesh2d.getMesh() ;
 
-		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b) ;
-		rect1.refine(2);
-		Mesher2D mesher2d = new Mesher2D() ;
-		mesher2d.addElement(rect1);
-		mesher2d.triangulate();
-		mesher2d.getCanvas().run(true);
-//		mesher2d.showNodeNumbers(1e-2, 1e-2);
-		Mesh mesh = mesher2d.getMesh() ;
+//		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b, 50) ;
+////		rect1.refine(5);
+//		Mesher2D mesher2d = new Mesher2D() ;
+//		mesher2d.addElement(rect1);
+//		mesher2d.triangulate();
+////		mesher2d.getCanvas().run(true);
+////		mesher2d.showNodeNumbers(1e-2, 1e-2);
+//		Mesh mesh = mesher2d.getMesh() ;
+		
+		
+		timer.stop();
+		System.out.println(timer);
 
-		System.out.println(mesh.getNodeList().size());
+//		System.out.println(mesh.getNodeList().size());
 
 //		System.out.println(mesh.getNodeList().at(51));
 //		System.out.println(mesh.getNodeList().at(52));
@@ -110,8 +117,7 @@ public class Laplace2DRect {
 			}
 		}) ;
 
-		Timer timer = new Timer() ;
-		timer.start();
+
 
 		// 5. Solve the linear system
 		Solver solver = new Solver() ;
@@ -125,8 +131,7 @@ public class Laplace2DRect {
 		}
 			
 
-		timer.stop();
-		System.out.println(timer);
+
 		
 
 		// 6. Output the result to a MATLAB chart

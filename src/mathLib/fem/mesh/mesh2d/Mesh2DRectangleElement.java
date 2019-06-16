@@ -51,6 +51,30 @@ public class Mesh2DRectangleElement extends AbstractMesh2DElement {
 		// default priority
 		meshPriority = "0" ;
 	}
+	
+	public Mesh2DRectangleElement(String name, double xLL, double yLL, double xUR, double yUR, int density) {
+		this.elemName = name;
+		this.x1 = xLL;
+		this.y1 = yLL;
+		this.x3 = xUR;
+		this.y3 = yUR;
+		this.x2 = xLL ;
+		this.y2 = yUR ;
+		this.x4 = xUR ;
+		this.y4 = yLL ;
+		this.p1 = Point.getInstance(x1, y1);
+		this.p2 = Point.getInstance(x2, y2);
+		this.p3 = Point.getInstance(x3, y3);
+		this.p4 = Point.getInstance(x4, y4);
+		this.points = new ArrayList<>();
+		this.annotations = new ArrayList<>();
+		this.defaultDensity = density ;
+		createMeshElement();
+		createAnnotations();
+
+		// default priority
+		meshPriority = "0" ;
+	}
 
 	public void setMeshPriority(String priority) {
 		this.meshPriority = priority ;
