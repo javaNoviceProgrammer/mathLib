@@ -50,7 +50,7 @@ public class Tools {
 
 		WeakFormDerivative weakForm = new WeakFormDerivative(varName);
 		//stabilize
-		weakForm.setParam(new Vector2MathFunc(U),stableFactor);
+		weakForm.setParam(new Vector2MathFunc(U), stableFactor);
 
 		AssemblerScalar assembler = new AssemblerScalar(mesh, weakForm);
 		assembler.assemble();

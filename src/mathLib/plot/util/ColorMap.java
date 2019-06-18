@@ -45,7 +45,13 @@ public class ColorMap {
 	}
 
 	private double getNormalizedValue(double var) {
-		return (var - min) / (max - min);
+//		return (var - min) / (max - min);
+		double normalizedVal = (var - min) / (max - min) ;
+		if(normalizedVal < 0.0 )
+			return 0.0 ;
+		if(normalizedVal >= 1.0)
+			return 1.0 ;
+		return normalizedVal ;
 	}
 
 	private Color getRainbow(double var) {

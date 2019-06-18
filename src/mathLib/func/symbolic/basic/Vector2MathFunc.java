@@ -233,13 +233,13 @@ public class Vector2MathFunc extends MultiVarFunc {
 			throw new FutureyeException(
 					"Please use constructor Vector2Function(Vector u, Mesh mesh, String varName, String ...aryVarNames)");
 		Vector vd = Tools.computeDerivative(mesh, vec, varName);
-		MathFunc fd = new Vector2MathFunc(vd,mesh,this.varNames);
+		MathFunc fd = new Vector2MathFunc(vd, mesh, this.varNames);
 		return fd;
 	}
 
 	@Override
 	public String toString() {
-		return "Vector2Function:"+this.vec.toString();
+		return "Vector2Function:" + this.vec.toString();
 	}
 
 }

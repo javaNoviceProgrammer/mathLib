@@ -1,56 +1,28 @@
 package mathLib.fem.laplace;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JViewport;
-import javax.swing.event.ListDataEvent;
-
-import com.sun.swing.internal.plaf.basic.resources.basic;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
-import mathLib.fem.FEMUtils;
+import mathLib.fem.MeshPlot2D;
 import mathLib.fem.assembler.Assembler;
-import mathLib.fem.core.Element;
 import mathLib.fem.core.Mesh;
-import mathLib.fem.core.Node;
-import mathLib.fem.core.NodeRefined;
 import mathLib.fem.core.NodeType;
 import mathLib.fem.core.intf.FiniteElement;
-import mathLib.fem.element.FEBilinearRectangle;
-import mathLib.fem.element.FELinearLine2D;
 import mathLib.fem.element.FELinearTriangle;
-import mathLib.fem.mesh.Mesh2DRect;
 import mathLib.fem.mesh.mesh2d.Mesh2DRectangleElement;
 import mathLib.fem.mesh.mesh2d.Mesher2D;
-import mathLib.fem.util.FutureyeException;
-import mathLib.fem.util.MeshGenerator;
-import mathLib.fem.util.PairDoubleInteger;
 import mathLib.fem.util.Utils;
-import mathLib.fem.util.container.ElementList;
-import mathLib.fem.util.container.NodeList;
-import mathLib.fem.util.container.ObjList;
 import mathLib.fem.weakform.WeakForm;
-import mathLib.func.ArrayFunc;
 import mathLib.func.symbolic.MultiVarFunc;
 import mathLib.func.symbolic.Variable;
-import mathLib.func.symbolic.basic.DiscreteIndexFunction;
 import mathLib.func.symbolic.basic.FX;
-import mathLib.func.symbolic.basic.FXY;
 import mathLib.func.symbolic.basic.Vector2MathFunc;
 import mathLib.func.symbolic.intf.MathFunc;
-import mathLib.geometry.algebra.Point;
 import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.solver.Solver;
-import mathLib.plot.ColorMapPlot;
-import mathLib.plot.MeshPlot;
-import mathLib.plot.util.MeshGrid;
-import mathLib.util.MathUtils;
 import mathLib.util.Timer;
-import sun.net.www.content.image.gif;
 
 
 public class Laplace2DRect {
@@ -62,14 +34,12 @@ public class Laplace2DRect {
 	public static void main(String[] args) {
 
 		double a = 1.0 ;
-		double b = 2.0 ; 
+		double b = 1.0 ; 
 		
 		Timer timer = new Timer() ;
 		timer.start();
 		
-//		Mesh2DRect mesh2d = new Mesh2DRect(Point.getInstance(0, 0), Point.getInstance(a, b), 50, 50) ;
-//		Mesh mesh = mesh2d.getMesh() ;
-
+		// create mesh
 		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b) ;
 		rect1.refine(2);
 		Mesher2D mesher2d = new Mesher2D() ;
@@ -79,29 +49,15 @@ public class Laplace2DRect {
 		mesher2d.showNodeNumbers(1e-2, 1e-2);
 		Mesh mesh = mesher2d.getMesh() ;
 		
-		
-		timer.stop();
-		System.out.println(timer);
-
-//		System.out.println(mesh.getNodeList().size());
-
-//		System.out.println(mesh.getNodeList().at(51));
-//		System.out.println(mesh.getNodeList().at(52));
-//
-//		Node node51 = mesh.getNodeList().at(51) ;
-//		Node node52 = mesh.getNodeList().at(52) ;
-//		Node node = new Node(52, node51.coord(1), node51.coord(2)) ;
-//		System.out.println(node51.equals(node52));
-
-
 		// Compute geometry relationship between nodes and elements
 		mesh.computeNodeBelongsToElements();
-		// 2.Mark boundary type(s)
+		
+		// Mark boundary type(s)
 		Map<NodeType, MathFunc> mapNTF = new HashMap<>() ;
 		mapNTF.put(NodeType.Dirichlet, null) ;
 		mesh.markBorderNode(mapNTF);
 
-		// 3. Weak form definition
+		// Weak form definition
 		FiniteElement fe = new FELinearTriangle() ; // Linear triangular finite element
 		MathFunc f = 0*FX.x+0*FX.y ; //Right hand side (RHS)
 		WeakForm wf = new WeakForm(fe,
@@ -110,7 +66,7 @@ public class Laplace2DRect {
 			);
 		wf.compile();
 
-		// 4. Assembly and boundary condition(s)
+		// Assembly and boundary condition(s)
 		Assembler assembler = new Assembler(mesh, wf) ;
 		assembler.assembleGlobal();
 		Matrix stiff = assembler.getGlobalStiffMatrix();
@@ -135,52 +91,29 @@ public class Laplace2DRect {
 			}
 		}) ;
 
-
-
-		// 5. Solve the linear system
+		// Solve the linear system
 		Solver solver = new Solver() ;
 		Vector u = solver.solveAuto(stiff, load) ;
-
-//		System.out.println(u.getDim());
-		double[] vals1d = new double[u.getDim()] ;
-		for(int i=0; i<u.getDim(); i++) {
-			vals1d[i] = u.get(i+1) ;
-//			System.out.println(vals1d[i]);
-		}
 		
-		double[] x = MathUtils.linspace(0.0, a, 200) ;
-		double[] y = MathUtils.linspace(0.0, b, 200) ;
-		double[][] interp = new double[x.length][y.length] ;
-		MeshGrid grid = new MeshGrid(x, y) ;
-		
-		Vector2MathFunc func = new Vector2MathFunc(u, mesh, "x", "y") ;
-		func.cacheInterpolateValue(true);
-		Variable v = new Variable().set("x", 0).set("y", 0) ;
-		for(int i=0; i<x.length; i++) {
-			for(int j=0; j<y.length; j++) {
-				v.set("x", x[i]).set("y", y[j]) ;
-				interp[i][j] = func.apply(v) ;
-			}
-		}
+		timer.stop();
+		System.out.println(timer);
 
-
-		// 6. Output the result to a MATLAB chart
+		// Output the result to a MATLAB chart
 		
-		MeshPlot plot = new MeshPlot(mesh, u) ;
+		MeshPlot2D plot = new MeshPlot2D(mesh, u) ;
+		plot.setPlotDensity(20);
 		plot.run(true);
 		
-		ColorMapPlot interpPlot = new ColorMapPlot(grid, interp) ;
-		interpPlot.run(true);
-
-//		MeshGrid grid = mesh2d.getGrid() ;
-
-//		FEMUtils.plotResult(grid, u);
-//		FEMUtils.plotResultDense(grid, u, 5, 5);
+		// interpolate the result over the mesh
 		
+		Vector2MathFunc func = new Vector2MathFunc(u, mesh, "x", "y") ;
+		Variable v = new Variable().set("x", 0.8).set("y", 0.8) ;
+		System.out.println(func.apply(v));
 
-		double[][] solExact = ArrayFunc.apply((r,s)-> Math.sin(Math.PI*r)*Math.sinh(Math.PI*s)/Math.sinh(Math.PI) , grid) ;
-		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
-		figExact.run(true);
+		
+//		double[][] solExact = ArrayFunc.apply((r,s)-> Math.sin(Math.PI*r)*Math.sinh(Math.PI*s)/Math.sinh(Math.PI) , grid) ;
+//		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
+//		figExact.run(true);
 
 	}
 
