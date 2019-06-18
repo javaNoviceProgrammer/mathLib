@@ -34,24 +34,24 @@ public class Laplace2DRect {
 	public static void main(String[] args) {
 
 		double a = 1.0 ;
-		double b = 1.0 ; 
-		
+		double b = 1.0 ;
+
 		Timer timer = new Timer() ;
 		timer.start();
-		
+
 		// create mesh
 		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b) ;
-		rect1.refine(2);
+		rect1.refine(1);
 		Mesher2D mesher2d = new Mesher2D() ;
 		mesher2d.addElement(rect1);
 		mesher2d.triangulate();
 		mesher2d.getCanvas().run(true);
 		mesher2d.showNodeNumbers(1e-2, 1e-2);
 		Mesh mesh = mesher2d.getMesh() ;
-		
+
 		// Compute geometry relationship between nodes and elements
 		mesh.computeNodeBelongsToElements();
-		
+
 		// Mark boundary type(s)
 		Map<NodeType, MathFunc> mapNTF = new HashMap<>() ;
 		mapNTF.put(NodeType.Dirichlet, null) ;
@@ -94,23 +94,23 @@ public class Laplace2DRect {
 		// Solve the linear system
 		Solver solver = new Solver() ;
 		Vector u = solver.solveAuto(stiff, load) ;
-		
+
 		timer.stop();
 		System.out.println(timer);
 
 		// Output the result to a MATLAB chart
-		
+
 		MeshPlot2D plot = new MeshPlot2D(mesh, u) ;
 		plot.setPlotDensity(20);
 		plot.run(true);
-		
+
 		// interpolate the result over the mesh
-		
+
 		Vector2MathFunc func = new Vector2MathFunc(u, mesh, "x", "y") ;
 		Variable v = new Variable().set("x", 0.8).set("y", 0.8) ;
 		System.out.println(func.apply(v));
 
-		
+
 //		double[][] solExact = ArrayFunc.apply((r,s)-> Math.sin(Math.PI*r)*Math.sinh(Math.PI*s)/Math.sinh(Math.PI) , grid) ;
 //		ColorMapPlot figExact = new ColorMapPlot(grid, solExact) ;
 //		figExact.run(true);
