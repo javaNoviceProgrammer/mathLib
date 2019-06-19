@@ -41,12 +41,13 @@ public class Laplace2DRect {
 
 		// create mesh
 		Mesh2DRectangleElement rect1 = new Mesh2DRectangleElement("rect1", 0.0, 0.0, a, b) ;
-		rect1.refine(1);
+		rect1.refine(3);
 		Mesher2D mesher2d = new Mesher2D() ;
 		mesher2d.addElement(rect1);
 		mesher2d.triangulate();
 		mesher2d.getCanvas().run(true);
 		mesher2d.showNodeNumbers(1e-2, 1e-2);
+
 		Mesh mesh = mesher2d.getMesh() ;
 
 		// Compute geometry relationship between nodes and elements
