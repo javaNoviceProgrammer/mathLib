@@ -45,7 +45,6 @@ import mathLib.func.symbolic.intf.MathFunc;
  *   This class now supports the case of 2D bilinear element only.
  * 
  * @see D2uDx2
- * @author liuyueming
  *
  */
 public class D2uDx2 extends MultiVarFunc implements ElementDependentFunction {
