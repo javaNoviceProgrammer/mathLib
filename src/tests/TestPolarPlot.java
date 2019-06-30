@@ -17,13 +17,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-/**
- * @see http://en.wikipedia.org/wiki/Polar_coordinate_system
- * @see https://stackoverflow.com/questions/3458824
- * @see https://stackoverflow.com/questions/6540390
- * @see https://stackoverflow.com/questions/6576911
- * @see https://stackoverflow.com/a/10227275/230513
- */
 public class TestPolarPlot extends JFrame {
 
     /**
@@ -53,7 +46,7 @@ public class TestPolarPlot extends JFrame {
 
     private static JFreeChart createChart(XYDataset dataset) {
         ValueAxis radiusAxis = new NumberAxis();
-        radiusAxis.setTickLabelsVisible(false);
+        radiusAxis.setTickLabelsVisible(true);
         DefaultPolarItemRenderer renderer = new DefaultPolarItemRenderer();
         renderer.setShapesVisible(true);
         PolarPlot plot = new PolarPlot(dataset, radiusAxis, renderer);
