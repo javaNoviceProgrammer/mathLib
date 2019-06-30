@@ -61,7 +61,9 @@ public class MatlabChart implements Serializable {
         plotRenderer = new XYLineAndShapeRenderer() ;
         specs = new ArrayList<String>() ;
     }
+    
     //*********************plotting************************************
+    
     public void plot(double[] x, double[] y, String spec, float lineWidth, String title) {
         final XYSeries series = new XYSeries(title);
         for (int i = 0; i < x.length; i++)
