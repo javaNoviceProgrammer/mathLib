@@ -766,7 +766,11 @@ public class MatlabChart implements Serializable {
 			e.printStackTrace();
 		}
     	CustomChartPanel cpanel = new CustomChartPanel(this.chart, 640, 450, 640, 450, 640, 450, true, true, true, true, true, true) ;
-	    JFrame chartFrame = new JFrame() ;
+	    cpanel.setMaximumDrawHeight(Integer.MAX_VALUE);
+	    cpanel.setMinimumDrawHeight(Integer.MIN_VALUE);
+	    cpanel.setMaximumDrawWidth(Integer.MAX_VALUE);
+	    cpanel.setMinimumDrawWidth(Integer.MIN_VALUE);
+    	JFrame chartFrame = new JFrame() ;
 	    chartFrame.add(cpanel) ;
 	    chartFrame.setSize(640, 450);
         Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/mathLib/plot/extra/presentation.png"));
