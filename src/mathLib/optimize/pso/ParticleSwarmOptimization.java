@@ -3,7 +3,7 @@ package mathLib.optimize.pso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PSO {
+public class ParticleSwarmOptimization {
 
 	// Algorithm parameters
 	double w = 0.5 ;
@@ -20,7 +20,7 @@ public class PSO {
 	VectorND guessBestPosition ;
 	double guessBestValue = Double.MAX_VALUE ;
 
-	public PSO(int numParticles, FitnessFunction fitnessFunc, Interval... intervals) {
+	public ParticleSwarmOptimization(int numParticles, FitnessFunction fitnessFunc, Interval... intervals) {
 		this.numParticles = numParticles ;
 		this.fitnessFunc = fitnessFunc ;
 		this.particles = new ArrayList<Particle>() ;
@@ -120,7 +120,7 @@ public class PSO {
 	// test
 	public static void main(String[] args) {
 		FitnessFunction func = t -> Math.sin(t[0]) ; // 1d function: sin(x)
-		PSO pso = new PSO(10, func, interval(0, Math.PI)) ;
+		ParticleSwarmOptimization pso = new ParticleSwarmOptimization(10, func, interval(0, Math.PI)) ;
 		pso.setMinimize(false); // max --> x = pi/2
 		pso.solve(100) ;
 		System.out.println(pso.bestValue());
