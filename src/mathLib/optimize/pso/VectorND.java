@@ -1,8 +1,7 @@
 package mathLib.optimize.pso;
 
-// not visible to outside the package
 // immutable
-class VectorND {
+public class VectorND {
 
 	int dim ;
 	double[] x ;

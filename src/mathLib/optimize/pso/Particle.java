@@ -2,11 +2,7 @@ package mathLib.optimize.pso;
 
 import java.util.List;
 
-// package level access
-// not accessible to the user
-// internally PSO uses this particle class
-
-class Particle {
+public class Particle {
 
 	// N-dimensional particle
 	int dim ;
@@ -36,6 +32,10 @@ class Particle {
 		this.velocity = new VectorND(new double[dim]) ;
 		this.bestPosition = position ;
 		this.bestValue = Double.MAX_VALUE ;
+	}
+
+	public VectorND getPosition() {
+		return position ;
 	}
 
 	// one useful method

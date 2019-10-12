@@ -1,7 +1,7 @@
 package mathLib.optimize.pso;
 
 // default access modifier --> visible in the package
-class Interval {
+public class Interval {
 
 	private double start ;
 	private double end ;

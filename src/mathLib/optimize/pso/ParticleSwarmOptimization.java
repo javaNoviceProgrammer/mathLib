@@ -3,6 +3,9 @@ package mathLib.optimize.pso;
 import java.util.ArrayList;
 import java.util.List;
 
+import mathLib.plot.MatlabChart;
+import mathLib.util.Timer;
+
 public class ParticleSwarmOptimization {
 
 	// Algorithm parameters
@@ -17,8 +20,11 @@ public class ParticleSwarmOptimization {
 	List<Particle> particles ;
 
 	// swarm's parameters --> swarm's best position & value
-	VectorND guessBestPosition ;
-	double guessBestValue = Double.MAX_VALUE ;
+	VectorND swarmBestPosition ;
+	double swarmBestValue = Double.MAX_VALUE ;
+
+	boolean visualize ;
+	MatlabChart fig ;
 
 	public ParticleSwarmOptimization(int numParticles, FitnessFunction fitnessFunc, Interval... intervals) {
 		this.numParticles = numParticles ;
@@ -29,12 +35,37 @@ public class ParticleSwarmOptimization {
 		double[] x = new double[intervals.length] ;
 		for(int i=0; i<intervals.length; i++)
 			x[i] = intervals[i].getRandom() ;
-		this.guessBestPosition = new VectorND(x) ;
+		this.swarmBestPosition = new VectorND(x) ;
 	}
 
 	// Interval class --> package level access: static interval method
 	public static Interval interval(double start, double end) {
 		return new Interval(start, end) ;
+	}
+
+	public void visualize(boolean visualize) {
+		this.visualize = visualize ;
+		if(visualize) {
+			fig = new MatlabChart() ;
+			fig.plot(new double[0], new double[0]);
+			fig.renderPlot();
+			fig.font(13);
+			fig.xlabel("Iteration step");
+			fig.ylabel("Swarm's best value");
+			fig.run(true);
+		}
+	}
+
+	public List<Particle> getParticles() {
+		return particles ;
+	}
+
+	public int getNumberOfPartciles() {
+		return numParticles ;
+	}
+
+	public FitnessFunction getFitnessFunction() {
+		return fitnessFunc ;
 	}
 
 	public void setMinimize(boolean value) {
@@ -63,7 +94,7 @@ public class ParticleSwarmOptimization {
 			double r1 = Math.random() ; // [0,1)
 			double r2 = Math.random() ; // [0,1)
 			VectorND newVelocity = (w*particle.velocity) + c1*r1*(particle.bestPosition-particle.position) +
-									c2*r2*(guessBestPosition-particle.bestPosition) ;
+									c2*r2*(swarmBestPosition-particle.bestPosition) ;
 			particle.velocity = newVelocity ;
 			// update the position
 			particle.move() ;
@@ -81,13 +112,13 @@ public class ParticleSwarmOptimization {
 		}
 	}
 
-	// Guess --> swarm's parameters
-	private void updateGuessBestParams() {
+	// swarm's parameters
+	private void updateSwarmBestParams() {
 		for(Particle particle : particles){
 			double fitnessValue = fitness(particle) ;
-			if(guessBestValue > fitnessValue) { // default --> minimizing
-				guessBestValue = fitnessValue ;
-				guessBestPosition = particle.position ;
+			if(swarmBestValue > fitnessValue) { // default --> minimizing
+				swarmBestValue = fitnessValue ;
+				swarmBestPosition = particle.position ;
 			}
 		}
 	}
@@ -98,7 +129,7 @@ public class ParticleSwarmOptimization {
 			// particle's behavior
 			updateParticleBestParams() ;
 			// swarm's behavior
-			updateGuessBestParams() ;
+			updateSwarmBestParams() ;
 			// move particles
 			moveParticles() ;
 			// increase iterations
@@ -106,26 +137,59 @@ public class ParticleSwarmOptimization {
 		}
 	}
 
+	public void solveAndPlot(int numIterations) {
+		visualize(true);
+		int iterations = 0 ;
+		while(iterations < numIterations) {
+			// particle's behavior
+			updateParticleBestParams() ;
+			// swarm's behavior
+			updateSwarmBestParams() ;
+			// move particles
+			moveParticles() ;
+			// increase iterations
+			iterations++ ;
+			// plot the fitness values
+			fig.append(0, iterations, swarmBestValue);
+		}
+	}
+
+	public void next() {
+		// particle's behavior
+		updateParticleBestParams() ;
+		// swarm's behavior
+		updateSwarmBestParams() ;
+		// move particles
+		moveParticles() ;
+	}
+
 	public double bestValue() {
 		if(minimize)
-			return guessBestValue ;
+			return swarmBestValue ;
 		else
-			return -guessBestValue ;
+			return -swarmBestValue ;
 	}
 
 	public VectorND bestPosition() {
-		return guessBestPosition ;
+		return swarmBestPosition ;
 	}
 
 	// test
 	public static void main(String[] args) {
-		FitnessFunction func = t -> Math.sin(t[0]) ; // 1d function: sin(x)
-		ParticleSwarmOptimization pso = new ParticleSwarmOptimization(10, func, interval(0, Math.PI)) ;
-		pso.setMinimize(false); // max --> x = pi/2
-		pso.solve(100) ;
+		Timer timer = new Timer();
+		timer.start();
+		FitnessFunction func = t -> Math.sin(t[0])*Math.cos(t[1])*Math.sin(t[2]*t[2]) ; // 2d function: sin(x)
+		ParticleSwarmOptimization pso = new ParticleSwarmOptimization(20, func,
+																	  interval(0, 2*Math.PI),
+																	  interval(0, 2*Math.PI),
+																	  interval(0, 2*Math.PI)) ;
+		pso.setMinimize(true);
+//		pso.solveAndPlot(50);
+		pso.solve(50);
+		timer.stop();
+		timer.show();
 		System.out.println(pso.bestValue());
 		System.out.println(pso.bestPosition());
-		System.out.println(Math.PI/2.0);
 	}
 
 }
