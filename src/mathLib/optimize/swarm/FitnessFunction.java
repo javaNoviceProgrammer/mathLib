@@ -8,7 +8,7 @@ import mathLib.optimize.swarm.particle.Particle;
  */
 public abstract class FitnessFunction {
 
-	/** Should this funtion be maximized or minimized */
+	/** Should this function be maximized or minimized */
 	boolean maximize;
 
 	//-------------------------------------------------------------------------

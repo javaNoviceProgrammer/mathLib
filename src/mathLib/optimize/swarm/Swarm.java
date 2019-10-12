@@ -419,12 +419,12 @@ public class Swarm implements Iterable<Particle> {
 
 	/**
 	 * Show a swarm in a graph
-	 * @param graphics : Grapics object
+	 * @param graphics : Graphics object
 	 * @param foreground : foreground color
 	 * @param width : graphic's width
 	 * @param height : graphic's height
-	 * @param dim0 : Dimention to show ('x' axis)
-	 * @param dim1 : Dimention to show ('y' axis)
+	 * @param dim0 : Dimension to show ('x' axis)
+	 * @param dim1 : Dimension to show ('y' axis)
 	 * @param showVelocity : Show velocity tails?
 	 */
 	public void show(Graphics graphics, Color foreground, int width, int height, int dim0, int dim1, boolean showVelocity) {
