@@ -21,6 +21,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
 import flanagan.io.FileOutput;
+import mathLib.plot.MatlabChart;
 import mathLib.util.CustomJFileChooser;
 
 public class CustomChartPanel extends ChartPanel {
@@ -28,6 +29,7 @@ public class CustomChartPanel extends ChartPanel {
 	private ImageSelection imgsel;
 	private int cwidth;
 	private int cheight;
+	private MatlabChart fig = null ;
 
 	public CustomChartPanel(JFreeChart chart, int width, int height, int minimumDrawWidth, int minimumDrawHeight,
 			int maximumDrawWidth, int maximumDrawHeight, boolean useBuffer, boolean properties, boolean save,
@@ -36,6 +38,27 @@ public class CustomChartPanel extends ChartPanel {
 				true, true, true, true, true);
 		this.cwidth = width;
 		this.cheight = height;
+		initialize();
+	}
+	
+	public CustomChartPanel(JFreeChart chart) {
+		super(chart) ;
+		initialize() ;
+	}
+	
+	public CustomChartPanel(MatlabChart fig) {
+		super(fig.getChart()) ;
+		this.fig = fig ;
+		initialize() ;
+	}
+	
+	private void initialize() {
+		// avoiding the bad scaling of fonts
+	    setMinimumDrawHeight(Integer.MIN_VALUE);
+	    setMinimumDrawWidth(Integer.MIN_VALUE);
+	    setMaximumDrawHeight(Integer.MAX_VALUE);
+	    setMaximumDrawWidth(Integer.MAX_VALUE);
+	    // updating popup menu
 		getPopupMenu().add(new JSeparator());
 		// for copying to clipboard
 		JMenuItem copyAsBitmap = new JMenuItem("Copy to Clipboard");

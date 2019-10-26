@@ -21,9 +21,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import org.jfree.chart.ChartPanel;
-
 import mathLib.plot.MatlabChart;
+import mathLib.plot.util.CustomChartPanel;
 
 public class FunctionPlotter extends JFrame {
 
@@ -104,7 +103,8 @@ public class FunctionPlotter extends JFrame {
 		fig = new MatlabChart() ;
 		fig.plot(new double[0], new double[0]);
 		fig.renderPlot();
-		ChartPanel chartPanel = new ChartPanel(fig.getChart());
+//		ChartPanel chartPanel = new ChartPanel(fig.getChart());
+		CustomChartPanel chartPanel = new CustomChartPanel(fig.getChart()) ;
 		plotPanel.add(chartPanel) ;
 		
 		JPanel panel = new JPanel();
@@ -183,7 +183,7 @@ public class FunctionPlotter extends JFrame {
 		gbl_panel_3.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
 		
-		JLabel lblStartX = new JLabel("Start: x = ");
+		JLabel lblStartX = new JLabel("Start = ");
 		GridBagConstraints gbc_lblStartX = new GridBagConstraints();
 		gbc_lblStartX.anchor = GridBagConstraints.EAST;
 		gbc_lblStartX.insets = new Insets(5, 5, 5, 5);
@@ -245,7 +245,7 @@ public class FunctionPlotter extends JFrame {
 		
 
 		
-		JLabel lblEndX = new JLabel("End: x = ");
+		JLabel lblEndX = new JLabel("End = ");
 		GridBagConstraints gbc_lblEndX = new GridBagConstraints();
 		gbc_lblEndX.anchor = GridBagConstraints.EAST;
 		gbc_lblEndX.insets = new Insets(5, 5, 5, 5);

@@ -20,11 +20,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import org.jfree.chart.ChartPanel;
-
 import flanagan.io.FileOutput;
 import mathLib.func.ArrayFunc;
 import mathLib.plot.MatlabChart;
+import mathLib.plot.util.CustomChartPanel;
 import mathLib.util.CustomJFileChooser;
 
 public class TriggerConversionGUI extends JFrame {
@@ -113,7 +112,7 @@ public class TriggerConversionGUI extends JFrame {
 		fig.renderPlot();
 		fig.setXLabel("Wavelength (nm)");
 		fig.setYLabel("Voltage (V)");
-		ChartPanel chartPanel = new ChartPanel(fig.getChart());
+		CustomChartPanel chartPanel = new CustomChartPanel(fig.getChart());
 		plotPanel.add(chartPanel) ;
 		
 		JPanel panel = new JPanel();
