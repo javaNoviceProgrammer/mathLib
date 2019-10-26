@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 
 public class ObjectUtils {
 	
-	public static void writeToFile(Object obj, File file) {
+	public static void writeObjectToFile(Object obj, File file) {
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(file);
@@ -22,7 +22,7 @@ public class ObjectUtils {
 		}
 	}
 	
-	public static Object readFromFile(File file) {
+	public static Object readObjectFromFile(File file) {
 		FileInputStream fis = null;
 		Object readObject = null ;
 		try {
@@ -44,6 +44,6 @@ public class ObjectUtils {
 		return readObject ;
 	}
 	
-	
 
 }
+
