@@ -1,6 +1,7 @@
 package mathLib.util;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import mathLib.plot.MatlabChart;
@@ -79,6 +81,7 @@ public class FunctionPlotter extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 616, 555);
 		contentPane = new JPanel();
@@ -92,7 +95,7 @@ public class FunctionPlotter extends JFrame {
 		contentPane.setLayout(gbl_contentPane);
 		
 		JPanel plotPanel = new JPanel();
-		plotPanel.setBorder(new TitledBorder(null, "plot", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		plotPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Plot", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagConstraints gbc_plotPanel = new GridBagConstraints();
 		gbc_plotPanel.fill = GridBagConstraints.BOTH;
 		gbc_plotPanel.gridx = 0;
