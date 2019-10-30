@@ -24,20 +24,20 @@ public class Example3D {
 			}
 		};
 
-		func.setMaximize(false); // set the optimization criterion (e.g. max or min)
+		func.setMaximize(true); // set the optimization criterion (e.g. max or min)
 
 		// step 2: create a particle with the correct optimization dimensions
 //		Particle myParticle = new SimpleParticle3D();
 		Particle myParticle = ParticleChooser.getParticle(3) ;
 
 		// step 3: create a swarm and evolve it for some number of times
-		Swarm swarm = new Swarm(1000, myParticle, func) ;
+		Swarm swarm = new Swarm(20, myParticle, func) ;
 
 		/* setting the search interval */
 		swarm.setMinPosition(new double[] {-5, -10, -20});
 		swarm.setMaxPosition(new double[]{10, 10, 20});
 
-		for(int i=0; i<10000; i++){
+		for(int i=0; i<100; i++){
 			swarm.evolve();
 		}
 //		System.out.println(swarm.toStringStats());

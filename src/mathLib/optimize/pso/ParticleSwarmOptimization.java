@@ -26,7 +26,7 @@ public class ParticleSwarmOptimization {
 	MatlabChart fig ;
 	
 	// bounded optimization
-	boolean isBounded = false ;
+	boolean isBounded = true ;
 	ParticleDomain psoDomain ;
 
 	public ParticleSwarmOptimization(int numParticles, FitnessFunction fitnessFunc, Interval... intervals) {
