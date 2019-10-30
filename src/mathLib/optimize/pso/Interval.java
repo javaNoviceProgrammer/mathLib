@@ -24,6 +24,13 @@ public class Interval {
 		double r = Math.random() ; // r in [0,1) --> [start,end]
 		return start + (end-start)*r ;
 	}
+	
+	boolean isInsideInterval(double x) {
+		if(start <= x && x <= end) {
+			return true ;
+		}
+		return false ;
+	}
 
 	@Override
 	public String toString() {

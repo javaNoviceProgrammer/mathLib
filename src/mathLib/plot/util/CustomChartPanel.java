@@ -85,6 +85,11 @@ public class CustomChartPanel extends ChartPanel {
 
 		Border padding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		setBorder(padding);
+		
+		// implement fig functions
+		if(fig!= null) {
+			// do stuff
+		}
 	}
 
 	public void actionPerformed(ActionEvent ae) {

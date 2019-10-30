@@ -9,9 +9,9 @@ public class Particle {
 	VectorND position ;
 	VectorND velocity ;
 	VectorND bestPosition ;
-	double bestValue ; // for the fitness function --> tracking the particle motion in
-						// in accordance to the swarm's objective
-
+	double bestValue ; // for the fitness function --> tracking the particle motion in accordance to the swarm's objective
+	
+	
 	public Particle(Interval... intervals) {
 		this.dim = intervals.length ;
 		double[] initialPosition = new double[dim] ;
@@ -41,6 +41,10 @@ public class Particle {
 	// one useful method
 	public void move() {
 		position = position + velocity ;
+	}
+	
+	public void moveBack() {
+		position = position - velocity ;
 	}
 
 	@Override
