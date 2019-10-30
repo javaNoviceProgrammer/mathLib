@@ -53,15 +53,6 @@ public class ParticleSwarmOptimization {
 
 	public void visualize(boolean visualize) {
 		this.visualize = visualize ;
-		if(visualize) {
-			fig = new MatlabChart() ;
-			fig.plot(new double[0], new double[0]);
-			fig.renderPlot();
-			fig.font(13);
-			fig.xlabel("Iteration step");
-			fig.ylabel("Swarm's best value");
-			fig.run(true);
-		}
 	}
 
 	public List<Particle> getParticles() {
@@ -156,7 +147,15 @@ public class ParticleSwarmOptimization {
 	}
 
 	public void solveAndPlot(int numIterations) {
-		visualize(true);
+		// initialize figure
+		fig = new MatlabChart() ;
+		fig.plot(new double[0], new double[0]);
+		fig.renderPlot();
+		fig.font(13);
+		fig.xlabel("Iteration step");
+		fig.ylabel("Swarm's best value");
+		fig.run(true);
+		// perform iterations
 		int iterations = 0 ;
 		while(iterations < numIterations) {
 			// particle's behavior
@@ -168,7 +167,7 @@ public class ParticleSwarmOptimization {
 			// increase iterations
 			iterations++ ;
 			// plot the fitness values
-			fig.append(0, iterations, swarmBestValue);
+			fig.append(0, iterations, bestValue());
 		}
 	}
 
@@ -215,7 +214,7 @@ public class ParticleSwarmOptimization {
 	
 	private static void test2() {
 		FitnessFunction func = t -> t[0]*t[0] + t[0] - 1.0 ;
-		ParticleSwarmOptimization pso = new ParticleSwarmOptimization(20, func, interval(-2.0, 1.0)) ;
+		ParticleSwarmOptimization pso = new ParticleSwarmOptimization(50, func, interval(-2.0, 1.0)) ;
 		pso.setMinimize(true);
 		pso.visualize(true);
 		pso.boundedOptimization(true);
