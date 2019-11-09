@@ -10,6 +10,7 @@ import mathLib.util.MathUtils;
 public class Polynomial {
 
 	public static final Polynomial X = new Polynomial(new double[] {0.0, 1.0}) ;
+	public static final Polynomial x = new Polynomial(new double[] {0.0, 1.0}) ;
 	public static final Polynomial ZERO = new Polynomial() ;
 
     double[] coef;  // coefficients (length = degree + 1)
@@ -42,6 +43,17 @@ public class Polynomial {
     public double limit(double a) {
     	return this.evaluate(a) ;
     }
+
+	public Polynomial reduce() {
+		// remove zeros from higher order terms
+		int index = deg ;
+		while(Math.abs(coef[index])<1e-10)
+			index-- ;
+		double[] reducedCoeffs = new double[index+1] ;
+		for(int i=0; i<index+1; i++)
+			reducedCoeffs[i] = coef[i] ;
+		return new Polynomial(reducedCoeffs) ;
+	}
 
     // return c = a + b
     public Polynomial plus(Polynomial b) {
@@ -246,9 +258,17 @@ public class Polynomial {
     	for(int i=0; i<deg; i++) {
     		roots[i] = new Complex(rootsRealPart[i], rootsImagPart[i]) ;
     	}
-    	
     	return roots ;
     }
+
+	public flanagan.math.Polynomial toFlanaganPolynomial() {
+		flanagan.math.Polynomial p = new flanagan.math.Polynomial(this.coef) ;
+		return p ;
+	}
+
+	public flanagan.complex.Complex[] roots() {
+		return toFlanaganPolynomial().reducePoly().roots() ;
+	}
 
     public ArrayList<Complex> getRootsAsList() {
     	ArrayList<Complex> roots = new ArrayList<>() ;
@@ -334,7 +354,6 @@ public class Polynomial {
     			factors.add(p) ;
     		}
     	}
-
     	return factors ;
     }
 
