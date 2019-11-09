@@ -24,7 +24,7 @@ public class ParticleSwarmOptimization {
 
 	boolean visualize ;
 	MatlabChart fig ;
-	
+
 	// bounded optimization
 	boolean isBounded = true ;
 	ParticleDomain psoDomain ;
@@ -46,8 +46,8 @@ public class ParticleSwarmOptimization {
 	public static Interval interval(double start, double end) {
 		return new Interval(start, end) ;
 	}
-	
-	public void boundedOptimization(boolean isBounded) {
+
+	public void setBoundedOptimization(boolean isBounded) {
 		this.isBounded = isBounded ;
 	}
 
@@ -75,11 +75,26 @@ public class ParticleSwarmOptimization {
 	private double fitness(Particle particle) {
 		if(fitnessFunc == null)
 			throw new IllegalArgumentException("Fitness function is not set") ;
+		// modified fitness function
+		FitnessFunction boundedFitnessFunction = t -> {
+			if(!isBounded)
+				return fitnessFunc.value(t) ;
+			else {
+				if(psoDomain.isParticleInside(t))
+					return fitnessFunc.value(t) ;
+				else {
+					if(minimize)
+						return Double.MAX_VALUE ;
+					else
+						return Double.MIN_VALUE ;
+				}
+			}
+		} ;
 		if(minimize)
-			return fitnessFunc.value(particle.position.x) ;
+			return boundedFitnessFunction.value(particle.position.x) ;
 		else
 			// reverse the sign of the fitness function to maximize it --> min(-f) == max(f)
-			return -fitnessFunc.value(particle.position.x) ;
+			return -boundedFitnessFunction.value(particle.position.x) ;
 	}
 
 	public void printParticles() {
@@ -92,17 +107,11 @@ public class ParticleSwarmOptimization {
 			// update the velocity
 			double r1 = Math.random() ; // [0,1)
 			double r2 = Math.random() ; // [0,1)
-			VectorND oldVelocity = particle.velocity ;
 			VectorND newVelocity = (w*particle.velocity) + c1*r1*(particle.bestPosition-particle.position) +
 									c2*r2*(swarmBestPosition-particle.bestPosition) ;
 			particle.velocity = newVelocity ;
 			// update the position
 			particle.move() ;
-			// check for bounded optimization
-			if(isBounded && !psoDomain.isParticleInside(particle)) {
-				particle.moveBack() ;
-				particle.velocity = oldVelocity ;
-			}	
 		}
 	}
 
@@ -195,7 +204,7 @@ public class ParticleSwarmOptimization {
 	public static void main(String[] args) {
 		test2() ;
 	}
-	
+
 //	private static void test1() {
 //		Timer timer = new Timer();
 //		timer.start();
@@ -211,13 +220,13 @@ public class ParticleSwarmOptimization {
 //		System.out.println(pso.bestValue());
 //		System.out.println(pso.bestPosition());
 //	}
-	
+
 	private static void test2() {
 		FitnessFunction func = t -> t[0]*t[0] + t[0] - 1.0 ;
-		ParticleSwarmOptimization pso = new ParticleSwarmOptimization(50, func, interval(-2.0, 1.0)) ;
+		ParticleSwarmOptimization pso = new ParticleSwarmOptimization(50, func, interval(0.2, 3.0)) ;
 		pso.setMinimize(true);
+		pso.setBoundedOptimization(false);
 		pso.visualize(true);
-		pso.boundedOptimization(true);
 		pso.solve(100);
 		System.out.println(pso.bestValue());
 		System.out.println(pso.bestPosition());

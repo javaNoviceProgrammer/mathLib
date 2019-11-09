@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ParticleDomain {
-	
+
 	private List<Interval> intervals ;
-	
+
 	public ParticleDomain(Interval... intervals) {
 		this.intervals = Arrays.asList(intervals) ;
 	}
-	
+
 	public boolean isParticleInside(Particle particle) {
 		// check the position
 		VectorND position = particle.getPosition() ;
@@ -19,8 +19,22 @@ public class ParticleDomain {
 				return false ;
 		return true ;
 	}
-	
-	
+
+	public boolean isParticleInside(VectorND position) {
+		for(int i=0; i<position.dim; i++)
+			if(!intervals.get(i).isInsideInterval(position.at(i)))
+				return false ;
+		return true ;
+	}
+
+	public boolean isParticleInside(double[] position) {
+		for(int i=0; i<position.length; i++)
+			if(!intervals.get(i).isInsideInterval(position[i]))
+				return false ;
+		return true ;
+	}
+
+
 	// for test
 	public static void main(String[] args) {
 		Interval interval1 = new Interval(-1.0, 1.0) ;
