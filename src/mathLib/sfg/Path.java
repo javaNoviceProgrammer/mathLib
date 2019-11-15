@@ -1,18 +1,18 @@
-package mathLib.sfg.symbolic;
+package mathLib.sfg;
 
-import mathLib.func.symbolic.intf.MathFunc;
+import mathLib.numbers.Complex;
 
 public class Path {
 
-	private MathFunc gain;
+	private Complex gain;
 	private String path;
 
-	public Path(MathFunc gain, String path){
+	public Path(Complex gain, String path){
 		this.gain = gain;
 		this.path = path;
 	}
 
-	public MathFunc getGain() {
+	public Complex getGain() {
 		return gain;
 	}
 
@@ -20,7 +20,7 @@ public class Path {
 		return path;
 	}
 
-	public void setGain(MathFunc gain) {
+	public void setGain(Complex gain) {
 		this.gain = gain;
 	}
 

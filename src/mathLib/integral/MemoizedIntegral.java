@@ -1,4 +1,4 @@
-package mathLib.integral.recent;
+package mathLib.integral;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class MemoizedIntegral {
 			double t2 = start + i*delta ;
 			// result = result[start, t1] + integrate[t1,t2]
 			if(cache.containsKey(i-1)){
-				double result = cache.get(i-1) + (new Integral1D(func1d)).gaussLegendreFivePoints(t1, t2) ;
+				double result = cache.get(i-1) + (new Integrals1D(func1d)).gaussLegendreFivePoints(t1, t2) ;
 				cache.put(i, result) ;
 			}
 			else{

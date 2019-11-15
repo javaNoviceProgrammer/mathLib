@@ -1,21 +1,23 @@
-package mathLib.integral.recent;
+package mathLib.integral;
+
+import java.util.function.Function;
 
 import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.polynom.Polynomial;
 import mathLib.polynom.special.LegendrePolynom;
 
-public class Integral1D {
+public class Integrals1D {
 
 	IntegralFunction1D func ;
 
-	public Integral1D(IntegralFunction1D func) {
+	public Integrals1D(IntegralFunction1D func) {
 		this.func = func ; // avoid shadowing of class variable
 	}
 
-//	public Integral1D(Function<Double, Double> func1d) {
-//		// auto boxing & auto unboxing: double Double --> compiler is smart enough to handle it
-//		this.func = t -> func1d.apply(t) ;
-//	}
+	public Integrals1D(Function<Double, Double> func1d) {
+		// auto boxing & auto unboxing: double Double --> compiler is smart enough to handle it
+		this.func = t -> func1d.apply(t) ;
+	}
 
 	// method1: Rectangle + uniform partitioning + forward summation
 	public double forwardRectangle(double start, double end, int terms) {
@@ -121,15 +123,15 @@ public class Integral1D {
 		return simpsonRecursive(start, midPoint) + simpsonRecursive(midPoint, end) ;
 	}
 
-	private double gaussLegendreIntervalMapping(double start, double end, double x) {
+	public double gaussLegendreIntervalMapping(double start, double end, double x) {
 		return (end-start)/2.0 * x + (end+start)/2.0 ; // maps from [-1,1] to [start,end]
 	}
 
-	private double gaussLegendreInverseIntervalMapping(double start, double end, double x) {
+	public double gaussLegendreInverseIntervalMapping(double start, double end, double x) {
 		return 2.0/(end-start) * (x - (end+start)/2.0) ; // maps from [start,end] to [-1,1]
 	}
 
-	private IntegralFunction1D gaussLegendreFunctionMapping(double start, double end) {
+	public IntegralFunction1D gaussLegendreFunctionMapping(double start, double end) {
 		return t -> func.function(gaussLegendreIntervalMapping(start, end, t)) ; // t is in [-1,1]
 	}
 

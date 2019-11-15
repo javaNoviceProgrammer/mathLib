@@ -1,4 +1,4 @@
-package mathLib.sfg.numeric;
+package mathLib.sfg;
 
 import java.util.ArrayList;
 import java.util.HashMap;

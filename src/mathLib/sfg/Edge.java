@@ -1,13 +1,13 @@
-package mathLib.sfg.symbolic;
+package mathLib.sfg;
 
-import mathLib.func.symbolic.intf.MathFunc;
+import mathLib.numbers.Complex;
 
 public class Edge {
 
 	private int to;
-	private MathFunc gain;
+	private Complex gain;
 
-	public Edge(int to, MathFunc gain){
+	public Edge(int to, Complex gain){
 		this.to = to;
 		this.gain = gain;
 	}
@@ -16,11 +16,11 @@ public class Edge {
 		return to;
 	}
 
-	public MathFunc getGain() {
+	public Complex getGain() {
 		return gain;
 	}
 
-	public void setGain(MathFunc gain) {
+	public void setGain(Complex gain) {
 		this.gain = gain;
 	}
 

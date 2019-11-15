@@ -1,8 +1,9 @@
 package tests;
 
-import mathLib.sfg.numeric.SFG;
 import mathLib.util.StringUtils;
 import static mathLib.numbers.Complex.*;
+
+import mathLib.sfg.SFG;
 
 public class TestSFG2 {
 	public static void main(String[] args) {

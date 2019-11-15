@@ -1,6 +1,6 @@
 package tests;
 
-import mathLib.sfg.numeric.SFG;
+import mathLib.sfg.SFG;
 import mathLib.util.StringUtils;
 
 public class TestSFG3 {
