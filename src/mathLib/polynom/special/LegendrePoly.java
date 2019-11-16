@@ -73,6 +73,7 @@ public class LegendrePoly {
 		System.out.println(legendre(8));
 		System.out.println(legendre(9));
 		System.out.println(legendre(10));
+		System.out.println(fromRodrigues(10));
 
 		System.out.println(associatedLegendre(2, 0));
 		
