@@ -17,7 +17,7 @@ public class Polynomial {
     int deg;     // degree of polynomial (0 for the zero polynomial)
 
     // a0 + a1*x + a2*x^2 + ... an * x^n
-    public Polynomial(double[] coeff) {
+    public Polynomial(double... coeff) {
     	this.coef = coeff ;
     	this.deg = degree() ;
     }

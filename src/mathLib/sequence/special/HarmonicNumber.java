@@ -1,13 +1,10 @@
 package mathLib.sequence.special;
 
 import static mathLib.util.MathUtils.linspace;
-import static mathLib.util.MathUtils.minusOnePower;
-
 import java.awt.Color;
-
 import mathLib.plot.MatlabChart;
-import mathLib.sequence.SumFunction;
-import mathLib.sequence.Summation;
+import mathLib.sequence.Sequence;
+import mathLib.sequence.Series;
 
 public class HarmonicNumber {
 
@@ -15,30 +12,18 @@ public class HarmonicNumber {
 		if(n<1)
 			throw new IllegalArgumentException("argument must be greater than or equal to 1") ;
 
-		SumFunction func = new SumFunction() {
-			@Override
-			public double value(int k) {
-				return 1.0/k;
-			}
-		};
-
-		Summation sum = new Summation(func) ;
-		return sum.evaluate(1, n) ;
+		Sequence func = k -> 1.0/k ;
+		Series series = new Series(func) ;
+		return series.sum(1, n) ;
 	}
 
 	public static double alternativeHamonic (int n) {
 		if(n<1)
 			throw new IllegalArgumentException("argument must be greater than or equal to 1") ;
 
-		SumFunction func = new SumFunction() {
-			@Override
-			public double value(int k) {
-				return (1.0/k)*minusOnePower(k+1);
-			}
-		};
-
-		Summation sum = new Summation(func) ;
-		return sum.evaluate(1, n) ;
+		Sequence func = k -> (1.0/k)*((k+1)%2==0 ? 1 : -1) ; // (-1)^(k+1)
+		Series series = new Series(func) ;
+		return series.sum(1, n) ;
 	}
 
 	// for test

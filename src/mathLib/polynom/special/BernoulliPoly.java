@@ -8,8 +8,8 @@ import static mathLib.util.MathUtils.deltaKronecker;
 
 import mathLib.polynom.ComplexPolynomial;
 import mathLib.polynom.Polynomial;
-import mathLib.sequence.SumFunction;
-import mathLib.sequence.Summation;
+import mathLib.sequence.Sequence;
+import mathLib.sequence.Series;
 
 public class BernoulliPoly {
 
@@ -37,17 +37,11 @@ public class BernoulliPoly {
 		if (m % 2 != 0 && m > 2)
 			return 0.0;
 
-		SumFunction func = new SumFunction() {
-			@Override
-			public double value(int k) {
-				return combination(m, k) * bernoulliNumber(k) / (m - k + 1);
-			}
-		};
-
-		Summation sum = new Summation(func);
-		return deltaKronecker(m, 0) - sum.evaluate(0, m - 1);
+		Sequence func = k -> combination(m, k) * bernoulliNumber((int) k) / (m - k + 1) ;
+		Series series = new Series(func) ;
+		return deltaKronecker((int) m, 0) - series.sum(0, m - 1);
 	}
-	
+
 	/**
 	 * Complex version of the bernoulli polynomial
 	 * @param degree
@@ -57,7 +51,7 @@ public class BernoulliPoly {
 	public static ComplexPolynomial bernoulliC(int degree) {
 		return bernoulli(degree)+0*Xc ;
 	}
-	
+
 
 	// for test
 	public static void main(String[] args) {

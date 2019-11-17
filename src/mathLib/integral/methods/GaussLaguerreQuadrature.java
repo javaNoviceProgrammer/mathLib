@@ -3,8 +3,9 @@ package mathLib.integral.methods;
 import flanagan.integration.IntegralFunction;
 import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
-import mathLib.sequence.SumFunction;
-import mathLib.sequence.Summation;
+import mathLib.sequence.Sequence;
+import mathLib.sequence.Series;
+
 
 public class GaussLaguerreQuadrature {
 
@@ -51,9 +52,10 @@ public class GaussLaguerreQuadrature {
 	}
 
 	public double getIntegral() {
-		SumFunction sFunc = k -> weights[k] * func.function(getTransform(points[k])) * Math.exp(getTransform(points[k]));
-		Summation integral = new Summation(sFunc);
-		return integral.evaluate(0, points.length - 1);
+		Sequence sFunc = k -> weights[(int) k] * func.function(getTransform(points[(int) k])) *
+								Math.exp(getTransform(points[(int) k]));
+		Series integral = new Series(sFunc);
+		return integral.sum(0, points.length - 1);
 	}
 
 	private double getTransform(double u) {
