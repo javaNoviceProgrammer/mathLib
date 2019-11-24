@@ -8,7 +8,6 @@ package mathLib.sequence;
 @FunctionalInterface
 public interface Sequence {
 
-
 	/**
 	 * evaluates a sequence at a given index
 	 * @param k index of the term
@@ -40,19 +39,6 @@ public interface Sequence {
 	default Sequence shanks() {
 		return n -> evaluate(n+1) - (evaluate(n+1)-evaluate(n))*(evaluate(n+1)-evaluate(n))
 				/(evaluate(n+1)-2.0*evaluate(n)+evaluate(n-1)) ;
-	}
-
-	/**
-	 * Richardson extrapolation for a given order
-	 * @param order order of initial convergence error
-	 * @return a {@code Sequence} object
-	 */
-	default Sequence richardson(double order) {
-		return n -> {
-			double c1 = Math.pow(n+1, order) ;
-			double c2 = Math.pow(n, order) ;
-			return (c1*evaluate(n+1)-c2*evaluate(n))/(c1-c2) ;
-		} ;
 	}
 
 	/**
@@ -97,6 +83,60 @@ public interface Sequence {
 		Sequence seq4 = n -> -4.0*(n+1)*(n+1)*(n+1)*(n+1)*evaluate(n+1) ;
 		Sequence seq5 = n -> n*n*n*n*evaluate(n) ;
 		return (seq1+seq2+seq3+seq4+seq5)/24.0 ;
+	}
+
+	//*************** operations *******************
+
+	static Sequence delta() {
+		return n -> (n==0) ? 1.0 : 0.0 ; // returning double value
+	}
+
+	static Sequence delta(int m) {
+		return n -> (n==m) ? 1.0 : 0.0 ; // returning double value
+	}
+
+	static Sequence unitStep() {
+		return n -> (n>=0) ? 1.0 : 0.0 ; // returning double value
+	}
+
+	static Sequence unitStep(int m) {
+		return n -> (n>=m) ? 1.0 : 0.0 ; // returning double value
+	}
+
+	default Sequence shift(int m) {
+		return n -> evaluate(n-m) ;
+	}
+
+	default Sequence convolve(Sequence b) {
+		Sequence a = this ;
+		// returns conv(a,b)
+		return n -> Series.sum(m -> a.evaluate(m)*b.evaluate(n-m), 0, n) ;
+	}
+
+	static Sequence forArray(double... array) {
+		return n -> {
+			if(n>=0.0 && n<array.length)
+				return array[(int) n] ;
+			else
+				return 0.0 ;
+		} ;
+	}
+
+	static Sequence forArray(int shift, double... array) {
+		return n -> {
+			if(n>=shift && n<array.length+shift)
+				return array[(int) (n-shift)] ;
+			else
+				return 0.0 ;
+		} ;
+	}
+
+	static Sequence runningAverage(Sequence seq, int order) {
+		return n -> 1.0/order * Series.sum(seq, n, n+order-1) ;
+	}
+
+	default Sequence runningAverage(int order) {
+		return n -> 1.0/order * Series.sum(this, n, n+order-1) ;
 	}
 
 	//*************** operator overloading ****************
@@ -264,6 +304,5 @@ public interface Sequence {
 	default Sequence negate() {
 		return n -> -evaluate(n) ;
 	}
-
 
 }
