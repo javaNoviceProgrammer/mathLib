@@ -23,7 +23,8 @@ public class Series {
 
 	// finite series
 	public double sum(long initial, long last){
-		double result = 0 ;
+		double result = 0.0 ;
+		double x = 0.0 ;
 		for(long k=initial; k<last+1; k++)
 			if(doCache) {
 				// here is where caching happens
@@ -31,7 +32,7 @@ public class Series {
 					result += cache.get(k) ; // if a[k] has been evaluated before, we just retrieve it
 				}
 				else{
-					double x = seq.evaluate(k) ; // if first time a[k] evaluated, put it in the map
+					x = seq.evaluate(k) ; // if first time a[k] evaluated, put it in the map
 					cache.put(k, x) ;
 					result += x ;
 				}

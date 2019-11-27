@@ -87,18 +87,36 @@ public interface Sequence {
 
 	//*************** operations *******************
 
+	/**
+	 * Discrete unit delta sequence: delta[n] = 1 if n=0, else delta[n]=0
+	 * @return a {@code Sequence} object.
+	 */
 	static Sequence delta() {
 		return n -> (n==0) ? 1.0 : 0.0 ; // returning double value
 	}
 
+	/**
+	 * Discrete unit delta sequence (shifted): delta[n-m] = 1 if n=m, else delta[n-m]=0
+	 * @param m delay (shift) of the unit impulse
+	 * @return a {@code Sequence} object.
+	 */
 	static Sequence delta(int m) {
 		return n -> (n==m) ? 1.0 : 0.0 ; // returning double value
 	}
 
+	/**
+	 * Discrete unit step sequence: u[n] = 1 for n>=0, else u[n] = 0
+	 * @return a {@code Sequence} object.
+	 */
 	static Sequence unitStep() {
 		return n -> (n>=0) ? 1.0 : 0.0 ; // returning double value
 	}
 
+	/**
+	 * Discrete unit step sequence (shifted): u[n-m] = 1 for n>=m, else u[n] = 0
+	 * @param m delay (shift) of the unit step
+	 * @return a {@code Sequence} object.
+	 */
 	static Sequence unitStep(int m) {
 		return n -> (n>=m) ? 1.0 : 0.0 ; // returning double value
 	}
@@ -107,6 +125,11 @@ public interface Sequence {
 		return n -> evaluate(n-m) ;
 	}
 
+	/**
+	 * Discrete convolution sum of two sequences. a[n]=0 and b[n]=0 for n<0. 
+	 * @param b the other sequence to be convolved with.
+	 * @return a {@code Sequence} object.
+	 */
 	default Sequence convolve(Sequence b) {
 		Sequence a = this ;
 		// returns conv(a,b)
