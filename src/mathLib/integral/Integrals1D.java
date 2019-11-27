@@ -5,6 +5,7 @@ import java.util.function.Function;
 import mathLib.integral.intf.IntegralFunction1D;
 import mathLib.polynom.Polynomial;
 import mathLib.polynom.special.LegendrePolynom;
+import mathLib.sequence.Sequence;
 
 public class Integrals1D {
 
@@ -198,6 +199,34 @@ public class Integrals1D {
 		for(int i=0; i<numIntervals; i++)
 			sum += gaussLegendreFivePoints(start+i*delta, start+(i+1)*delta) ;
 		return sum ;
+	}
+
+	// 4th-order richardson acceleration
+	public double romberg(double start, double end, int subintervals) {
+		Sequence trapezoidSeq = n -> trapezoid(start, end, (int) n) ;
+		Sequence rombergSeq = trapezoidSeq.richardson4() ;
+		return rombergSeq.evaluate(subintervals) ; // compiler automatically does implicit casting
+	}
+
+	// 4th-order richardson acceleration
+	public double rombergOnForwardRectangle(double start, double end, int subintervals) {
+		Sequence forwardRectSeq = n -> forwardRectangle(start, end, (int) n) ;
+		Sequence rombergSeq = forwardRectSeq.richardson4() ;
+		return rombergSeq.evaluate(subintervals) ;
+	}
+
+	// 4th-order richardson acceleration
+	public double rombergOnCenterRectangle(double start, double end, int subintervals) {
+		Sequence centerRectSeq = n -> centerRectangle(start, end, (int) n) ;
+		Sequence rombergSeq = centerRectSeq.richardson4() ;
+		return rombergSeq.evaluate(subintervals) ;
+	}
+
+	// 4th-order richardson acceleration
+	public double rombergOnSimpson(double start, double end, int subintervals) {
+		Sequence simpsonSeq = n -> simpson(start, end, (int) n) ;
+		Sequence rombergSeq = simpsonSeq.richardson4() ;
+		return rombergSeq.evaluate(subintervals) ;
 	}
 
 }
