@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import mathLib.fem.util.Sequence;
+import mathLib.fem.util.SequenceFEM;
 import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.MatrixEntry;
 import mathLib.matrix.algebra.intf.SparseMatrix;
@@ -24,7 +24,7 @@ public class SparseMatrixColMajor implements SparseMatrix {
 	protected double defaultValue = 0.0;
 	protected Map<Integer,Map<Integer,Double>> m =
 		new HashMap<Integer,Map<Integer,Double>>();
-	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
+	protected String name = this.getClass().getSimpleName()+SequenceFEM.getInstance().nextSeq();
 
 	public SparseMatrixColMajor() {
 	}

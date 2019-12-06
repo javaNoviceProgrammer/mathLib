@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mathLib.fem.util.FutureyeException;
-import mathLib.fem.util.Sequence;
+import mathLib.fem.util.SequenceFEM;
 import mathLib.matrix.algebra.intf.BlockVector;
 import mathLib.matrix.algebra.intf.SparseVector;
 import mathLib.matrix.algebra.intf.Vector;
@@ -22,7 +22,7 @@ public class SparseBlockVector implements BlockVector<SparseVector>, SparseVecto
 	protected double defaultValue = 0.0;
 	protected Map<Integer,SparseVector> data =
 		new HashMap<Integer,SparseVector>();
-	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
+	protected String name = this.getClass().getSimpleName()+SequenceFEM.getInstance().nextSeq();
 
 	public SparseBlockVector(int blockDim) {
 		this.blockDim = blockDim;

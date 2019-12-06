@@ -1,4 +1,4 @@
-package mathLib.ode;
+package mathLib.func.richardson;
 
 import static mathLib.func.symbolic.FMath.*;
 

@@ -1,10 +1,13 @@
 package mathLib.ode.special;
 
-import static mathLib.func.symbolic.FMath.*;
+import static mathLib.func.symbolic.FMath.C;
+import static mathLib.func.symbolic.FMath.sin;
+import static mathLib.func.symbolic.FMath.x;
+import static mathLib.func.symbolic.FMath.y;
 
+import flanagan.integration.DerivnFunction;
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.intf.MathFunc;
-import mathLib.ode.intf.DerivnFunction1D;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 import mathLib.util.Timer;
@@ -17,7 +20,7 @@ import mathLib.util.Timer;
  *	solution gives y(x), y'(x), and y''(x)
  */
 
-public class OdeMixedThirdOrder extends RungeKutta implements DerivnFunction1D {
+public class OdeMixedThirdOrder extends RungeKutta implements DerivnFunction {
 
 	MathFunc a, b, c, d, f ;
 

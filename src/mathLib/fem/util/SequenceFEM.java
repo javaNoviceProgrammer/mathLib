@@ -5,14 +5,14 @@ package mathLib.fem.util;
  * 
  *
  */
-public class Sequence {
+public class SequenceFEM {
 	private long index = -1;
-	private static Sequence ins = new Sequence();
+	private static SequenceFEM ins = new SequenceFEM();
 	
-	private Sequence() {
+	private SequenceFEM() {
 	}
 	
-	public static Sequence getInstance() {
+	public static SequenceFEM getInstance() {
 		return ins;
 	}
 	

@@ -3,7 +3,7 @@ package mathLib.fitting.interpol;
 import flanagan.interpolation.LinearInterpolation;
 import mathLib.func.ArrayFunc;
 import mathLib.func.intf.RealFunction;
-import mathLib.ode.Richardson;
+import mathLib.func.richardson.Richardson;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 

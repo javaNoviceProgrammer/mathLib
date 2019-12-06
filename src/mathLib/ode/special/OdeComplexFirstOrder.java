@@ -1,13 +1,14 @@
 package mathLib.ode.special;
 
-import static mathLib.func.symbolic.FMath.*;
-import static mathLib.numbers.Complex.*;
-import static mathLib.numbers.ComplexMath.*;
+import static mathLib.func.symbolic.FMath.C;
+import static mathLib.numbers.Complex.j;
+import static mathLib.numbers.ComplexMath.absSquared;
+
+import flanagan.integration.DerivnFunction;
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.SingleVarFunc;
 import mathLib.func.symbolic.intf.MathFunc;
 import mathLib.numbers.Complex;
-import mathLib.ode.intf.DerivnFunction1D;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 
@@ -18,7 +19,7 @@ import mathLib.util.MathUtils;
  *  y(x) = yr(x) + j * yi(x)
  */
 
-public class OdeComplexFirstOrder extends RungeKutta implements DerivnFunction1D {
+public class OdeComplexFirstOrder extends RungeKutta implements DerivnFunction {
 
 	MathFunc br, fr ;
 	MathFunc bi, fi ;

@@ -1,9 +1,9 @@
 package mathLib.integral.other;
 
+import flanagan.integration.DerivFunction;
 import flanagan.integration.RungeKutta;
 import mathLib.integral.Integral1D;
 import mathLib.integral.intf.IntegralFunction1D;
-import mathLib.ode.intf.DerivFunction1D;
 import mathLib.util.Timer;
 
 public class Integral1DRungeKutta {
@@ -18,7 +18,7 @@ public class Integral1DRungeKutta {
 		// default step size is 1e-4 of the interval
 		this.stepSize = (end-start)/1e4 ;
 	}
-	
+
 	public Integral1DRungeKutta(IntegralFunction1D func) {
 		this.func = func ;
 
@@ -27,14 +27,14 @@ public class Integral1DRungeKutta {
 	public void setStepSize(double stepSize) {
 		this.stepSize = stepSize ;
 	}
-	
+
 	public double inetgrate(double start, double end) {
 		this.start = start ;
 		this.end = end ;
 		if(stepSize == 0D)
 			this.stepSize = (end-start)/1e4 ;
-		
-		DerivFunction1D derivFunc = new DerivFunction1D() {
+
+		DerivFunction derivFunc = new DerivFunction() {
 
 			@Override
 			public double deriv(double x, double y) {
@@ -54,7 +54,7 @@ public class Integral1DRungeKutta {
 	}
 
 	public double integrate() {
-		DerivFunction1D derivFunc = new DerivFunction1D() {
+		DerivFunction derivFunc = new DerivFunction() {
 
 			@Override
 			public double deriv(double x, double y) {
@@ -103,10 +103,10 @@ public class Integral1DRungeKutta {
 
 		System.out.println("Gauss quadrature result = "+i2);
 		System.out.println(timer2);
-		
+
 		Timer timer3 = new Timer() ;
 		timer3.start();
-		
+
 		Integral1DAdaptiveSimpson integral3 = new Integral1DAdaptiveSimpson(func) ;
 		double i3 = integral3.integrate(0, end) ;
 		timer3.stop();

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mathLib.fem.util.FutureyeException;
-import mathLib.fem.util.Sequence;
+import mathLib.fem.util.SequenceFEM;
 import mathLib.matrix.algebra.intf.BlockMatrix;
 import mathLib.matrix.algebra.intf.Matrix;
 import mathLib.matrix.algebra.intf.MatrixEntry;
@@ -24,7 +24,7 @@ public class SparseBlockMatrix implements BlockMatrix<SparseMatrix>,SparseMatrix
 
 	protected Map<Integer,Map<Integer,SparseMatrix>> m =
 		new LinkedHashMap<Integer,Map<Integer,SparseMatrix>>();
-	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
+	protected String name = this.getClass().getSimpleName()+SequenceFEM.getInstance().nextSeq();
 
 	/**
 	 * Construct a rowBlockDim*colBlockDim block matrix

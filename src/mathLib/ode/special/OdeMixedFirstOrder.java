@@ -1,10 +1,13 @@
 package mathLib.ode.special;
 
-import static mathLib.func.symbolic.FMath.*;
+import static mathLib.func.symbolic.FMath.C;
+import static mathLib.func.symbolic.FMath.sin;
+import static mathLib.func.symbolic.FMath.x;
+import static mathLib.func.symbolic.FMath.y;
 
+import flanagan.integration.DerivFunction;
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.intf.MathFunc;
-import mathLib.ode.intf.DerivFunction1D;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 
@@ -15,7 +18,7 @@ import mathLib.util.MathUtils;
  *
  */
 
-public class OdeMixedFirstOrder extends RungeKutta implements DerivFunction1D {
+public class OdeMixedFirstOrder extends RungeKutta implements DerivFunction {
 
 	MathFunc a, b, f ;
 

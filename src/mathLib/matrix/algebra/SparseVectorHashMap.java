@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import mathLib.fem.util.FutureyeException;
-import mathLib.fem.util.Sequence;
+import mathLib.fem.util.SequenceFEM;
 import mathLib.matrix.algebra.intf.SparseVector;
 import mathLib.matrix.algebra.intf.Vector;
 import mathLib.matrix.algebra.intf.VectorEntry;
@@ -25,7 +25,7 @@ public class SparseVectorHashMap implements SparseVector {
 	protected double defaultValue = 0.0;
 	protected Map<Integer,Double> data =
 		new HashMap<Integer,Double>();
-	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
+	protected String name = this.getClass().getSimpleName()+SequenceFEM.getInstance().nextSeq();
 
 	public SparseVectorHashMap() {
 	}

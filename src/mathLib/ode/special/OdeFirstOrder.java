@@ -1,10 +1,11 @@
 package mathLib.ode.special;
 
-import static mathLib.func.symbolic.FMath.*;
+import static mathLib.func.symbolic.FMath.C;
+import static mathLib.func.symbolic.FMath.x;
 
+import flanagan.integration.DerivFunction;
 import flanagan.integration.RungeKutta;
 import mathLib.func.symbolic.intf.MathFunc;
-import mathLib.ode.intf.DerivFunction1D;
 import mathLib.plot.MatlabChart;
 import mathLib.util.MathUtils;
 
@@ -14,7 +15,7 @@ import mathLib.util.MathUtils;
  *	a(x) cannot be null, but b(x) and f(x) can be null.
  */
 
-public class OdeFirstOrder extends RungeKutta implements DerivFunction1D {
+public class OdeFirstOrder extends RungeKutta implements DerivFunction {
 
 	MathFunc a, b, f ;
 

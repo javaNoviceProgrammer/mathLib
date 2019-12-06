@@ -1,7 +1,7 @@
 package mathLib.matrix.algebra;
 
 import mathLib.fem.util.FutureyeException;
-import mathLib.fem.util.Sequence;
+import mathLib.fem.util.SequenceFEM;
 import mathLib.matrix.algebra.intf.Vector;
 import mathLib.util.io.MatlabMatFileWriter;
 
@@ -13,7 +13,7 @@ import mathLib.util.io.MatlabMatFileWriter;
 public class SpaceVector implements Vector {
 	protected int dim = 0;
 	protected double[] data = null;
-	protected String name = this.getClass().getSimpleName()+Sequence.getInstance().nextSeq();
+	protected String name = this.getClass().getSimpleName()+SequenceFEM.getInstance().nextSeq();
 
 	public SpaceVector() {
 	}
