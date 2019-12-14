@@ -35,6 +35,10 @@ public class NdArray {
 
 	//********operator overloading capability **************
 
+	public static NdArray valueOf(double[] v) { // assignment operator: NdArray d = new double[]{1,2}
+		return new NdArray(v) ;
+	}
+
 	public NdArray add(double v) {
 		double[] y = new double[dim] ;
 		for(int i=0; i<dim; i++)

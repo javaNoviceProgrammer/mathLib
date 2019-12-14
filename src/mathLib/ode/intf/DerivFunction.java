@@ -1,5 +1,5 @@
 package mathLib.ode.intf;
 
-public interface DerivFunction1D {
+public interface DerivFunction {
 	double value(double x, double y);
 }
