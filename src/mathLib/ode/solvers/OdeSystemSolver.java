@@ -1,11 +1,10 @@
-package mathLib.ode;
+package mathLib.ode.solvers;
 
 import java.util.Arrays;
 
 import mathLib.arrays.NdArray;
 import mathLib.ode.intf.DerivnFunction;
 import mathLib.sequence.ArraySequence;
-
 
 public class OdeSystemSolver {
 

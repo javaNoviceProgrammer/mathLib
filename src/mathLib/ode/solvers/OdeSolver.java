@@ -1,6 +1,9 @@
-package mathLib.ode;
+package mathLib.ode.solvers;
+
 
 import mathLib.ode.intf.DerivFunction;
+import mathLib.root.RealRootFunction;
+import mathLib.root.RealRoots;
 import mathLib.sequence.Sequence;
 
 public class OdeSolver {
@@ -124,5 +127,50 @@ public class OdeSolver {
 		y0 = y0Copy ;
 		return y ;
 	}
+
+	//********* implicit methods ****************
+
+	public Sequence eulerImplicitSequence(double x1) {
+		return n -> {
+			if(n==0)
+				return y0 ;
+			else {
+				double x = x0 ;
+				double y = y0 ;
+				double h = (x1-x0)/(double)n ;
+				RealRootFunction rootEquation = null ;
+				RealRoots rootSolver = null ;
+				for(int i=0; i<n; i++) {
+					// solve for z : z - h f(x,z) = y
+					double xcopy = x ;
+					double ycopy = y ;
+					rootEquation = z -> z-h*func.value(xcopy, z)-ycopy ;
+					rootSolver = new RealRoots(rootEquation) ;
+					y = rootSolver.newton(x+0.5*h, 100) ;
+					x = x + h ;
+				}
+				return y ;
+			}
+		} ;
+	}
+
+	public double eulerImplicit(double x1) {
+		return eulerImplicitSequence(x1).richardson4().evaluate(100) ;
+	}
+
+	public double[] eulerImplicit(double[] x1) {
+		double x0Copy = x0 ;
+		double y0Copy = y0 ;
+		double[] y = new double[x1.length] ;
+		for(int i=0, len=x1.length; i<len; i++) {
+			y[i] = eulerImplicit(x1[i]) ;
+			x0 = x1[i] ;
+			y0 = y[i] ;
+		}
+		x0 = x0Copy ;
+		y0 = y0Copy ;
+		return y ;
+	}
+
 
 }
