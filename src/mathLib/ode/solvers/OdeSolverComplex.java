@@ -1,10 +1,7 @@
 package mathLib.ode.solvers;
 
 import static mathLib.numbers.Complex.j;
-
 import mathLib.numbers.Complex;
-import mathLib.ode.intf.DerivFunctionComplex;
-import mathLib.ode.intf.DerivnFunction;
 import mathLib.sequence.ArraySequence;
 
 public class OdeSolverComplex {

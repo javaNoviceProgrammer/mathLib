@@ -1,4 +1,4 @@
-package mathLib.ode.intf;
+package mathLib.ode.solvers;
 
 import mathLib.numbers.Complex;
 

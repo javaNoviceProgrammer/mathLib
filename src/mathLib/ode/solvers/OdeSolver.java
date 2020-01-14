@@ -1,7 +1,5 @@
 package mathLib.ode.solvers;
 
-
-import mathLib.ode.intf.DerivFunction;
 import mathLib.root.RealRootFunction;
 import mathLib.root.RealRoots;
 import mathLib.sequence.Sequence;
@@ -146,7 +144,7 @@ public class OdeSolver {
 					double ycopy = y ;
 					rootEquation = z -> z-h*func.value(xcopy, z)-ycopy ;
 					rootSolver = new RealRoots(rootEquation) ;
-					y = rootSolver.newton(x+0.5*h, 100) ;
+					y = rootSolver.newton(y, 100) ;
 					x = x + h ;
 				}
 				return y ;
