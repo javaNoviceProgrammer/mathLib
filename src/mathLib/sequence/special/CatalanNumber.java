@@ -2,7 +2,9 @@ package mathLib.sequence.special;
 
 import static mathLib.util.MathUtils.combination;
 
-public class CatalanNumber {
+import mathLib.sequence.Sequence;
+
+public class CatalanNumber implements Sequence {
 
 	public static double catalan(int n) {
 		if(n<0)
@@ -12,6 +14,12 @@ public class CatalanNumber {
 		if(n==1)
 			return 1 ;
 		return 1.0/(n+1) * combination(2*n, n) ;
+	}
+
+
+	@Override
+	public double evaluate(long k) {
+		return catalan((int) k);
 	}
 
 	// for test
@@ -40,5 +48,6 @@ public class CatalanNumber {
 		System.out.println(catalan(21));
 		System.out.println(catalan(22));
 	}
+
 
 }

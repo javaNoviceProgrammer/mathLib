@@ -3,7 +3,9 @@ package mathLib.sequence.special;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FibonacciNumber {
+import mathLib.sequence.Sequence;
+
+public class FibonacciNumber implements Sequence {
 
 	public static double fibonacci(int n) {
 		if(n<0)
@@ -95,6 +97,11 @@ public class FibonacciNumber {
 		return fibNminus1 + fibNminus2 ;
 	}
 
+	@Override
+	public double evaluate(long k) {
+		return fibonacci((int) k) ;
+	}
+
 	// for test
 	public static void main(String[] args) {
 		System.out.println(fibonacci(1));
@@ -113,5 +120,7 @@ public class FibonacciNumber {
 		System.out.println(fibonacci(14));
 		System.out.println(fibonacciRecursive(14, new HashMap<>()));
 	}
+
+
 
 }

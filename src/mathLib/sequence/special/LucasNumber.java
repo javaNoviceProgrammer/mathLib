@@ -1,6 +1,8 @@
 package mathLib.sequence.special;
 
-public class LucasNumber {
+import mathLib.sequence.Sequence;
+
+public class LucasNumber implements Sequence {
 
 	public static double lucas(int n) {
 		if (n<0)
@@ -12,6 +14,11 @@ public class LucasNumber {
 		double p = (1+Math.sqrt(5))/2 ;
 		double q = (1-Math.sqrt(5))/2 ;
 		return (int) (Math.pow(p, n) + Math.pow(q, n)) ;
+	}
+
+	@Override
+	public double evaluate(long k) {
+		return lucas((int) k) ;
 	}
 
 	// for test
