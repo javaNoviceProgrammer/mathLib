@@ -78,6 +78,32 @@ public class OdeSolverComplex {
 		return y ;
 	}
 
+	//*********** Fehlberg (RKF45) ***********
+
+	public ArraySequence fehlbergSequence(double x1) {
+		return odeSystemSolver.fehlbergSequence(x1) ;
+	}
+
+	public double[] fehlberg(double x1) {
+		return odeSystemSolver.fehlberg(x1) ;
+	}
+
+	public double[][] fehlberg(double[] x1) {
+		return odeSystemSolver.fehlberg(x1) ;
+	}
+
+	public Complex fehlbergComplex(double x1) {
+		double[] z = odeSystemSolver.fehlberg(x1) ;
+		return z[0]+j*z[1] ;
+	}
+
+	public Complex[] fehlbergComplex(double[] x1) {
+		double[][] z = odeSystemSolver.fehlberg(x1) ;
+		Complex[] y = new Complex[z[0].length] ;
+		for(int i=0, len=y.length; i<len; i++)
+			y[i] = z[0][i]+j*z[1][i] ;
+		return y ;
+	}
 
 
 

@@ -7,7 +7,7 @@ import static mathLib.optimize.pso.ParticleSwarmOptimization.interval;
 import mathLib.optimize.pso.ParticleSwarmOptimization;
 
 
-public class RealRoots {
+public class RealRoot {
 
 	RealRootFunction func ;
 	RealRootDerivFunction derivFunc ;
@@ -15,12 +15,12 @@ public class RealRoots {
 	double absError = 1e-15 ;
 	double relError = 1e-15 ;
 
-	public RealRoots(RealRootFunction func) {
+	public RealRoot(RealRootFunction func) {
 		this.func = func ;
 		this.derivFunc = null ;
 	}
 
-	public RealRoots(RealRootDerivFunction derivFunc) {
+	public RealRoot(RealRootDerivFunction derivFunc) {
 		this.derivFunc = derivFunc ;
 		this.func = null ;
 	}

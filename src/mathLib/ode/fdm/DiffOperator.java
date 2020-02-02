@@ -1,4 +1,4 @@
-package mathLib.ode;
+package mathLib.ode.fdm;
 
 import static mathLib.util.MathUtils.deltaKronecker;
 

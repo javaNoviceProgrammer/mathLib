@@ -2,6 +2,7 @@ package mathLib.ode.solvers;
 
 import mathLib.numbers.Complex;
 
+// helper class
 public class Ode {
 
 	private Ode() {

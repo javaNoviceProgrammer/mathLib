@@ -112,4 +112,36 @@ public class OdeSystemSolverComplex {
 		return y ; // number of rows = N (number of equations)
 	}
 
+	//*********** Fehlberg (RKF45) ***********
+
+	public ArraySequence fehlbergSequence(double x1) {
+		return odeSystemSolver.fehlbergSequence(x1) ;
+	}
+
+	public double[] fehlberg(double x1) {
+		return odeSystemSolver.fehlberg(x1) ;
+	}
+
+	public double[][] fehlberg(double[] x1) {
+		return odeSystemSolver.fehlberg(x1) ; // number of rows = 2N (real, imag)
+	}
+
+	public Complex[] fehlbergComplex(double x1) {
+		double[] z = odeSystemSolver.fehlberg(x1) ;
+		Complex[] y = new Complex[numEquations] ;
+		for(int i=0; i<numEquations; i++)
+			y[i] = z[2*i]+j*z[2*i+1] ;
+		return y ;
+	}
+
+	public Complex[][] fehlbergComplex(double[] x1) {
+		double[][] z = odeSystemSolver.fehlberg(x1) ; // 2*N real equations
+		Complex[][] y = new Complex[numEquations][x1.length] ; // N complex equations
+		for(int i=0; i<numEquations; i++)
+			for(int k=0, len=x1.length; k<len; k++) {
+				y[i][k] = z[2*i][k]+j*z[2*i+1][k] ;
+			}
+		return y ; // number of rows = N (number of equations)
+	}
+
 }

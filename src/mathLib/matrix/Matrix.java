@@ -367,6 +367,17 @@ public class Matrix {
     		}
     }
 
+    public Matrix getBlock(int r1, int r2, int c1, int c2) {
+    	int rows = r2-r1+1 ;
+    	int columns = c2-c1+1 ;
+    	double[][] temp = new double[rows][columns] ;
+    	for(int i=r1; i<=r2; i++)
+    		for(int j=c1; j<=c2; j++) {
+    			temp[i-r1][j-c1] = this.data[i][j] ;
+    		}
+    	return new Matrix(temp) ;
+    }
+
     // element-wise operations
 
     public Matrix timesElement(Matrix B){

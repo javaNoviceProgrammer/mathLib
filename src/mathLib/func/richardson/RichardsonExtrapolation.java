@@ -1,6 +1,6 @@
 package mathLib.func.richardson;
 
-import mathLib.root.RealRoots;
+import mathLib.root.RealRoot;
 import mathLib.root.RealRootFunction;
 
 public class RichardsonExtrapolation {
@@ -57,7 +57,7 @@ public class RichardsonExtrapolation {
 		double arg3 = termOneThirdH - term ;
 		RealRootFunction rootFunc = m -> arg1 + arg2/(Math.pow(2.0, m)-1) - arg3/(Math.pow(3.0, m)-1) ;
 
-		RealRoots rootFinder = new RealRoots(rootFunc) ;
+		RealRoot rootFinder = new RealRoot(rootFunc) ;
 		double m = rootFinder.trisection(0.1, 100) ;
 		return m ;
 	}
