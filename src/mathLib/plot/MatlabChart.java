@@ -41,7 +41,7 @@ import mathLib.util.MathUtils;
 public class MatlabChart implements Serializable {
 
 	private static final long serialVersionUID = -6846021898053436205L;
-	
+
 	Font font;
     JFreeChart chart = null ;
     LegendTitle legend;
@@ -61,9 +61,9 @@ public class MatlabChart implements Serializable {
         plotRenderer = new XYLineAndShapeRenderer() ;
         specs = new ArrayList<String>() ;
     }
-    
+
     //*********************plotting************************************
-    
+
     public void plot(double[] x, double[] y, String spec, float lineWidth, String title) {
         final XYSeries series = new XYSeries(title);
         for (int i = 0; i < x.length; i++)
@@ -139,6 +139,19 @@ public class MatlabChart implements Serializable {
     	plot(x, yImag, "-r", 2f, "Im");
     }
 
+    public void plot(Object[] x, Object[] y) {
+    	String title = "fig" + counter ;
+    	counter++ ;
+        String spec = "-b" ;
+        float lineWidth = 1 ;
+        final XYSeries series = new XYSeries(title);
+        for (int i = 0; i < x.length; i++)
+            series.add((double)x[i],(double)y[i]);
+        dataset.addSeries(series);
+        specs.add(spec) ;
+        FindColor(spec,lineWidth);
+    }
+
 
     //*******************Rendering the figures**************************************
     public void renderPlot() {
@@ -195,14 +208,14 @@ public class MatlabChart implements Serializable {
     	}
 
     }
-    
-    
+
+
     //*******************Appending to dataset******************
-    
+
     public void append(int FigNumber, double x, double y) {
     	dataset.getSeries(FigNumber).add(x, y);
     }
-    
+
     public void append(int FigNumber, double[] x, double[] y) {
     	for(int i=0; i<x.length; i++)
     		append(FigNumber, x[i], y[i]);
@@ -229,7 +242,7 @@ public class MatlabChart implements Serializable {
     	chart.getXYPlot().setDataset(dataset);
     	counter = 0 ;
     	chart.getXYPlot().setRenderer(plotRenderer);
-    	
+
 		this.plot(new double[0], new double[0]);
 		this.renderPlot();
     }
@@ -828,8 +841,8 @@ public class MatlabChart implements Serializable {
         chartSwingNode.setContent(getChartPanel(width, height));
         return chartSwingNode ;
     }
-    
-    
+
+
     // static method for quick plotting
     public static void fastPlot(double[] x, double[] y, boolean systemExit) {
     	MatlabChart fig = new MatlabChart() ;
