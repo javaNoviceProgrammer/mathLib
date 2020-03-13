@@ -40,18 +40,18 @@ public class CustomChartPanel extends ChartPanel {
 		this.cheight = height;
 		initialize();
 	}
-	
+
 	public CustomChartPanel(JFreeChart chart) {
 		super(chart) ;
 		initialize() ;
 	}
-	
+
 	public CustomChartPanel(MatlabChart fig) {
 		super(fig.getChart()) ;
 		this.fig = fig ;
 		initialize() ;
 	}
-	
+
 	private void initialize() {
 		// avoiding the bad scaling of fonts
 	    setMinimumDrawHeight(Integer.MIN_VALUE);
@@ -77,15 +77,15 @@ public class CustomChartPanel extends ChartPanel {
 		exportToMATLAB.setActionCommand("exportToMATLAB");
 		exportToMATLAB.addActionListener(this);
 		getPopupMenu().add(exportToMATLAB);
-		// for exporting to Text file
-//		JMenuItem exportToTXT = new JMenuItem("Export to Text File");
-//		exportToTXT.setActionCommand("exportToTXT");
-//		exportToTXT.addActionListener(this);
-//		getPopupMenu().add(exportToTXT);
+		// for exporting to Python lists
+		JMenuItem exportToPython = new JMenuItem("Export to Python");
+		exportToPython.setActionCommand("exportToPython");
+		exportToPython.addActionListener(this);
+		getPopupMenu().add(exportToPython);
 
 		Border padding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		setBorder(padding);
-		
+
 		// implement fig functions
 		if(fig!= null) {
 			// do stuff
@@ -138,26 +138,26 @@ public class CustomChartPanel extends ChartPanel {
 			} catch (Exception e) {
 			}
 
-		} 
-//		else if (ae.getActionCommand().equals("exportToTXT")) {
-//			// get all XY data
-//			// check linewidths and colors
-//			int N = getChart().getXYPlot().getDataset().getSeriesCount();
-//			// get custom jfilechooser and set the path
-//			try {
-//				CustomJFileChooser fc = new CustomJFileChooser();
-//				fc.saveFile();
-//				FileOutput fo = new FileOutput(fc.getSelectedFile().getAbsolutePath() + ".txt");
-//				// print matlab commands to the m file
-//				for (int i = 0; i < N; i++) {
-//					exportSeries(i, fo);
-//				}
-//				fo.close();
-//				System.gc();
-//			} catch (Exception e) {
-//			}
-//
-//		} 
+		}
+		else if (ae.getActionCommand().equals("exportToPython")) {
+			// get all XY data
+			// check linewidths and colors
+			int N = getChart().getXYPlot().getDataset().getSeriesCount();
+			// get custom jfilechooser and set the path
+			try {
+				CustomJFileChooser fc = new CustomJFileChooser();
+				fc.saveFile();
+				FileOutput fo = new FileOutput(fc.getSelectedFile().getAbsolutePath() + ".txt");
+				// print matlab commands to the m file
+				for (int i = 0; i < N; i++) {
+					exportSeriesToPython(i, fo);
+				}
+				fo.close();
+				System.gc();
+			} catch (Exception e) {
+			}
+
+		}
 		else
 			super.actionPerformed(ae);
 	}
@@ -182,6 +182,32 @@ public class CustomChartPanel extends ChartPanel {
 		// printing plot command
 		fo.println("ph" + seriesNum + "= " + "plot(x_" + seriesNum + ", y_" + seriesNum + ", 'linewidth', 3" + ") ;");
 	}
+
+	private void exportSeriesToPython(int seriesNum, FileOutput fo) {
+		int M = getChart().getXYPlot().getDataset().getItemCount(seriesNum);
+		// printing x variable
+		fo.print("x_" + seriesNum + " = [");
+		for (int i = 0; i < M-1; i++) {
+			double x = getChart().getXYPlot().getDataset().getXValue(seriesNum, i);
+			fo.print(x + ", ");
+		}
+		double x = getChart().getXYPlot().getDataset().getXValue(seriesNum, M-1);
+		fo.print(x);
+		fo.println("];");
+		// printing y variable
+		fo.print("y_" + seriesNum + " = [");
+		for (int i = 0; i < M-1; i++) {
+			double y = getChart().getXYPlot().getDataset().getYValue(seriesNum, i);
+			fo.print(y + ", ");
+		}
+		double y = getChart().getXYPlot().getDataset().getYValue(seriesNum, M-1);
+		fo.print(y);
+		fo.println("];");
+		// getting linewidth
+		// printing plot command
+//		fo.println("plt.plot(x_" + seriesNum + ", y_" + seriesNum + ")" );
+	}
+
 
 	private void setClipboard(Image image) {
 		imgsel.setImage(image);
